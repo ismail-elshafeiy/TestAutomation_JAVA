@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.github.IsmailElshafeiy</groupId>
+    <artifactId>Practice_TestAutomation_SeleniumWebDriver</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>Practice_TestAutomation_SeleniumWebDriver</name>
+    <description>Selenium Automation Framework for Testing</description>
+    <url>https://github.com/ismail-elshafeiy</url>
+
+
+    <properties>
+        <selenium.version>4.2.1</selenium.version>
+        <appium-java-client.version>8.0.0</appium-java-client.version>
+        <webdrivermanager.version>5.1.0</webdrivermanager.version>
+        <testng.version>7.5</testng.version>
+        <rest-assured.version>4.5.1</rest-assured.version>
+        <poi-ooxml.version>5.2.1</poi-ooxml.version>
+        <allure-testng.version>2.17.3</allure-testng.version>
+        <allure-maven.version>2.11.2</allure-maven.version>
+        <allure-maven-report.version>2.10.0</allure-maven-report.version>
+        <extentreports.version>5.0.9</extentreports.version>
+        <commons-io.version>2.11.0</commons-io.version>
+        <aspectj.version>1.9.8</aspectj.version>
+        <slf4j.version>1.7.36</slf4j.version>
+        <json-simple.version>1.1.1</json-simple.version>
+        <httpcomponents.version>4.5.13</httpcomponents.version>
+        <json-schema-validator.version>4.5.1</json-schema-validator.version>
+        <maven-compiler-plugin.version>3.10.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+    </properties>
+
+    <dependencies>
+        <!-- SELENIUM WEBDRIVER -->
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java     -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.seleniumhq.selenium</groupId>-->
+        <!--            <artifactId>selenium-support</artifactId>-->
+        <!--            <version>3.141.59</version>-->
+        <!--        </dependency>-->
+
+        <!-- APPIUM -->
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>${appium-java-client.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-java</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-support</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <!-- WEBDRIVER MANAGER -->
+            <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager     -->
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>${webdrivermanager.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <!-- TESTNG DEPENDENCIES -->
+            <!-- https://mvnrepository.com/artifact/org.testng/testng        -->
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+        </dependency>
+
+        <dependency>
+            <!-- REST ASSURED -->
+            <!--  https://mvnrepository.com/artifact/io.rest-assured/rest-assured        -->
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
+        </dependency>
+
+        <dependency>
+            <!-- EXCEL FILE  -->
+            <!--  https://mvnrepository.com/artifact/org.apache.poi/poi       -->
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi-ooxml.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <!--  https://mvnrepository.com/artifact/commons-io/commons-io         -->
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
+
+        <dependency>
+            <!-- ALLURE REPORTING -->
+            <!--  https://mvnrepository.com/artifact/io.qameta.allure/allure-testng -->
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <version>${allure-testng.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.testng</groupId>
+                    <artifactId>testng</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <!-- EXTENT REPORTS -->
+            <!--   https://mvnrepository.com/artifact/com.aventstack/extentreports  -->
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>${extentreports.version}</version>
+        </dependency>
+
+        <dependency>
+            <!--   https://mvnrepository.com/artifact/org.aspectj/aspectjweaver       -->
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
+
+        <dependency>
+            <!--  https://mvnrepository.com/artifact/org.slf4j/slf4j-api        -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>${json-simple.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpcomponents.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>io.qameta.allure</groupId>
+                    <artifactId>allure-maven</artifactId>
+                    <version>${allure-maven.version}</version>
+                    <configuration>
+                        <reportVersion>${allure-maven-report.version}</reportVersion>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>17</source>
+                        <target>17</target>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <!-- <parallel>classes</parallel> <threadCount>4</threadCount> -->
+                        <!-- <suiteXmlFiles> <suiteXmlFile>${testNGSuite}</suiteXmlFile> </suiteXmlFiles> -->
+                        <argLine>
+                            -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+                        </argLine>
+                        <properties>
+                            <property>
+                                <name>usedefaultlisteners</name>
+                                <value>false</value> <!-- disabling default listeners is optional -->
+                            </property>
+                            <property>
+                                <name>listener</name>
+                                <value>utilities.TestngListener</value>
+                            </property>
+                        </properties>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>regression</id>
+            <properties>
+                <testNGSuite>src\test\resources\TestSuits\regression.xml</testNGSuite>
+            </properties>
+        </profile>
+
+    </profiles>
+
+</project>
