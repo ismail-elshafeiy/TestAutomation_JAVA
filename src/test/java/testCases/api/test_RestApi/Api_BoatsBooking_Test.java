@@ -1,6 +1,6 @@
-package testCases.api.testApi;
+package testCases.api.test_RestApi;
 
-import api.PhptravelsApis;
+import api.rest.travels.PhptravelsApis;
 import io.qameta.allure.*;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeClass;

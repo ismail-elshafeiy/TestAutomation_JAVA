@@ -104,9 +104,6 @@ public class ElementActions {
         return this;
     }
 
-    public static void type(WebDriver driver, By elementLocator, String text) {
-        type(driver, elementLocator, text, true);
-    }
 
     //    @Step("Type data: [{data}] on element: [{elementLocator}]")
     public static void type(WebDriver driver, By elementLocator, String text, boolean clearBeforeTyping) {
@@ -148,15 +145,20 @@ public class ElementActions {
                         + driver.findElement(elementLocator).getAttribute("value") + "]");
     }
 
+    public ElementActions type(By elementLocator, String text, boolean clearBeforeTyping) {
+        type(driver, elementLocator, text, clearBeforeTyping);
+        return this;
+    }
+
+    public static void type(WebDriver driver, By elementLocator, String text) {
+        type(driver, elementLocator, text, true);
+    }
+
     public ElementActions type(By elementLocator, String text) {
         type(driver, elementLocator, text, true);
         return this;
     }
 
-    public ElementActions type(By elementLocator, String text, boolean clearBeforeTyping) {
-        type(driver, elementLocator, text, clearBeforeTyping);
-        return this;
-    }
     public enum SelectType {
         TEXT, VALUE, INDEX;
     }

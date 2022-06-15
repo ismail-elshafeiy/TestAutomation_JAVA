@@ -2,9 +2,10 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.IsmailElshafeiy</groupId>
-    <artifactId>Practice_TestAutomation_SeleniumWebDriver</artifactId>
+    <artifactId>Practice_TestAutomation</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Practice_TestAutomation_SeleniumWebDriver</name>
     <description>Selenium Automation Framework for Testing</description>
@@ -16,7 +17,7 @@
         <appium-java-client.version>8.0.0</appium-java-client.version>
         <webdrivermanager.version>5.1.0</webdrivermanager.version>
         <testng.version>7.5</testng.version>
-        <rest-assured.version>4.5.1</rest-assured.version>
+        <rest-assured.version>5.1.0</rest-assured.version>
         <poi-ooxml.version>5.2.1</poi-ooxml.version>
         <allure-testng.version>2.17.3</allure-testng.version>
         <allure-maven.version>2.11.2</allure-maven.version>
@@ -108,6 +109,15 @@
             <artifactId>rest-assured</artifactId>
             <version>${rest-assured.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
+        </dependency>
+
+
+
 
         <dependency>
             <!-- EXCEL FILE  -->

@@ -33,6 +33,8 @@ public class DragAndDrop_Test {
 
 
         Actions actions = new Actions(driver);
+
+
         actions.dragAndDrop(source, target).build().perform();
 
         Assert.assertEquals("Dropped!", target.getText());

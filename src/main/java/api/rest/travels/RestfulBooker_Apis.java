@@ -1,4 +1,4 @@
-package api;
+package api.rest.travels;
 
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;

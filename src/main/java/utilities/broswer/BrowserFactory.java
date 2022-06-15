@@ -183,13 +183,12 @@ public class BrowserFactory {
                 String warningMsg = "The driver is null! because the browser type [" + browserTypeProperty + "] is not valid/supported; Please choose a valid browser type from the given choices in the properties file";
                 Logger.logMessage(warningMsg);
                 fail(warningMsg);
-//		throw new NullPointerException(warningMsg);
             }
         } else {
             String warningMsg = "The driver is null! because the execution type [" + executionTypeProperty + "] is not valid/supported; Please choose a valid execution type from the given choices in the properties file";
             Logger.logMessage(warningMsg);
             fail(warningMsg);
-//	    throw new NullPointerException(warningMsg);
+
         }
         return driver.get();
     }

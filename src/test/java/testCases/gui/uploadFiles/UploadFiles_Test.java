@@ -39,8 +39,6 @@ public class UploadFiles_Test {
         new FileUploadPage(driver)
                 .uploadFileBy_inputFile(imagePath)
                 .clickUploadButton();
-
-
         Assert.assertEquals(imageName, FileUploadPage.getUploadedFiles_text(), "The Validation Message is incorrect");
         Assert.assertTrue(FileUploadPage.getUploadedFiles_text().contains(imageName));
         Assert.assertTrue((driver.findElement(uploadedFiles_text).isDisplayed()));
@@ -54,17 +52,11 @@ public class UploadFiles_Test {
         new HomePage(driver).navigateTo_yourHomePage("https://the-internet.herokuapp.com/upload");
         new FileUploadPage(driver).clickUpload_dragDropArea()
                 .uploadFileBy_robot(imagePath);
+
         Assert.assertTrue(driver.findElement(fileUploader_dragDrop).getText().contains(imageName));
         Assert.assertTrue((driver.findElement(fileUploader_dragDrop).isDisplayed()));
     }
 
-
-    @BeforeTest
-    public void setup() {
-
-        driver.get("http://the-internet.herokuapp.com/download");
-        driver.manage().window().maximize();
-    }
 
 
 }

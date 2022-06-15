@@ -1,5 +1,5 @@
-package testCases.api.testApi;
-import api.PhptravelsApis;
+package testCases.api.test_RestApi;
+import api.rest.travels.PhptravelsApis;
 import io.qameta.allure.*;
 import io.restassured.response.Response;
 import org.testng.Assert;

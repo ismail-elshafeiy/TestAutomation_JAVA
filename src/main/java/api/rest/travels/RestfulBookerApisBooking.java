@@ -1,4 +1,4 @@
-package api;
+package api.rest.travels;
 
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
@@ -6,7 +6,6 @@ import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.json.simple.JSONObject;
-
 import utilities.ExtentReport;
 import utilities.actions.ApiActions;
 

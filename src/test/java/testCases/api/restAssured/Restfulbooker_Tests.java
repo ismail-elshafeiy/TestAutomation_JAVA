@@ -1,7 +1,7 @@
 package testCases.api.restAssured;
 
-import api.RestfulBooker_Apis;
-import api.RestfulBookerApisBooking;
+import api.rest.travels.RestfulBookerApisBooking;
+import api.rest.travels.RestfulBooker_Apis;
 import io.qameta.allure.*;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeClass;

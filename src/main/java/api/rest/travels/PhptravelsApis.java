@@ -1,4 +1,4 @@
-package api;
+package api.rest.travels;
 
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
@@ -7,7 +7,6 @@ import io.restassured.response.Response;
 import utilities.ExtentReport;
 import utilities.PropertiesReader;
 import utilities.actions.ApiActions;
-
 
 import java.util.HashMap;
 import java.util.Map;
