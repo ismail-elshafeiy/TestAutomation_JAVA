@@ -21,8 +21,8 @@ jobs:
         with:
           java-version: 17
           distribution: 'zulu'
-      - name: Set up Native Selenium Grid with one hub and four Chrome nodes
-        run: docker-compose -f src/main/resources/docker-compose_native.yml up --scale chrome=4 --remove-orphans -d
+      - name: Set up Selenium Grid with one hub and four Chrome nodes
+        run: docker-compose -f src/main/resources/docker-compose.yml up --scale chrome=4 --remove-orphans -d
       - name: Check running containers
         run: docker ps
       - name: Run tests - Chrome Headless
