@@ -17,7 +17,7 @@
         <appium-java-client.version>8.0.0</appium-java-client.version>
         <webdrivermanager.version>5.1.0</webdrivermanager.version>
         <testng.version>7.5</testng.version>
-        <rest-assured.version>5.1.0</rest-assured.version>
+        <rest-assured.version>5.1.1</rest-assured.version>
         <poi-ooxml.version>5.2.1</poi-ooxml.version>
         <allure-testng.version>2.17.3</allure-testng.version>
         <allure-maven.version>2.11.2</allure-maven.version>
