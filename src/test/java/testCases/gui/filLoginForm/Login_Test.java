@@ -15,7 +15,7 @@ import java.io.File;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class T1_LoginTests {
+public class Login_Test {
     private WebDriver driver;
     private ExcelFileManager testDataFile;
 
