@@ -13,7 +13,7 @@
 
 
     <properties>
-        <selenium.version>4.2.1</selenium.version>
+        <selenium.version>4.2.2</selenium.version>
         <appium-java-client.version>8.1.1</appium-java-client.version>
         <webdrivermanager.version>5.1.0</webdrivermanager.version>
         <testng.version>7.5</testng.version>
