@@ -15,22 +15,27 @@
     <properties>
         <selenium.version>4.2.1</selenium.version>
         <appium-java-client.version>8.1.1</appium-java-client.version>
-        <webdrivermanager.version>5.1.0</webdrivermanager.version>
-        <testng.version>7.5</testng.version>
+        <webdrivermanager.version>5.2.0</webdrivermanager.version>
+        <testng.version>7.6.0</testng.version>
         <rest-assured.version>5.1.1</rest-assured.version>
-        <poi-ooxml.version>5.2.1</poi-ooxml.version>
-        <allure-testng.version>2.17.3</allure-testng.version>
+        <poi-ooxml.version>5.2.2</poi-ooxml.version>
+        <allure-testng.version>2.18.1</allure-testng.version>
         <allure-maven.version>2.11.2</allure-maven.version>
         <allure-maven-report.version>2.10.0</allure-maven-report.version>
         <extentreports.version>5.0.9</extentreports.version>
         <commons-io.version>2.11.0</commons-io.version>
-        <aspectj.version>1.9.8</aspectj.version>
+        <aspectj.version>1.9.9.1</aspectj.version>
+        <jackson.databind.version>2.13.3</jackson.databind.version>
+        <wiremock.version>2.33.2</wiremock.version>
         <slf4j.version>1.7.36</slf4j.version>
         <json-simple.version>1.1.1</json-simple.version>
         <httpcomponents.version>4.5.13</httpcomponents.version>
         <json-schema-validator.version>4.5.1</json-schema-validator.version>
         <maven-compiler-plugin.version>3.10.0</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <junit.version>4.13.2</junit.version>
+        <junit.dataprovider.version>2.9</junit.dataprovider.version>
+        <jackson.databind.version>2.9.8</jackson.databind.version>
     </properties>
 
     <dependencies>
@@ -113,7 +118,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20210307</version>
+            <version>20220320</version>
         </dependency>
 
 
@@ -205,8 +210,45 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
+            <version>1.18.24</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.tngtech.junit.dataprovider</groupId>
+            <artifactId>junit4-dataprovider</artifactId>
+            <version>${junit.dataprovider.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.databind.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8</artifactId>
+            <version>2.33.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.databind.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8</artifactId>
+            <version>${wiremock.version}</version>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
 
