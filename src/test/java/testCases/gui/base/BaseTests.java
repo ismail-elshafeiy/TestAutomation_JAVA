@@ -58,9 +58,7 @@ public class BaseTests {
         }
     }
 
-    public WindowManager getWindowManager(){
-        return new WindowManager(driver);
-    }
+
 
     private ChromeOptions getChromeOptions(){
         ChromeOptions options = new ChromeOptions();
@@ -69,7 +67,4 @@ public class BaseTests {
         return options;
     }
 
-    public CookieManager getCookieManager(){
-        return new CookieManager(driver);
-    }
 }

@@ -5,6 +5,7 @@ import gui.pages.actions.HoverPage;
 import io.qameta.allure.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
@@ -49,6 +50,17 @@ public class Hover_Test {
                 .hoverOfElement();
 
     }
+
+    @Test
+    public void mousehover() {
+        Actions a = new Actions(driver);
+        WebElement element = driver.findElement(By.linkText("Printed Chiffon Dress"));
+        a.moveToElement(element).perform();
+        driver.findElement(By.xpath("(//a[@data-id-product='7'])[1]//span")).click();
+
+        a.contextClick(element);
+    }
+
     Actions actions;
     @Test
     @Severity(SeverityLevel.NORMAL)

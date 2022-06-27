@@ -1,4 +1,4 @@
-package testCases.gui.console;
+package testCases.gui.browser.console;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -19,10 +19,12 @@ public class ConsoleLogsDemo {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
     }
-	@AfterMethod
-	public void closeBrowser() {
-		BrowserActions.closeAllOpenedBrowserWindows(driver);
-	}
+
+    @AfterMethod
+    public void closeBrowser() {
+        BrowserActions.closeAllOpenedBrowserWindows(driver);
+    }
+
     @Test
     public void viewBrowserConsoleLogs() {
         // Get The DevTools & Create A Session

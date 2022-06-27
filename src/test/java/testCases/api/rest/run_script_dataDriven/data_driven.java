@@ -2,14 +2,9 @@ package run_script_dataDriven;
 
 import static io.restassured.RestAssured.get;
 
-import java.io.File;
-import java.io.IOException;
 import io.restassured.path.xml.XmlPath;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import utils.ExcelFileManager;
 
 public class data_driven {
     ExcelFileManager spreedSheet;

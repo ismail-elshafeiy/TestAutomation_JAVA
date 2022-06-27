@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 import java.util.Optional;
 
-public class NetworkConditionsDemo {
+public class NetworkConditions {
     ChromeDriver driver;
     DevTools devTools;
 

@@ -1,12 +1,15 @@
-package testAutomationU.exercises.chapter11.windows;
+package testCases.gui.browser.windows;
 
-import testAutomationU.base.BaseTests;
+
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertTrue;
 
-public class WindowTests extends BaseTests {
-
+public class WindowTests {
+    public utils.WindowManager getWindowManager(){
+        return new utils.WindowManager(driver);
+    }
+// TODO : TAU
     @Test
     public void testWindowTabs(){
         var buttonPage = homePage.clickDynamicLoading().rightClickOnExample2Link();

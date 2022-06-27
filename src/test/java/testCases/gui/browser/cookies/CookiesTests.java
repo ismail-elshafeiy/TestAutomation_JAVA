@@ -1,12 +1,17 @@
-package testAutomationU.exercises.chapter14.cookies;
+package testCases.gui.browser.cookies;
 
+import org.openqa.selenium.WebDriver;
 import testAutomationU.base.BaseTests;
 import org.openqa.selenium.Cookie;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertFalse;
+public class CookiesTests {
+    private WebDriver driver;
+    public utils.CookieManager getCookieManager(){
+        return new utils.CookieManager(driver);
+    }
 
-public class CookiesTests extends BaseTests {
 
     @Test
     public void testDeleteCookie(){
