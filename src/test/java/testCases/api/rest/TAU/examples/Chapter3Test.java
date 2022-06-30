@@ -1,4 +1,4 @@
-package examples;
+package testCases.api.rest.TAU.examples;
 
 import com.tngtech.java.junit.dataprovider.*;
 import org.junit.Test;

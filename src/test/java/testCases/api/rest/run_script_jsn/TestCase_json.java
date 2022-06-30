@@ -1,4 +1,4 @@
-package run_script_jsn;
+package testCases.api.rest.run_script_jsn;
 
 import static org.hamcrest.Matchers.equalTo;
 import io.restassured.RestAssured;

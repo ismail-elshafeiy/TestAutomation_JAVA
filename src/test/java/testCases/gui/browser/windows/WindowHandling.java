@@ -1,21 +1,35 @@
-package SeleniumActions_tests;
+package testCases.gui.browser.windows;
 
 import io.qameta.allure.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utilities.broswer.BrowserActions;
+import utilities.broswer.BrowserFactory;
 
-public class WindowHandling extends TestBase {
+public class WindowHandling {
+
+    private WebDriver driver;
+
+    @BeforeMethod
+    public void setUp_BeforeMethod() {
+        driver = BrowserFactory.getBrowser();
+        driver.get("https://cookbook.seleniumacademy.com/Config.html");
+        System.out.println("Title: " + driver.getTitle());
+    }
+
+    @AfterMethod
+    public void closeBrowser() {
+        BrowserActions.closeAllOpenedBrowserWindows(driver);
+    }
+
 
     /*
      * Window Handling Method to handle all the opened Tabs or windows and applies code on each window if needed
      */
-
-    @BeforeMethod
-    public void goToMultipleWindowsPage() {
-        driver.get("https://cookbook.seleniumacademy.com/Config.html");
-    }
 
     @Test(priority = 1)
     @Severity(SeverityLevel.CRITICAL)
@@ -33,7 +47,7 @@ public class WindowHandling extends TestBase {
             for (String windowId : driver.getWindowHandles()) {
                 String title = driver.switchTo().window(windowId).getTitle();
                 if (title.equals("Visit Us")) {
-                    Assert.assertEquals("Visit Us",driver.getTitle(), "Page Title is incorrect");
+                    Assert.assertEquals("Visit Us", driver.getTitle(), "Page Title is incorrect");
                     //Write any code to handle elements in Visit us page
                     System.out.println(driver.getTitle());
                     //Close Visit us Page
@@ -46,6 +60,7 @@ public class WindowHandling extends TestBase {
             driver.switchTo().window(ParentWindowId);
         }
     }
+
     @Test(priority = 2)
     @Severity(SeverityLevel.CRITICAL)
     @Description("Handling Windows and Tabs using Name Test Case")

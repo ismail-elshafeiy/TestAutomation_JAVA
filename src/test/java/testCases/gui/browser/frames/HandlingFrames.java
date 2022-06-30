@@ -1,4 +1,4 @@
-package Course.A3_workingWithSeleniumAPI;
+package testCases.gui.browser.frames;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
@@ -9,7 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class S5_HandlingFrames {
+public class HandlingFrames {
 
     WebDriver driver;
 
@@ -17,12 +17,13 @@ public class S5_HandlingFrames {
     public void setUp() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
-        driver.navigate().to("http://cookbook.seleniumacademy.com/Frames.html");
+
         driver.manage().window().maximize();
     }
 
     @Test
     public void testHandlingFramesWithIdOrName() {
+        driver.navigate().to("http://cookbook.seleniumacademy.com/Frames.html");
         driver.switchTo().frame("left");
 
         // Before find element should be switch to the frame first

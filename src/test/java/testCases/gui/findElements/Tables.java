@@ -1,24 +1,36 @@
-package SeleniumActions_tests;
+package testCases.gui.findElements;
 
 import io.qameta.allure.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utilities.broswer.BrowserActions;
+import utilities.broswer.BrowserFactory;
 
 import java.util.List;
 
-public class Tables extends TestBase {
+public class Tables {
+    private WebDriver driver;
 
+    @BeforeMethod
+    public void setUp_BeforeMethod() {
+        driver = BrowserFactory.getBrowser();
+    }
+
+    @AfterMethod
+    public void closeBrowser() {
+        BrowserActions.closeAllOpenedBrowserWindows(driver);
+    }
 
     /*
      * Selecting an option or specific cell on the table can be performed
      * when selecting a specific date from a table calendar
      */
     @Test
-    @Severity(SeverityLevel.MINOR)
-    @Description("Handling Tables Test Case")
-    @Epic("Selenium Actions on Elements")
     @Story("Tables Tutorial")
     public void webTableTest() {
         driver.get("https://the-internet.herokuapp.com/tables");

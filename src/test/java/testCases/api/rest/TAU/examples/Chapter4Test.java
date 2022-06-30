@@ -1,4 +1,4 @@
-package examples;
+package testCases.api.rest.TAU.examples;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;

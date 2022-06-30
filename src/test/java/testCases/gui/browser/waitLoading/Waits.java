@@ -1,4 +1,4 @@
-package testCases.gui.waitLoading;
+package testCases.gui.browser.waitLoading;
 
 import io.qameta.allure.*;
 import org.openqa.selenium.By;
@@ -31,7 +31,7 @@ public class Waits {
     @Description("Handling Waits and sync Test Case")
     @Epic("Selenium Actions on Elements")
     @Story("Waits Tutorial")
-    void WaitTest(){
+    void WaitTest() {
         // Thread sleep: Stop all the execution for a specific amount of time in mil Seconds
 
 //        Thread.sleep(3000);

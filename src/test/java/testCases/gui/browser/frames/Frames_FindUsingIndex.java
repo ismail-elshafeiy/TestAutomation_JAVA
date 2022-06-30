@@ -1,4 +1,4 @@
-package testCases.gui.frames;
+package testCases.gui.browser.frames;
 
 import io.qameta.allure.*;
 import org.openqa.selenium.By;

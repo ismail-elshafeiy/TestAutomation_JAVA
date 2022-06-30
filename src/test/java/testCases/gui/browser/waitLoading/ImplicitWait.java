@@ -1,26 +1,36 @@
-package Course.A4_wait;
+package testCases.gui.browser.waitLoading;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import utilities.broswer.BrowserActions;
+import utilities.broswer.BrowserFactory;
 
 import java.util.concurrent.TimeUnit;
 
 import static org.testng.AssertJUnit.assertTrue;
 
-public class W1_ImplicitWait {
-    ChromeDriver driver;
+public class ImplicitWait {
+    private WebDriver driver;
 
-    @BeforeTest
-    public void setUp() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+    @BeforeMethod
+    public void setUp_BeforeMethod() {
+        driver = BrowserFactory.getBrowser();
         driver.navigate().to("http://cookbook.seleniumacademy.com/AjaxDemo.html");
-        driver.manage().window().maximize();
+        System.out.println("Title: " + driver.getTitle());
     }
+
+    @AfterMethod
+    public void closeBrowser() {
+        BrowserActions.closeAllOpenedBrowserWindows(driver);
+    }
+
     @Test
     public void testImplicitWait (){
 

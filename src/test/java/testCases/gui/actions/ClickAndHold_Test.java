@@ -11,8 +11,6 @@ import utilities.broswer.BrowserActions;
 import utilities.broswer.BrowserFactory;
 
 public class ClickAndHold_Test {
-
-
     private WebDriver driver;
 
     @BeforeMethod

@@ -1,4 +1,4 @@
-package utils;
+package utilities;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;

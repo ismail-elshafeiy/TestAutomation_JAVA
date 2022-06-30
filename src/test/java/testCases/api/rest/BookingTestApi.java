@@ -6,19 +6,19 @@ import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import utilities.actions.ApiActions;
+import utilities.actions.RestApiActions;
 
 import static org.testng.Assert.assertEquals;
 
 public class BookingTestApi {
 
-    private ApiActions apiObject;
+    private RestApiActions apiObject;
     private RestApiBase apiBase;
     private BookingApis bookingApis;
 
     @BeforeClass
     public void beforeClass() {
-        apiObject = new ApiActions(RestApiBase.BASE_URL);
+        apiObject = new RestApiActions(RestApiBase.BASE_URL);
         apiBase = new RestApiBase(apiObject);
         String token = apiBase.getAccessToken("admin", "password123");
         bookingApis = new BookingApis(apiObject, token);
@@ -40,20 +40,20 @@ public class BookingTestApi {
                 additionalNeeds);
         String bookingId = createBooking.jsonPath().getString("bookingid");
         Response getBooking = bookingApis.getBooking(bookingId);
-        Assert.assertEquals(ApiActions.getResponseJsonValue(getBooking, "firstname"), firstName);
-        Assert.assertEquals(ApiActions.getResponseJsonValue(getBooking, "lastname"), lastName);
-        Assert.assertEquals(ApiActions.getResponseJsonValue(getBooking, "bookingdates.checkin"), checkIn);
-        Assert.assertEquals(ApiActions.getResponseJsonValue(getBooking, "bookingdates.checkout"), checkOut);
-        Assert.assertEquals(ApiActions.getResponseJsonValue(getBooking, "additionalneeds"), additionalNeeds);
+        Assert.assertEquals(RestApiActions.getResponseJsonValue(getBooking, "firstname"), firstName);
+        Assert.assertEquals(RestApiActions.getResponseJsonValue(getBooking, "lastname"), lastName);
+        Assert.assertEquals(RestApiActions.getResponseJsonValue(getBooking, "bookingdates.checkin"), checkIn);
+        Assert.assertEquals(RestApiActions.getResponseJsonValue(getBooking, "bookingdates.checkout"), checkOut);
+        Assert.assertEquals(RestApiActions.getResponseJsonValue(getBooking, "additionalneeds"), additionalNeeds);
 
     }
 
     @Test(dependsOnMethods = "createBooking")
     public void deleteBooking() {
         Response bookingIds = bookingApis.getBookingIds("ismail", "elshafeiy");
-        String firstBookingId = ApiActions.getResponseJsonValue(bookingIds, "bookingid[0]");
+        String firstBookingId = RestApiActions.getResponseJsonValue(bookingIds, "bookingid[0]");
         Response deleteBooking = bookingApis.deleteBooking(firstBookingId);
-        assertEquals(ApiActions.getResponseBody(deleteBooking), "Created");
+        assertEquals(RestApiActions.getResponseBody(deleteBooking), "Created");
     }
 
 

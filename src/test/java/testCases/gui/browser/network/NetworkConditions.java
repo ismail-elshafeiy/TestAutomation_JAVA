@@ -1,4 +1,4 @@
-package testCases.gui.network;
+package testCases.gui.browser.network;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -41,7 +41,7 @@ public class NetworkConditions {
 
     @Test
     public void doNotEnableRexJonesII() {
-        driver.get("https://RexJones2.com");
+        driver.get("https://linkedin.com");
         System.out.println("Do Not Enable Network: " + driver.getTitle());
     }
 }

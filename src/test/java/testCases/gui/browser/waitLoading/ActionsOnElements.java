@@ -1,4 +1,4 @@
-package SeleniumActions_tests;
+package testCases.gui.browser.waitLoading;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

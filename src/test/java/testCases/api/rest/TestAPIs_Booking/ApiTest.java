@@ -1,4 +1,4 @@
-package TestAPIs_Booking;
+package testCases.api.rest.TestAPIs_Booking;
 
 import static org.hamcrest.Matchers.equalTo;
 import io.restassured.RestAssured;

@@ -1,11 +1,28 @@
-package SeleniumActions_tests;
+package testCases.gui.keys;
 
 import io.qameta.allure.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utilities.broswer.BrowserActions;
+import utilities.broswer.BrowserFactory;
 
-public class ActionsClass_KeyboardEvents extends TestBase {
+public class ActionsClass_KeyboardEvents {
+
+    private WebDriver driver;
+
+    @BeforeMethod
+    public void setUp_BeforeMethod() {
+        driver = BrowserFactory.getBrowser();
+    }
+
+    @AfterMethod
+    public void closeBrowser() {
+        BrowserActions.closeAllOpenedBrowserWindows(driver);
+    }
 
 
     /*
@@ -16,12 +33,13 @@ public class ActionsClass_KeyboardEvents extends TestBase {
      *
      */
     Actions actions;
+
     @Test
     @Severity(SeverityLevel.CRITICAL)
     @Description("Performing KeyBoard actions Test Case")
     @Epic("Selenium Actions on Elements")
     @Story("Action Class")
-    void SendingKeysAndCLick(){
+    void SendingKeysAndCLick() {
         driver.get("https://the-internet.herokuapp.com/login");
         actions = new Actions(driver);
         // send value to textbox using sendKeys of actions class

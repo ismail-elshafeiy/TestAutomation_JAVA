@@ -1,8 +1,9 @@
-package utils;
+package utilities.broswer;
 
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 
+// TODO Refactor this class to use the WebDriverEventListener, Logger and ExtentReport class
 public class CookieManager {
 
     private WebDriver driver;

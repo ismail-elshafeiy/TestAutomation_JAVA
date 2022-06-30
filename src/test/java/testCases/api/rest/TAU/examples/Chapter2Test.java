@@ -1,4 +1,4 @@
-package examples;
+package testCases.api.rest.TAU.examples;
 
 import io.restassured.http.ContentType;
 import org.junit.Test;

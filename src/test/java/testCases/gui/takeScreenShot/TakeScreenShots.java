@@ -19,10 +19,7 @@ import java.io.IOException;
 
 // TODO refactor Code
 public class TakeScreenShots {
-
     private WebDriver driver;
-
-
     @BeforeMethod
     public void setUp_BeforeMethod() {
         WebDriverManager.firefoxdriver().setup();
@@ -34,7 +31,7 @@ public class TakeScreenShots {
     String filePath = System.getProperty("user.dir") + "/src/test/resources/TestsScreenshots/";
 
     @Test
-    public void takeWebElementScreenshot() throws IOException {
+    public void takeWebElement_Screenshot() throws IOException {
         WebElement nextGenerationPlatform = driver.findElement(By.cssSelector("#post-8 h1"));
         File source = nextGenerationPlatform.getScreenshotAs(OutputType.FILE);
         File destination = new File(filePath + "Next Generation Platform.png");
@@ -42,7 +39,7 @@ public class TakeScreenShots {
     }
 
     @Test
-    public void takeWebElementPageSectionScreenshot() throws IOException {
+    public void takeWebElementPageSection_Screenshot() throws IOException {
         WebElement applitoolsPageSection = driver.findElement(By.cssSelector("#post-8>header"));
         File source = applitoolsPageSection.getScreenshotAs(OutputType.FILE);
         FileUtils.copyFile(source, new File(filePath + "Applitools Page Section.png"));
@@ -50,7 +47,7 @@ public class TakeScreenShots {
     }
 
     @Test
-    public void takeFullPageScreenshot() throws IOException {
+    public void takeFullPage_Screenshot() throws IOException {
         File source = ((FirefoxDriver) driver).getFullPageScreenshotAs(OutputType.FILE);
         FileHandler.copy(source, new File(filePath + "Applitools Full Page Screenshot.png"));
     }

@@ -3,7 +3,7 @@ package api.rest.travels;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.json.simple.JSONObject;
-import utilities.actions.ApiActions;
+import utilities.actions.RestApiActions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,11 +11,11 @@ import java.util.Map;
 public class BookingApis {
 
 
-    private ApiActions apiObject;
+    private RestApiActions apiObject;
     private String token;
     private String booking_serviceName = "booking";
 
-    public BookingApis(ApiActions apiObject, String token) {
+    public BookingApis(RestApiActions apiObject, String token) {
         this.apiObject = apiObject;
         this.token = token;
     }
@@ -29,7 +29,7 @@ public class BookingApis {
                                   String checkOut,
                                   String additionalNeeds) {
 
-        return apiObject.performRequest(ApiActions.RequestType.POST,
+        return apiObject.performRequest(RestApiActions.RequestType.POST,
                 booking_serviceName,
                 RestApiBase.StatusCode.SUCCESS.getCode(),
                 null,
@@ -42,7 +42,7 @@ public class BookingApis {
 
     public Response getBooking(String bookingId) {
 
-        return apiObject.performRequest(ApiActions.RequestType.GET,
+        return apiObject.performRequest(RestApiActions.RequestType.GET,
                 booking_serviceName + "/" + bookingId,
                 RestApiBase.StatusCode.SUCCESS.getCode(),
                 null,
@@ -55,7 +55,7 @@ public class BookingApis {
 
     public Response getBookingIds(String firstName, String lastName) {
 
-        return apiObject.performRequest(ApiActions.RequestType.GET,
+        return apiObject.performRequest(RestApiActions.RequestType.GET,
                 booking_serviceName + "?firstname=" + firstName + "&lastname=" + lastName,
                 RestApiBase.StatusCode.SUCCESS.getCode(),
                 null,
@@ -70,7 +70,7 @@ public class BookingApis {
         Map<String, Object> headers = new HashMap<>();
         headers.put("Cookie", "token= " + token);
 
-        return apiObject.performRequest(ApiActions.RequestType.DELETE,
+        return apiObject.performRequest(RestApiActions.RequestType.DELETE,
                 booking_serviceName + "/" + bookingId,
                 RestApiBase.StatusCode.SUCCESS_DELETE.getCode(),
                 headers,

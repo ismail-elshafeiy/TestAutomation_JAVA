@@ -1,15 +1,16 @@
-package examples;
+package testCases.api.rest.TAU.examples;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import dataentities.Location;
+
 import io.restassured.http.ContentType;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+import testCases.api.rest.TAU.dataentities.Location;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasSize;
+
 
 public class Chapter6Test {
 

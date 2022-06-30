@@ -7,7 +7,7 @@ import io.restassured.specification.RequestSpecification;
 import org.json.simple.JSONObject;
 
 
-public class GraphqlActions {
+public class GraphQlApiActions {
 
     // Variables
     private static JSONObject jsonObject = new JSONObject();
@@ -22,11 +22,11 @@ public class GraphqlActions {
      * @return Graphql Response
      */
     public static Response performGraphqlRequest(String query) {
-        GraphqlActions.setQuery(query);
-        GraphqlActions.apiRequestHelper();
-        String requestBody = GraphqlActions.getRequestBody();
+        GraphQlApiActions.setQuery(query);
+        GraphQlApiActions.apiRequestHelper();
+        String requestBody = GraphQlApiActions.getRequestBody();
         requestSpec.body(requestBody);
-        return GraphqlActions.apiResponseHelper();
+        return GraphQlApiActions.apiResponseHelper();
     }
 
     /**
@@ -36,12 +36,12 @@ public class GraphqlActions {
      * @return Graphql Response
      */
     public static Response performGraphqlRequest(String query, String variables) {
-        GraphqlActions.setQuery(query);
-        GraphqlActions.setVariables(variables);
-        GraphqlActions.apiRequestHelper();
-        String requestBody = GraphqlActions.getRequestBody();
+        GraphQlApiActions.setQuery(query);
+        GraphQlApiActions.setVariables(variables);
+        GraphQlApiActions.apiRequestHelper();
+        String requestBody = GraphQlApiActions.getRequestBody();
         requestSpec.body(requestBody);
-        return GraphqlActions.apiResponseHelper();
+        return GraphQlApiActions.apiResponseHelper();
     }
 
     /**
@@ -52,13 +52,13 @@ public class GraphqlActions {
      * @return Graphql Response
      */
     public static Response performGraphqlRequest(String query, String variables, String fragments) {
-        GraphqlActions.setQuery(query);
-        GraphqlActions.setVariables(variables);
-        GraphqlActions.setFragments(fragments);
-        GraphqlActions.apiRequestHelper();
-        String requestBody = GraphqlActions.getRequestBody();
+        GraphQlApiActions.setQuery(query);
+        GraphQlApiActions.setVariables(variables);
+        GraphQlApiActions.setFragments(fragments);
+        GraphQlApiActions.apiRequestHelper();
+        String requestBody = GraphQlApiActions.getRequestBody();
         requestSpec.body(requestBody);
-        return GraphqlActions.apiResponseHelper();
+        return GraphQlApiActions.apiResponseHelper();
     }
 
     public static void assertGraphqlResponse(Response response, String jsonPath, String expectedResponse) {

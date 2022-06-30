@@ -1,13 +1,33 @@
-package SeleniumActions_tests;
+package testCases.gui.browser;
+
 
 import io.qameta.allure.*;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utilities.broswer.BrowserActions;
+import utilities.broswer.BrowserFactory;
 
-public class JQueryMenus extends TestBase {
+import static org.apache.poi.sl.draw.geom.GuideIf.Op.min;
+
+public class JQueryMenus {
+    private WebDriver driver;
+
+    @BeforeMethod
+    public void setUp_BeforeMethod() {
+        driver = BrowserFactory.getBrowser();
+    }
+
+    @AfterMethod
+    public void closeBrowser() {
+        BrowserActions.closeAllOpenedBrowserWindows(driver);
+    }
+
     Actions actions;
     WebDriverWait wait;
 
@@ -33,7 +53,7 @@ public class JQueryMenus extends TestBase {
          */
         driver.get("https://the-internet.herokuapp.com/jqueryui/menu");
         actions = new Actions(driver);
-        wait = new WebDriverWait(driver, 5);
+//        wait = new WebDriverWait(driver, 10);
         // move the mouse cursor to Enabled
         actions.moveToElement(driver.findElement(By.xpath("//a[contains(text(),'Enabled')]"))).perform();
         // waits for 5 seconds until the next JQuery menu appears and move the cursor to Downloads

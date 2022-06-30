@@ -1,4 +1,4 @@
-package dataentities;
+package testCases.api.rest.TAU.dataentities;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -11,15 +11,15 @@ public class Location {
     private String postCode;
     private String country;
     private String countryAbbreviation;
-    private List<Place> places;
+    private List<dataentities.Place> places;
 
     public Location() {
         this.postCode = "1050";
         this.country = "Latvia";
         this.countryAbbreviation = "LV";
 
-        Place place = new Place();
-        List<Place> places = new ArrayList<>();
+        dataentities.Place place = new dataentities.Place();
+        List<dataentities.Place> places = new ArrayList<>();
         places.add(place);
 
         this.places = places;
@@ -53,11 +53,11 @@ public class Location {
         this.countryAbbreviation = countryAbbreviation;
     }
 
-    public List<Place> getPlaces() {
+    public List<dataentities.Place> getPlaces() {
         return places;
     }
 
-    public void setPlaces(List<Place> places) {
+    public void setPlaces(List<dataentities.Place> places) {
         this.places = places;
     }
 }

@@ -11,7 +11,7 @@ public class Place {
     private String stateAbbreviation;
     private String latitude;
 
-    Place() {
+    public Place() {
         this.placeName = "Riga";
         this.longitude = "1";
         this.state = "Riga";

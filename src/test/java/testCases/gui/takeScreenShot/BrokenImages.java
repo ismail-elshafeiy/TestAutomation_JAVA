@@ -20,7 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-public class test_brokenimages {
+public class BrokenImages {
     /*  protected static ChromeDriver driver; */
     WebDriver driver = null;
     String URL = "https://the-internet.herokuapp.com/broken_images";

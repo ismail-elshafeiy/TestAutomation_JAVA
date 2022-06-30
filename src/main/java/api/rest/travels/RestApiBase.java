@@ -5,10 +5,10 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.json.simple.JSONObject;
 import utilities.PropertiesReader;
-import utilities.actions.ApiActions;
+import utilities.actions.RestApiActions;
 
 public class RestApiBase {
-    private ApiActions apiObject;
+    private RestApiActions apiObject;
     public static final String BASE_URL = PropertiesReader.getProperty(
             "project.properties", "rest.baseUrl");
 
@@ -42,7 +42,7 @@ public class RestApiBase {
     // services names
     private String auth_serviceName = "auth";
 
-    public RestApiBase(ApiActions apiObject) {
+    public RestApiBase(RestApiActions apiObject) {
         this.apiObject = apiObject;
     }
     //  Requests
@@ -53,7 +53,7 @@ public class RestApiBase {
         authentication.put("username", username);
         authentication.put("password", password);
         Response response = apiObject.performRequest(
-                ApiActions.RequestType.POST,
+                RestApiActions.RequestType.POST,
                 auth_serviceName,
                 StatusCode.SUCCESS.getCode(),
                 null,
@@ -63,7 +63,7 @@ public class RestApiBase {
                 authentication,
                 null);
 
-        return ApiActions.getResponseJsonValue(response, "token");
+        return RestApiActions.getResponseJsonValue(response, "token");
 
     }
 

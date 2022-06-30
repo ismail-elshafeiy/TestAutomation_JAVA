@@ -24,7 +24,7 @@ import java.util.Map;
 import static org.testng.Assert.fail;
 
 
-public class ApiActions {
+public class RestApiActions {
     private RequestSpecification request;
     private Response response;
     private QueryableRequestSpecification queryableRequestSpecs;
@@ -50,7 +50,7 @@ public class ApiActions {
     // Status Code
 
     // Constructor to initialize the base URL
-    public ApiActions(String baseUrl) {
+    public RestApiActions(String baseUrl) {
         this.baseUrl = baseUrl;
         sessionFilter = new SessionFilter();
         cookieFilter = new CookieFilter();

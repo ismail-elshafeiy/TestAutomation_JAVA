@@ -1,4 +1,4 @@
-package testCases.gui.navigations;
+package testCases.gui.browser.navigations;
 
 import gui.pages.navigations.NavigationPages;
 import org.openqa.selenium.By;

@@ -1,4 +1,4 @@
-package examples;
+package testCases.api.rest.TAU.examples;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Rule;

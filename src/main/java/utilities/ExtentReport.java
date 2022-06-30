@@ -14,20 +14,20 @@ public class ExtentReport {
 
     public static void initReports() {
 	report = new ExtentReports();
-	ExtentSparkReporter spark = new ExtentSparkReporter("ExtentReports.html");
+	ExtentSparkReporter spark = new ExtentSparkReporter("ExtentReport/ExtentReports.html");
 	report.attachReporter(spark);
 	spark.config().setTheme(Theme.STANDARD);
 	spark.config().setDocumentTitle("Extent Report");
-	spark.config().setReportName("Practice-Test Automation-Extent Report");
+	spark.config().setReportName("Test Automation-Extent Report");
 
     }
 
-    public static void createTest(String testcasename) {
-	test = report.createTest(testcasename);
+    public static void createTest(String testCaseName) {
+	test = report.createTest(testCaseName);
     }
 
-    public static void removeTest(String testcasename) {
-	report.removeTest(testcasename);
+    public static void removeTest(String testCaseName) {
+	report.removeTest(testCaseName);
     }
 
     public static void info(String message) {

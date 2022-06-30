@@ -1,8 +1,7 @@
 package api.graphQL;
 
 import io.restassured.response.Response;
-import org.testng.annotations.Test;
-import utilities.actions.GraphqlActions;
+import utilities.actions.GraphQlApiActions;
 
 public class GraphQlApiObject {
 //    public static final String BASE_URI = "https://api.spacex.land/graphql/";
@@ -12,7 +11,7 @@ public class GraphQlApiObject {
      * @return past launches response
      */
     public Response getPastLaunches() {
-        return GraphqlActions.performGraphqlRequest(Resolvers.LAUNCHPAST_QUERY);
+        return GraphQlApiActions.performGraphqlRequest(Resolvers.LAUNCHPAST_QUERY);
     }
 
 
