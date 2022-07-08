@@ -30,14 +30,15 @@ public class BookingTestApi {
                 additionalNeeds = "additional needs - 12345";
         int totalPrice = 100;
         boolean depositPaid = true;
-        Response createBooking = bookingApis.createBooking(
-                firstName,
-                lastName,
-                totalPrice,
-                depositPaid,
-                checkIn,
-                checkOut,
-                additionalNeeds);
+        Response createBooking = bookingApis
+                .createBooking(
+                        firstName,
+                        lastName,
+                        totalPrice,
+                        depositPaid,
+                        checkIn,
+                        checkOut,
+                        additionalNeeds);
         String bookingId = createBooking.jsonPath().getString("bookingid");
         Response getBooking = bookingApis.getBooking(bookingId);
         Assert.assertEquals(RestApiActions.getResponseJsonValue(getBooking, "firstname"), firstName);

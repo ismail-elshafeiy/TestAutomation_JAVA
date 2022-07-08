@@ -7,7 +7,7 @@ import io.restassured.specification.RequestSpecification;
 import org.json.simple.JSONObject;
 
 
-public class GraphQlApiActions {
+public class GraphQlActions {
 
     // Variables
     private static JSONObject jsonObject = new JSONObject();
@@ -21,47 +21,47 @@ public class GraphQlApiActions {
      * @param query or mutation
      * @return Graphql Response
      */
-    public static Response performGraphqlRequest(String query) {
-        GraphQlApiActions.setQuery(query);
-        GraphQlApiActions.apiRequestHelper();
-        String requestBody = GraphQlApiActions.getRequestBody();
+    public static Response sendGraphQlRequest(String query) {
+        GraphQlActions.setQuery(query);
+        GraphQlActions.apiRequestHelper();
+        String requestBody = GraphQlActions.getRequestBody();
         requestSpec.body(requestBody);
-        return GraphQlApiActions.apiResponseHelper();
+        return GraphQlActions.apiResponseHelper();
     }
 
     /**
-     * Send Graphql Request Using "Query or Mutation" only
+     * Send GraphQl Request Using "Query or Mutation" only
      *
      * @param query or mutation
-     * @return Graphql Response
+     * @return GraphQl Response
      */
-    public static Response performGraphqlRequest(String query, String variables) {
-        GraphQlApiActions.setQuery(query);
-        GraphQlApiActions.setVariables(variables);
-        GraphQlApiActions.apiRequestHelper();
-        String requestBody = GraphQlApiActions.getRequestBody();
+    public static Response sendGraphQlRequest(String query, String variables) {
+        GraphQlActions.setQuery(query);
+        GraphQlActions.setVariables(variables);
+        GraphQlActions.apiRequestHelper();
+        String requestBody = GraphQlActions.getRequestBody();
         requestSpec.body(requestBody);
-        return GraphQlApiActions.apiResponseHelper();
+        return GraphQlActions.apiResponseHelper();
     }
 
     /**
-     * Send Graphql Request Using "Query or Mutation" and Variables
+     * Send GraphQl Request Using "Query or Mutation" and Variables
      *
      * @param query     or mutation
      * @param variables
-     * @return Graphql Response
+     * @return GraphQl Response
      */
-    public static Response performGraphqlRequest(String query, String variables, String fragments) {
-        GraphQlApiActions.setQuery(query);
-        GraphQlApiActions.setVariables(variables);
-        GraphQlApiActions.setFragments(fragments);
-        GraphQlApiActions.apiRequestHelper();
-        String requestBody = GraphQlApiActions.getRequestBody();
+    public static Response sendGraphQlRequest(String query, String variables, String fragments) {
+        GraphQlActions.setQuery(query);
+        GraphQlActions.setVariables(variables);
+        GraphQlActions.setFragments(fragments);
+        GraphQlActions.apiRequestHelper();
+        String requestBody = GraphQlActions.getRequestBody();
         requestSpec.body(requestBody);
-        return GraphQlApiActions.apiResponseHelper();
+        return GraphQlActions.apiResponseHelper();
     }
 
-    public static void assertGraphqlResponse(Response response, String jsonPath, String expectedResponse) {
+    public static void assertGraphQlResponse(Response response, String jsonPath, String expectedResponse) {
         response.then().statusCode(200).log().body();
         System.out.println("Assert that : [" + jsonPath + "] is equal to : [" + expectedResponse + "]");
         response.then().body(jsonPath, equalTo(expectedResponse));
@@ -80,7 +80,7 @@ public class GraphQlApiActions {
             return code;
         }
     }
-
+  //TODO : Add method for getAPIDriver(baseClass.BASE_URI);
     private static void setQuery(String query) {
         jsonObject.put("query", query);
     }

@@ -1,4 +1,4 @@
-package SeleniumActions_tests;
+package testCases.gui.reports;
 
 public class AllureReport {
 
