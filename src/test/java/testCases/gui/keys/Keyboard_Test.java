@@ -18,7 +18,7 @@ public class Keyboard_Test {
     @BeforeMethod
     public void setUp_BeforeMethod() {
         driver = BrowserFactory.getBrowser();
-        new HomePage(driver).navigateTo_yourHomePage("https://the-internet.herokuapp.com/key_presses");
+        new HomePage(driver).navigateTo_homePage("https://the-internet.herokuapp.com/key_presses");
     }
 
     @AfterMethod(enabled = false)

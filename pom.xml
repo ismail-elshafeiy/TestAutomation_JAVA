@@ -16,6 +16,7 @@
         <selenium.version>4.3.0</selenium.version>
         <appium-java-client.version>8.1.1</appium-java-client.version>
         <webdrivermanager.version>5.2.0</webdrivermanager.version>
+        <playwright.version>1.22.0</playwright.version>
         <testng.version>7.6.1</testng.version>
         <rest-assured.version>5.1.1</rest-assured.version>
         <poi-ooxml.version>5.2.2</poi-ooxml.version>
@@ -36,6 +37,7 @@
         <junit.version>4.13.2</junit.version>
         <junit.dataprovider.version>2.9</junit.dataprovider.version>
         <jackson.databind.version>2.9.8</jackson.databind.version>
+        <video-recorder-testng.version>2.0</video-recorder-testng.version>
     </properties>
 
     <dependencies>
@@ -248,7 +250,22 @@
             <version>${wiremock.version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.automation-remarks/video-recorder -->
+        <dependency>
+            <groupId>com.automation-remarks</groupId>
+            <artifactId>video-recorder</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.playwright</groupId>
+            <artifactId>playwright</artifactId>
+            <version>${playwright.version}</version>
+        </dependency>
 
     </dependencies>
 

@@ -27,7 +27,7 @@ public class DragAndDrop_Test {
 
     @Test
     public void DragDrop() {
-        new HomePage(driver).navigateTo_yourHomePage("https://jqueryui.com/resources/demos/droppable/default.html");
+        new HomePage(driver).navigateTo_homePage("https://jqueryui.com/resources/demos/droppable/default.html");
         WebElement source = driver.findElement(By.id("draggable"));
         WebElement target = driver.findElement(By.id("droppable"));
 

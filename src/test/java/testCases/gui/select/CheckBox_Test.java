@@ -54,7 +54,7 @@ public class CheckBox_Test {
 
     @Test
     public void checkBoxesTest() {
-        new HomePage(driver).navigateTo_yourHomePage("https://the-internet.herokuapp.com/checkboxes");
+        new HomePage(driver).navigateTo_homePage("https://the-internet.herokuapp.com/checkboxes");
         WebElement cb = driver.findElement(By.xpath("//input[@type = 'checkbox'][1]"));
         cb.click();
 

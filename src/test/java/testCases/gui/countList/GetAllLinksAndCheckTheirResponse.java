@@ -1,11 +1,12 @@
 package testCases.gui.countList;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import gui.pages.homePage.HomePage;
+import org.openqa.selenium.*;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utilities.Helper;
+import utilities.actions.ElementActions;
 import utilities.broswer.BrowserActions;
 import utilities.broswer.BrowserFactory;
 
@@ -14,7 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-public class GetAllLinksAndCheckTheirResponse  {
+public class GetAllLinksAndCheckTheirResponse {
 
     private WebDriver driver;
 
@@ -42,7 +43,7 @@ public class GetAllLinksAndCheckTheirResponse  {
         // prints out the number of the links in our web page
         System.out.println(links.size());
         for (
-                WebElement link : links) {
+                WebElement link : links ) {
             // prints out the link text of each link in our web page
             System.out.println("The link text is : " + link.getText());
             // prints out the href attribute of each link in our web page
@@ -51,21 +52,28 @@ public class GetAllLinksAndCheckTheirResponse  {
             VerifyLink(url);
         }
     }
+
+    JavascriptExecutor js;
+    By footer = By.cssSelector("div.footer");
+
     @Test
-    void returnAllLinksaAndTheirResponse() {
-        driver.get("https://homzmart.com/en/products/12#1");
-        // findElements returns list of web elements of the tag a
-        List<WebElement> links = driver.findElements(By.xpath("//span[contains(@class,'sale')][contains(.,'- 40 %')]"));
-        // prints out the number of the links in our web page
-        System.out.println(links.size());
-        for (
-                WebElement link : links) {
-            // prints out the link text of each link in our web page
-            System.out.println("The link text is : " + link.getText());
-            // prints out the href attribute of each link in our web page
-            System.out.println("The link href value and its response code are below : ");
-            String url = link.getAttribute("href");
-            VerifyLink(url);
+    public void checkTheFooterLinks() {
+        new HomePage(driver).navigateTo_homePage("https://the-internet.herokuapp.com/");
+        js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView();", footer);
+        getFooterLinks();
+        ElementActions.click(driver, By.xpath("//a[contains(text(),'Privacy notice')]"));
+        ElementActions.click(driver, By.xpath("//a[contains(text(),'About us')]"));
+        ElementActions.click(driver, By.xpath("//a[contains(text(),'Contact us')]"));
+        ElementActions.click(driver, By.xpath("//a[contains(text(),'Conditions of Use')]"));
+        driver.navigate().back();
+    }
+
+    public void getFooterLinks() {
+        List<WebElement> links = footer.findElements((SearchContext) By.tagName("a"));
+        System.out.println("The Number of The links is : " + links.size());
+        for ( WebElement Link : links ) {
+            System.out.println(Link.getAttribute("href"));
         }
     }
 
@@ -83,9 +91,9 @@ public class GetAllLinksAndCheckTheirResponse  {
             httpConn.setConnectTimeout(2000);
             httpConn.connect();
             // User getResponseCode() to get the response code
-            if (httpConn.getResponseCode() == 200) {
+            if ( httpConn.getResponseCode() == 200 ) {
                 System.out.println(urlLink + " - " + httpConn.getResponseMessage() + " - " + httpConn.getResponseCode());
-            } else if (httpConn.getResponseCode() == 404) {
+            } else if ( httpConn.getResponseCode() == 404 ) {
                 System.out.println(urlLink + " - " + httpConn.getResponseMessage() + " - " + httpConn.getResponseCode());
             } else {
                 System.out.println(urlLink + " - " + httpConn.getResponseMessage() + " - " + httpConn.getResponseCode());

@@ -18,7 +18,7 @@ public class Alerts_Tests {
     @BeforeMethod
     public void setUp_BeforeMethod() {
         driver = BrowserFactory.getBrowser();
-        new HomePage(driver).navigateTo_yourHomePage("https://the-internet.herokuapp.com/javascript_alerts");
+        new HomePage(driver).navigateTo_homePage("https://the-internet.herokuapp.com/javascript_alerts");
     }
 
     @AfterMethod(enabled = false)

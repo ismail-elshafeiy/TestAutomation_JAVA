@@ -29,7 +29,7 @@ public class FindElementByTagName {
 
     @Test
     public void Register() {
-        new HomePage(driver).navigateTo_yourHomePage("http://the-internet.herokuapp.com/tables");
+        new HomePage(driver).navigateTo_homePage("http://the-internet.herokuapp.com/tables");
         WebElement table = driver.findElement(By.id("table"));
         List<WebElement> rows = table.findElements(By.tagName("tr"));
         System.out.println(rows.size());

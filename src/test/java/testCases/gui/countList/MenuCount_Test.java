@@ -1,12 +1,17 @@
 package testCases.gui.countList;
 
 import gui.pages.homePage.HomePage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import utilities.broswer.BrowserActions;
 import utilities.broswer.BrowserFactory;
+
+import java.util.List;
 
 public class MenuCount_Test {
     private WebDriver driver;
@@ -49,6 +54,19 @@ public class MenuCount_Test {
 
     }
 
+    public void printLinkCount(){
+        System.setProperty("webdriver.chrome.driver", "resources/chromedriver");
+        driver = new ChromeDriver();
+        driver.get("https://the-internet.herokuapp.com/");
+        driver.findElement(By.linkText("Shifting Content")).click();
+        driver.findElement(By.linkText("Example 1: Menu Element")).click();
+
+
+        List<WebElement> menuItems = driver.findElements(By.tagName("li"));
+        System.out.println("Number of menu elements: " + menuItems.size());
+
+        driver.quit();
+    }
 
 
 

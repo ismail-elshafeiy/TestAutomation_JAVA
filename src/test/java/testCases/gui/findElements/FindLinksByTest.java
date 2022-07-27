@@ -14,7 +14,7 @@ public class FindLinksByTest {
     @BeforeMethod
     public void setUp_BeforeMethod() {
         driver = BrowserFactory.getBrowser();
-        new HomePage(driver).navigateTo_yourHomePage("http://the-internet.herokuapp.com/dropdown");
+        new HomePage(driver).navigateTo_homePage("http://the-internet.herokuapp.com/dropdown");
     }
 
     @AfterMethod

@@ -36,7 +36,7 @@ public class ContextClick_Test {
     @Test
    public void contextClick() {
         actions = new Actions(driver);
-        new HomePage(driver).navigateTo_yourHomePage("https://the-internet.herokuapp.com/context_menu");
+        new HomePage(driver).navigateTo_homePage("https://the-internet.herokuapp.com/context_menu");
         // perform context click ( right click ) on element
         actions.contextClick(driver.findElement(By.id("hot-spot")))
                 .perform();

@@ -25,7 +25,7 @@ public class TakeScreenShots {
         WebDriverManager.firefoxdriver().setup();
         driver = new FirefoxDriver(UploadFile_FireFoxOptions.firefoxOption());
 //        driver = BrowserFactory.getBrowser();
-        new HomePage(driver).navigateTo_yourHomePage("https://applitools.com/");
+        new HomePage(driver).navigateTo_homePage("https://applitools.com/");
     }
 
     String filePath = System.getProperty("user.dir") + "/src/test/resources/TestsScreenshots/";

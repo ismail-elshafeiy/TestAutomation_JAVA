@@ -1,8 +1,7 @@
 package testCases.gui.actionsWith_Picker;
 
-import gui.pages.homePage.HomePage;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.AfterMethod;
@@ -11,12 +10,7 @@ import org.testng.annotations.Test;
 import utilities.broswer.BrowserActions;
 import utilities.broswer.BrowserFactory;
 
-public class DatePicker {
-    /*
-     * to handle a Date Picker if it has a tag name as input we can send the date with the right format "mm/dd/yyyy"
-     * DatePicker.sendKeys("01/01/2021");
-     */
-
+public class SelectCalendarByJS {
     private WebDriver driver;
 
     @BeforeMethod
@@ -30,9 +24,15 @@ public class DatePicker {
     }
 
     @Test
-    public void countLinks_HomePage() {
-        new HomePage(driver).navigateTo_homePage("https://formy-project.herokuapp.com/datepicker");
-        WebElement DatePicker = driver.findElement(By.id("datepicker"));
-        DatePicker.sendKeys("18/12/2021", Keys.ENTER);
+    public void selectDateByJS() {
+        driver.get("http://spicejet.com/"); // enter URL
+        WebElement date = driver.findElement(By.xpath("//div[@class='css-76zvg2 css-bfa6kz r-homxoj r-ubezar']"));
+        String dateVal = "30-12-2017";
+        selectDateByJS(driver, date, dateVal);
+    }
+
+    public static void selectDateByJS(WebDriver driver, WebElement element, String dateVal) {
+        JavascriptExecutor js = ((JavascriptExecutor) driver);
+        js.executeScript("arguments[0].setAttribute('value','" + dateVal + "');", element);
     }
 }

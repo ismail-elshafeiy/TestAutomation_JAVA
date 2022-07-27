@@ -1,13 +1,16 @@
-package testCases.gui.frames;
+package testCases.gui.browser.frames;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utilities.Helper;
+import utilities.Logger;
 import utilities.broswer.BrowserActions;
 import utilities.broswer.BrowserFactory;
 
@@ -46,7 +49,7 @@ public class Frames_FindUsingIdOrName {
     }
 
     @Test
-    public void TextAreaInIFrame() {
+    public void TextAreaInIFrame() throws Throwable {
         driver.navigate().to("https://the-internet.herokuapp.com/iframe");
         // Switch to the Frame with id
         driver.switchTo().frame("mce_0_ifr");

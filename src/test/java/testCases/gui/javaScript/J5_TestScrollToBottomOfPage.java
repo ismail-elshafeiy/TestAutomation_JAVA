@@ -28,6 +28,21 @@ public class J5_TestScrollToBottomOfPage {
         Thread.sleep(3000);
         WebElement amazonLogo = driver.findElement(By.cssSelector("div.nav-logo-base.nav-sprite"));
         Assert.assertTrue(amazonLogo.isDisplayed());
+    }
+
+    public void scrollDown () {
+        // TODO Auto-generated method stub
+
+        //Scroll to a point
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0,1000)");
+
+        //Scroll to an Element
+        WebElement Element = driver.findElement(By.linkText("Linux"));
+        js.executeScript("arguments[0].scrollIntoView();", Element);
+
+        //Scroll to the end of the page
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
 
     }
 }

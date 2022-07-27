@@ -70,7 +70,7 @@ public class Dropdown_Test {
 
     @Test
     public void dropDownListTest() {
-        new HomePage(driver).navigateTo_yourHomePage("https://the-internet.herokuapp.com/dropdown");
+        new HomePage(driver).navigateTo_homePage("https://the-internet.herokuapp.com/dropdown");
 
         // get the dropdown as a select using it'select name attribute
         Select select = new Select(driver.findElement(By.id("dropdown")));

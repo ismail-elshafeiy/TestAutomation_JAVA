@@ -20,7 +20,7 @@ public class CheckAllBrokenImage {
     @BeforeMethod
     public void setUp_BeforeMethod() {
         driver = BrowserFactory.getBrowser();
-        new HomePage(driver).navigateTo_yourHomePage("http://the-internet.herokuapp.com/broken_images");
+        new HomePage(driver).navigateTo_homePage("http://the-internet.herokuapp.com/broken_images");
     }
 
 

@@ -34,7 +34,7 @@ public class Hover_Test {
     // TODO:  refactors method Code
     @Test
     public void hoverOf_element() {
-        new HomePage(driver).navigateTo_yourHomePage("https://the-internet.herokuapp.com/hovers");
+        new HomePage(driver).navigateTo_homePage("https://the-internet.herokuapp.com/hovers");
         new HoverPage(driver).hoverOverFigure(1);
         assertTrue(HoverPage.FigureCaption.isCaptionDisplayed(), "Caption not displayed");
         assertEquals(HoverPage.FigureCaption.getTitle(), "name: user1", "Caption title incorrect");
@@ -45,7 +45,7 @@ public class Hover_Test {
 
     @Test
     public void mouseHover() {
-        new HomePage(driver).navigateTo_yourHomePage("http://automationpractice.com/index.php");
+        new HomePage(driver).navigateTo_homePage("http://automationpractice.com/index.php");
         new HoverPage(driver)
                 .hoverOfElement();
 
@@ -68,7 +68,7 @@ public class Hover_Test {
     @Epic("Selenium Actions on Elements")
     @Story("Action Class")
     void hoverOverElement(){
-        new HomePage(driver).navigateTo_yourHomePage("https://the-internet.herokuapp.com/hovers");
+        new HomePage(driver).navigateTo_homePage("https://the-internet.herokuapp.com/hovers");
         actions = new Actions(driver);
         // Hover the mouse to an element by moving the mouse cursor to that element
         actions.moveToElement(driver.findElement(By.xpath("(//img[@alt='User Avatar'])[1]")))

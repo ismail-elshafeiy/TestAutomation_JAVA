@@ -36,7 +36,7 @@ public class ClickAndHold_Test {
     @Test
     public void ClickAndHold() {
         actions = new Actions(driver);
-        new HomePage(driver).navigateTo_yourHomePage("https://the-internet.herokuapp.com/horizontal_slider");
+        new HomePage(driver).navigateTo_homePage("https://the-internet.herokuapp.com/horizontal_slider");
         // clicks on a horizontal slider and hold it and then slide it to x = 10px and y = 0
         actions.clickAndHold(driver.findElement(By.xpath("//input[@type='range']")))
                 .moveByOffset(10, 0)

@@ -69,7 +69,7 @@ public class HomePage {
      * @param baseUrl
      * @return self reference
      */
-    public HomePage navigateTo_yourHomePage(String baseUrl) {
+    public HomePage navigateTo_homePage(String baseUrl) {
         BrowserActions.navigateToUrl(driver, baseUrl);
         return this;
     }
