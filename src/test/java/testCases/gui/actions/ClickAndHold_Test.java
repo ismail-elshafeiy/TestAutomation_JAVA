@@ -4,11 +4,14 @@ import gui.pages.homePage.HomePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import utilities.broswer.BrowserActions;
 import utilities.broswer.BrowserFactory;
+
+import java.io.IOException;
 
 public class ClickAndHold_Test {
     private WebDriver driver;
@@ -19,8 +22,8 @@ public class ClickAndHold_Test {
     }
 
     @AfterMethod
-    public void closeBrowser() {
-        BrowserActions.closeAllOpenedBrowserWindows(driver);
+    public void closeBrowser(ITestResult result) throws IOException {
+        BrowserActions.closeAllOpenedBrowserWindows(driver, result);
     }
 
     /*

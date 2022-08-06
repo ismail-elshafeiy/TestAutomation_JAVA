@@ -1,26 +1,28 @@
 package utilities.broswer;
 
 import io.qameta.allure.Step;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.ITestResult;
 import utilities.Helper;
 import utilities.Logger;
 import utilities.PropertiesReader;
+import utilities.RecordManager;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.testng.Assert.fail;
 
 public class BrowserActions {
     static WebDriver driver;
+    private static final Map<String, Map<String, WebDriver>> drivers = new HashMap<>();
 
-    public enum ConfirmAlertType {
-        ACCEPT, DISMISS;
-    }
 
-    public enum CookieBuilderType {
-        ADD, DELETE;
-    }
-
-    @Step("Navigate to URL: [{url}]")
+    @Step( "Navigate to URL: [{url}]" )
     public static void navigateToUrl(WebDriver driver, String url) {
         try {
             Logger.logStep("[Browser Action] Navigate to URL [" + url + "]");
@@ -32,10 +34,17 @@ public class BrowserActions {
         }
     }
 
-    @Step("Close All Opened Browser Windows.....")
-    public static void closeAllOpenedBrowserWindows(WebDriver driver) {
+    @Step( "Check the test result and Close All Opened Browser Windows....." )
+    public static void closeAllOpenedBrowserWindows(WebDriver driver, ITestResult result) throws IOException {
+        // checks if the TestResult is failure
+        if ( ITestResult.FAILURE == result.getStatus() ) {
+            Logger.attachScreenshotToAllureReport(driver);
+            Logger.attachScreenshotToExtentReport(driver);
+        }
+        // if (System.getProperty("videoParams_scope").equals("DriverSession")) {
+        RecordManager.attachVideoRecording();
         Logger.logStep("[Browser Action] Close all Opened Browser Windows");
-        if (driver != null) {
+        if ( driver != null ) {
             try {
                 driver.quit();
             } catch (WebDriverException rootCauseException) {
@@ -48,7 +57,30 @@ public class BrowserActions {
         }
     }
 
-        @Step("Maximize the Browser Window")
+    @Step( "Close All Opened Browser Windows....." )
+    public static void closeAllOpenedBrowserWindows(WebDriver driver) {
+        Logger.logStep("[Browser Action] Close all Opened Browser Windows");
+        if ( driver != null ) {
+            try {
+                driver.quit();
+            } catch (WebDriverException rootCauseException) {
+                Logger.logMessage(rootCauseException.getMessage());
+            } finally {
+                driver = null;
+            }
+        } else {
+            Logger.logMessage("Windows are already closed and the driver object is null.");
+        }
+    }
+
+    public static synchronized void closeDriver(int hashCode) {
+        if ( System.getProperty("videoParams_scope").trim().equals("DriverSession") ) {
+            RecordManager.attachVideoRecording();
+        }
+
+    }
+
+    @Step( "Maximize the Browser Window" )
     public static void maximizeWindow(WebDriver driver) {
         try {
             Logger.logStep("[Browser Action] Maximize the Browser Window");
@@ -57,7 +89,8 @@ public class BrowserActions {
             Logger.logMessage(e.getMessage());
         }
     }
-	@Step("Set the WindowResolution [{width}], [{height}]")
+
+    @Step( "Set the WindowResolution [{width}], [{height}]" )
     public static void setWindowResolution(WebDriver driver) {
         String width = PropertiesReader.getProperty("project.properties", "width");
         String height = PropertiesReader.getProperty("project.properties", "height");
@@ -70,25 +103,34 @@ public class BrowserActions {
         }
     }
 
+
+    public enum ConfirmAlertType {
+        ACCEPT, DISMISS;
+    }
+
     public static void confirmAlert(WebDriver driver, ConfirmAlertType confirmAlerType) {
-        Helper.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
+        Waits.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
         Alert alert = driver.switchTo().alert();
-        switch (confirmAlerType) {
+        switch ( confirmAlerType ) {
             case ACCEPT:
                 alert.accept();
                 break;
             case DISMISS:
-                Helper.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
+                Waits.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
                 alert.dismiss();
                 break;
         }
+    }
+
+    public enum CookieBuilderType {
+        ADD, DELETE;
     }
 
     public static void cookieBuilder(WebDriver driver, CookieBuilderType cookieBuilderType, String name, String value,
                                      String domain) {
         Cookie cookie = new Cookie.Builder(name, value).domain(domain).build();
 
-        switch (cookieBuilderType) {
+        switch ( cookieBuilderType ) {
             case ADD:
                 driver.manage().addCookie(cookie);
                 break;
@@ -96,6 +138,78 @@ public class BrowserActions {
                 driver.manage().deleteCookie(cookie);
                 break;
         }
+    }
+
+    public boolean isCookiePresent(Cookie cookie) {
+        return driver.manage().getCookieNamed(cookie.getName()) != null;
+    }
+
+    public Cookie buildCookie(String name, String value) {
+        Cookie cookie = new Cookie.Builder(name, value)
+                .domain("the-internet.herokuapp.com")
+                .build();
+        return cookie;
+    }
+
+    private static WebDriver.Navigation navigate;
+
+    public static void setNavigate(WebDriver.Navigation navigate) {
+        BrowserActions.navigate = navigate;
+    }
+
+    public static void goBack() {
+        try {
+            String currentPage1 = driver.getCurrentUrl();
+            Logger.logStep("[Browser Action] Navigate Back from" + currentPage1);
+            navigate.back();
+        } catch (Exception e) {
+            Logger.logStep(e.getMessage());
+            fail(e.getMessage());
+        }
+    }
+
+    public static void goForward() {
+        try {
+            navigate.forward();
+            String currentPage = driver.getCurrentUrl();
+            Logger.logStep("[Browser Action] Navigate Forward " + currentPage + "]");
+        } catch (Exception e) {
+            Logger.logStep(e.getMessage());
+            fail(e.getMessage());
+        }
+    }
+
+    public static void refreshPage() {
+        try {
+            String currentPage = driver.getCurrentUrl();
+            Logger.logStep("[Browser Action] refresh current page" + currentPage + "]");
+            navigate.refresh();
+        } catch (Exception e) {
+            Logger.logStep(e.getMessage());
+            fail(e.getMessage());
+        }
+        navigate.forward();
+
+    }
+
+    public void switchToTab(String tabTitle) {
+        var windows = driver.getWindowHandles();
+        Logger.logMessage("Number of tabs: " + windows.size());
+        System.out.println("Window handles:");
+        windows.forEach(System.out::println);
+        for ( String window : windows ) {
+            Logger.logStep("Switching to window: " + window);
+            driver.switchTo().window(window);
+            Logger.logMessage("Current window title: " + driver.getTitle());
+            if ( tabTitle.equals(driver.getTitle()) ) {
+                break;
+            }
+        }
+    }
+
+    public void switchToNewTab() {
+        var windows = driver.getWindowHandles();
+        windows.forEach(driver.switchTo()::window);
     }
 
 }

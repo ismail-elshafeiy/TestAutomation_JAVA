@@ -3,18 +3,20 @@ package testCases.gui.select;
 import gui.pages.select.CheckBoxPage;
 import gui.pages.homePage.HomePage;
 import io.qameta.allure.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.testng.Assert;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utilities.RecordManager;
 import utilities.broswer.BrowserActions;
 import utilities.broswer.BrowserFactory;
 import utilities.dataDriven.ExcelFileManager;
 
 import java.io.File;
+import java.io.IOException;
 
 public class CheckBox_Test {
     private WebDriver driver;
@@ -23,19 +25,19 @@ public class CheckBox_Test {
     @BeforeMethod
     public void setUp_BeforeMethod() {
         driver = BrowserFactory.getBrowser();
-        testDataFile = new ExcelFileManager(new File("src/test/resources/TestData/TestData.xlsx"));
-        testDataFile.switchToSheet("checkboxes");
+//        testDataFile = new ExcelFileManager(new File("src/test/resources/TestData/TestData.xlsx"));
+//        testDataFile.switchToSheet("checkboxes");
     }
 
     @AfterMethod
-    public void closeBrowser() {
-        BrowserActions.closeAllOpenedBrowserWindows(driver);
+    public void closeBrowser(ITestResult result) throws IOException {
+        BrowserActions.closeAllOpenedBrowserWindows(driver, result);
     }
 
     @Test
     public void checkbox1() {
-        String state = testDataFile.getCellData("state", 2);
-        int orderOfList = Integer.parseInt(testDataFile.getCellData("orderOfList", 2));
+        String state = "checkbox1";
+        int orderOfList = 1;
         new HomePage(driver).navigateTo_homePage()
                 .clickCheckBoxesPage()
                 .clickOn_CheckBox(state, orderOfList);
@@ -49,7 +51,7 @@ public class CheckBox_Test {
         new HomePage(driver).navigateTo_homePage()
                 .clickCheckBoxesPage()
                 .clickOn_CheckBox(state, orderOfList);
-        Assert.assertTrue(!driver.findElement(CheckBoxPage.checkBox(orderOfList)).isSelected());
+        Assert.assertTrue(! driver.findElement(CheckBoxPage.checkBox(orderOfList)).isSelected());
     }
 
     @Test
@@ -61,17 +63,17 @@ public class CheckBox_Test {
         WebElement cb2 = driver.findElement(By.xpath("//input[@type = 'checkbox'][2]"));
 //		cb2.click();
 
-        if (!(cb2.isSelected())) {
+        if ( ! (cb2.isSelected()) ) {
             cb2.click();
         }
 
     }
 
     @Test
-    @Severity(SeverityLevel.CRITICAL)
-    @Description("Handling Checkboxes Test Case")
-    @Epic("Selenium Actions on Elements")
-    @Story("CheckBox Tutorial")
+    @Severity( SeverityLevel.CRITICAL )
+    @Description( "Handling Checkboxes Test Case" )
+    @Epic( "Selenium Actions on Elements" )
+    @Story( "CheckBox Tutorial" )
     public void Checkboxes() {
         driver.get("https://the-internet.herokuapp.com/checkboxes");
 //        if the Checkboxes options are in a Select Tag we can use the select Class but if its a form we then cant
@@ -83,7 +85,7 @@ public class CheckBox_Test {
         WebElement checkbox2 = driver.findElement(By.xpath("//form[@id='checkboxes']/input[2]"));
         // Check if the checkbox 1 is not select if yes then click it
         // if the IF statement has only one statement we don't have to use {} we only use it when its more than one statement
-        if (!(checkbox1.isSelected())) checkbox1.click();
+        if ( ! (checkbox1.isSelected()) ) checkbox1.click();
         // returns True if the checkbox is selected and false if not
         System.out.println("Is the checkbox 1 selected? " + checkbox1.isSelected());
         // returns True if the checkbox is enabled and ready to be checked
@@ -91,8 +93,9 @@ public class CheckBox_Test {
         // returns True if the checkbox 2 is displayed
         System.out.println("Is the checkbox 2 displayed ? " + checkbox2.isDisplayed());
         // Check if the checkbox 2 is selected if yes then uncheck it
-        if (checkbox2.isSelected()) checkbox2.click();
+        if ( checkbox2.isSelected() ) checkbox2.click();
     }
+
 
 }
 

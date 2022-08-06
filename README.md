@@ -7,6 +7,25 @@
 * Extent Reports
 * Apachi POI
 
+```bash
+  ├── main
+  │   ├── gui.pages
+  │   ├── apis
+  │   ├── framework --> utilities
+  │   │   ├── actions
+  │   │   ├── browser    
+  │   └── resources
+  │       ├── configerations --> properties file
+  ├── test
+  │   ├── testcases 
+  │   │   ├── api
+  │   │   ├── gui
+  │   ├── resources
+  │   │   ├── testData 
+  ├── README.md
+  ├── pom.xml
+```
+
 ## Project Design:
 
 * Page Object Model (POM) design pattern
@@ -25,12 +44,19 @@
 
 * A properties file [project.properties](src/main/resources)  including all the configurations
 * Set the test Data from [TestData](src/test/resources/TestData)
-* Execute All testSuites using Command-line opening a command-line terminal on the project root path and
-  type `mvn clean test`
-* After executing,generate the ***Allure Report*** by opening a command-line terminal on the project root path and
-  type `mvn allure:serve`
-* Find the Extent Report [ExtentReports.html](ExtentReports.html) in the project root path for the latest execution and open by any browser
-* Rub Project by opening a command-line terminal on the project root path and type `mvn `
+* Execute All testSuites using Command-line opening a command-line terminal on the project root path and run:
+```bash
+  mvn clean test
+  ```
+* After executing,generate the ***Allure Report*** by opening a command-line terminal on the project root path and run:
+```bash
+ mvn allure:serve
+  ```
+```bash
+  mvn clean
+  ```
+* Find the Extent Report [ExtentReports.html](ExtentReports.html) in the project root path for the latest execution and
+  open by any browser
 
 
 

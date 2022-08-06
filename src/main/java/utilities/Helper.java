@@ -12,17 +12,6 @@ import java.util.Random;
 import static org.testng.Assert.fail;
 
 public class Helper {
-    private static final int TIMEOUT = Integer
-            .parseInt(PropertiesReader.getProperty("project.properties", "webdriver.wait"));
-
-
-    public static WebDriverWait getExplicitWait(WebDriver driver) {
-        return new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
-    }
-
-    public static void implicitWait(WebDriver driver) {
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TIMEOUT));
-    }
 
     public static String getCurrentTime(String dateFormat) {
         String currentTime = "";
@@ -34,7 +23,6 @@ public class Helper {
         }
         return currentTime;
     }
-
 
     public static String getCurrentTime() {
         return getCurrentTime("ddMMyyyyHHmmssSSS");
