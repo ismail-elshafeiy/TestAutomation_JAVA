@@ -41,7 +41,6 @@ public class ElementActions {
         // Mouse hover on the element before clicking
         mouseHover(driver, elementLocator);
         try {
-            // wait for the element to be clickable
             Waits.getExplicitWait(driver).until(ExpectedConditions.elementToBeClickable(elementLocator));
         } catch (TimeoutException toe) {
             Logger.logStep(toe.getMessage());
@@ -57,7 +56,6 @@ public class ElementActions {
             } else {
                 Logger.logStep("[Element Action] Click on element [" + elementLocator + "]");
             }
-            //Click on the element
             driver.findElement(elementLocator).click();
         } catch (Exception exception) {
             // Click using JavascriptExecutor in case of the click is not performed
@@ -176,6 +174,7 @@ public class ElementActions {
             fail(e.getMessage());
         }
     }
+
     public ElementActions doubleClick(By elementLocator) {
         doubleClick(driver, elementLocator);
         return this;

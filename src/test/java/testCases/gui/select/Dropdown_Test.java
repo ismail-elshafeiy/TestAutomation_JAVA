@@ -18,6 +18,7 @@ import utilities.actions.ElementActions;
 import utilities.dataDriven.ExcelFileManager;
 
 import java.io.File;
+import java.io.IOException;
 
 import static org.testng.Assert.*;
 
@@ -28,19 +29,18 @@ public class Dropdown_Test {
     @BeforeMethod
     public void setUp_BeforeMethod() {
         driver = BrowserFactory.getBrowser();
-        testDataFile = new ExcelFileManager(new File("src/test/resources/TestData/TestData.xlsx"));
-        testDataFile.switchToSheet("dropdown");
+//        testDataFile = new ExcelFileManager(new File("src/test/resources/TestData/TestData.xlsx"));
+//        testDataFile.switchToSheet("dropdown");
     }
 
-    @AfterMethod(enabled = false)
-    public void closeBrowser(ITestResult result) {
-        BrowserActions.closeAllOpenedBrowserWindows(driver);
+    @AfterMethod()
+    public void closeBrowser(ITestResult result) throws IOException {
+        BrowserActions.closeAllOpenedBrowserWindows(driver, result);
     }
-
 
     @Test
     public void testSelectOption() {
-        String option = "Option 1";
+        String option = "Options 1";
         var selectedOptions = new HomePage(driver).navigateTo_homePage()
                 .clickDropDown()
                 .selectFromDropDown(option)
@@ -50,22 +50,22 @@ public class Dropdown_Test {
     }
 
     @Test
-    public void selectOptionByValue (){
-        String option1 = testDataFile.getCellData("option",2);
+    public void selectOptionByValue() {
+        String option1 = testDataFile.getCellData("option", 2);
         String option1TextSelected = new HomePage(driver).navigateTo_homePage()
                 .clickDropDown()
                 .selectByValue(option1)
                 .getSelectOptionText("Option 1");
-        Assert.assertEquals(option1TextSelected,"Option 1");
+        Assert.assertEquals(option1TextSelected, "Option 1");
     }
 
     @Test
-    public void selectOptionByVisible (){
-        String option2 = testDataFile.getCellData("option",3);
+    public void selectOptionByVisible() {
+        String option2 = testDataFile.getCellData("option", 3);
         new HomePage(driver).navigateTo_homePage()
                 .clickDropDown()
                 .selectByVisible(option2);
-        Assert.assertEquals(ElementActions.getText(driver, DropdownPage.optionSelected("Option 2")),"Option 2");
+        Assert.assertEquals(ElementActions.getText(driver, DropdownPage.optionSelected("Option 2")), "Option 2");
     }
 
     @Test
@@ -97,10 +97,10 @@ public class Dropdown_Test {
 
 
     @Test
-    @Severity(SeverityLevel.CRITICAL)
-    @Description("Handling radio buttons Test Case")
-    @Epic("Selenium Actions on Elements")
-    @Story("Radio buttons Tutorial")
+    @Severity( SeverityLevel.CRITICAL )
+    @Description( "Handling radio buttons Test Case" )
+    @Epic( "Selenium Actions on Elements" )
+    @Story( "Radio buttons Tutorial" )
     void RadioButtons() {
         driver.get("https://formy-project.herokuapp.com/radiobutton");
         WebElement radioBtn1 = driver.findElement(By.id("radio-button-1"));

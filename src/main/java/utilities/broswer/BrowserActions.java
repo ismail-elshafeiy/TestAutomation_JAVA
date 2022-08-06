@@ -1,25 +1,20 @@
 package utilities.broswer;
 
 import io.qameta.allure.Step;
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.ITestResult;
-import utilities.Helper;
+
 import utilities.Logger;
 import utilities.PropertiesReader;
 import utilities.RecordManager;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+
 
 import static org.testng.Assert.fail;
 
 public class BrowserActions {
     static WebDriver driver;
-    private static final Map<String, Map<String, WebDriver>> drivers = new HashMap<>();
 
 
     @Step( "Navigate to URL: [{url}]" )
@@ -35,13 +30,15 @@ public class BrowserActions {
     }
 
     @Step( "Check the test result and Close All Opened Browser Windows....." )
-    public static void closeAllOpenedBrowserWindows(WebDriver driver, ITestResult result) throws IOException {
+    public static void closeAllOpenedBrowserWindows(WebDriver driver, ITestResult result) {
+//        if ( System.getProperty("videoParams_scope").trim().equals("DriverSession") ) {
+//            RecordManager.attachVideoRecording();
+//        }
         // checks if the TestResult is failure
         if ( ITestResult.FAILURE == result.getStatus() ) {
             Logger.attachScreenshotToAllureReport(driver);
             Logger.attachScreenshotToExtentReport(driver);
         }
-        // if (System.getProperty("videoParams_scope").equals("DriverSession")) {
         RecordManager.attachVideoRecording();
         Logger.logStep("[Browser Action] Close all Opened Browser Windows");
         if ( driver != null ) {

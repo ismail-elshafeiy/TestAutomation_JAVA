@@ -5,8 +5,6 @@ import com.aventstack.extentreports.model.Media;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
-import org.apache.commons.io.FileUtils;
-
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -21,7 +19,9 @@ import org.testng.Reporter;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.stream.Collectors;
 
 public class Logger {
     public static org.apache.logging.log4j.Logger log = LogManager.getLogger(Logger.class.getName());
@@ -29,57 +29,37 @@ public class Logger {
     static Logs logs;
     static LogEntries logEntries;
     static PrintWriter writer;
+    private static boolean debugMode = false;
 
-    @Step( "{message}" )
-    public static void logStep(String message) {
-//	String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS a").format(new Date());
-        System.out.println("<" + Helper.getCurrentTime("dd-MM-yyyy HH:mm:ss.SSS a") + "> " + message);
-        ExtentReport.info(message);
+    @Step( "{step}" )
+    public static void logStep(String step) {
+        System.out.println("<" + Helper.getCurrentTime("dd-MM-yyyy HH:mm:ss.SSS a") + "> " + step);
+        ExtentReport.info(step);
     }
 
     public static void logMessage(String message) {
-//	String timeStamp = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS a").format(new Date());
         System.out.println("<" + Helper.getCurrentTime("dd-MM-yyyy HH:mm:ss.SSS a") + "> " + message);
         ExtentReport.info(message);
     }
-    private static void createAttachment(String attachmentType, String attachmentName, InputStream attachmentContent) {
-        var baos = new ByteArrayOutputStream();
-        try {
-            attachmentContent.transferTo(baos);
-        } catch (IOException e) {
-            var error = "Error while creating Attachment";
-            slf4jLogger.info(error, e);
-            Reporter.log(error, false);
-        }
-        String attachmentDescription = attachmentType + " - ";
-//        String attachmentDescription = "Attachment: " + attachmentType + " - " + attachmentName;
-        attachBasedOnFileType(attachmentType, baos, attachmentDescription);
-//        logAttachmentAction(attachmentType, baos);
+
+    @Attachment( value = "API Request - {type}", type = "text/json" )
+    public static byte[] attachApiRequestToAllureReport(String type, byte[] b) {
+        return attachTextJson(b);
     }
 
-    public static void attach(String attachmentType, String attachmentName, InputStream attachmentContent) {
-        createAttachment(attachmentType, attachmentName, attachmentContent);
-    }
-
-    public static String getScreenshot(WebDriver driver, String screenshotName) throws IOException {
-        String currentTime = Helper.getCurrentTime("dd-MM-yyyy HH-mm-ss");
-        TakesScreenshot ts = (TakesScreenshot) driver;
-        File source = ts.getScreenshotAs(OutputType.FILE);
-        String destination = System.getProperty("user.dir") + "/src/test/resources/TestsScreenshots/TestFailed/" + screenshotName
-                + currentTime + ".png";
-        File finalDestination = new File(destination);
-        FileUtils.copyFile(source, finalDestination);
-        return destination;
-    }
-
-    @Attachment( value = "Full Page Screenshot", type = "image/png" )
-    public static byte[] attachScreenshotToAllureReport(WebDriver driver) {
-        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+    @Attachment( value = "API Response", type = "text/json" )
+    public static byte[] attachApiResponseToAllureReport(byte[] b) {
+        return attachTextJson(b);
     }
 
     public static Media attachScreenshotToExtentReport(WebDriver driver) {
         return MediaEntityBuilder.createScreenCaptureFromBase64String(
                 ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64), "Full Page Screenshot").build();
+    }
+
+    @Attachment( value = "Full Page Screenshot", type = "image/png" )
+    public static byte[] attachScreenshotToAllureReport(WebDriver driver) {
+        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
     }
 
     private static synchronized void attachBasedOnFileType(String attachmentType, ByteArrayOutputStream attachmentContent, String attachmentDescription) {
@@ -93,17 +73,8 @@ public class Logger {
         }
     }
 
-    @Attachment( value = "API Request - {type}", type = "text/json" )
-    public static byte[] attachApiRequestToAllureReport(String type, byte[] b) {
-        return attachTextJson(b);
-    }
 
-    @Attachment( value = "API Response", type = "text/json" )
-    public static byte[] attachApiResponseToAllureReport(byte[] b) {
-        return attachTextJson(b);
-    }
-
-//      @Attachment(type = "text/json")
+    //      @Attachment(type = "text/json")
     public static byte[] attachTextJson(byte[] b) {
         try {
             return b;
@@ -144,5 +115,35 @@ public class Logger {
     public static Boolean isCurrentTestPassed() {
         Reporter.getCurrentTestResult();
         return Reporter.getCurrentTestResult().isSuccess();
+    }
+
+    public static void attach(String attachmentType, String attachmentName, InputStream attachmentContent) {
+        createAttachment(attachmentType, attachmentName, attachmentContent);
+    }
+
+    private static void createAttachment(String attachmentType, String attachmentName, InputStream attachmentContent) {
+        var baos = new ByteArrayOutputStream();
+        try {
+            attachmentContent.transferTo(baos);
+        } catch (IOException e) {
+            var error = "Error while creating Attachment";
+            slf4jLogger.info(error, e);
+            Reporter.log(error, false);
+        }
+        String attachmentDescription = attachmentType + " - ";
+//        String attachmentDescription = "Attachment: " + attachmentType + " - " + attachmentName;
+        attachBasedOnFileType(attachmentType, baos, attachmentDescription);
+        logAttachmentAction(attachmentType, attachmentName, baos);
+    }
+
+    private static synchronized void logAttachmentAction(String attachmentType, String attachmentName, ByteArrayOutputStream attachmentContent) {
+        logStep("Successfully created attachment \"" + attachmentType + " - " + attachmentName + "\"");
+        String timestamp = Helper.getCurrentTime();
+        String theString;
+        var br = new BufferedReader(
+                new InputStreamReader(new ByteArrayInputStream(attachmentContent.toByteArray()), StandardCharsets.UTF_8));
+        theString = br.lines().collect(Collectors.joining(System.lineSeparator()));
+
+
     }
 }

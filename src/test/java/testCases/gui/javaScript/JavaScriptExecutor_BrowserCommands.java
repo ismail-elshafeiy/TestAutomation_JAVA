@@ -11,6 +11,8 @@ import org.testng.annotations.Test;
 import utilities.broswer.BrowserActions;
 import utilities.broswer.BrowserFactory;
 
+import java.io.IOException;
+
 public class JavaScriptExecutor_BrowserCommands  {
 	private WebDriver driver;
 
@@ -20,7 +22,7 @@ public class JavaScriptExecutor_BrowserCommands  {
 	}
 
 	@AfterMethod
-	public void closeBrowser() {
+	public void closeBrowser()  {
 		BrowserActions.closeAllOpenedBrowserWindows(driver);
 	}
 

@@ -11,10 +11,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.Reporter;
-import utilities.Helper;
 import utilities.Logger;
 import utilities.PropertiesReader;
-import utilities.RecordManager;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -87,7 +85,6 @@ public class BrowserFactory {
             if ( browserType == BrowserType.GOOGLE_CHROME
                     || (browserType == BrowserType.FROM_PROPERTIES && browserTypeProperty.equalsIgnoreCase("google chrome")) ) {
                 // start session recording
-                RecordManager.startVideoRecording();
                 WebDriverManager.chromedriver().setup();
                 driver.set(new ChromeDriver());
                 context.setAttribute("driver", driver.get());

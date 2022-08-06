@@ -22,8 +22,8 @@ public class ClickAndHold_Test {
     }
 
     @AfterMethod
-    public void closeBrowser(ITestResult result) throws IOException {
-        BrowserActions.closeAllOpenedBrowserWindows(driver, result);
+    public void closeBrowser() {
+        BrowserActions.closeAllOpenedBrowserWindows(driver);
     }
 
     /*
