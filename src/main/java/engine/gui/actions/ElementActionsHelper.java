@@ -1,4 +1,4 @@
-package engine.actions;
+package engine.gui.actions;
 
 import engine.broswer.Waits;
 import engine.tools.Logger;
@@ -16,8 +16,7 @@ public class ElementActionsHelper {
             // Wait for the element to be visible
             Waits.getExplicitWait(driver).until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
             // Scroll the element into view to handle some browsers cases
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(false);",
-                    driver.findElement(elementLocator));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(false);", driver.findElement(elementLocator));
             // Check if the element is displayed
             if ( ! driver.findElement(elementLocator).isDisplayed() ) {
                 Logger.logStep("The element [" + elementLocator.toString() + "] is not Displayed");
@@ -31,4 +30,5 @@ public class ElementActionsHelper {
             fail(e.getMessage());
         }
     }
+
 }

@@ -2,7 +2,7 @@ package com.practice.gui.pages.inputs;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import engine.actions.ElementActions;
+import engine.gui.actions.ElementActions;
 
 public class LoginPage {
 

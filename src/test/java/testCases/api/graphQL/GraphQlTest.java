@@ -4,7 +4,7 @@ import com.practice.api.graphQL.GraphQlApiObject;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import engine.api.GraphQlActions;
+import engine.api.actions.GraphQlActions;
 
 public class GraphQlTest {
     private GraphQlApiObject graphQlApiObject;

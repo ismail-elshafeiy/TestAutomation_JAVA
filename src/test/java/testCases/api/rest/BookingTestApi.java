@@ -6,7 +6,7 @@ import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import engine.api.RestApiActions;
+import engine.api.actions.RestApiActions;
 
 import static org.testng.Assert.assertEquals;
 

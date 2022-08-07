@@ -1,4 +1,4 @@
-package engine.api;
+package engine.api.actions;
 import static org.hamcrest.Matchers.equalTo;
 
 import io.restassured.RestAssured;

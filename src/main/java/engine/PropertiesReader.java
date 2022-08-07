@@ -1,7 +1,6 @@
 package engine;
 
 import engine.tools.Logger;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package com.practice.api.graphQL;
 
 import io.restassured.response.Response;
-import engine.api.GraphQlActions;
+import engine.api.actions.GraphQlActions;
 
 public class GraphQlApiObject {
     public static final String BASE_URI = "https://api.spacex.land/graphql/";

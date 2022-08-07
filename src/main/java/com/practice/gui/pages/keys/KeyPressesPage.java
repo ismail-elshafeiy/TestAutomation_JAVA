@@ -3,7 +3,7 @@ package com.practice.gui.pages.keys;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import engine.actions.ElementActions;
+import engine.gui.actions.ElementActions;
 
 public class KeyPressesPage {
 

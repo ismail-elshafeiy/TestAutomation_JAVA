@@ -13,71 +13,70 @@ public class ExtentReport {
     private static ExtentTest test;
 
     public static void initReports() {
-	report = new ExtentReports();
-	ExtentSparkReporter spark = new ExtentSparkReporter("ExtentReport/ExtentReports.html");
-	report.attachReporter(spark);
-	spark.config().setTheme(Theme.STANDARD);
-	spark.config().setDocumentTitle("Extent Report");
-	spark.config().setReportName("Test Automation-Extent Report");
-
+        report = new ExtentReports();
+        ExtentSparkReporter spark = new ExtentSparkReporter("ExtentReport/ExtentReports.html");
+        report.attachReporter(spark);
+        spark.config().setTheme(Theme.STANDARD);
+        spark.config().setDocumentTitle("Extent Report");
+        spark.config().setReportName("Test Automation-Extent Report");
     }
 
     public static void createTest(String testCaseName) {
-	test = report.createTest(testCaseName);
+        test = report.createTest(testCaseName);
     }
 
     public static void removeTest(String testCaseName) {
-	report.removeTest(testCaseName);
+        report.removeTest(testCaseName);
     }
 
     public static void info(String message) {
-	if (test != null) {
-	    test.info(message);
-	}
+        if ( test != null ) {
+            test.info(message);
+        }
     }
 
     public static void info(Markup m) {
-	test.info(m);
+        test.info(m);
     }
 
     public static void pass(String message) {
-	test.pass(message);
+        test.pass(message);
     }
 
     public static void pass(Markup m) {
-	test.pass(m);
+        test.pass(m);
     }
 
     public static void fail(String message) {
-	test.fail(message);
+        test.fail(message);
     }
 
     public static void fail(Markup m) {
-	test.fail(m);
+        test.fail(m);
     }
 
     public static void fail(Throwable t) {
-	test.fail(t);
+        test.fail(t);
     }
 
     public static void fail(Media media) {
-	test.fail(media);
+        test.fail(media);
     }
 
     public static void skip(String message) {
-	test.skip(message);
+        test.skip(message);
     }
 
     public static void skip(Markup m) {
-	test.skip(m);
+        test.skip(m);
     }
 
     public static void skip(Throwable t) {
-	test.skip(t);
+        test.skip(t);
     }
 
     public static void flushReports() {
-	report.flush();
+        report.flush();
     }
 
 }
