@@ -10,10 +10,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import utilities.broswer.BrowserActions;
-import utilities.broswer.BrowserFactory;
-
-import static org.apache.poi.sl.draw.geom.GuideIf.Op.min;
+import engine.broswer.BrowserActions;
+import engine.broswer.BrowserFactory;
 
 public class JQueryMenus {
     private WebDriver driver;

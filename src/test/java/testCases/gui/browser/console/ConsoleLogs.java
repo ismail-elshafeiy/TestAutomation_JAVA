@@ -6,10 +6,8 @@ import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.v101.log.Log;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import utilities.broswer.BrowserActions;
-import utilities.broswer.BrowserFactory;
+import engine.broswer.BrowserActions;
 
 public class ConsoleLogs {
     //    EdgeDriver driver;

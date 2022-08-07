@@ -8,7 +8,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import utilities.broswer.BrowserActions;
+import engine.broswer.BrowserActions;
 
 import java.net.URL;
 

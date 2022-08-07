@@ -1,19 +1,19 @@
 package testCases.gui.uploadFiles;
 
-import gui.pages.homePage.HomePage;
-import gui.pages.uploadFilePage.FileUploadPage;
+import com.practice.gui.pages.homePage.HomePage;
+import com.practice.gui.pages.uploadFilePage.FileUploadPage;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import utilities.broswer.BrowserActions;
-import utilities.broswer.BrowserFactory;
+import engine.broswer.BrowserActions;
+import engine.broswer.BrowserFactory;
 
 import java.awt.*;
 
-import static gui.pages.uploadFilePage.FileUploadPage.fileUploader_dragDrop;
-import static gui.pages.uploadFilePage.FileUploadPage.uploadedFiles_text;
+import static com.practice.gui.pages.uploadFilePage.FileUploadPage.fileUploader_dragDrop;
+import static com.practice.gui.pages.uploadFilePage.FileUploadPage.uploadedFiles_text;
 
 public class UploadFiles_Test {
 

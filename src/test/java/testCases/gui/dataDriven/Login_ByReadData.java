@@ -1,22 +1,18 @@
 package testCases.gui.dataDriven;
 
-import gui.pages.homePage.HomePage;
-import gui.pages.inputs.SecureAreaPage;
+import com.practice.gui.pages.homePage.HomePage;
+import com.practice.gui.pages.inputs.SecureAreaPage;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import utilities.broswer.BrowserActions;
-import utilities.broswer.BrowserFactory;
-import utilities.dataDriven.ExcelFileManager;
-import utilities.dataDriven.ExcelFileManager_approach2;
-import utilities.dataDriven.JSONFileManager;
-import utilities.dataDriven.JSONFile_appr2;
+import engine.broswer.BrowserActions;
+import engine.broswer.BrowserFactory;
+import engine.tools.io.ExcelFileManager;
+import engine.tools.io.JSONFileManager;
+import engine.tools.io.JSONFileManager_Approach2;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import static org.testng.Assert.assertTrue;
 
@@ -25,7 +21,7 @@ public class Login_ByReadData {
     private ExcelFileManager excelFileManager;
     private JSONFileManager jsonFileManager;
 
-    private JSONFile_appr2 jsonFileAppr2;
+    private JSONFileManager_Approach2 jsonFileAppr2;
 
 
     @BeforeMethod

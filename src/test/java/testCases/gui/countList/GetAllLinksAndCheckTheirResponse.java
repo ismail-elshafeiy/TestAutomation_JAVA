@@ -1,14 +1,13 @@
 package testCases.gui.countList;
 
-import gui.pages.homePage.HomePage;
+import com.practice.gui.pages.homePage.HomePage;
 import org.openqa.selenium.*;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import utilities.Helper;
-import utilities.actions.ElementActions;
-import utilities.broswer.BrowserActions;
-import utilities.broswer.BrowserFactory;
+import engine.actions.ElementActions;
+import engine.broswer.BrowserActions;
+import engine.broswer.BrowserFactory;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

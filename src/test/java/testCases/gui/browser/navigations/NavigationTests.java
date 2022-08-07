@@ -1,13 +1,13 @@
 package testCases.gui.browser.navigations;
 
-import gui.pages.navigations.NavigationPages;
+import com.practice.gui.pages.navigations.NavigationPages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import utilities.broswer.BrowserActions;
-import utilities.broswer.BrowserFactory;
+import engine.broswer.BrowserActions;
+import engine.broswer.BrowserFactory;
 
 public class NavigationTests {
     private WebDriver driver;

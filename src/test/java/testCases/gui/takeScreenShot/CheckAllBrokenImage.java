@@ -1,13 +1,13 @@
 package testCases.gui.takeScreenShot;
 
 
-import gui.pages.homePage.HomePage;
+import com.practice.gui.pages.homePage.HomePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import utilities.broswer.BrowserFactory;
+import engine.broswer.BrowserFactory;
 
 
 import java.util.List;

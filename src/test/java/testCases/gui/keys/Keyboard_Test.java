@@ -1,13 +1,13 @@
 package testCases.gui.keys;
 
-import gui.pages.homePage.HomePage;
-import gui.pages.keys.KeyPressesPage;
+import com.practice.gui.pages.homePage.HomePage;
+import com.practice.gui.pages.keys.KeyPressesPage;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import utilities.broswer.BrowserActions;
-import utilities.broswer.BrowserFactory;
+import engine.broswer.BrowserActions;
+import engine.broswer.BrowserFactory;
 
 import static org.testng.Assert.assertEquals;
 

@@ -1,6 +1,7 @@
 package testCases.gui.takeScreenShot;
 
-import gui.pages.homePage.HomePage;
+import com.practice.gui.pages.homePage.HomePage;
+import engine.broswer.BrowserFactory;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
@@ -10,8 +11,7 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import testCases.gui.uploadFiles.UploadFile_FireFoxOptions;
-import utilities.broswer.BrowserActions;
+import engine.broswer.BrowserActions;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,11 +20,12 @@ import java.io.IOException;
 // TODO refactor Code
 public class TakeScreenShots {
     private WebDriver driver;
+
     @BeforeMethod
     public void setUp_BeforeMethod() {
         WebDriverManager.firefoxdriver().setup();
-        driver = new FirefoxDriver(UploadFile_FireFoxOptions.firefoxOption());
-//        driver = BrowserFactory.getBrowser();
+//        driver = new FirefoxDriver(UploadFile_FireFoxOptions.firefoxOption());
+        driver = BrowserFactory.getBrowser();
         new HomePage(driver).navigateTo_homePage("https://applitools.com/");
     }
 
@@ -55,7 +56,7 @@ public class TakeScreenShots {
     @AfterMethod
     public void takeScreenShot(ITestResult result) throws IOException {
         // checks if the TestResult is failure
-        if (ITestResult.FAILURE == result.getStatus()) {
+        if ( ITestResult.FAILURE == result.getStatus() ) {
             // Create reference of takesScreenShot
             TakesScreenshot ts = (TakesScreenshot) driver;
             File source = ts.getScreenshotAs(OutputType.FILE);

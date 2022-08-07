@@ -1,6 +1,6 @@
 package testCases.gui.actionsWith_Picker;
 
-import gui.pages.homePage.HomePage;
+import com.practice.gui.pages.homePage.HomePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -8,8 +8,8 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import utilities.broswer.BrowserActions;
-import utilities.broswer.BrowserFactory;
+import engine.broswer.BrowserActions;
+import engine.broswer.BrowserFactory;
 
 public class DatePicker {
     /*

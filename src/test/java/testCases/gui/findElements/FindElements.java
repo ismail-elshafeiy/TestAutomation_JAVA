@@ -1,13 +1,13 @@
 package testCases.gui.findElements;
 
-import gui.pages.homePage.HomePage;
+import com.practice.gui.pages.homePage.HomePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
-import utilities.broswer.BrowserActions;
-import utilities.broswer.BrowserFactory;
+import engine.broswer.BrowserActions;
+import engine.broswer.BrowserFactory;
 
 import java.util.List;
 
