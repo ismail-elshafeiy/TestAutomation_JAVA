@@ -7,11 +7,11 @@
 * [TestNG](https://testng.org/) as a Unit Test Automation framework.
 * [Selenium WebDriver](https://www.selenium.dev/documentation/en/) for Web App GUI Test Automation.
 * [Appium](https://appium.io/) for Mobile App GUI Test Automation.
-* [Rest assured](https://javadoc.io/doc/io.rest-assured/rest-assured/latest/index.html) for API Test Automation.
+* [Rest assured](https://javadoc.io/doc/io.rest-assured/rest-assured/latest/index.html) for REST/GraphQl API Test Automation.
 * [Allure Report Framework](https://docs.qameta.io/allure/) for generating test execution report.
 * [Extent Report Framework](https://www.extentreports.com/docs/versions/4/java/) for generating test execution report.
 * [Data Driven Testing framework](https://www.guru99.com/data-driven-testing.html) to read from data files and store
-  them in variables in test scripts
+  them in variables in test scripts.
 * [Docker](https://docs.docker.com/)
 * [Docker Compose](https://docs.docker.com/compose/overview/) for running Selenium Grid.
 * [Selenium Grid](https://www.selenium.dev/documentation/grid/) for remote execution.
@@ -21,12 +21,12 @@
 ## Project Design patterns:
 
 * [WebElement Extension Methods](https://toolsqa.com/selenium-webdriver/c-sharp/webelement-extensions-method/) (Selenium
-  Wrapper)
+  Wrapper).
 * Applying
-  the [Page Object Model (POM) design pattern](https://www.browserstack.com/guide/page-object-model-in-selenium#:~:text=Page%20Object%20Model%2C%20also%20known,application%20as%20a%20class%20file.)
-* [Fluent design](https://java-design-patterns.com/patterns/fluentinterface/) approach
+  the [Page Object Model (POM) design pattern](https://www.browserstack.com/guide/page-object-model-in-selenium#:~:text=Page%20Object%20Model%2C%20also%20known,application%20as%20a%20class%20file.).
+* [Fluent design](https://java-design-patterns.com/patterns/fluentinterface/) approach.
 * [Managing test data](https://www.ontestautomation.com/managing-test-data-in-end-to-end-test-automation/?fbclid=IwAR3JVpSg8jkhxVMgcPzihHDPzSWebbPxLZ7RxX22QQeJlSwQBNhNiXq-koU)
-  in end-to-end test automation by approach `Creating test data during test execution`
+  in end-to-end test automation by approach `Creating test data during test execution`.
 
 ## Project Structure:
 
@@ -34,41 +34,40 @@
   ├── main
   │   ├── com.project 
   │   │   ├── gui.pages
-  │   │   ├── apis
+  │   │   └──  apis
   │   ├── framework --> engine
   │   │   ├── gui.actions
   │   │   ├── api.actions
   │   │   ├── browser
-  │   │   ├── tools  
+  │   │   └── tools  
   │   └── resources
-  │       ├── configerations --> properties file
+  │       └──  configerations --> properties file
   ├── test
   │   ├── testcases 
   │   │   ├── api
-  │   │   ├── gui
+  │   │   └── gui
   │   ├── testSenarios
-  │   │   ├── end_to_end
-  │   ├── resources
-  │   │   ├── testData
-  │   │   ├── uploads files
-  │   │   ├── screenshots
+  │   │   └── end_to_end
+  │   └── resources
+  │       ├── testData
+  │       ├── uploads files
+  │       └── screenshots
   ├── pom.xml
-  ├── README.md
+  └── README.md
 ```
 
-### Run the Test cases locally using IntelliJ IDEA
+## Run the Test cases locally using IntelliJ IDEA
 
 Pre-requisites: jdk-17 and maven should be installed
 
 * A properties file [project.properties](src/main/resources)  including all the configurations
 * Set the test Data from [TestData](src/test/resources/TestData)
 * Edit your run configuration templates before running your tests by following these steps:
-  <br/>-Open 'Edit Run/Debug Configurations' dialog > Edit Configurations... > Edit configuration templates...
+  <br/>- Open 'Edit Run/Debug Configurations' dialog > Edit Configurations... > Edit configuration templates...
   <br/>- Select <b>TestNG</b> > Listeners > and add this listener:
   `engine.tools.listeners.TestngListener`
 * Execute All testSuites using Command-line opening a command-line terminal on the project root path and run the
   following command:
-  `mvn clean test`
 
 ```bash
   mvn clean test
@@ -92,9 +91,9 @@ CTRL+C to stop the server and type 'y'
 * Find the Extent Report [ExtentReports.html](ExtentReports.html) in the project root path for the latest execution and
   open by any browser
 
-### Run the Test remotely using Selenium-Grid and Docker
+## Run the Test remotely using Selenium-Grid and Docker:
 
-Pre-requisites: Docker Desktop should be installed
+Pre-requisites: Docker Desktop should be installed.
 
 * To start selenium-grid using docker-compose; at the root directory of the project, run the following command:
 
