@@ -1,14 +1,15 @@
 package engine.actions;
 
+import engine.broswer.Waits;
+import engine.tools.Logger;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import engine.tools.Logger;
-import engine.broswer.Waits;
 
+import static engine.actions.ElementActionsHelper.locatingElementStrategy;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.fail;
 
@@ -17,6 +18,11 @@ public class ElementActions {
 
     public ElementActions(WebDriver driver) {
         this.driver = driver;
+    }
+
+    public ElementActions mouseHover(By elementLocator) {
+        mouseHover(driver, elementLocator);
+        return this;
     }
 
     public static void mouseHover(WebDriver driver, By elementLocator) {
@@ -30,8 +36,9 @@ public class ElementActions {
         }
     }
 
-    public ElementActions mouseHover(By elementLocator) {
-        mouseHover(driver, elementLocator);
+
+    public ElementActions click(By elementLocator) {
+        click(driver, elementLocator);
         return this;
     }
 
@@ -42,10 +49,10 @@ public class ElementActions {
         try {
             Waits.getExplicitWait(driver).until(ExpectedConditions.elementToBeClickable(elementLocator));
         } catch (TimeoutException toe) {
-            Logger.logStep(toe.getMessage());
+            Logger.logMessage(toe.getMessage());
             fail(toe.getMessage());
         } catch (Exception e) {
-            Logger.logStep(e.getMessage());
+            Logger.logMessage(e.getMessage());
             fail(e.getMessage());
         }
         try {
@@ -64,20 +71,27 @@ public class ElementActions {
                         driver.findElement(elementLocator));
             } catch (Exception rootCauseException) {
                 rootCauseException.initCause(exception);
-                Logger.logStep(exception.getMessage());
-                Logger.logStep(rootCauseException.getMessage());
+                Logger.logMessage(exception.getMessage());
+                Logger.logMessage(rootCauseException.getMessage());
                 // Force fail the test case if couldn't perform the click
                 fail("Couldn't click on the element:" + elementLocator, rootCauseException);
             }
         }
     }
 
-    public ElementActions click(By elementLocator) {
-        click(driver, elementLocator);
+    public ElementActions type(By elementLocator, String text, boolean clearBeforeTyping) {
+        type(driver, elementLocator, text, clearBeforeTyping);
         return this;
     }
+    public ElementActions type(By elementLocator, String text) {
+        type(driver, elementLocator, text, true);
+        return this;
+    }
+    public static void type(WebDriver driver, By elementLocator, String text) {
+        type(driver, elementLocator, text, true);
+    }
 
-    //    @Step("Type data: [{data}] on element: [{elementLocator}]")
+    @Step( "Type data: [{text}] on element: [{elementLocator}]" )
     public static void type(WebDriver driver, By elementLocator, String text, boolean clearBeforeTyping) {
         locatingElementStrategy(driver, elementLocator);
         try {
@@ -105,32 +119,27 @@ public class ElementActions {
                 }
             }
         } catch (Exception e) {
-            Logger.logStep(e.getMessage());
+            Logger.logMessage(e.getMessage());
             fail(e.getMessage());
         }
         // Make sure that the data is inserted correctly to the field
         Assert.assertTrue(driver.findElement(elementLocator).getAttribute("value").contains(text),
-                "The data is not inserted successfully to the field, the inserted data should be: [" + text
-                        + "]; But the current field value is: ["
+                "The data is not inserted successfully to the field, the inserted data should be: [" + text + "]; But the current field value is: ["
                         + driver.findElement(elementLocator).getAttribute("value") + "]");
-    }
-
-    public ElementActions type(By elementLocator, String text, boolean clearBeforeTyping) {
-        type(driver, elementLocator, text, clearBeforeTyping);
-        return this;
-    }
-
-    public static void type(WebDriver driver, By elementLocator, String text) {
-        type(driver, elementLocator, text, true);
-    }
-
-    public ElementActions type(By elementLocator, String text) {
-        type(driver, elementLocator, text, true);
-        return this;
     }
 
     public enum SelectType {
         TEXT, VALUE, INDEX;
+    }
+
+    public ElementActions select(By elementLocator, SelectType selectType, String option) {
+        select(driver, elementLocator, selectType, option);
+        return this;
+    }
+
+    public ElementActions select(By elementLocator, SelectType selectType, int option) {
+        select(driver, elementLocator, selectType, String.valueOf(option));
+        return this;
     }
 
     // Select by string Text or Value
@@ -147,29 +156,7 @@ public class ElementActions {
                 default -> Logger.logMessage("Unexpected value: " + selectType);
             }
         } catch (Exception e) {
-            Logger.logStep(e.getMessage());
-            fail(e.getMessage());
-        }
-    }
-
-    public ElementActions select(By elementLocator, SelectType selectType, String option) {
-        select(driver, elementLocator, selectType, option);
-        return this;
-    }
-
-    public ElementActions select(By elementLocator, SelectType selectType, int option) {
-        select(driver, elementLocator, selectType, String.valueOf(option));
-        return this;
-    }
-
-
-    public static void doubleClick(WebDriver driver, By elementLocator) {
-        locatingElementStrategy(driver, elementLocator);
-        try {
-            Actions actions = new Actions(driver);
-            actions.doubleClick(driver.findElement(elementLocator)).perform();
-        } catch (Exception e) {
-            Logger.logStep(e.getMessage());
+            Logger.logMessage(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -179,34 +166,46 @@ public class ElementActions {
         return this;
     }
 
-    //  @Step("Click a Keyboard Key on element: [{elementLocator}]")
-    public static void clickKeyboardKey(WebDriver driver, By elementLocator, Keys key) {
+    public static void doubleClick(WebDriver driver, By elementLocator) {
         locatingElementStrategy(driver, elementLocator);
         try {
-            Logger.logStep(
-                    "[Element Action] Click a Keyboard key [" + key.name() + "] on element [" + elementLocator + "]");
-            // We click ENTER here! :D
-            driver.findElement(elementLocator).sendKeys(key);
+            Actions actions = new Actions(driver);
+            Logger.logStep("[Element Action] Double Click on element [" + elementLocator + "]");
+            actions.doubleClick(driver.findElement(elementLocator)).perform();
         } catch (Exception e) {
-            Logger.logStep(e.getMessage());
+            Logger.logMessage(e.getMessage());
+            fail(e.getMessage());
         }
     }
+
 
     public ElementActions clickKeyboardKey(By elementLocator, Keys key) {
         clickKeyboardKey(driver, elementLocator, key);
         return this;
     }
 
-    //    @Step("Get the Text of element: [{elementLocator}]")
+    @Step( "Click a Keyboard Key on element: [{elementLocator}]" )
+    public static void clickKeyboardKey(WebDriver driver, By elementLocator, Keys key) {
+        locatingElementStrategy(driver, elementLocator);
+        try {
+            Logger.logStep("[Element Action] Click a Keyboard key [" + key.name() + "] on element [" + elementLocator + "]");
+            // We click ENTER here! :D
+            driver.findElement(elementLocator).sendKeys(key);
+        } catch (Exception e) {
+            Logger.logMessage(e.getMessage());
+        }
+    }
+
+
+    @Step( "Get the Text of element: [{elementLocator}]" )
     public static String getText(WebDriver driver, By elementLocator) {
         locatingElementStrategy(driver, elementLocator);
         try {
             String text = driver.findElement(elementLocator).getText();
-            Logger.logStep(
-                    "[Element Action] Get the Text of element [" + elementLocator + "]; The Text is [" + text + "]");
+            Logger.logStep("[Element Action] Get the Text of element [" + elementLocator + "]; The Text is [" + text + "]");
             return text;
         } catch (Exception e) {
-            Logger.logStep(e.getMessage());
+            Logger.logMessage(e.getMessage());
         }
         return null;
     }
@@ -215,37 +214,11 @@ public class ElementActions {
         locatingElementStrategy(driver, elementLocator);
         try {
             String attributeValue = driver.findElement(elementLocator).getAttribute(attributeName);
-            Logger.logStep(
-                    "[Element Action] Get the Attribute [" + attributeName + "] Value of element [" + elementLocator + "]; The Value is [" + attributeValue + "]");
+            Logger.logStep("[Element Action] Get the Attribute [" + attributeName + "] Value of element [" + elementLocator + "]; The Value is [" + attributeValue + "]");
             return attributeValue;
         } catch (Exception e) {
-            Logger.logStep(e.getMessage());
+            Logger.logMessage(e.getMessage());
         }
         return null;
     }
-
-    ////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    // Handel the elements [wait + check + print + scroll +  ]
-    private static void locatingElementStrategy(WebDriver driver, By elementLocator) {
-        try {
-            // Wait for the element to be visible
-            Waits.getExplicitWait(driver).until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
-            // Scroll the element into view to handle some browsers cases
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(false);",
-                    driver.findElement(elementLocator));
-            // Check if the element is displayed
-            if ( ! driver.findElement(elementLocator).isDisplayed() ) {
-                Logger.logStep("The element [" + elementLocator.toString() + "] is not Displayed");
-                fail("The element [" + elementLocator.toString() + "] is not Displayed");
-            }
-        } catch (TimeoutException toe) {
-            Logger.logStep(toe.getMessage());
-            fail(toe.getMessage());
-        } catch (Exception e) {
-            Logger.logStep(e.getMessage());
-            fail(e.getMessage());
-        }
-    }
-
 }

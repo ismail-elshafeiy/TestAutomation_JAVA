@@ -5,15 +5,12 @@ import com.practice.gui.pages.homePage.HomePage;
 import io.qameta.allure.*;
 import org.openqa.selenium.*;
 import org.testng.Assert;
-import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
 import engine.tools.io.ExcelFileManager;
-
-import java.io.IOException;
 
 public class CheckBox {
     private WebDriver driver;
@@ -35,7 +32,7 @@ public class CheckBox {
     public void checkbox1() {
         String state = "checkbox 1";
         int orderOfList = 1;
-        new HomePage(driver).navigateTo_homePage()
+        new HomePage(driver).navigateToHomePage()
                 .clickCheckBoxesPage()
                 .clickOn_CheckBox(state, orderOfList);
         Assert.assertTrue(driver.findElement(CheckBoxPage.checkBox(orderOfList)).isSelected());
@@ -45,7 +42,7 @@ public class CheckBox {
     public void checkbox2() {
         String state = testDataFile.getCellData("state", 3);
         int orderOfList = Integer.parseInt(testDataFile.getCellData("orderOfList", 3));
-        new HomePage(driver).navigateTo_homePage()
+        new HomePage(driver).navigateToHomePage()
                 .clickCheckBoxesPage()
                 .clickOn_CheckBox(state, orderOfList);
         Assert.assertTrue(! driver.findElement(CheckBoxPage.checkBox(orderOfList)).isSelected());
@@ -53,7 +50,7 @@ public class CheckBox {
 
     @Test
     public void checkBoxesTest() {
-        new HomePage(driver).navigateTo_homePage("https://the-internet.herokuapp.com/checkboxes");
+        new HomePage(driver).navigateToHomePage("https://the-internet.herokuapp.com/checkboxes");
         WebElement cb = driver.findElement(By.xpath("//input[@type = 'checkbox'][1]"));
         cb.click();
 

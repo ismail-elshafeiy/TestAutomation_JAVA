@@ -31,7 +31,7 @@ public class DatePicker {
 
     @Test
     public void countLinks_HomePage() {
-        new HomePage(driver).navigateTo_homePage("https://formy-project.herokuapp.com/datepicker");
+        new HomePage(driver).navigateToHomePage("https://formy-project.herokuapp.com/datepicker");
         WebElement DatePicker = driver.findElement(By.id("datepicker"));
         DatePicker.sendKeys("18/12/2021", Keys.ENTER);
     }

@@ -29,27 +29,27 @@ public class MenuCount_Test {
 
     @Test
     public void countLinks_HomePage() {
-        new HomePage(driver).navigateTo_homePage()
+        new HomePage(driver).navigateToHomePage()
                 .getAll_links_homePage();
 
     }
 
     @Test
     public void printLinks_HomePage_1() {
-        new HomePage(driver).navigateTo_homePage()
+        new HomePage(driver).navigateToHomePage()
                 .printAll_Links_homePage_1();
 
     }
 
     @Test
     public void printLinks_HomePage_2() {
-        new HomePage(driver).navigateTo_homePage()
+        new HomePage(driver).navigateToHomePage()
                 .printAll_Links_homePage_2();
 
     }
     @Test
     public void clickOn_HomePage_2() {
-        new HomePage(driver).navigateTo_homePage()
+        new HomePage(driver).navigateToHomePage()
                 .clickOn_Link_homePage(5);
 
     }

@@ -47,7 +47,7 @@ public class Login_ByReadData {
         String password = excelFileManager.getCellData("password", 2);
         String expectedResult_successMessage = excelFileManager.getCellData("expectedResult_successMessage", 2);
 
-        new HomePage(driver).navigateTo_homePage()
+        new HomePage(driver).navigateToHomePage()
                 .clickFormAuthentication()
                 .setUsername(email)
                 .setPassword(password)
@@ -64,7 +64,7 @@ public class Login_ByReadData {
         String password = jsonFileManager.getTestData("password");
         String expectedResult_successMessage = jsonFileManager.getTestData("expectedResult_successMessage");
 
-        new HomePage(driver).navigateTo_homePage()
+        new HomePage(driver).navigateToHomePage()
                 .clickFormAuthentication()
                 .setUsername(email)
                 .setPassword(password)
@@ -80,7 +80,7 @@ public class Login_ByReadData {
         String password = String.valueOf(jsonFileAppr2.getDataFile("password"));
 //        String expectedResult_successMessage = jsonFileManager.getTestData("expectedResult_successMessage");
 
-        new HomePage(driver).navigateTo_homePage()
+        new HomePage(driver).navigateToHomePage()
                 .clickFormAuthentication()
                 .setUsername(email)
                 .setPassword(password)

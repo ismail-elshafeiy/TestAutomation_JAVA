@@ -38,7 +38,7 @@ public class Login_Test {
         String password = testDataFile.getCellData("password",2);
         String expectedResult_successMessage = testDataFile.getCellData("expectedResult_successMessage",2);
 
-        new HomePage(driver).navigateTo_homePage()
+        new HomePage(driver).navigateToHomePage()
                 .clickFormAuthentication()
                 .setUsername(email)
                 .setPassword(password)

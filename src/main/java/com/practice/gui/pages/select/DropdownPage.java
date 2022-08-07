@@ -6,7 +6,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import engine.actions.ElementActions;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +14,9 @@ public class DropdownPage {
     private WebDriver driver;
     private By dropdown_list = By.id("dropdown");
 
-    public static By optionSelected (String option){return By.xpath("//option[contains(text(),'"+ option +"')]");}
+    public static By optionSelected(String option) {
+        return By.xpath("//option[contains(text(),'" + option + "')]");
+    }
 
     public DropdownPage(WebDriver driver) {
         this.driver = driver;
@@ -26,7 +27,8 @@ public class DropdownPage {
     }
 
     public DropdownPage selectFromDropDown(String option) {
-        findDropDownElement().selectByVisibleText(option);
+        ElementActions.select(driver, dropdown_list, ElementActions.SelectType.TEXT, option);
+//        findDropDownElement().selectByVisibleText(option);
         return this;
     }
 
@@ -53,7 +55,7 @@ public class DropdownPage {
 
     // TODO: Create Business action by Select using INDEX
 
-    public String getSelectOptionText(String option){
-        return ElementActions.getText(driver,optionSelected(option));
+    public String getSelectOptionText(String option) {
+        return ElementActions.getText(driver, optionSelected(option));
     }
 }

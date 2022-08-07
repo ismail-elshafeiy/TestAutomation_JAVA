@@ -1,20 +1,18 @@
 package engine.broswer;
 
+import engine.Helper;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.ITestResult;
-
 import engine.tools.Logger;
 import engine.PropertiesReader;
 import engine.RecordManager;
-
 
 import static org.testng.Assert.fail;
 
 public class BrowserActions {
     static WebDriver driver;
-
 
     @Step( "Navigate to URL: [{url}]" )
     public static void navigateToUrl(WebDriver driver, String url) {
@@ -39,18 +37,7 @@ public class BrowserActions {
             Logger.attachScreenshotToExtentReport(driver);
         }
         RecordManager.attachVideoRecording();
-        Logger.logStep("[Browser Action] Close all Opened Browser Windows");
-        if ( driver != null ) {
-            try {
-                driver.quit();
-            } catch (WebDriverException rootCauseException) {
-                Logger.logMessage(rootCauseException.getMessage());
-            } finally {
-                driver = null;
-            }
-        } else {
-            Logger.logMessage("Windows are already closed and the driver object is null.");
-        }
+        closeAllOpenedBrowserWindows(driver);
     }
 
     @Step( "Close All Opened Browser Windows....." )
@@ -61,8 +48,6 @@ public class BrowserActions {
                 driver.quit();
             } catch (WebDriverException rootCauseException) {
                 Logger.logMessage(rootCauseException.getMessage());
-            } finally {
-                driver = null;
             }
         } else {
             Logger.logMessage("Windows are already closed and the driver object is null.");
@@ -73,7 +58,6 @@ public class BrowserActions {
         if ( System.getProperty("videoParams_scope").trim().equals("DriverSession") ) {
             RecordManager.attachVideoRecording();
         }
-
     }
 
     @Step( "Maximize the Browser Window" )
@@ -101,26 +85,24 @@ public class BrowserActions {
 
 
     public enum ConfirmAlertType {
-        ACCEPT, DISMISS;
+        ACCEPT, DISMISS
     }
 
     @Step( "Confirm the Alert" )
-    public static void confirmAlert(WebDriver driver, ConfirmAlertType confirmAlerType) {
+    public static void confirmAlert(WebDriver driver, ConfirmAlertType confirmAlertType) {
         Waits.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
         Alert alert = driver.switchTo().alert();
-        switch ( confirmAlerType ) {
-            case ACCEPT:
-                alert.accept();
-                break;
-            case DISMISS:
+        switch ( confirmAlertType ) {
+            case ACCEPT -> alert.accept();
+            case DISMISS -> {
                 Waits.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
                 alert.dismiss();
-                break;
+            }
         }
     }
 
     public enum CookieBuilderType {
-        ADD, DELETE;
+        ADD, DELETE
     }
 
     public static void cookieBuilder(WebDriver driver, CookieBuilderType cookieBuilderType, String name, String value,
@@ -128,12 +110,8 @@ public class BrowserActions {
         Cookie cookie = new Cookie.Builder(name, value).domain(domain).build();
 
         switch ( cookieBuilderType ) {
-            case ADD:
-                driver.manage().addCookie(cookie);
-                break;
-            case DELETE:
-                driver.manage().deleteCookie(cookie);
-                break;
+            case ADD -> driver.manage().addCookie(cookie);
+            case DELETE -> driver.manage().deleteCookie(cookie);
         }
     }
 
@@ -142,10 +120,9 @@ public class BrowserActions {
     }
 
     public Cookie buildCookie(String name, String value) {
-        Cookie cookie = new Cookie.Builder(name, value)
+        return new Cookie.Builder(name, value)
                 .domain("the-internet.herokuapp.com")
                 .build();
-        return cookie;
     }
 
     private static WebDriver.Navigation navigate;

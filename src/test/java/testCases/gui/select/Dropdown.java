@@ -39,8 +39,8 @@ public class Dropdown {
 
     @Test
     public void testSelectOption() {
-        String option = "Options 1";
-        var selectedOptions = new HomePage(driver).navigateTo_homePage()
+        String option = "Option ";
+        var selectedOptions = new HomePage(driver).navigateToHomePage()
                 .clickDropDown()
                 .selectFromDropDown(option)
                 .getSelectedOptions();
@@ -51,7 +51,7 @@ public class Dropdown {
     @Test
     public void selectOptionByValue() {
         String option1 = testDataFile.getCellData("option", 2);
-        String option1TextSelected = new HomePage(driver).navigateTo_homePage()
+        String option1TextSelected = new HomePage(driver).navigateToHomePage()
                 .clickDropDown()
                 .selectByValue(option1)
                 .getSelectOptionText("Option 1");
@@ -61,7 +61,7 @@ public class Dropdown {
     @Test
     public void selectOptionByVisible() {
         String option2 = testDataFile.getCellData("option", 3);
-        new HomePage(driver).navigateTo_homePage()
+        new HomePage(driver).navigateToHomePage()
                 .clickDropDown()
                 .selectByVisible(option2);
         Assert.assertEquals(ElementActions.getText(driver, DropdownPage.optionSelected("Option 2")), "Option 2");
@@ -69,7 +69,7 @@ public class Dropdown {
 
     @Test
     public void dropDownListTest() {
-        new HomePage(driver).navigateTo_homePage("https://the-internet.herokuapp.com/dropdown");
+        new HomePage(driver).navigateToHomePage("https://the-internet.herokuapp.com/dropdown");
 
         // get the dropdown as a select using it'select name attribute
         Select select = new Select(driver.findElement(By.id("dropdown")));

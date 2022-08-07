@@ -57,7 +57,7 @@ public class GetAllLinksAndCheckTheirResponse {
 
     @Test
     public void checkTheFooterLinks() {
-        new HomePage(driver).navigateTo_homePage("https://the-internet.herokuapp.com/");
+        new HomePage(driver).navigateToHomePage("https://the-internet.herokuapp.com/");
         js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView();", footer);
         getFooterLinks();

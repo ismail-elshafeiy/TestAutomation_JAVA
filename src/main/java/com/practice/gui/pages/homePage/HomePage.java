@@ -58,7 +58,7 @@ public class HomePage {
      * @return self reference
      */
 
-    public HomePage navigateTo_homePage() {
+    public HomePage navigateToHomePage() {
         BrowserActions.navigateToUrl(driver, homeUrlTau);
         return this;
     }
@@ -69,7 +69,7 @@ public class HomePage {
      * @param baseUrl
      * @return self reference
      */
-    public HomePage navigateTo_homePage(String baseUrl) {
+    public HomePage navigateToHomePage(String baseUrl) {
         BrowserActions.navigateToUrl(driver, baseUrl);
         return this;
     }
@@ -139,7 +139,7 @@ public class HomePage {
 
 
     public CheckBoxPage clickCheckBoxesPage() {
-        ElementActions.click(driver, checkbox_textLink);
+        ElementActions.click(driver,checkbox_textLink);
         return new CheckBoxPage(driver);
     }
 

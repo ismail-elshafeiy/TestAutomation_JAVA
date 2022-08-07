@@ -20,13 +20,12 @@ import java.net.URL;
 import static org.testng.Assert.fail;
 
 public class BrowserFactory {
-    //    private static WebDriver driver;
-    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
-    private static String propertiesFileName = "project.properties";
-    private static String browserTypeProperty = PropertiesReader.getProperty(propertiesFileName, "browser.type");
-    private static String executionTypeProperty = PropertiesReader.getProperty(propertiesFileName, "execution.type");
-    private static String host = PropertiesReader.getProperty(propertiesFileName, "remote.execution.host");
-    private static String port = PropertiesReader.getProperty(propertiesFileName, "remote.execution.port");
+    private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    private static final String propertiesFileName = "project.properties";
+    private static final String browserTypeProperty = PropertiesReader.getProperty(propertiesFileName, "browser.type");
+    private static final String executionTypeProperty = PropertiesReader.getProperty(propertiesFileName, "execution.type");
+    private static final String host = PropertiesReader.getProperty(propertiesFileName, "remote.execution.host");
+    private static final String port = PropertiesReader.getProperty(propertiesFileName, "remote.execution.port");
 
 
     // Check the Browser and Execution from property file
@@ -53,8 +52,7 @@ public class BrowserFactory {
             if ( browserType == BrowserType.GOOGLE_CHROME
                     || (browserType == BrowserType.FROM_PROPERTIES && browserTypeProperty.equalsIgnoreCase("google chrome")) ) {
                 try {
-                    driver.set(new RemoteWebDriver(new URL("http://" + host + ":" + port + "/wd/hub"),
-                            getChromeOptions()));
+                    driver.set(new RemoteWebDriver(new URL("http://" + host + ":" + port + "/wd/hub"), getChromeOptions()));
                     context.setAttribute("driver", driver.get());
                     Waits.implicitWait(driver.get());
                 } catch (MalformedURLException e) {
@@ -121,14 +119,12 @@ public class BrowserFactory {
                 driver.set(new ChromeDriver(getChromeOptions()));
                 context.setAttribute("driver", driver.get());
                 Waits.implicitWait(driver.get());
-//		BrowserActions.maximizeWindow(driver);
             } else if ( browserType == BrowserType.MOZILLA_FIREFOX
                     || (browserType == BrowserType.FROM_PROPERTIES && browserTypeProperty.equalsIgnoreCase("mozilla firefox")) ) {
                 WebDriverManager.firefoxdriver().setup();
                 driver.set(new FirefoxDriver(getFirefoxOptions()));
                 context.setAttribute("driver", driver.get());
                 Waits.implicitWait(driver.get());
-//		BrowserActions.maximizeWindow(driver);
             } else {
                 String warningMsg = "The driver is null! because the browser type [" + browserTypeProperty + "] is not valid/supported; Please choose a valid browser type from the given choices in the properties file";
                 Logger.logMessage(warningMsg);
@@ -148,28 +144,26 @@ public class BrowserFactory {
 
     public enum BrowserType {
         MOZILLA_FIREFOX("Mozilla Firefox"), GOOGLE_CHROME("Google Chrome"), FROM_PROPERTIES(browserTypeProperty);
-
-        private String value;
+        private final String value;
 
         BrowserType(String type) {
             this.value = type;
         }
 
-        protected String getValue() {
+        private String getValue() {
             return value;
         }
     }
 
     public enum ExecutionType {
         LOCAL("Local"), REMOTE("Remote"), LOCAL_HEADLESS("Local Headless"), FROM_PROPERTIES(executionTypeProperty);
-
-        private String value;
+        private final String value;
 
         ExecutionType(String type) {
             this.value = type;
         }
 
-        protected String getValue() {
+        private String getValue() {
             return value;
         }
     }

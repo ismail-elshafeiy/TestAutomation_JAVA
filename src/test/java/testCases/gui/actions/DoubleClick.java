@@ -28,7 +28,7 @@ public class DoubleClick {
 
     @Test
     public void DoubleClick() throws InterruptedException {
-        new HomePage(driver).navigateTo_homePage("http://cookbook.seleniumacademy.com/DoubleClickDemo.html");
+        new HomePage(driver).navigateToHomePage("http://cookbook.seleniumacademy.com/DoubleClickDemo.html");
 
         WebElement box = driver.findElement(By.id("message"));
 

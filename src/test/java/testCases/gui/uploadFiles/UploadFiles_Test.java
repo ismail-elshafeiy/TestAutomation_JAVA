@@ -34,7 +34,7 @@ public class UploadFiles_Test {
     public void setUploadedFile_inputField() throws InterruptedException {
         String imageName = "uploadPic.jpg";
         String imagePath = System.getProperty("user.dir") + "/src/test/resources/Uploads/" + imageName;
-        new HomePage(driver).navigateTo_homePage("https://the-internet.herokuapp.com/upload");
+        new HomePage(driver).navigateToHomePage("https://the-internet.herokuapp.com/upload");
         new FileUploadPage(driver)
                 .uploadFileBy_inputFile(imagePath)
                 .clickUploadButton();
@@ -48,7 +48,7 @@ public class UploadFiles_Test {
     public void FileUploadWithRobot() throws InterruptedException, AWTException {
         String imageName = "uploadPic.jpg";
         String imagePath = "C:\\Users\\ismail\\Automation Projects\\Projects - Ismail_Elshafeiy\\Practice_TestAutomation_SeleniumWebDriver\\src\\test\\resources\\Uploads\\" + imageName;
-        new HomePage(driver).navigateTo_homePage("https://the-internet.herokuapp.com/upload");
+        new HomePage(driver).navigateToHomePage("https://the-internet.herokuapp.com/upload");
         new FileUploadPage(driver).clickUpload_dragDropArea()
                 .uploadFileBy_robot(imagePath);
 
