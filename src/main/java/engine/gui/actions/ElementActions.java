@@ -25,7 +25,7 @@ public class ElementActions {
     }
 
     public static void mouseHover(WebDriver driver, By elementLocator) {
-        ElementActionsHelper.locatingElementStrategy(driver, elementLocator);
+        ActionsHelper.locatingElementStrategy(driver, elementLocator);
         try {
             Actions actions = new Actions(driver);
             Logger.logStep("[Element Action] Hover on [" + driver.findElement(elementLocator).getText() + "]");
@@ -86,7 +86,7 @@ public class ElementActions {
 
     @Step( "Type data: [{text}] on element: [{elementLocator}]" )
     public static void type(WebDriver driver, By elementLocator, String text, boolean clearBeforeTyping) {
-        ElementActionsHelper.locatingElementStrategy(driver, elementLocator);
+        ActionsHelper.locatingElementStrategy(driver, elementLocator);
         try {
             // Clear before typing condition
             if ( ! driver.findElement(elementLocator).getAttribute("value").isBlank() && clearBeforeTyping ) {
@@ -126,32 +126,30 @@ public class ElementActions {
         return this;
     }
 
-    public enum SelectType {
-        TEXT, VALUE, INDEX;
-    }
 
-    public ElementActions select(By elementLocator, SelectType selectType, String option) {
-        select(driver, elementLocator, selectType, option);
+
+    public ElementActions select(By elementLocator, ActionsHelper.SelectBy selectBy, String option) {
+        select(driver, elementLocator, selectBy, option);
         return this;
     }
 
-    public ElementActions select(By elementLocator, SelectType selectType, int option) {
-        select(driver, elementLocator, selectType, String.valueOf(option));
+    public ElementActions select(By elementLocator, ActionsHelper.SelectBy selectBy, int option) {
+        select(driver, elementLocator, selectBy, String.valueOf(option));
         return this;
     }
 
     // Select by string Text or Value
-    public static void select(WebDriver driver, By elementLocator, SelectType selectType, String option) {
-        ElementActionsHelper.locatingElementStrategy(driver, elementLocator);
+    public static void select(WebDriver driver, By elementLocator, ActionsHelper.SelectBy selectBy, String option) {
+        ActionsHelper.locatingElementStrategy(driver, elementLocator);
         try {
             Select s = new Select(driver.findElement(elementLocator));
             Logger.logStep("[Element Action] Select [" + option + "] on element [" + elementLocator + "]");
             assertFalse(s.isMultiple());
-            switch ( selectType ) {
+            switch ( selectBy ) {
                 case TEXT -> s.selectByVisibleText(option);
                 case VALUE -> s.selectByValue(option);
                 case INDEX -> s.selectByIndex(Integer.parseInt(option));
-                default -> Logger.logMessage("Unexpected value: " + selectType);
+                default -> Logger.logMessage("Unexpected value: " + selectBy);
             }
         } catch (Exception e) {
             Logger.logMessage(e.getMessage());
@@ -165,7 +163,7 @@ public class ElementActions {
     }
 
     public static void doubleClick(WebDriver driver, By elementLocator) {
-        ElementActionsHelper.locatingElementStrategy(driver, elementLocator);
+        ActionsHelper.locatingElementStrategy(driver, elementLocator);
         try {
             Actions actions = new Actions(driver);
             Logger.logStep("[Element Action] Double Click on element [" + elementLocator + "]");
@@ -184,7 +182,7 @@ public class ElementActions {
 
     @Step( "Click a Keyboard Key on element: [{elementLocator}]" )
     public static void clickKeyboardKey(WebDriver driver, By elementLocator, Keys key) {
-        ElementActionsHelper.locatingElementStrategy(driver, elementLocator);
+        ActionsHelper.locatingElementStrategy(driver, elementLocator);
         try {
             Logger.logStep("[Element Action] Click a Keyboard key [" + key.name() + "] on element [" + elementLocator + "]");
             // We click ENTER here! :D
@@ -197,7 +195,7 @@ public class ElementActions {
 
     @Step( "Get the Text of element: [{elementLocator}]" )
     public static String getText(WebDriver driver, By elementLocator) {
-        ElementActionsHelper.locatingElementStrategy(driver, elementLocator);
+        ActionsHelper.locatingElementStrategy(driver, elementLocator);
         try {
             String text = driver.findElement(elementLocator).getText();
             Logger.logStep("[Element Action] Get the Text of element [" + elementLocator + "]; The Text is [" + text + "]");
@@ -209,7 +207,7 @@ public class ElementActions {
     }
 
     public static String getAttributeValue(WebDriver driver, By elementLocator, String attributeName) {
-        ElementActionsHelper.locatingElementStrategy(driver, elementLocator);
+        ActionsHelper.locatingElementStrategy(driver, elementLocator);
         try {
             String attributeValue = driver.findElement(elementLocator).getAttribute(attributeName);
             Logger.logStep("[Element Action] Get the Attribute [" + attributeName + "] Value of element [" + elementLocator + "]; The Value is [" + attributeValue + "]");

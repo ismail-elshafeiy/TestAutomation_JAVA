@@ -3,8 +3,10 @@ package engine.broswer;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import engine.PropertiesReader;
-
+import io.appium.java_client.MobileDriver;
+import io.appium.java_client.MobileElement;
 import java.time.Duration;
+
 
 public class Waits {
     private static final int TIMEOUT = Integer
@@ -16,6 +18,14 @@ public class Waits {
 
     public static void implicitWait(WebDriver driver) {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TIMEOUT));
+    }
+
+    public static WebDriverWait getExplicitWait(MobileDriver<MobileElement> mobile) {
+        return new WebDriverWait(mobile, Duration.ofSeconds(TIMEOUT));
+    }
+
+    public static void implicitWait(MobileDriver<MobileElement> mobile) {
+        mobile.manage().timeouts().implicitlyWait(Duration.ofSeconds(TIMEOUT));
     }
 
 }

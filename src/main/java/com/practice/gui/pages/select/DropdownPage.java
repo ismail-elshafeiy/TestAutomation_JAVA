@@ -1,5 +1,6 @@
 package com.practice.gui.pages.select;
 
+import engine.gui.actions.ActionsHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -27,7 +28,7 @@ public class DropdownPage {
     }
 
     public DropdownPage selectFromDropDown(String option) {
-        ElementActions.select(driver, dropdown_list, ElementActions.SelectType.TEXT, option);
+        ElementActions.select(driver, dropdown_list, ActionsHelper.SelectBy.TEXT, option);
 //        findDropDownElement().selectByVisibleText(option);
         return this;
     }
@@ -43,12 +44,12 @@ public class DropdownPage {
     }
 
     public DropdownPage selectByValue(String valueOption) {
-        ElementActions.select(driver, dropdown_list, ElementActions.SelectType.VALUE, valueOption);
+        ElementActions.select(driver, dropdown_list, ActionsHelper.SelectBy.VALUE, valueOption);
         return this;
     }
 
     public DropdownPage selectByVisible(String visibleOption) {
-        ElementActions.select(driver, dropdown_list, ElementActions.SelectType.TEXT, visibleOption);
+        ElementActions.select(driver, dropdown_list, ActionsHelper.SelectBy.TEXT, visibleOption);
         return this;
     }
 
