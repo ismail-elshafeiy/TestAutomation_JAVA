@@ -1,3 +1,4 @@
+<img src="src/test/resources/images/automation.png" alt="Automation" style="display:block; margin-left:auto; margin-right:auto;"/>
 # Technologies
 
 * Java Development Kit [JDK-17](https://www.oracle.com/java/technologies/downloads/#jdk17-windows) as a Development
