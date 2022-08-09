@@ -1,4 +1,4 @@
-package testCases.gui.actionsWith_Picker;
+package testCases.gui.calendar;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;

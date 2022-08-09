@@ -1,4 +1,8 @@
-# Technologies
+<img src="src/test/resources/images/automation.png" alt="Dentolize" width="250" height="200" style="display:block; margin-left:auto; margin-right:auto;"/>
+
+# 🔧 Technologies
+
+---
 
 * Java Development Kit [JDK-17](https://www.oracle.com/java/technologies/downloads/#jdk17-windows) as a Development
   Environment.
@@ -7,7 +11,8 @@
 * [TestNG](https://testng.org/) as a Unit Test Automation framework.
 * [Selenium WebDriver](https://www.selenium.dev/documentation/en/) for Web App GUI Test Automation.
 * [Appium](https://appium.io/) for Mobile App GUI Test Automation.
-* [Rest assured](https://javadoc.io/doc/io.rest-assured/rest-assured/latest/index.html) for REST/GraphQl API Test Automation.
+* [Rest assured](https://javadoc.io/doc/io.rest-assured/rest-assured/latest/index.html) for REST/GraphQl API Test
+  Automation.
 * [Allure Report Framework](https://docs.qameta.io/allure/) for generating test execution report.
 * [Extent Report Framework](https://www.extentreports.com/docs/versions/4/java/) for generating test execution report.
 * [Data Driven Testing framework](https://www.guru99.com/data-driven-testing.html) to read from data files and store
@@ -18,19 +23,24 @@
 * [GitHub Actions](https://docs.github.com/en/actions) for continuous integration.
 * Applying Hybrid Test Automation Framework
 
-## Project Design patterns:
+## 📝 Project Design patterns:
+
+---
 
 * [WebElement Extension Methods](https://toolsqa.com/selenium-webdriver/c-sharp/webelement-extensions-method/) (Selenium
   Wrapper).
 * Applying
-  the [Page Object Model (POM) design pattern](https://www.browserstack.com/guide/page-object-model-in-selenium#:~:text=Page%20Object%20Model%2C%20also%20known,application%20as%20a%20class%20file.).
+  the [Page Object Model (POM) design pattern](https://www.browserstack.com/guide/page-object-model-in-selenium#:~:text=Page%20Object%20Model%2C%20also%20known,application%20as%20a%20class%20file.)
+  .
 * [Fluent design](https://java-design-patterns.com/patterns/fluentinterface/) approach.
 * [Managing test data](https://www.ontestautomation.com/managing-test-data-in-end-to-end-test-automation/?fbclid=IwAR3JVpSg8jkhxVMgcPzihHDPzSWebbPxLZ7RxX22QQeJlSwQBNhNiXq-koU)
   in end-to-end test automation by approach `Creating test data during test execution`.
 
-## Project Structure:
+## ✏ Project Structure:
 
-```bash
+---
+
+```bach
   ├── main
   │   ├── com.project 
   │   │   ├── gui.pages
@@ -41,7 +51,7 @@
   │   │   ├── browser
   │   │   └── tools  
   │   └── resources
-  │       └──  configerations --> properties file
+  │       └── configerations --> properties file
   ├── test
   │   ├── testcases 
   │   │   ├── api
@@ -56,9 +66,11 @@
   └── README.md
 ```
 
-## Run the Test cases locally using IntelliJ IDEA
-
-Pre-requisites: jdk-17 and maven should be installed
+<br/>
+  <details>
+    <summary>
+      <strong> 👉 Click here to Run the Test cases locally using IntelliJ IDEA: </strong> 
+    </summary>
 
 * A properties file [project.properties](src/main/resources)  including all the configurations
 * Set the test Data from [TestData](src/test/resources/TestData)
@@ -91,7 +103,14 @@ CTRL+C to stop the server and type 'y'
 * Find the Extent Report [ExtentReports.html](ExtentReports.html) in the project root path for the latest execution and
   open by any browser
 
-## Run the Test remotely using Selenium-Grid and Docker:
+ </details>
+
+---
+<br/>
+  <details>
+    <summary>
+      <strong> 👉 Click here to Run the Test cases remotely using Selenium-Grid and Docker: </strong> 
+    </summary>
 
 Pre-requisites: Docker Desktop should be installed.
 
@@ -114,6 +133,7 @@ mvn test
 docker-compose -f src/main/resources/docker-compose.yml down --remove-orphans
 ```
 
+ </details>
 
 
 

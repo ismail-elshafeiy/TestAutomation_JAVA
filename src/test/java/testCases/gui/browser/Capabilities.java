@@ -28,7 +28,6 @@ public class Capabilities {
 
         // Chrome Options
         ChromeOptions options = new ChromeOptions();
-
         options.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
         options.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
 

@@ -27,8 +27,6 @@ public class GetAllLinksAndCheckTheirResponse {
     public void closeBrowser() {
         BrowserActions.closeAllOpenedBrowserWindows(driver);
     }
-
-
     /*
      *
      * Using driver.findElement"s" to get all the links (TagName = a )
@@ -41,8 +39,7 @@ public class GetAllLinksAndCheckTheirResponse {
         List<WebElement> links = driver.findElements(By.tagName("a"));
         // prints out the number of the links in our web page
         System.out.println(links.size());
-        for (
-                WebElement link : links ) {
+        for ( WebElement link : links ) {
             // prints out the link text of each link in our web page
             System.out.println("The link text is : " + link.getText());
             // prints out the href attribute of each link in our web page

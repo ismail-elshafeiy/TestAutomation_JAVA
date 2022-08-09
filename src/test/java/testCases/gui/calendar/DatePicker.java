@@ -1,4 +1,4 @@
-package testCases.gui.actionsWith_Picker;
+package testCases.gui.calendar;
 
 import com.practice.gui.pages.homePage.HomePage;
 import org.openqa.selenium.By;

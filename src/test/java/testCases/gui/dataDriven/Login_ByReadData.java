@@ -17,29 +17,6 @@ import java.io.FileNotFoundException;
 import static org.testng.Assert.assertTrue;
 
 public class Login_ByReadData {
-    private WebDriver driver;
-    private ExcelFileManager excelFileManager;
-    private JSONFileManager jsonFileManager;
-
-    private JSONFileManager_Approach2 jsonFileAppr2;
-
-
-    @BeforeMethod
-    public void setup_BeforeMethod() throws FileNotFoundException {
-        driver = BrowserFactory.getBrowser();
-//        excelFileManager = new ExcelFileManager(new File("src/test/resources/TestData/TestData.xlsx"));
-
-        jsonFileManager = new JSONFileManager("src/test/resources/TestData/TestData.json");
-
-    }
-
-    @AfterMethod(enabled = false)
-    public void closeBrowser() {
-        BrowserActions.closeAllOpenedBrowserWindows(driver);
-    }
-
-
-    // ExcelFileManager
 
     @Test
     public void testSuccessfulLogin() {
@@ -87,6 +64,24 @@ public class Login_ByReadData {
                 .clickLoginButton();
 //        assertTrue(SecureAreaPage.getAlertText().contains(expectedResult_successMessage),
 //                "Check Alert Message");
+    }
+
+    private WebDriver driver;
+    private ExcelFileManager excelFileManager;
+    private JSONFileManager jsonFileManager;
+
+    private JSONFileManager_Approach2 jsonFileAppr2;
+
+    @BeforeMethod
+    public void setup_BeforeMethod() throws FileNotFoundException {
+        driver = BrowserFactory.getBrowser();
+//        excelFileManager = new ExcelFileManager(new File("src/test/resources/TestData/TestData.xlsx"));
+        jsonFileManager = new JSONFileManager("src/test/resources/TestData/TestData.json");
+    }
+
+    @AfterMethod( enabled = false )
+    public void closeBrowser() {
+        BrowserActions.closeAllOpenedBrowserWindows(driver);
     }
 
 
