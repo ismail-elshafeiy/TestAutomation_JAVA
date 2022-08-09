@@ -2,8 +2,6 @@
 
 # 🔧 Technologies
 
----
-
 * Java Development Kit [JDK-17](https://www.oracle.com/java/technologies/downloads/#jdk17-windows) as a Development
   Environment.
 * [Maven](https://maven.apache.org/) as a build tool, that automate the process of compiling computer source code into
@@ -23,9 +21,9 @@
 * [GitHub Actions](https://docs.github.com/en/actions) for continuous integration.
 * Applying Hybrid Test Automation Framework
 
-## 📝 Project Design patterns:
-
 ---
+
+## 📝 Project Design patterns:
 
 * [WebElement Extension Methods](https://toolsqa.com/selenium-webdriver/c-sharp/webelement-extensions-method/) (Selenium
   Wrapper).
@@ -36,9 +34,9 @@
 * [Managing test data](https://www.ontestautomation.com/managing-test-data-in-end-to-end-test-automation/?fbclid=IwAR3JVpSg8jkhxVMgcPzihHDPzSWebbPxLZ7RxX22QQeJlSwQBNhNiXq-koU)
   in end-to-end test automation by approach `Creating test data during test execution`.
 
-## ✏ Project Structure:
-
 ---
+
+## ✏ Project Structure:
 
 ```bach
   ├── main
@@ -65,7 +63,7 @@
   ├── pom.xml
   └── README.md
 ```
-
+---
 <br/>
   <details>
     <summary>
@@ -135,5 +133,5 @@ docker-compose -f src/main/resources/docker-compose.yml down --remove-orphans
 
  </details>
 
-
+---
 
