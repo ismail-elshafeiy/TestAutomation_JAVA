@@ -15,23 +15,20 @@ import static org.testng.Assert.assertEquals;
 
 @Feature("web")
 @Epic("Element Actions")
-public class DoubleClick {
+public class DoubleClickTest {
 
 	private WebDriver driver;
 
 	@Test
-	public void DoubleClick () throws InterruptedException {
-		new HomePage(driver).navigateToHomePage("http://cookbook.seleniumacademy.com/DoubleClickDemo.html");
-
+	public void DoubleClick () {
+		new HomePage(driver)
+				.navigateToHomePage("http://cookbook.seleniumacademy.com/DoubleClickDemo.html");
 		WebElement box = driver.findElement(By.id("message"));
-
 		System.out.println(box.getCssValue("background-color"));
 		assertEquals(box.getCssValue("background-color"), "rgba(0, 0, 255, 1)");
-
 		// Double Click
 		Actions a = new Actions(driver);
 		a.doubleClick(box).perform();
-
 		// get the value to asset on it
 		System.out.println(box.getCssValue("background-color"));
 		assertEquals(box.getCssValue("background-color"), "rgba(255, 255, 0, 1)");

@@ -3,6 +3,7 @@ package testCases.gui.web.actions;
 import com.practice.gui.pages.homePage.HomePage;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import jdk.jfr.Description;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -17,16 +18,16 @@ import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
 
 import static org.testng.AssertJUnit.assertEquals;
+
 @Feature("web")
 @Epic("Element Actions")
-public class ContextClick {
+@Description("""
+		Using Actions Class to perform context Click ( Right Mouse Click ) on Elements
+		""")
+public class ContextClickTest {
 
 	private WebDriver driver;
 
-
-	/**
-	 * Using Actions Class to perform context Click ( Right Mouse Click ) on Elements
-	 */
 	Actions actions;
 	Alert alert;
 
@@ -55,19 +56,21 @@ public class ContextClick {
 				.click()
 				.perform();
 		WebDriverWait wait = null;
+		assert false;
 		Alert alert = wait.until(ExpectedConditions.alertIsPresent());
 		assertEquals("clicked: edit", alert.getText());
 		System.out.println(alert.getText());
 		alert.dismiss();
 	}
-    @BeforeMethod
-    public void setUp_BeforeMethod () {
-        driver = BrowserFactory.getBrowser();
-    }
 
-    @AfterMethod(enabled = false)
-    public void closeBrowser () {
-        BrowserActions.closeAllOpenedBrowserWindows(driver);
-    }
+	@BeforeMethod
+	public void setUp_BeforeMethod () {
+		driver = BrowserFactory.getBrowser();
+	}
+
+	@AfterMethod(enabled = false)
+	public void closeBrowser () {
+		BrowserActions.closeAllOpenedBrowserWindows(driver);
+	}
 
 }

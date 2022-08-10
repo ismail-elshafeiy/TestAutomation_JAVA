@@ -86,16 +86,7 @@ public class JavaScriptExecutorBrowserActionsTest {
 		((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)");
 	}
 
-	@Test
-	@Description("""
-			- Change color of an element 
-			""")
-	public void changeColor () {
-		BrowserActions.navigateToUrl(driver, " https://the-internet.herokuapp.com/");
-		By element = By.xpath("//h1[@class='heading']");
-		changeColor(driver, element, "red");
-		flash(driver, element);
-	}
+
 
 	@Test
 	@Description("""
@@ -117,21 +108,5 @@ public class JavaScriptExecutorBrowserActionsTest {
 		BrowserActions.closeAllOpenedBrowserWindows(driver);
 	}
 
-	public static void changeColor (WebDriver driver, By element, String color) {
-		JavascriptExecutor js = ((JavascriptExecutor) driver);
-		js.executeScript("arguments[0].style.backgroundColor = '" + color + "'", driver.findElement(element));
-		try {
-			Thread.sleep(20);
-		} catch (InterruptedException e) {
-		}
-	}
 
-	public static void flash (WebDriver driver, By element) {
-		JavascriptExecutor js = ((JavascriptExecutor) driver);
-		String bgcolor = driver.findElement(element).getCssValue("backgroundColor");
-		for (int i = 0; i < 10; i++) {
-			changeColor(driver, element, "rgb(0,200,0)");//1
-			changeColor(driver, element, bgcolor);//2
-		}
-	}
 }

@@ -12,8 +12,9 @@ import engine.broswer.BrowserFactory;
 
 @Feature("web")
 @Epic("Element Actions")
-public class SliderTests {
+public class SliderTest {
 	private WebDriver driver;
+
 	@Test
 	public void testSlideToWholeNumber () {
 		BrowserActions.navigateToUrl(driver, "http://www.globalsqa.com/");
@@ -24,14 +25,15 @@ public class SliderTests {
 			System.out.println(driver.findElements(By.id("gallery")).size());
 		}
 	}
-    @BeforeMethod
-    public void setUp_BeforeMethod () {
-        driver = BrowserFactory.getBrowser();
-    }
 
-    @AfterMethod(enabled = false)
-    public void closeBrowser () {
-        BrowserActions.closeAllOpenedBrowserWindows(driver);
-    }
+	@BeforeMethod
+	public void setUp_BeforeMethod () {
+		driver = BrowserFactory.getBrowser();
+	}
+
+	@AfterMethod(enabled = false)
+	public void closeBrowser () {
+		BrowserActions.closeAllOpenedBrowserWindows(driver);
+	}
 
 }

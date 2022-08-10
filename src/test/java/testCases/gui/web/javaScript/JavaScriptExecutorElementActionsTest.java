@@ -88,21 +88,27 @@ public class JavaScriptExecutorElementActionsTest {
 		Waits.getExplicitWait(driver).until(ExpectedConditions.visibilityOf(element));
 		Assert.assertTrue(driver.findElement(amazonLogoFooter).isDisplayed());
 	}
+
 	@Test
-	public void testContextMenu() {
-		BrowserActions.navigateToUrl(driver, "https://swisnl.github.io/jQuery-contextMenu/demo/accesskeys.html");
-		WebElement clickMenuBtn = driver.findElement(By.cssSelector("span.context-menu-one.btn.btn-neutral"));
-		WebElement contextMenu = driver.findElement(By.cssSelector("li.context-menu-item.context-menu-icon.context-menu-icon-edit"));
-		Actions actions = new Actions(driver);
-		actions.contextClick(clickMenuBtn)
-				.moveToElement(contextMenu)
-				.click()
-				.perform();
-		WebDriverWait wait = null;
-		Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-		assertEquals("clicked: edit", alert.getText());
-		System.out.println(alert.getText());
-		alert.dismiss();
+	@Description("""
+			- Select Date from DatePicker 
+			""")
+	public void selectDateByJs () {
+		BrowserActions.navigateToUrl(driver, "http://spicejet.com/");
+		By date = By.xpath("(//div[@class='css-76zvg2 css-bfa6kz r-homxoj r-ubezar'])[1]");
+		String dateVal = "30-12-2017";
+		selectDateByJS(driver, date, dateVal);
+	}
+
+	@Test
+	@Description("""
+			- Change color of an element 
+			""")
+	public void changeColor () {
+		BrowserActions.navigateToUrl(driver, " https://the-internet.herokuapp.com/");
+		By element = By.xpath("//h1[@class='heading']");
+		changeColor(driver, element, "red");
+		flash(driver, element);
 	}
 
 	@BeforeMethod
@@ -115,4 +121,26 @@ public class JavaScriptExecutorElementActionsTest {
 		BrowserActions.closeAllOpenedBrowserWindows(driver);
 	}
 
+	public static void changeColor (WebDriver driver, By element, String color) {
+		JavascriptExecutor js = ((JavascriptExecutor) driver);
+		js.executeScript("arguments[0].style.backgroundColor = '" + color + "'", driver.findElement(element));
+		try {
+			Thread.sleep(20);
+		} catch (InterruptedException e) {
+		}
+	}
+
+	public static void flash (WebDriver driver, By element) {
+		JavascriptExecutor js = ((JavascriptExecutor) driver);
+		String bgcolor = driver.findElement(element).getCssValue("backgroundColor");
+		for (int i = 0; i < 10; i++) {
+			changeColor(driver, element, "rgb(0,200,0)");//1
+			changeColor(driver, element, bgcolor);//2
+		}
+	}
+
+	public static void selectDateByJS (WebDriver driver, By element, String dateVal) {
+		JavascriptExecutor js = ((JavascriptExecutor) driver);
+		js.executeScript("arguments[0].setAttribute('value','" + dateVal + "');", driver.findElement(element));
+	}
 }

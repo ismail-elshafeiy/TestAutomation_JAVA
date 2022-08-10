@@ -7,7 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -19,7 +18,7 @@ import static org.testng.Assert.assertTrue;
 
 @Feature("web")
 @Epic("Element Actions")
-public class Hover {
+public class HoverTest {
 	private WebDriver driver;
 
 	// TODO:  refactors method Code

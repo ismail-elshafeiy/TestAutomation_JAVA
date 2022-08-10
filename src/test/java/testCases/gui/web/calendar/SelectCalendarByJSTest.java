@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
 
-public class SelectCalendarByJS {
+public class SelectCalendarByJSTest {
     private WebDriver driver;
 
     @BeforeMethod
@@ -35,4 +35,5 @@ public class SelectCalendarByJS {
         JavascriptExecutor js = ((JavascriptExecutor) driver);
         js.executeScript("arguments[0].setAttribute('value','" + dateVal + "');", element);
     }
+
 }

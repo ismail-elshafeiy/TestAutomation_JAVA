@@ -11,7 +11,7 @@ import engine.broswer.BrowserFactory;
 
 import static org.testng.Assert.assertEquals;
 
-public class Alerts_Tests {
+public class AlertsTests {
 
 	private WebDriver driver;
 

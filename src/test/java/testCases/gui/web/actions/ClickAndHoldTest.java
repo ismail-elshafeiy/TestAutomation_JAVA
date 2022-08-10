@@ -3,6 +3,7 @@ package testCases.gui.web.actions;
 import com.practice.gui.pages.homePage.HomePage;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import jdk.jfr.Description;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -14,17 +15,13 @@ import engine.broswer.BrowserFactory;
 
 @Feature("web")
 @Epic("Element Actions")
-public class ClickAndHold {
+@Description("""
+		 Using Actions Class to perform a Click on element and Hold it
+		 	then goes to specific location or and Release the Hold button
+			Mainly used in horizontal bars , Draw something in Canvas
+		""")
+public class ClickAndHoldTest {
 	private WebDriver driver;
-
-	/*
-	 *
-	 * Using Actions Class to perform a Click on element and Hold it
-	 * then goes to specific location or and Release the Hold button
-	 * Mainly used in horizontal bars , Draw something in Canvas
-	 *
-	 */
-
 	Actions actions;
 
 	@Test
