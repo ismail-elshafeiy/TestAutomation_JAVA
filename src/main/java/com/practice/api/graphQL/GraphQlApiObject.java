@@ -12,7 +12,7 @@ public class GraphQlApiObject {
      * @return past launches response
      */
     public Response getPastLaunches() {
-        return GraphQlActions.sendGraphQlRequest(Resolvers.LAUNCHPAST_QUERY);
+        return GraphQlActions.sendGraphQlRequest(Schema.LAUNCHPAST_QUERY);
     }
 
 // graphql sample request using mutation with variables
@@ -28,7 +28,7 @@ public class GraphQlApiObject {
     public Response insertUser(String name, String rocket) {
 
         String variables = "{\"name\": \"" + name + "\",\"rocket\": \"" + rocket + "\"}";
-        return GraphQlActions.sendGraphQlRequest(Resolvers.INSERTUSER_MUTATION, variables);
+        return GraphQlActions.sendGraphQlRequest(Schema.INSERTUSER_MUTATION, variables);
 
     }
 }

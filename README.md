@@ -1,4 +1,4 @@
-<img src="src/test/resources/images/automation.png" alt="Dentolize" width="250" height="200" style="display:block; margin-left:auto; margin-right:auto;"/>
+<img src="src/test/resources/images/automation.png" alt="Me" width="250" height="200" style="display:block; margin-left:auto; margin-right:auto;"/>
 
 # 🔧 Technologies
 
@@ -39,29 +39,36 @@
 ## ✏ Project Structure:
 
 ```bach
-  ├── main
-  │   ├── com.project 
-  │   │   ├── gui.pages
-  │   │   └──  apis
-  │   ├── framework --> engine
-  │   │   ├── gui.actions
-  │   │   ├── api.actions
-  │   │   ├── browser
-  │   │   └── tools  
-  │   └── resources
-  │       └── configerations --> properties file
-  ├── test
-  │   ├── testcases 
-  │   │   ├── api
-  │   │   └── gui
-  │   ├── testSenarios
-  │   │   └── end_to_end
-  │   └── resources
-  │       ├── testData
-  │       ├── uploads files
-  │       └── screenshots
-  ├── pom.xml
-  └── README.md
+  └── src
+      ├── main
+      │   ├── com.project 
+      │   │   ├── api
+      │   │   └── gui
+      │   │       ├── pages
+      │   │       └── screens  
+      │   ├── framework --> engine
+      │   │   ├── gui.actions
+      │   │   ├── api.actions
+      │   │   ├── browser
+      │   │   └── tools  
+      │   └── resources
+      │       └── configerations --> properties file
+      │
+      └── test
+          ├── testcases 
+          │   ├── api
+          │   └── gui
+          │       ├── web
+          │       └── mobile 
+          ├── testSenarios
+          │   └── end_to_end
+          └── resources
+              ├── testData
+              ├── uploads files
+              ├── apk   
+              └── screenshots
+└── pom.xml
+└── README.md
 ```
 ---
 <br/>
