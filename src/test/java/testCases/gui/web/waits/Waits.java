@@ -1,4 +1,4 @@
-package testCases.gui.web.browser.waitLoading;
+package testCases.gui.web.waits;
 
 import io.qameta.allure.*;
 import org.openqa.selenium.By;

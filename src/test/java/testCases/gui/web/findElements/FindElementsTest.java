@@ -6,25 +6,30 @@ import io.qameta.allure.Feature;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import org.testng.annotations.*;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
 
+import java.util.List;
+
 @Feature("web")
 @Epic("FindElements")
-public class FindLinksByTest {
+public class FindElementsTest {
 	private WebDriver driver;
 
 	@Test
-	public void textLinkText () {
-		WebElement seleniumLink = driver.findElement(By.linkText("Elemental Selenium"));
-		System.out.println("The Link = " + seleniumLink.getAttribute("href"));
-	}
+	public void list () {
+		// get all Links displayed onm page
+		List<WebElement> links = driver.findElements(By.tagName("a"));
+		//verify there are 20 Links displayed on the page
+		Assert.assertEquals(links.size(), 46);
+		System.out.println("The number of elements = " + links.size());
 
-	@Test
-	public void textPartialText () {
-		WebElement seleniumLink = driver.findElement(By.partialLinkText("Elemental"));
-		System.out.println("The Link 2 = " + seleniumLink.getAttribute("href"));
+		// Print each link value
+		for (WebElement link : links) {
+			System.out.println(link.getAttribute("href"));
+		}
 	}
 
 	@BeforeMethod
@@ -37,5 +42,5 @@ public class FindLinksByTest {
 	public void closeBrowser () {
 		BrowserActions.closeAllOpenedBrowserWindows(driver);
 	}
-
 }
+

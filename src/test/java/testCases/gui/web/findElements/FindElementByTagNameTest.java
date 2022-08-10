@@ -6,31 +6,32 @@ import io.qameta.allure.Feature;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
 
+import java.util.List;
+
 @Feature("web")
 @Epic("FindElements")
-public class FindLinksByTest {
+public class FindElementByTagNameTest {
+
 	private WebDriver driver;
 
 	@Test
-	public void textLinkText () {
-		WebElement seleniumLink = driver.findElement(By.linkText("Elemental Selenium"));
-		System.out.println("The Link = " + seleniumLink.getAttribute("href"));
-	}
-
-	@Test
-	public void textPartialText () {
-		WebElement seleniumLink = driver.findElement(By.partialLinkText("Elemental"));
-		System.out.println("The Link 2 = " + seleniumLink.getAttribute("href"));
+	public void Register () {
+		new HomePage(driver).navigateToHomePage("http://the-internet.herokuapp.com/tables");
+		WebElement table = driver.findElement(By.id("table"));
+		List<WebElement> rows = table.findElements(By.tagName("tr"));
+		System.out.println(rows.size());
+		System.out.println(rows.get(3).getText());
 	}
 
 	@BeforeMethod
 	public void setUp_BeforeMethod () {
 		driver = BrowserFactory.getBrowser();
-		new HomePage(driver).navigateToHomePage("http://the-internet.herokuapp.com/dropdown");
 	}
 
 	@AfterMethod
