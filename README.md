@@ -39,6 +39,8 @@
 ## ✏ Project Structure:
 
 ```bach
+  ├── ConsoleLogs
+  ├── ExtentReport
   └── src
       ├── main
       │   ├── com.project 

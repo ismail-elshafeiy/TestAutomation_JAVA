@@ -26,11 +26,11 @@ import java.util.stream.Collectors;
 public class Logger {
 	public static org.apache.logging.log4j.Logger log = LogManager.getLogger(Logger.class.getName());
 	private static final org.slf4j.Logger slf4jLogger = LoggerFactory.getLogger(Logger.class);
-	static Logs logs;
-	static LogEntries logEntries;
-	static PrintWriter writer;
-	private static boolean debugMode = false;
+	private static final boolean debugMode = false;
 	static String currentTime = Helper.getCurrentTime("dd-MM-yyyy HH:mm:ss.SSS a");
+	static PrintWriter writer;
+	static LogEntries logEntries;
+	static Logs logs;
 
 	/**
 	 * Log step that will be added as a step in the execution report
@@ -48,13 +48,12 @@ public class Logger {
 		ExtentReport.info(logMessage);
 	}
 
-	public static void logConsoleLogs (WebDriver driver, ITestResult result) throws Throwable {
+	public static void logConsoleLogs (WebDriver driver, ITestResult result) throws IOException {
 		logs = driver.manage().logs();
 		logEntries = logs.get(LogType.BROWSER);
-
-		String filePath = System.getProperty("user.dir") + "/src/test/resources/consoleLog/" + result.getMethod().getMethodName() + ".txt";
+		String filePath = System.getProperty("user.dir") + "/ConsoleLogs/" + result.getMethod().getMethodName() + ".txt";
 		writer = new PrintWriter(filePath, StandardCharsets.UTF_8);
-		Logger.logStep("@" + currentTime + "Console logs for Test Case: [" + result.getMethod().getMethodName() + "] are saved in [ " + filePath + " ]");
+		Logger.logStep("Console logs for Test Case: [" + result.getMethod().getMethodName() + "] are saved in [ " + filePath + " ]");
 		try {
 			for (LogEntry logEntry : logEntries) {
 				writer.println("Console log found in Test- " + result.getName());
@@ -78,6 +77,7 @@ public class Logger {
 		}
 	}
 
+
 	@Attachment(value = "API Request - {type}", type = "text/json")
 	public static byte[] attachApiRequestToAllureReport (String type, byte[] b) {
 		return attachTextJson(b);
@@ -98,7 +98,8 @@ public class Logger {
 		return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
 	}
 
-	private static synchronized void attachBasedOnFileType (String attachmentType, ByteArrayOutputStream attachmentContent, String attachmentDescription) {
+	private static synchronized void attachBasedOnFileType (String attachmentType, ByteArrayOutputStream
+			attachmentContent, String attachmentDescription) {
 		if (attachmentType.toLowerCase().contains("screenshot")) {
 			Allure.addAttachment(attachmentDescription, "image/png", new ByteArrayInputStream(attachmentContent.toByteArray()), ".png");
 //            attachImageToExtentReport("image/png", new ByteArrayInputStream(attachmentContent.toByteArray()));
@@ -134,7 +135,8 @@ public class Logger {
 		createAttachment(attachmentType, attachmentName, attachmentContent);
 	}
 
-	private static void createAttachment (String attachmentType, String attachmentName, InputStream attachmentContent) {
+	private static void createAttachment (String attachmentType, String attachmentName, InputStream
+			attachmentContent) {
 		var baos = new ByteArrayOutputStream();
 		try {
 			attachmentContent.transferTo(baos);
@@ -149,14 +151,13 @@ public class Logger {
 		logAttachmentAction(attachmentType, attachmentName, baos);
 	}
 
-	private static synchronized void logAttachmentAction (String attachmentType, String attachmentName, ByteArrayOutputStream attachmentContent) {
+	private static synchronized void logAttachmentAction (String attachmentType, String
+			attachmentName, ByteArrayOutputStream attachmentContent) {
 		logStep("Successfully created attachment \"" + attachmentType + " - " + attachmentName + "\"");
 		String timestamp = Helper.getCurrentTime();
 		String theString;
 		var br = new BufferedReader(
 				new InputStreamReader(new ByteArrayInputStream(attachmentContent.toByteArray()), StandardCharsets.UTF_8));
 		theString = br.lines().collect(Collectors.joining(System.lineSeparator()));
-
-
 	}
 }
