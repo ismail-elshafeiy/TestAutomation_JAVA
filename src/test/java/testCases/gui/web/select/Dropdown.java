@@ -33,7 +33,7 @@ public class Dropdown {
     }
 
     @AfterMethod()
-    public void closeBrowser(ITestResult result) throws IOException {
+    public void closeBrowser(ITestResult result) throws Throwable {
         BrowserActions.closeAllOpenedBrowserWindows(driver, result);
     }
 

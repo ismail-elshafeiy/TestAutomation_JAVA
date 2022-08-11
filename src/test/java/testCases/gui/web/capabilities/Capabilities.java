@@ -1,4 +1,4 @@
-package testCases.gui.web.browser;
+package testCases.gui.web.capabilities;
 
 
 import io.github.bonigarcia.wdm.WebDriverManager;

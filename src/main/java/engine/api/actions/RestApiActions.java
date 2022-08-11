@@ -169,10 +169,8 @@ public class RestApiActions {
             Logger.logStep(e.getMessage());
             fail(e.getMessage());
         }
-
         Logger.attachApiResponseToAllureReport(response.asByteArray());
         ExtentReport.info(MarkupHelper.createCodeBlock("API Response: " + "\n" + response.asPrettyString()));
-
         return response;
     }
 

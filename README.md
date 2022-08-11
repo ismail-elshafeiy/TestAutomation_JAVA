@@ -67,8 +67,8 @@
               ├── uploads files
               ├── apk   
               └── screenshots
-└── pom.xml
-└── README.md
+  └── pom.xml
+  └── README.md
 ```
 ---
 <br/>

@@ -14,6 +14,7 @@ import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
 
 import static org.testng.Assert.assertEquals;
+
 @Epic("Keys")
 @Feature("web")
 public class ActionsClassKeyboardTest {
@@ -37,6 +38,12 @@ public class ActionsClassKeyboardTest {
 		// moveToElement moves the cursor to the center of the element and then clicks it by using click
 		actions.moveToElement(driver.findElement(By.cssSelector("button.radius"))).click()
 				.build().perform();
+	}
+
+	@Test
+	public void keyboard () {
+		String newTap = Keys.chord(Keys.COMMAND, Keys.SHIFT, Keys.ENTER);
+		driver.findElement(By.xpath("")).sendKeys(newTap);
 	}
 
 	@Test
@@ -94,6 +101,7 @@ public class ActionsClassKeyboardTest {
 		System.out.println("Pressing space");
 		System.out.println(TheUsedKeyPressLabel.getText());
 	}
+
 
 	@BeforeMethod
 	public void setUp_BeforeMethod () {

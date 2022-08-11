@@ -26,7 +26,7 @@ public class ActionsHelper {
 			// Check if the element is displayed
 			if (!driver.findElement(elementLocator).isDisplayed()) {
 				Logger.logStep("The element [" + elementLocator.toString() + "] is not Displayed");
-				fail("The element [" + elementLocator.toString() + "] is not Displayed");
+				fail("The element [" + elementLocator + "] is not Displayed");
 			}
 		} catch (Exception toe) {
 			Logger.logMessage(toe.getMessage());
@@ -39,7 +39,7 @@ public class ActionsHelper {
 			Waits.getExplicitWait(mobile).until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
 			if (!mobile.findElement(elementLocator).isDisplayed()) {
 				Logger.logStep("The element [" + elementLocator.toString() + "] is not Displayed");
-				fail("The element [" + elementLocator.toString() + "] is not Displayed");
+				fail("The element [" + elementLocator + "] is not Displayed");
 			}
 		} catch (TimeoutException toe) {
 			Logger.logMessage(toe.getMessage());

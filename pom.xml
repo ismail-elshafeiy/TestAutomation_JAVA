@@ -300,6 +300,12 @@
             <artifactId>playwright</artifactId>
             <version>${playwright.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.almondtools/testrecorder -->
+        <dependency>
+            <groupId>com.github.almondtools</groupId>
+            <artifactId>testrecorder</artifactId>
+            <version>0.1.6</version>
+        </dependency>
 
     </dependencies>
 
