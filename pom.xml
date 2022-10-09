@@ -13,7 +13,7 @@
 
 
     <properties>
-        <selenium.version>4.3.0</selenium.version>
+        <selenium.version>4.5.0</selenium.version>
         <appium-java-client.version>7.4.1</appium-java-client.version>
         <webdrivermanager.version>5.2.3</webdrivermanager.version>
         <playwright.version>1.24.1</playwright.version>
