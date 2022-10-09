@@ -15,7 +15,7 @@
     <properties>
         <selenium.version>4.5.0</selenium.version>
         <appium-java-client.version>7.4.1</appium-java-client.version>
-        <webdrivermanager.version>5.2.3</webdrivermanager.version>
+        <webdrivermanager.version>5.3.0</webdrivermanager.version>
         <playwright.version>1.26.1</playwright.version>
         <testng.version>7.6.1</testng.version>
         <rest-assured.version>5.1.1</rest-assured.version>
