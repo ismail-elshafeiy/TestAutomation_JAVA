@@ -38,13 +38,13 @@ public class MobileActions {
 		switch (mobileDriverType) {
 			case ANDROID:
 				try {
-					mobile = new AndroidDriver<MobileElement>(new URL("http://localhost:4723/wd/hub"), cap);
+					mobile = new AndroidDriver<>(new URL("http://localhost:4723/wd/hub"), cap);
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 				}
 			case IOS:
 				try {
-					mobile = new IOSDriver<MobileElement>(new URL("http://localhost:4723/wd/hub"), cap);
+					mobile = new IOSDriver<>(new URL("http://localhost:4723/wd/hub"), cap);
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 				}

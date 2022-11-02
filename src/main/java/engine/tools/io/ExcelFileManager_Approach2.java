@@ -13,8 +13,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelFileManager_Approach2 {
     FileInputStream spreadSheet;
-
-
     public ExcelFileManager_Approach2(FileInputStream file) {
         spreadSheet = file;
     }
@@ -24,16 +22,8 @@ public class ExcelFileManager_Approach2 {
         //Creating a workbook
         XSSFWorkbook workbook = new XSSFWorkbook(spreadSheet);
         XSSFSheet sheet = workbook.getSheetAt(sheetName);
-
         Row row = sheet.getRow(row1);
         Cell cell = row.getCell(cell1);
-
         System.out.println(sheet.getRow(row1).getCell(cell1));
-
-
-//String cellval = cell.getStringCellValue();
-//System.out.println(cellval);
-
-
     }
 }

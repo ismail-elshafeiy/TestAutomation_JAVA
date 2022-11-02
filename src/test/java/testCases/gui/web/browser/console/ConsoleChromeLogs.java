@@ -3,7 +3,7 @@ package testCases.gui.web.browser.console;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.v101.log.Log;
+import org.openqa.selenium.devtools.v104.log.Log;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -13,11 +13,9 @@ public class ConsoleChromeLogs {
     //    EdgeDriver driver;
     ChromeDriver driver;
 
-
-
     @Test
     public void viewBrowserConsoleLogs() {
-        // Get The DevTools & Create A Session
+        // Get The DevTools class & Create A Session
         DevTools devTools = driver.getDevTools();
         devTools.createSession();
         // Enable The Console Logs

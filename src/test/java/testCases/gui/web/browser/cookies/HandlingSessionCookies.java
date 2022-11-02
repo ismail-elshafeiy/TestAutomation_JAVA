@@ -56,7 +56,6 @@ public class HandlingSessionCookies {
             System.out.println(cookie.getPath());
             System.out.println(cookie.getValue());
             System.out.println(cookie.getExpiry());
-
         }
 
 

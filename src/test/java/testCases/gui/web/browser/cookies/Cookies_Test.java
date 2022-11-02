@@ -27,7 +27,7 @@ public class Cookies_Test {
 
 
     @Test
-    public void testAddCookie() {
+    public void AddCookie() {
 //        new HomePage(driver).navigateTo_yourHomePage("");
         Cookie cookie = new Cookie.Builder("test", "123").domain("the-internet.herokuapp.com").build();
         driver.manage().addCookie(cookie);
@@ -35,7 +35,7 @@ public class Cookies_Test {
     }
 
     @Test
-    public void testDeleteCookie() {
+    public void deleteCookie() {
         Cookie cookie = new Cookie.Builder("optimizelyBuckets", "%7B%TD").domain("the-internet.herokuapp.com").build();
         driver.manage().deleteCookie(cookie);
         assertFalse(driver.manage().getCookieNamed(cookie.getName()) != null, "Cookie was not deleted");

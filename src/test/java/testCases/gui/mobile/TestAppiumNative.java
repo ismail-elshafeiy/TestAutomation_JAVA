@@ -19,8 +19,8 @@ public class TestAppiumNative {
 	private String email = "testA7QA@tes.com";
 	private String password = "Aa12345#";
 	private int countryIndex = 2;
-	private String emaulatorUDID = "emulator-5554";
-
+	private String emulatorUDID = "emulator-5554";
+	private String deviceName = "";
 	@Test
 	public void checkSuccessRegistration () {
 		new CountryScreen_Native(mobile)
@@ -49,9 +49,9 @@ public class TestAppiumNative {
 	@BeforeMethod
 	public void beforeMethod () throws MalformedURLException {
 		mobile = MobileActions.InitiateMobileDriver(mobile, MobileActions.MobileDriverType.ANDROID);
-		MobileActions.setCapabilities(emaulatorUDID,
-				"Test Mobile",
-				"7.1.1",
+		MobileActions.setCapabilities(deviceName,
+				"ismail oppo",
+				"12.0",
 				"Android",
 				"com.jumia.android",
 				"com.mobile.view.SplashScreenActivity",

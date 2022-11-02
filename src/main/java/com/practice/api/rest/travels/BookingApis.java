@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class BookingApis {
 
-
     private RestApiActions apiObject;
     private String token;
     private String booking_serviceName = "booking";
@@ -21,14 +20,7 @@ public class BookingApis {
     }
 
 
-    public Response createBooking(String firstName,
-                                  String lastName,
-                                  int totalPrice,
-                                  boolean depositPaid,
-                                  String checkIn,
-                                  String checkOut,
-                                  String additionalNeeds) {
-
+    public Response createBooking(String firstName, String lastName, int totalPrice, boolean depositPaid, String checkIn, String checkOut, String additionalNeeds) {
         return apiObject.performRequest(RestApiActions.RequestType.POST,
                 booking_serviceName,
                 RestApiBase.StatusCode.SUCCESS.getCode(),

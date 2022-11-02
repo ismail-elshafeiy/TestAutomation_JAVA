@@ -349,7 +349,7 @@
                             </property>
                             <property>
                                 <name>listener</name>
-                                <value>engine.tools.listeners.TestngListener</value>
+                                <value>engine.tools.listeners.TestngListener, engine.tools.listeners.WebListener</value>
                             </property>
                         </properties>
                     </configuration>
