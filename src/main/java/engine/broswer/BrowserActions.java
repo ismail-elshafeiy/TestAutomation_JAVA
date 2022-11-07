@@ -28,6 +28,18 @@ public class BrowserActions {
 		}
 	}
 
+	@Step("Navigate to URL: [{url}]")
+	public static void navigateToUrl (String url) {
+		try {
+			Logger.logStep("[Browser Action] Navigate to URL [" + url + "]");
+			driver.get(url);
+			((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+		} catch (Exception e) {
+			Logger.logStep(e.getMessage());
+			fail(e.getMessage());
+		}
+	}
+
 	@Step("Check the test result and Close All Opened Browser Windows.....")
 	public static void closeAllOpenedBrowserWindows (WebDriver driver, ITestResult result) throws Throwable {
 		if (ITestResult.FAILURE == result.getStatus()) {
@@ -69,6 +81,16 @@ public class BrowserActions {
 		}
 	}
 
+	@Step("Minimize the Browser Window")
+	public static void minimizeWindow (WebDriver driver) {
+		try {
+			Logger.logStep("[Browser Action] minimize the Browser Window");
+			driver.manage().window().minimize();
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+		}
+	}
+
 	@Step("Set the WindowResolution [{width}], [{height}]")
 	public static void setWindowResolution (WebDriver driver) {
 		String width = PropertiesReader.getProperty("project.properties", "width");
@@ -84,21 +106,45 @@ public class BrowserActions {
 
 
 	public enum ConfirmAlertType {
-		ACCEPT, DISMISS
+		ACCEPT, DISMISS, SET_TEXT, GET_TEXT
 	}
 
 	@Step("Confirm the Alert")
-	public static void confirmAlert (WebDriver driver, ConfirmAlertType confirmAlertType) {
+	public static void alertAction (WebDriver driver, ConfirmAlertType confirmAlertType) {
 		Waits.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
 		Alert alert = driver.switchTo().alert();
-		switch (confirmAlertType) {
-			case ACCEPT -> alert.accept();
-			case DISMISS -> {
-				Waits.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
-				alert.dismiss();
+		try {
+			switch (confirmAlertType) {
+				case ACCEPT:
+					Logger.logStep("[Browser Action] Confirm the Alert");
+					alert.accept();
+					break;
+				case DISMISS:
+					Logger.logStep("[Browser Action] Dismiss the Alert");
+					alert.dismiss();
+					break;
+				case SET_TEXT:
+					Logger.logStep("[Browser Action] Get Text from the Alert");
+					alert.getText();
+					break;
 			}
+		} catch (Exception e) {
+			Logger.logMessage("Alert is not present" + e.getMessage());
+		}
+
+	}
+
+	@Step("Confirm the Alert")
+	public static void alertAction (WebDriver driver, ConfirmAlertType confirmAlertType, String text) {
+		Waits.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
+		try {
+			Logger.logStep("[Browser Action] Send Keys the Alert");
+			driver.switchTo().alert().sendKeys(text);
+		} catch (Exception e) {
+			Logger.logMessage("Alert is not present" + e.getMessage());
 		}
 	}
+
 
 	public enum CookieBuilderType {
 		ADD, DELETE
@@ -182,7 +228,11 @@ public class BrowserActions {
 
 	public void switchToNewTab () {
 		var windows = driver.getWindowHandles();
-		windows.forEach(driver.switchTo()::window);
+		try {
+			windows.forEach(driver.switchTo()::window);
+		} catch (Exception e) {
+			Logger.logMessage("" + e.getMessage());
+		}
 	}
 
 	public void printAllWindowsTitle () {

@@ -25,7 +25,7 @@ public class ActionsClassKeyboardTest {
 	@Test
 	@Description("Performing KeyBoard actions Test Case")
 	void SendingKeysAndCLick () {
-		driver.get("https://the-internet.herokuapp.com/login");
+		BrowserActions.navigateToUrl("https://the-internet.herokuapp.com/login");
 		actions = new Actions(driver);
 		// send value to textbox using sendKeys of actions class
 		actions.sendKeys(driver.findElement(By.id("username")), "tomsmith")

@@ -19,6 +19,7 @@ import java.util.Base64;
 import static com.automation.remarks.video.RecordingUtils.doVideoProcessing;
 
 public class RecordManager {
+    // TODO: Refactor Record Video class
     private static final Boolean RECORD_VIDEO = true;
     private static final ThreadLocal<IVideoRecorder> recorder = new ThreadLocal<>();
     private static final ThreadLocal<WebDriver> videoDriver = new ThreadLocal<>();
