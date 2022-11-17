@@ -1,38 +1,172 @@
-# The main Frameworks included in the project:
+<img src="src/test/resources/images/automation.png" alt="Me" width="250" height="200" style="display:block; margin-left:auto; margin-right:auto;"/>
 
-* Selenium Webdriver
-* Rest-Assured
-* TestNG
-* Allure Report
-* Extent Reports
-* Apachi POI
+# 🔧 Technologies
 
-## Project Design:
+* Java Development Kit [JDK-17](https://www.oracle.com/java/technologies/downloads/#jdk17-windows) as a Development
+  Environment.
+* [Maven](https://maven.apache.org/) as a build tool, that automate the process of compiling computer source code into
+  binary code.
+* [TestNG](https://testng.org/) as a Unit Test Automation framework.
+* [Selenium WebDriver](https://www.selenium.dev/documentation/en/) for Web App GUI Test Automation.
+* [Appium](https://appium.io/) for Mobile App GUI Test Automation.
+* [Rest assured](https://javadoc.io/doc/io.rest-assured/rest-assured/latest/index.html) for REST/GraphQl API Test
+  Automation.
+* [Allure Report Framework](https://docs.qameta.io/allure/) for generating test execution report.
+* [Extent Report Framework](https://www.extentreports.com/docs/versions/4/java/) for generating test execution report.
+* [Data Driven Testing framework](https://www.guru99.com/data-driven-testing.html) to read from data files and store
+  them in variables in test scripts.
+* [Docker](https://docs.docker.com/)
+* [Docker Compose](https://docs.docker.com/compose/overview/) for running Selenium Grid.
+* [Selenium Grid](https://www.selenium.dev/documentation/grid/) for remote execution.
+* [GitHub Actions](https://docs.github.com/en/actions) for continuous integration.
+* Applying Hybrid Test Automation Framework
 
-* Page Object Model (POM) design pattern
-* Data Driven framework
-* Fluent design approach
+---
 
-## Pre-requests
+## 📝 Project Design patterns:
 
-* Install Java [JDK 17](https://www.oracle.com/java/technologies/downloads/#jdk17-windows)
-* Install [Maven](https://maven.apache.org/download.cgi)
-* Install Allure Report
+* [WebElement Extension Methods](https://toolsqa.com/selenium-webdriver/c-sharp/webelement-extensions-method/) (Selenium
+  Wrapper).
+* Applying
+  the [Page Object Model (POM) design pattern](https://www.browserstack.com/guide/page-object-model-in-selenium#:~:text=Page%20Object%20Model%2C%20also%20known,application%20as%20a%20class%20file.)
+  .
+* [Fluent design](https://java-design-patterns.com/patterns/fluentinterface/) approach.
+* [Managing test data](https://www.ontestautomation.com/managing-test-data-in-end-to-end-test-automation/?fbclid=IwAR3JVpSg8jkhxVMgcPzihHDPzSWebbPxLZ7RxX22QQeJlSwQBNhNiXq-koU)
+  in end-to-end test automation by approach `Creating test data during test execution`.
 
-### Install and Execution:
+---
 
-### How to run the project main test cases locally:
+## ✏ Project Structure:
+
+```bach
+  ├── ConsoleLogs
+  ├── ExtentReport
+  └── src
+      ├── main
+      │   ├── com.project 
+      │   │   ├── api
+      │   │   └── gui
+      │   │       ├── pages
+      │   │       └── screens  
+      │   ├── framework --> engine
+      │   │   ├── gui.actions
+      │   │   ├── api.actions
+      │   │   ├── browser
+      │   │   └── tools  
+      │   └── resources
+      │       └── configerations --> properties file
+      │
+      └── test
+          ├── testcases 
+          │   ├── api
+          │   └── gui
+          │       ├── web
+          │       └── mobile 
+          ├── testSenarios
+          │   └── end_to_end
+          └── resources
+              ├── testData
+              ├── uploads files
+              ├── apk   
+              └── screenshots
+  └── pom.xml
+  └── README.md
+```
+
+---
+<br/>
+  <details>
+    <summary>
+      <strong> 👉 Click here to Run the Test cases locally using IntelliJ IDEA: </strong> 
+    </summary>
 
 * A properties file [project.properties](src/main/resources)  including all the configurations
 * Set the test Data from [TestData](src/test/resources/TestData)
-* Execute All testSuites using Command-line opening a command-line terminal on the project root path and
-  type `mvn clean test`
-* After executing,generate the ***Allure Report*** by opening a command-line terminal on the project root path and
-  type `mvn allure:serve`
-* Find the Extent Report [ExtentReports.html](ExtentReports.html) in the project root path for the latest execution and open by any browser
-* Rub Project by opening a command-line terminal on the project root path and type `mvn `
+* Edit your run configuration templates before running your tests by following these steps:
+  <br/>- Open 'Edit Run/Debug Configurations' dialog > Edit Configurations... > Edit configuration templates...
+  <br/>- Select <b>TestNG</b> > Listeners > and add this listener:
+  `engine.tools.listeners.TestngListener`
+* Execute All testSuites using Command-line opening a command-line terminal on the project root path and run the
+  following command:
 
+```bash
+  mvn clean test
+  ```
 
+* After executing,generate the ***Allure Report*** by opening a command-line terminal on the project root path and run
+  the following command:
 
+```bash
+ mvn allure:serve
+  ```
 
+```bash
+CTRL+C to stop the server and type 'y'
+```
 
+```bash
+  mvn clean
+  ```
+
+* Find the Extent Report [ExtentReports.html](ExtentReports.html) in the project root path for the latest execution and
+  open by any browser
+
+ </details>
+
+---
+<br/>
+  <details>
+    <summary>
+      <strong> 👉 Click here to Run the Test cases remotely using Selenium-Grid and Docker: </strong> 
+    </summary>
+
+Pre-requisites: Docker Desktop should be installed.
+
+* To start selenium-grid using docker-compose; at the root directory of the project, run the following command:
+
+```bash
+docker-compose -f src/main/resources/docker-compose.yml up --scale chrome=2 --remove-orphans -d
+```
+
+* Open [http://localhost:4444/grid/console](http://localhost:4444/grid/console) to monitor selenium grid.
+* Run the test using the following command:
+
+```bash
+mvn test
+```
+
+* To end/down selenium grid; at the root directory, run the following command:
+
+```bash:
+docker-compose -f src/main/resources/docker-compose.yml down --remove-orphans
+```
+
+ </details>
+
+---
+
+<br/>
+  <details>
+    <summary>
+      <strong> 👉 Click here to see the browser Factory allowed in this project </strong> 
+</summary>
+
+- Using the ChromeOptions to set the browser options (setHeadless, addArguments, setCapability)
+- Using DevTools to get the browser (console error/warring messages, Network Conditions)
+- Get the location by 2 ways (executeCdpCommand, Emulation.setGeolocationOverride)
+
+ </details>
+
+<br/>
+  <details>
+    <summary>
+      <strong> 👉 Click here to see the browser Actions allowed in this project </strong> 
+</summary>
+
+- Browser Operation (getTitle() , getCurrentUrl() , getPageSource())
+- Browser Navigation (get(""), navigate().To("") , navigate().Back() , navigate().forward() , navigate().refresh())
+- Browser Window (maximize() , minimize() , fullscreen() , close() , quit())
+- Browser Alerts (acceptAlert() , dismissAlert() , getAlertText() , sendKeysToAlert())
+- Browser Cookies (getCookies() , getCookieNamed() , addCookie() , deleteCookie() , deleteAllCookies())
+
+ </details>
