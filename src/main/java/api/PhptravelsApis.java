@@ -2,11 +2,12 @@ package api;
 
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
+import engine.ExtentReport;
+import engine.PropertiesReader;
+import engine.api.actions.RestApiActions;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import utilities.ExtentReport;
-import utilities.PropertiesReader;
-import utilities.actions.ApiActions;
+
 
 
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 public class PhptravelsApis {
 	// testss
-    private ApiActions apiObject;
+    private RestApiActions apiObject;
     public static final String BASE_URL = PropertiesReader.getProperty("automationPractice.properties",
 	    "phptravels.baseuri");
 
@@ -42,7 +43,7 @@ public class PhptravelsApis {
     private String processBookingLogged_serviceName = "admin/ajaxcalls/processBookinglogged";
 
     // Constructor
-    public PhptravelsApis(ApiActions apiObject) {
+    public PhptravelsApis(RestApiActions apiObject) {
 	this.apiObject = apiObject;
     }
 
@@ -58,7 +59,7 @@ public class PhptravelsApis {
 	formParams.put("password", password);
 	formParams.put("confirmpassword", password);
 
-	return apiObject.performRequest(ApiActions.RequestType.POST, signup_serviceName, Status.SUCCESS.getCode(), null, null,
+	return apiObject.performRequest(RestApiActions.RequestType.POST, signup_serviceName, Status.SUCCESS.getCode(), null, null,
 		formParams, null, null, null);
 
     }
@@ -74,7 +75,7 @@ public class PhptravelsApis {
 	formParams.put("username", email);
 	formParams.put("password", password);
 
-	return apiObject.performRequest(ApiActions.RequestType.POST, login_serviceName, Status.SUCCESS.getCode(), headers, null,
+	return apiObject.performRequest(RestApiActions.RequestType.POST, login_serviceName, Status.SUCCESS.getCode(), headers, null,
 		formParams, null, null, null);
 
     }
@@ -83,7 +84,7 @@ public class PhptravelsApis {
     public Response getUserAccount(Map<String, String> cookies) {
 	ExtentReport.info(MarkupHelper.createLabel("Get User Account", ExtentColor.BLUE));
 
-	return apiObject.performRequest(ApiActions.RequestType.GET, account_serviceName, Status.SUCCESS.getCode(), null, null,
+	return apiObject.performRequest(RestApiActions.RequestType.GET, account_serviceName, Status.SUCCESS.getCode(), null, null,
 		null, null, null, cookies);
 
     }
@@ -93,7 +94,7 @@ public class PhptravelsApis {
 	    String adultsCount, String childCount) {
 	ExtentReport.info(MarkupHelper.createLabel("Get Hotel Details", ExtentColor.BLUE));
 
-	return apiObject.performRequest(ApiActions.RequestType.POST,
+	return apiObject.performRequest(RestApiActions.RequestType.POST,
 		hotelsDetails_serviceName + "/" + cityName + "/" + hotelName + "/" + checkInDate + "/" + checkOutDate
 			+ "/" + adultsCount + "/" + childCount,
 		Status.SUCCESS.getCode(), null, null, null, null, null, null);
@@ -109,7 +110,7 @@ public class PhptravelsApis {
 	queryParams.put("date", boatDate);
 	queryParams.put("adults", adultsCount);
 
-	return apiObject.performRequest(ApiActions.RequestType.POST,
+	return apiObject.performRequest(RestApiActions.RequestType.POST,
 		boats_serviceName + "/" + countryName + "/" + cityName + "/" + boatName, Status.SUCCESS.getCode(), null,
 		null, null, queryParams, null, null);
 
@@ -139,7 +140,7 @@ public class PhptravelsApis {
 	formParams.put("passport[2][passportnumber]", "");
 	formParams.put("passport[2][age]", "");
 
-	return apiObject.performRequest(ApiActions.RequestType.POST, processBookingLogged_serviceName, Status.SUCCESS.getCode(),
+	return apiObject.performRequest(RestApiActions.RequestType.POST, processBookingLogged_serviceName, Status.SUCCESS.getCode(),
 		null, null, formParams, null, null, cookies);
 
     }
