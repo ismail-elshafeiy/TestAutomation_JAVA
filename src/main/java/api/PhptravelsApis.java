@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PhptravelsApis {
+	// testss
     private ApiActions apiObject;
     public static final String BASE_URL = PropertiesReader.getProperty("automationPractice.properties",
 	    "phptravels.baseuri");

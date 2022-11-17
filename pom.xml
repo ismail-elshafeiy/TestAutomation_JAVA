@@ -2,9 +2,10 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.IsmailElshafeiy</groupId>
-    <artifactId>Practice_TestAutomation_SeleniumWebDriver</artifactId>
+    <artifactId>Practice_TestAutomation</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Practice_TestAutomation_SeleniumWebDriver</name>
     <description>Selenium Automation Framework for Testing</description>
@@ -12,24 +13,32 @@
 
 
     <properties>
-        <selenium.version>4.2.1</selenium.version>
-        <appium-java-client.version>8.0.0</appium-java-client.version>
-        <webdrivermanager.version>5.1.0</webdrivermanager.version>
-        <testng.version>7.5</testng.version>
-        <rest-assured.version>4.5.1</rest-assured.version>
-        <poi-ooxml.version>5.2.1</poi-ooxml.version>
-        <allure-testng.version>2.17.3</allure-testng.version>
+        <selenium.version>4.5.3</selenium.version>
+        <appium-java-client.version>7.4.1</appium-java-client.version>
+        <webdrivermanager.version>5.3.0</webdrivermanager.version>
+        <playwright.version>1.26.1</playwright.version>
+        <testng.version>7.6.1</testng.version>
+        <rest-assured.version>5.1.1</rest-assured.version>
+        <poi-ooxml.version>5.2.2</poi-ooxml.version>
+        <allure-testng.version>2.19.0</allure-testng.version>
         <allure-maven.version>2.11.2</allure-maven.version>
         <allure-maven-report.version>2.10.0</allure-maven-report.version>
         <extentreports.version>5.0.9</extentreports.version>
         <commons-io.version>2.11.0</commons-io.version>
-        <aspectj.version>1.9.8</aspectj.version>
+        <aspectj.version>1.9.9.1</aspectj.version>
+        <jackson.databind.version>2.13.3</jackson.databind.version>
+        <wiremock.version>2.33.2</wiremock.version>
         <slf4j.version>1.7.36</slf4j.version>
         <json-simple.version>1.1.1</json-simple.version>
         <httpcomponents.version>4.5.13</httpcomponents.version>
         <json-schema-validator.version>4.5.1</json-schema-validator.version>
-        <maven-compiler-plugin.version>3.10.0</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
+        <junit.version>4.13.2</junit.version>
+        <junit.dataprovider.version>2.9</junit.dataprovider.version>
+        <jackson.databind.version>2.9.8</jackson.databind.version>
+        <jave-all-deps.version>3.3.1</jave-all-deps.version>
+        <video-recorder-testng.version>2.0</video-recorder-testng.version>
     </properties>
 
     <dependencies>
@@ -40,11 +49,6 @@
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.seleniumhq.selenium</groupId>-->
-        <!--            <artifactId>selenium-support</artifactId>-->
-        <!--            <version>3.141.59</version>-->
-        <!--        </dependency>-->
 
         <!-- APPIUM -->
         <dependency>
@@ -108,6 +112,13 @@
             <artifactId>rest-assured</artifactId>
             <version>${rest-assured.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20220924</version>
+        </dependency>
+
 
         <dependency>
             <!-- EXCEL FILE  -->
@@ -130,9 +141,15 @@
             <version>${commons-io.version}</version>
         </dependency>
 
+
+        <!-- ALLURE REPORTING -->
+        <!--  https://mvnrepository.com/artifact/io.qameta.allure/allure-testng -->
         <dependency>
-            <!-- ALLURE REPORTING -->
-            <!--  https://mvnrepository.com/artifact/io.qameta.allure/allure-testng -->
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-plugin-api</artifactId>
+            <version>2.19.0</version>
+        </dependency>
+        <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
             <version>${allure-testng.version}</version>
@@ -155,7 +172,39 @@
             <artifactId>extentreports</artifactId>
             <version>${extentreports.version}</version>
         </dependency>
-
+        <!-- VIDEO RECORDING -->
+        <!-- https://mvnrepository.com/artifact/ws.schild/jave-all-deps -->
+        <dependency>
+            <groupId>ws.schild</groupId>
+            <artifactId>jave-all-deps</artifactId>
+            <version>${jave-all-deps.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.automation-remarks/video-recorder-testng -->
+        <dependency>
+            <groupId>com.automation-remarks</groupId>
+            <artifactId>video-recorder-testng</artifactId>
+            <version>${video-recorder-testng.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.testng</groupId>
+                    <artifactId>testng</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <!--   https://mvnrepository.com/artifact/org.aspectj/aspectjweaver       -->
             <groupId>org.aspectj</groupId>
@@ -197,7 +246,65 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
+            <version>1.18.24</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.tngtech.junit.dataprovider</groupId>
+            <artifactId>junit4-dataprovider</artifactId>
+            <version>${junit.dataprovider.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.databind.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8</artifactId>
+            <version>2.33.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.databind.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8</artifactId>
+            <version>${wiremock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.automation-remarks/video-recorder -->
+        <dependency>
+            <groupId>com.automation-remarks</groupId>
+            <artifactId>video-recorder</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.playwright</groupId>
+            <artifactId>playwright</artifactId>
+            <version>${playwright.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.almondtools/testrecorder -->
+        <dependency>
+            <groupId>com.github.almondtools</groupId>
+            <artifactId>testrecorder</artifactId>
+            <version>0.1.6</version>
         </dependency>
 
     </dependencies>
@@ -242,7 +349,7 @@
                             </property>
                             <property>
                                 <name>listener</name>
-                                <value>utilities.TestngListener</value>
+                                <value>engine.tools.listeners.TestngListener, engine.tools.listeners.WebListener</value>
                             </property>
                         </properties>
                     </configuration>
