@@ -1,4 +1,4 @@
-package testCases.gui.web.browser.frames;
+package testCases.gui.web.browserInteractions;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.*;

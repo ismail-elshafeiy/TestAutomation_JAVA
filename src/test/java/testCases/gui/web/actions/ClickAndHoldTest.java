@@ -1,6 +1,7 @@
 package testCases.gui.web.actions;
 
 import com.practice.gui.pages.homePage.HomePage;
+import engine.gui.actions.DeviceActions;
 import engine.gui.actions.ElementActions;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -35,6 +36,13 @@ public class ClickAndHoldTest {
 				.release()
 				.build().perform();
 	}
+
+	@Test
+	public void ClickAndHold2 () {
+		BrowserActions.navigateToUrl(driver,"https://the-internet.herokuapp.com/horizontal_slider");
+		DeviceActions.clickAndHold(driver, By.xpath("//input[@type='range']"), 10, 0);
+	}
+
 
 
 	@BeforeMethod

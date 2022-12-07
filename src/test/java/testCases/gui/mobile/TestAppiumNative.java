@@ -2,7 +2,7 @@ package testCases.gui.mobile;
 
 import com.practice.gui.screens.Account_Native;
 import com.practice.gui.screens.CountryScreen_Native;
-import engine.MobileActions;
+import engine.MobileFactory;
 import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MobileElement;
 import org.testng.Assert;
@@ -48,8 +48,8 @@ public class TestAppiumNative {
 
 	@BeforeMethod
 	public void beforeMethod () throws MalformedURLException {
-		mobile = MobileActions.InitiateMobileDriver(mobile, MobileActions.MobileDriverType.ANDROID);
-		MobileActions.setCapabilities(deviceName,
+		mobile = MobileFactory.InitiateMobileDriver(mobile, MobileFactory.MobileDriverType.ANDROID);
+		MobileFactory.setCapabilities(deviceName,
 				"ismail oppo",
 				"12.0",
 				"Android",

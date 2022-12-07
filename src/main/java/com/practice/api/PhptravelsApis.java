@@ -1,4 +1,4 @@
-package api;
+package com.practice.api;
 
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;

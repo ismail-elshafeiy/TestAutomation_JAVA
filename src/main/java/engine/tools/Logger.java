@@ -5,6 +5,7 @@ import com.aventstack.extentreports.model.Media;
 import engine.ExtentReport;
 import engine.Helper;
 import io.qameta.allure.Allure;
+import io.qameta.allure.AllureId;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import org.apache.logging.log4j.LogManager;
@@ -23,6 +24,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
+
 public class Logger {
 	public static org.apache.logging.log4j.Logger log = LogManager.getLogger(Logger.class.getName());
 	private static final org.slf4j.Logger slf4jLogger = LoggerFactory.getLogger(Logger.class);
@@ -37,6 +39,7 @@ public class Logger {
 	 *
 	 * @param logStep logged by action
 	 */
+	@AllureId(value = "1")
 	@Step("{logStep}")
 	public static void logStep (String logStep) {
 		System.out.println("<" + currentTime + "> " + logStep);
@@ -47,7 +50,7 @@ public class Logger {
 		System.out.println("<" + currentTime + "> " + logMessage);
 		ExtentReport.info(logMessage);
 	}
-
+	@Attachment(value="log Console")
 	public static void logConsoleLogs (WebDriver driver, ITestResult result) throws IOException {
 		logs = driver.manage().logs();
 		logEntries = logs.get(LogType.BROWSER);

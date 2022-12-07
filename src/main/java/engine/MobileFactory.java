@@ -14,7 +14,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class MobileActions {
+public class MobileFactory {
 	static DesiredCapabilities cap = new DesiredCapabilities();
 	static MobileDriver<MobileElement> mobile;
 

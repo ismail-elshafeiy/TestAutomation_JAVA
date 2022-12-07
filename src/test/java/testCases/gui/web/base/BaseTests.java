@@ -1,23 +1,22 @@
 package testCases.gui.web.base;
 
-
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+
 public class BaseTests {
 
-	public WebDriver driver;
+	protected WebDriver driver;
 
-	@BeforeClass
+	@BeforeMethod
 	public void setUp () {
 		driver = BrowserFactory.getBrowser();
 	}
 
-
-	@AfterMethod
+	@AfterMethod(enabled = false)
 	public void tearDown (ITestResult result) {
 		BrowserActions.closeAllOpenedBrowserWindows(driver);
 	}

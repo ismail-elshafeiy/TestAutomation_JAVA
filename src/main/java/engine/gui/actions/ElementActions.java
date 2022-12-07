@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
+import static engine.gui.actions.DeviceActions.mouseHover;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.fail;
 
@@ -18,24 +19,6 @@ public class ElementActions {
 	public ElementActions (WebDriver driver) {
 		this.driver = driver;
 	}
-
-	public ElementActions mouseHover (By elementLocator) {
-		mouseHover(driver, elementLocator);
-		return this;
-	}
-
-	public static void mouseHover (WebDriver driver, By elementLocator) {
-		ActionsHelper.locatingElementStrategy(driver, elementLocator);
-		try {
-			Actions actions = new Actions(driver);
-			Logger.logStep("[Element Action] Hover on [" + driver.findElement(elementLocator).getText() + "]");
-			actions.moveToElement(driver.findElement(elementLocator)).perform();
-		} catch (Exception e) {
-			Logger.logMessage(e.getMessage());
-			fail(e.getMessage());
-		}
-	}
-
 
 	public ElementActions click (By elementLocator) {
 		click(driver, elementLocator);
@@ -78,38 +61,6 @@ public class ElementActions {
 			}
 		}
 	}
-
-	public static void clickAndHold (WebDriver driver, By elementLocator, int xOffset, int yOffset) {
-		ActionsHelper.locatingElementStrategy(driver, elementLocator);
-		try {
-			int x = 0;
-			int y = 0;
-			Actions actions = new Actions(driver);
-			Logger.logStep("[Element Action] Click and hold on [" + driver.findElement(elementLocator).getText() + "]");
-			actions.clickAndHold(driver.findElement(elementLocator))
-					.moveByOffset(x, y).release()
-					.build().perform();
-		} catch (Exception e) {
-			Logger.logMessage(e.getMessage());
-			fail(e.getMessage());
-		}
-	}
-
-	public static void clickAndHold (WebDriver driver, By elementLocator, By toElementLocator2) {
-		ActionsHelper.locatingElementStrategy(driver, elementLocator);
-		try {
-
-			Actions actions = new Actions(driver);
-			Logger.logStep("[Element Action] Click and hold on [" + driver.findElement(elementLocator).getText() + "]");
-			actions.clickAndHold(driver.findElement(elementLocator))
-					.moveToElement(driver.findElement(toElementLocator2))
-					.build().perform();
-		} catch (Exception e) {
-			Logger.logMessage(e.getMessage());
-			fail(e.getMessage());
-		}
-	}
-
 
 	public static void type (WebDriver driver, By elementLocator, String text) {
 		type(driver, elementLocator, text, true);
@@ -187,24 +138,6 @@ public class ElementActions {
 		}
 	}
 
-	public ElementActions doubleClick (By elementLocator) {
-		doubleClick(driver, elementLocator);
-		return this;
-	}
-
-	public static void doubleClick (WebDriver driver, By elementLocator) {
-		ActionsHelper.locatingElementStrategy(driver, elementLocator);
-		try {
-			Actions actions = new Actions(driver);
-			Logger.logStep("[Element Action] Double Click on element [" + elementLocator + "]");
-			actions.doubleClick(driver.findElement(elementLocator)).perform();
-		} catch (Exception e) {
-			Logger.logMessage(e.getMessage());
-			fail(e.getMessage());
-		}
-	}
-
-
 	public ElementActions clickKeyboardKey (By elementLocator, Keys key) {
 		clickKeyboardKey(driver, elementLocator, key);
 		return this;
@@ -217,6 +150,7 @@ public class ElementActions {
 			Logger.logStep("[Element Action] Click a Keyboard key [" + key.name() + "] on element [" + elementLocator + "]");
 			// We click ENTER here! :D
 			driver.findElement(elementLocator).sendKeys(key);
+			((Actions) driver).sendKeys(key).perform();
 		} catch (Exception e) {
 			Logger.logMessage(e.getMessage());
 		}
@@ -242,6 +176,18 @@ public class ElementActions {
 			String attributeValue = driver.findElement(elementLocator).getAttribute(attributeName);
 			Logger.logStep("[Element Action] Get the Attribute [" + attributeName + "] Value of element [" + elementLocator + "]; The Value is [" + attributeValue + "]");
 			return attributeValue;
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+		}
+		return null;
+	}
+
+	public static String getCssValue (WebDriver driver, By elementLocator, String cssValue) {
+		ActionsHelper.locatingElementStrategy(driver, elementLocator);
+		try {
+			String cssValueOfElement = driver.findElement(elementLocator).getCssValue(cssValue);
+			Logger.logStep("[Element Action] Get the CSS Value [" + cssValue + "] of element [" + elementLocator + "]; The Value is [" + cssValueOfElement + "]");
+			return cssValueOfElement;
 		} catch (Exception e) {
 			Logger.logMessage(e.getMessage());
 		}

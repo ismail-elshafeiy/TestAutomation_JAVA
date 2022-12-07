@@ -15,7 +15,7 @@ public class ExtentReport {
 
 	public static void initReports () {
 		report = new ExtentReports();
-		ExtentSparkReporter spark = new ExtentSparkReporter("ExtentReport/ExtentReports_" + currentTime + ".html");
+		ExtentSparkReporter spark = new ExtentSparkReporter("ExtentReport/ExtentReports.html");
 		report.attachReporter(spark);
 		spark.config().setTheme(Theme.STANDARD);
 		spark.config().setDocumentTitle("Extent Report");

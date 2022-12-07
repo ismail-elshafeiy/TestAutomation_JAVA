@@ -1,4 +1,4 @@
-package testCases.gui.web.alerts;
+package testCases.gui.web.browserInteractions;
 
 import com.practice.gui.pages.alerts.AlertsPage;
 import com.practice.gui.pages.homePage.HomePage;
