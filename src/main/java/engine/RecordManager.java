@@ -45,10 +45,10 @@ public class RecordManager {
 
     public static synchronized String attachVideoRecording() {
         String pathToRecording = "";
-        String testMethodName = Logger.getTestMethodName();
+        String testMethodName = Helper.getTestMethodName();
         if ( Boolean.TRUE.equals(RECORD_VIDEO) && recorder.get() != null ) {
             pathToRecording = doVideoProcessing(
-                    Logger.isCurrentTestPassed(), recorder.get().stopAndSave(System.currentTimeMillis() + "_" + testMethodName));
+                    Helper.isCurrentTestPassed(), recorder.get().stopAndSave(System.currentTimeMillis() + "_" + testMethodName));
             try {
                 Logger.attach("Video Recording", testMethodName, new FileInputStream(encodeRecording(pathToRecording)));
                 FileUtils.copyFile(new File(pathToRecording), new File("./videoRecords/" + testMethodName + ".mp4"));

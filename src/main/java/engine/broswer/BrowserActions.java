@@ -1,7 +1,10 @@
 package engine.broswer;
 
+import engine.gui.actions.ElementActions;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.ITestResult;
 import engine.tools.Logger;
@@ -17,7 +20,7 @@ public class BrowserActions {
 	static WebDriver driver;
 
 	public BrowserActions (WebDriver driver) {
-		this.driver = driver;
+		BrowserActions.driver = driver;
 	}
 
 	@Step("Navigate to URL: [{url}]")
@@ -41,7 +44,7 @@ public class BrowserActions {
 	//************* Windows Methods ************//
 	//*********************************************************************************************//
 
-	//****** Window Positions ******//
+	//****** Window Positions and Size ******//
 	@Step("Maximize the Browser Window")
 	public static void maximizeWindow (WebDriver driver) {
 		try {
@@ -72,41 +75,19 @@ public class BrowserActions {
 		}
 	}
 
-	@Step("Set Window Positions")
-	public static void setWindowPositions (WebDriver driver, int x, int y) {
-		try {
-			Logger.logStep("[Browser Action] Set Window Positions");
-			driver.manage().window().setPosition(new Point(x, y));
-		} catch (Exception e) {
-			Logger.logMessage(e.getMessage());
-		}
-	}
-
-	@Step("Get Window Positions")
-	public static Point getWindowPositions (WebDriver driver) {
-		Point point = null;
-		try {
-			point = driver.manage().window().getPosition();
-			Logger.logStep("[Browser Action] Window Positions : [ " + point + " ]");
-		} catch (Exception e) {
-			Logger.logMessage(e.getMessage());
-		}
-		return point;
-	}
-
-	@Step("Set the WindowResolution [{width}], [{height}]")
-	public static void setWindowResolution (WebDriver driver, int width, int height) {
+	@Step("Set the Window Size [{width}], [{height}]")
+	public static void setWindowSize (WebDriver driver, int width, int height) {
 		try {
 			Logger.logStep("[Browser Action] Set Window Resolution as Width [" + width + "] and Height [" + height + "]");
-			Dimension dimension = new Dimension(width, width);
+			Dimension dimension = new Dimension(width, height);
 			driver.manage().window().setSize(dimension);
 		} catch (Exception e) {
 			Logger.logMessage(e.getMessage());
 		}
 	}
 
-	@Step("Set the WindowResolution [{width}], [{height}]")
-	public static void setWindowResolution (WebDriver driver) {
+	@Step("Set the Window Size [{width}], [{height}]")
+	public static void setWindowSize (WebDriver driver) {
 		String width = PropertiesReader.getProperty("project.properties", "width");
 		String height = PropertiesReader.getProperty("project.properties", "height");
 		try {
@@ -118,51 +99,85 @@ public class BrowserActions {
 		}
 	}
 
-
-	public void switchToTab (String tabTitle) {
-		var windows = driver.getWindowHandles();
-		Logger.logMessage("Number of tabs: " + windows.size());
-		System.out.println("Window handles:");
-		windows.forEach(System.out::println);
-		for (String window : windows) {
-			Logger.logStep("Switching to window: " + window);
-			driver.switchTo().window(window);
-			Logger.logMessage("Current window title: " + driver.getTitle());
-			if (tabTitle.equals(driver.getTitle())) {
-				break;
-			}
-		}
-	}
-
-	public void switchToNewTab () {
-		var windows = driver.getWindowHandles();
+	@Step("Get Window Size")
+	public static void getWindowSize (WebDriver driver) {
 		try {
-			windows.forEach(driver.switchTo()::window);
+			Dimension dimension = driver.manage().window().getSize();
+			Logger.logStep("[Browser Action] Window Size : [ " + dimension + " ]");
 		} catch (Exception e) {
-			Logger.logMessage("" + e.getMessage());
+			Logger.logMessage(e.getMessage());
 		}
 	}
 
-	public void printAllWindowsTitle () {
-		Set<String> urls = driver.getWindowHandles();
-		Iterator<String> it = urls.iterator();
-		while (it.hasNext()) {
-			driver.switchTo().window(it.next());
-			System.out.println(driver.getCurrentUrl());
+	@Step("Set Window Positions")
+	public static void setWindowPositions (WebDriver driver, int x, int y) {
+		try {
+			Logger.logStep("[Browser Action] Set Window Positions");
+			driver.manage().window().setPosition(new Point(x, y));
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
 		}
 	}
 
-	public void switchWindow () {
-		Set<String> urls = driver.getWindowHandles();
-		Iterator<String> it = urls.iterator();
-		String parentWindowID = it.next();
-		String childWindowID = it.next();
-		//To switch to child window
-		driver.switchTo().window(childWindowID);
-		// To switch back to parent ID after complete the test
-		driver.switchTo().window(parentWindowID);
-
+	@Step("Get Window Positions")
+	public static void getWindowPositions (WebDriver driver) {
+		try {
+			Point point = driver.manage().window().getPosition();
+			Logger.logStep("[Browser Action] Window Positions : [ " + point + " ]");
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+		}
 	}
+
+	//****** Switch Windows ******//
+	public enum PageType {
+		WINDOW("window"), TAB("tab");
+		private final String windowType;
+
+		PageType (String windowType) {
+			this.windowType = windowType;
+		}
+	}
+
+	@Step("Switch to Window [{windowType}]")
+	public static void switchToNewPage (WebDriver driver, PageType pageType, String url) {
+		try {
+			switch (pageType) {
+				case WINDOW -> {
+					Logger.logStep("[Browser Action] Switch to new Window Title: " + driver.getTitle() + " [" + url + "]");
+					driver.switchTo().newWindow(WindowType.WINDOW).get(url);
+				}
+				case TAB -> {
+					Logger.logStep("[Browser Action] Switch to new Tab Title: " + driver.getTitle() + " [" + url + "]");
+					driver.switchTo().newWindow(WindowType.TAB).get(url);
+				}
+			}
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+		}
+	}
+
+	@Step("Switch to new window and focus on it")
+	public static void switchToNewWindowByClickHyperLink (WebDriver driver, By elementLocator) {
+		try {
+			getPageTitle(driver);
+			String parentWindow = driver.getWindowHandle();
+			ElementActions.click(driver, elementLocator);
+			// Return a set of all window handles that can be used
+			Set<String> handles = driver.getWindowHandles();
+			for (String childWindow : handles) {
+				if (!parentWindow.equals(childWindow)) {
+					driver.switchTo().window(childWindow);
+					Logger.logStep("[Browser Action] Switch to new Window Title: " + driver.getTitle());
+				}
+
+			}
+			Logger.logMessage("All Windows= " + handles.size());
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+		}
+	}
+
 
 	@Step("Check the test result and Close All Opened Browser Windows.....")
 	public static void closeAllOpenedBrowserWindows (WebDriver driver, ITestResult result) throws Throwable {
@@ -194,6 +209,17 @@ public class BrowserActions {
 			RecordManager.attachVideoRecording();
 		}
 	}
+	//**************************************  Reference Methods **************************************//
+	//*********************************************************************************************//
+
+	public static void printAllWindowsTitle (WebDriver driver) {
+		Set<String> urls = driver.getWindowHandles();
+		for (String url : urls) {
+			driver.switchTo().window(url);
+			System.out.println(driver.getCurrentUrl());
+		}
+	}
+
 	//**************************************  Alerts Methods **************************************//
 	//*********************************************************************************************//
 
@@ -207,18 +233,18 @@ public class BrowserActions {
 		Alert alert = driver.switchTo().alert();
 		try {
 			switch (confirmAlertType) {
-				case ACCEPT:
+				case ACCEPT -> {
 					Logger.logStep("[Browser Action] Confirm the Alert");
 					alert.accept();
-					break;
-				case DISMISS:
+				}
+				case DISMISS -> {
 					Logger.logStep("[Browser Action] Dismiss the Alert");
 					alert.dismiss();
-					break;
-				case SET_TEXT:
+				}
+				case SET_TEXT -> {
 					Logger.logStep("[Browser Action] Get Text from the Alert");
 					alert.getText();
-					break;
+				}
 			}
 		} catch (Exception e) {
 			Logger.logMessage("Alert is not present" + e.getMessage());
@@ -236,7 +262,6 @@ public class BrowserActions {
 			Logger.logMessage("Alert is not present" + e.getMessage());
 		}
 	}
-
 
 	//************************************** Cookies Methods ************************************** //
 	//*********************************************************************************************//

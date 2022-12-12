@@ -35,15 +35,13 @@ public class TestngListener implements ISuiteListener, ITestListener, IInvokedMe
 	public void onStart (ITestContext context) {
 		System.out.println("\n" + "**************************************************** " + "Test: [" + context.getName() + "] Started" + " ****************************************************" + "\n");
 	}
-
-	@Override
-	public void onFinish (ITestContext context) {
-		System.out.println("\n" + "**************************************************** " + "Test: [" + context.getName() + "] Finished" + " ****************************************************" + "\n");
-	}
-
 	@Override
 	public void onTestStart (ITestResult result) {
 		ExtentReport.createTest(result.getName());
+	}
+	@Override
+	public void onFinish (ITestContext context) {
+		System.out.println("\n" + "**************************************************** " + "Test: [" + context.getName() + "] Finished" + " ****************************************************" + "\n");
 	}
 
 	@Override
