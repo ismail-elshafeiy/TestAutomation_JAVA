@@ -1,4 +1,4 @@
-package testCases.gui.web.browser;
+package testCases.gui.web;
 
 
 import io.qameta.allure.*;

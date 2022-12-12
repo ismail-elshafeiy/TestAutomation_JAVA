@@ -4,6 +4,7 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.model.Media;
 import engine.ExtentReport;
 import engine.Helper;
+import engine.broswer.BrowserActions;
 import io.qameta.allure.Allure;
 import io.qameta.allure.AllureId;
 import io.qameta.allure.Attachment;
@@ -11,6 +12,9 @@ import io.qameta.allure.Step;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.devtools.DevTools;
+import org.openqa.selenium.devtools.v104.log.Log;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
@@ -82,6 +86,31 @@ public class Logger {
 		} finally {
 			writer.close();
 		}
+	}
+
+	public static void logConsoleLogs (ChromeDriver chromeDriver, String url) {
+		try {
+			// Get The DevTools class & Create A Session
+			DevTools devTools = chromeDriver.getDevTools();
+			devTools.createSession();
+			// Enable The Console Logs
+			devTools.send(Log.enable());
+			// Add A Listener For The Logs
+			devTools.addListener(Log.entryAdded(), logEntry -> {
+				Logger.logStep("----------");
+				Logger.logStep("Source: " + logEntry.getSource());
+				Logger.logStep("Timestamp: " + logEntry.getTimestamp());
+				Logger.logStep("Level: " + logEntry.getLevel());
+				Logger.logStep("Text: " + logEntry.getText());
+				Logger.logStep("Broken URL: " + logEntry.getUrl());
+			});
+			// Load The AUT
+			BrowserActions.navigateToUrl(chromeDriver, url);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 

@@ -1,4 +1,4 @@
-package testCases.gui.web.findElements;
+package testCases.gui.web.ElementActions.Locators;
 
 import io.qameta.allure.*;
 import org.openqa.selenium.By;

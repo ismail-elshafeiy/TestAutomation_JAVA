@@ -3,35 +3,27 @@ package testCases.gui.web.browserInteractions;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
 import engine.tools.Logger;
+import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.openqa.selenium.*;
-import org.openqa.selenium.print.PrintOptions;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
 import engine.broswer.BrowserFactory.BrowserType;
 import engine.broswer.BrowserFactory.ExecutionType;
-
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 
 @Epic("Browser Interactions")
 @Feature("Windows")
 public class ReferenceTests {
 	private WebDriver driver;
 
-	public void setUp_BeforeMethod2 () {
-
-	}
-
 	@Story("Screen Shots")
 	@Test(description = "Take Screen Shot Test")
+	@Description("""
+			Used to capture screenshot for current browsing context. 
+			The WebDriver endpoint screenshot returns screenshot which is encoded in Base64 format.	
+				""")
 	public void takeScreenShotTest () {
 		driver = BrowserFactory.getBrowser();
 		BrowserActions.navigateToUrl(driver, "https://www.google.com/");
@@ -40,13 +32,21 @@ public class ReferenceTests {
 
 	@Story("Screen Shots")
 	@Test(description = "Take Element Screen Shot Test")
+	@Description("""
+				Used to capture screenshot of an element for current browsing context. 
+				The WebDriver endpoint screenshot returns screenshot which is encoded in Base64 format		
+			""")
 	public void takeElementScreenShotTest () {
 		driver = BrowserFactory.getBrowser();
 		BrowserActions.navigateToUrl(driver, "https://www.google.com/");
 		Logger.takeElementScreenShot(driver, By.xpath("//a[text()='Gmail']"));
 	}
 
+	@Story("Full Page Screen Shot")
 	@Test(description = "Take Full Page Screenshot")
+	@Description("""
+	
+			""")
 	public void takeFullPage_Screenshot () throws IOException {
 		driver = BrowserFactory.getBrowser(BrowserType.MOZILLA_FIREFOX, ExecutionType.LOCAL);
 		BrowserActions.navigateToUrl(driver, "https://www.selenium.dev/");
@@ -54,7 +54,11 @@ public class ReferenceTests {
 	}
 
 	@Story("Print Page")
-	@Test(description = "")
+	@Test(description = "Print Page Test with headless Mode Only")
+	@Description("""
+			Prints the current page within the browser.
+			Note: This requires Chromium Browsers to be in headless mode
+			""")
 	public void printWindow () throws IOException {
 		driver = BrowserFactory.getBrowser(BrowserType.GOOGLE_CHROME, ExecutionType.LOCAL_HEADLESS);
 		BrowserActions.navigateToUrl(driver, "https://www.google.com/");

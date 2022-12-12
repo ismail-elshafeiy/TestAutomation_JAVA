@@ -1,4 +1,4 @@
-package testCases.gui.web.findElements;
+package testCases.gui.web.ElementActions.Locators;
 
 import com.practice.gui.pages.homePage.HomePage;
 import io.qameta.allure.Epic;
@@ -11,14 +11,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
+import testCases.gui.web.BaseTests;
 
 import java.util.List;
 
 @Feature("web")
 @Epic("FindElements")
-public class FindElementByTagNameTest {
-
-	private WebDriver driver;
+public class FindElementByTagNameTest extends BaseTests {
 
 	@Test
 	public void Register () {
@@ -27,16 +26,6 @@ public class FindElementByTagNameTest {
 		List<WebElement> rows = table.findElements(By.tagName("tr"));
 		System.out.println(rows.size());
 		System.out.println(rows.get(3).getText());
-	}
-
-	@BeforeMethod
-	public void setUp_BeforeMethod () {
-		driver = BrowserFactory.getBrowser();
-	}
-
-	@AfterMethod
-	public void closeBrowser () {
-		BrowserActions.closeAllOpenedBrowserWindows(driver);
 	}
 
 }

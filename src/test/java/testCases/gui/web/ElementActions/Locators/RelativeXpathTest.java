@@ -1,4 +1,4 @@
-package testCases.gui.web.findElements;
+package testCases.gui.web.ElementActions.Locators;
 
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;

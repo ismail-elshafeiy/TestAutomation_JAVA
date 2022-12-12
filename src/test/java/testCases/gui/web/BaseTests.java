@@ -1,4 +1,4 @@
-package testCases.gui.web.base;
+package testCases.gui.web;
 
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;

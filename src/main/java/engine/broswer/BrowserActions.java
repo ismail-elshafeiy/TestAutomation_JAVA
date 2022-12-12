@@ -11,7 +11,6 @@ import engine.tools.Logger;
 import engine.PropertiesReader;
 import engine.RecordManager;
 
-import java.util.Iterator;
 import java.util.Set;
 
 import static org.testng.Assert.fail;
@@ -170,7 +169,6 @@ public class BrowserActions {
 					driver.switchTo().window(childWindow);
 					Logger.logStep("[Browser Action] Switch to new Window Title: " + driver.getTitle());
 				}
-
 			}
 			Logger.logMessage("All Windows= " + handles.size());
 		} catch (Exception e) {
@@ -209,16 +207,6 @@ public class BrowserActions {
 			RecordManager.attachVideoRecording();
 		}
 	}
-	//**************************************  Reference Methods **************************************//
-	//*********************************************************************************************//
-
-	public static void printAllWindowsTitle (WebDriver driver) {
-		Set<String> urls = driver.getWindowHandles();
-		for (String url : urls) {
-			driver.switchTo().window(url);
-			System.out.println(driver.getCurrentUrl());
-		}
-	}
 
 	//**************************************  Alerts Methods **************************************//
 	//*********************************************************************************************//
@@ -241,7 +229,7 @@ public class BrowserActions {
 					Logger.logStep("[Browser Action] Dismiss the Alert");
 					alert.dismiss();
 				}
-				case SET_TEXT -> {
+				case GET_TEXT -> {
 					Logger.logStep("[Browser Action] Get Text from the Alert");
 					alert.getText();
 				}
@@ -253,7 +241,7 @@ public class BrowserActions {
 	}
 
 	@Step("Confirm the Alert")
-	public static void alertAction (WebDriver driver, ConfirmAlertType confirmAlertType, String text) {
+	public static void alertAction (WebDriver driver, String text) {
 		Waits.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
 		try {
 			Logger.logStep("[Browser Action] Send Keys the Alert");
@@ -270,13 +258,30 @@ public class BrowserActions {
 		ADD, DELETE
 	}
 
-	public static void cookieBuilder (WebDriver driver, CookieBuilderType cookieBuilderType, String name, String value,
-									  String domain) {
+	public static void cookieBuilder (WebDriver driver,
+									  CookieBuilderType cookieBuilderType,
+									  String name, String value, String domain) {
 		Cookie cookie = new Cookie.Builder(name, value).domain(domain).build();
-
 		switch (cookieBuilderType) {
 			case ADD -> driver.manage().addCookie(cookie);
 			case DELETE -> driver.manage().deleteCookie(cookie);
+		}
+	}
+
+	public static void getAllCookies2 (WebDriver driver) {
+		try {
+			Set<Cookie> cookieSet = driver.manage().getCookies();
+			Logger.logStep("Get All Cookies = " + cookieSet.size());
+			for (Cookie cookie : cookieSet) {
+				Logger.logStep("Cookie Domain: " + cookie.getDomain());
+				Logger.logStep("Cookie Name: " + cookie.getName());
+				Logger.logStep("Cookie Value: " + cookie.getValue());
+				Logger.logStep("Cookie Path: " + cookie.getPath());
+				Logger.logStep("Cookie Expiry: " + cookie.getExpiry());
+			}
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+
 		}
 	}
 
@@ -284,16 +289,44 @@ public class BrowserActions {
 		return driver.manage().getCookieNamed(cookie.getName()) != null;
 	}
 
-	public Cookie buildCookie (String name, String value) {
-		return new Cookie.Builder(name, value)
-				.domain("the-internet.herokuapp.com")
-				.build();
-
-	}
-
 	//**************************************  Frames Methods ************************************** //
 	//*********************************************************************************************//
-
+	/**
+	 * Using driver.switchTo().frame() to handle frames
+	 * using with iframe's ID
+	 **/
+	public static void switchToFrame (WebDriver driver, By elementLocator) {
+		try {
+			Logger.logStep("[Browser Action] Switch to Frame by Locator: " + elementLocator.toString());
+			driver.switchTo().frame(driver.findElement(elementLocator));
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+		}
+	}
+	/**
+	 * Using driver.switchTo().frame() to handle frames
+	 * using with iframe's ID Or name
+	 **/
+	public static void switchToFrame (WebDriver driver, String nameOrId) {
+		try {
+			Logger.logStep("[Browser Action] Switch to Frame by name Or id: " + nameOrId.toString());
+			driver.switchTo().frame(nameOrId);
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+		}
+	}
+	/**
+	 * Using driver.switchTo().frame() to handle frames
+	 * using with iframe's index
+	 **/
+	public static void switchToFrame (WebDriver driver, int index) {
+		try {
+			Logger.logStep("[Browser Action] Switch to Frame by index : " + index);
+			driver.switchTo().frame(index);
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+		}
+	}
 
 	//**************************************  Navigation Methods ************************************** //
 	//*********************************************************************************************//

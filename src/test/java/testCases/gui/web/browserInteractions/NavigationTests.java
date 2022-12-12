@@ -4,9 +4,9 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.testng.annotations.Test;
 import engine.broswer.BrowserActions;
-import testCases.gui.web.base.BaseTests;
+import testCases.gui.web.BaseTests;
 @Epic("Browser Interactions")
-@Feature("Navigation Methods")
+@Feature("Navigation")
 public class NavigationTests extends BaseTests {
 
 	@Test

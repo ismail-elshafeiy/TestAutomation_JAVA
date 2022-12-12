@@ -1,23 +1,17 @@
-package testCases.gui.web.findElements;
-
-import com.practice.gui.pages.homePage.HomePage;
+package testCases.gui.web.ElementActions.Locators;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
-import engine.broswer.BrowserActions;
-import engine.broswer.BrowserFactory;
+import testCases.gui.web.BaseTests;
 
 import java.util.List;
 
 @Feature("web")
 @Epic("FindElements")
-public class FindElementsTest {
-	private WebDriver driver;
-
+public class FindElementsTest extends BaseTests {
 	@Test
 	public void list () {
 		// get all Links displayed onm page
@@ -30,17 +24,6 @@ public class FindElementsTest {
 		for (WebElement link : links) {
 			System.out.println(link.getAttribute("href"));
 		}
-	}
-
-	@BeforeMethod
-	public void setUp_BeforeMethod () {
-		driver = BrowserFactory.getBrowser();
-		new HomePage(driver).navigateToHomePage("http://the-internet.herokuapp.com/dropdown");
-	}
-
-	@AfterMethod
-	public void closeBrowser () {
-		BrowserActions.closeAllOpenedBrowserWindows(driver);
 	}
 }
 

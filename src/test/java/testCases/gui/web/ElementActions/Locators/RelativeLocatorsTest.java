@@ -1,4 +1,4 @@
-package testCases.gui.web.findElements;
+package testCases.gui.web.ElementActions.Locators;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -14,14 +14,14 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
+import testCases.gui.web.BaseTests;
 
 import java.util.List;
 
 @Feature("web")
 @Epic("FindElements")
-public class RelativeLocatorsTest {
+public class RelativeLocatorsTest extends BaseTests {
 
-	private WebDriver driver;
 
 	/*
 	 * Notes:
@@ -49,15 +49,5 @@ public class RelativeLocatorsTest {
 		for (WebElement socialMedia : allSocialMedia) {
 			System.out.println(socialMedia.getAttribute("alt"));
 		}
-	}
-
-	@BeforeMethod
-	public void setUp_BeforeMethod () {
-		driver = BrowserFactory.getBrowser();
-	}
-
-	@AfterMethod
-	public void closeBrowser () {
-		BrowserActions.closeAllOpenedBrowserWindows(driver);
 	}
 }

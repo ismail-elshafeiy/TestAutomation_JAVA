@@ -1,4 +1,4 @@
-package testCases.gui.web.findElements;
+package testCases.gui.web.ElementActions.Locators;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -9,11 +9,11 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.*;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
+import testCases.gui.web.BaseTests;
 
 @Feature("web")
 @Epic("FindElements")
-public class ElementPositionTest {
-	private WebDriver driver;
+public class ElementPositionTest extends BaseTests {
 
 	/*
 	 * Notes:
@@ -34,16 +34,6 @@ public class ElementPositionTest {
 		System.out.println("y: " + rectTAULogo.getY());
 		System.out.println("Width: " + rectTAULogo.getWidth());
 		System.out.println("Height: " + rectTAULogo.getHeight());
-	}
-
-	@BeforeMethod
-	public void setUp_BeforeMethod () {
-		driver = BrowserFactory.getBrowser();
-	}
-
-	@AfterMethod(enabled = false)
-	public void closeBrowser () {
-		BrowserActions.closeAllOpenedBrowserWindows(driver);
 	}
 
 }

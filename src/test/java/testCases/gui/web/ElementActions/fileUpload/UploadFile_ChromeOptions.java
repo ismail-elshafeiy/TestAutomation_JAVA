@@ -1,4 +1,4 @@
-package testCases.gui.web.uploadFiles;
+package testCases.gui.web.ElementActions.fileUpload;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;

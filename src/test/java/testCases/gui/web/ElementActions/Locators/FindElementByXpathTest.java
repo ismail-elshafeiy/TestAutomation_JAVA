@@ -1,4 +1,4 @@
-package testCases.gui.web.findElements;
+package testCases.gui.web.ElementActions.Locators;
 
 import com.practice.gui.pages.homePage.HomePage;
 import io.qameta.allure.Epic;
@@ -19,6 +19,7 @@ public class FindElementByXpathTest {
 
 	@Test(enabled = false)
 	public void testFindAbsoluteXpath () {
+		BrowserActions.navigateToUrl(driver,"http://the-internet.herokuapp.com/dropdown");
 		WebElement userNameTxt = driver.findElement(By.xpath("//*[@id=\"username\"]"));
 		WebElement passwordTxt = driver.findElement(By.xpath("//*[@id=\"password\"]"));
 		WebElement loginBtn = driver.findElement(By.xpath("//*[@id=\"login\"]/button/i"));
@@ -29,6 +30,7 @@ public class FindElementByXpathTest {
 
 	@Test
 	public void testFindRelativeXpath () {
+		BrowserActions.navigateToUrl(driver,"http://the-internet.herokuapp.com/dropdown");
 		// by Tag Name of the element
 		WebElement userNameTxt = driver.findElement(By.xpath("//input"));
 		// By Tag Name and [index]
@@ -40,16 +42,4 @@ public class FindElementByXpathTest {
 		System.out.println(passwordTxt.getTagName());
 		System.out.println(loginBtn.getText());
 	}
-
-	@BeforeMethod
-	public void setUp_BeforeMethod () {
-		driver = BrowserFactory.getBrowser();
-		new HomePage(driver).navigateToHomePage("http://the-internet.herokuapp.com/dropdown");
-	}
-
-	@AfterMethod
-	public void closeBrowser () {
-		BrowserActions.closeAllOpenedBrowserWindows(driver);
-	}
-
 }

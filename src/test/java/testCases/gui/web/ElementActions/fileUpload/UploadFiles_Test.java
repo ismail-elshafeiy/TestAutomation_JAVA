@@ -1,4 +1,4 @@
-package testCases.gui.web.uploadFiles;
+package testCases.gui.web.ElementActions.fileUpload;
 
 import com.practice.gui.pages.homePage.HomePage;
 import com.practice.gui.pages.uploadFilePage.FileUploadPage;
@@ -18,7 +18,6 @@ import static com.practice.gui.pages.uploadFilePage.FileUploadPage.uploadedFiles
 public class UploadFiles_Test {
 
     private WebDriver driver;
-
 
     @BeforeMethod
     public void setUp_BeforeMethod() {

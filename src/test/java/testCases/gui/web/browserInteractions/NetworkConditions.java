@@ -1,4 +1,4 @@
-package testCases.gui.web.browser.network;
+package testCases.gui.web.browserInteractions;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeDriver;

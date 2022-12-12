@@ -8,7 +8,7 @@ import io.qameta.allure.Story;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import testCases.gui.web.base.BaseTests;
+import testCases.gui.web.BaseTests;
 
 @Epic("Browser Interactions")
 @Feature("Windows")
