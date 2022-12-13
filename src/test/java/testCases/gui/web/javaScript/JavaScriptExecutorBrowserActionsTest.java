@@ -4,20 +4,16 @@ import engine.Helper;
 import io.qameta.allure.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import engine.broswer.BrowserActions;
-import engine.broswer.BrowserFactory;
+import testCases.gui.web.BaseTests;
 
 import static org.testng.AssertJUnit.assertEquals;
 
 @Feature("web")
 @Epic("JavaScript Executor")
-public class JavaScriptExecutorBrowserActionsTest {
-	private WebDriver driver;
+public class JavaScriptExecutorBrowserActionsTest extends BaseTests {
+
 	String currentTime = "< " + Helper.getCurrentTime("HH:mm:ss") + " >";
 
 	@Test
@@ -97,16 +93,5 @@ public class JavaScriptExecutorBrowserActionsTest {
 		BrowserActions.navigateToUrl(driver, " https://the-internet.herokuapp.com/");
 		((JavascriptExecutor) driver).executeScript("alert('Welcome to the-internet By Ismail Elshafeiy " + currentTime + "')");
 	}
-
-	@BeforeMethod
-	public void setUp_BeforeMethod () {
-		driver = BrowserFactory.getBrowser();
-	}
-
-	@AfterMethod(enabled = false)
-	public void closeBrowser () {
-		BrowserActions.closeAllOpenedBrowserWindows(driver);
-	}
-
 
 }

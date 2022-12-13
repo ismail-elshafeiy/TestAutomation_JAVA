@@ -1,33 +1,20 @@
-package testCases.gui.web.calendar;
+package testCases.gui.web.elementActions.interactions;
 
+import engine.broswer.BrowserActions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import engine.broswer.BrowserActions;
-import engine.broswer.BrowserFactory;
+import testCases.gui.web.BaseTests;
 
-public class SelectCalendarByJSTest {
-    private WebDriver driver;
-
-    @BeforeMethod
-    public void setUp_BeforeMethod() {
-        driver = BrowserFactory.getBrowser();
-    }
-
-    @AfterMethod
-    public void closeBrowser() {
-        BrowserActions.closeAllOpenedBrowserWindows(driver);
-    }
+public class SelectCalendarByJSTest extends BaseTests {
 
     @Test
     public void selectDateByJS() {
-        driver.get("http://spicejet.com/"); // enter URL
+        BrowserActions.navigateToUrl(driver,"http://spicejet.com/");
         WebElement date = driver.findElement(By.xpath("//div[@class='css-76zvg2 css-bfa6kz r-homxoj r-ubezar']"));
-        String dateVal = "30-12-2017";
+        String dateVal = "25-12-2022";
         selectDateByJS(driver, date, dateVal);
     }
 

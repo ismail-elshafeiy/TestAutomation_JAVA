@@ -13,6 +13,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
+import testCases.gui.web.BaseTests;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -24,8 +25,7 @@ import static org.testng.AssertJUnit.assertEquals;
  */
 @Feature("web")
 @Epic("JavaScript Executor")
-public class JavaScriptExecutorElementActionsTest {
-	private WebDriver driver;
+public class JavaScriptExecutorElementActionsTest extends BaseTests {
 
 	@Test
 	@Description("""
@@ -110,23 +110,12 @@ public class JavaScriptExecutorElementActionsTest {
 		changeColor(driver, element, "red");
 		flash(driver, element);
 	}
-
-	@BeforeMethod
-	public void setUp () {
-		driver = BrowserFactory.getBrowser();
-	}
-
-	@AfterMethod(enabled = false)
-	public void tearDown (ITestResult result) {
-		BrowserActions.closeAllOpenedBrowserWindows(driver);
-	}
-
 	public static void changeColor (WebDriver driver, By element, String color) {
 		JavascriptExecutor js = ((JavascriptExecutor) driver);
 		js.executeScript("arguments[0].style.backgroundColor = '" + color + "'", driver.findElement(element));
 		try {
 			Thread.sleep(20);
-		} catch (InterruptedException e) {
+		} catch (InterruptedException ignored) {
 		}
 	}
 

@@ -1,34 +1,15 @@
-package testCases.gui.web.elementActions.fileUpload;
+package testCases.gui.web.elementActions.interactions;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import engine.broswer.BrowserActions;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.CapabilityType;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import testCases.gui.web.BaseTests;
 
 import java.util.HashMap;
 
-public class UploadFile_ChromeOptions {
-    private WebDriver driver;
-
-
-    @BeforeTest
-    public void setup() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver(chromeOption());
-        driver.get("http://the-internet.herokuapp.com/download");
-        driver.manage().window().maximize();
-    }
-
-    @AfterTest
-    public void closeBrowser() {
-        driver.quit();
-    }
-
+public class UploadFileChromeOptions extends BaseTests {
     static String downloadPath = "src/test/resources/Downloads";
 
     public static ChromeOptions chromeOption() {
@@ -44,7 +25,8 @@ public class UploadFile_ChromeOptions {
 
     @Test
     public void testDownloadFile() throws InterruptedException {
-        driver.findElement(By.linkText("images.jpeg")).click();
+        BrowserActions.navigateToUrl(driver, "http://the-internet.herokuapp.com/download");
+        driver.findElement(By.linkText("images.png")).click();
         Thread.sleep(3000);
     }
 

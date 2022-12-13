@@ -7,15 +7,10 @@ import engine.gui.actions.ElementActions;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import jdk.jfr.Description;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 import testCases.gui.web.BaseTests;
 
@@ -35,7 +30,7 @@ public class ElementActionBySelenium extends BaseTests {
 	}
 
 	@Test
-	public void testRightClick () {
+	public void RightClick () {
 		BrowserActions.navigateToUrl(driver, "https://the-internet.herokuapp.com/context_menu");
 		ElementActions.rightClick(driver, By.id("hot-spot"));
 		BrowserActions.alertAction(driver, BrowserActions.AlertAction.ACCEPT);
@@ -60,7 +55,7 @@ public class ElementActionBySelenium extends BaseTests {
 			            Or
 			            TextBox.sendKeys("S",Keys.CONTROL)
 			""")
-	public void KeyPress () {
+	public void keyboardKey () {
 		BrowserActions.navigateToUrl(driver, "https://the-internet.herokuapp.com/key_presses");
 		By TextBox = By.id("target");
 		By TheUsedKeyPressLabel = By.id("result");
@@ -91,14 +86,16 @@ public class ElementActionBySelenium extends BaseTests {
 		ElementActions.clickKeyboardKey(driver, TextBox, Keys.END);
 		assertEquals(ElementActions.getText(driver, TheUsedKeyPressLabel), "You entered: END");
 	}
+
 	@Test
-	public void testBackspace () {
+	public void Backspace () {
 		BrowserActions.navigateToUrl(driver, "https://the-internet.herokuapp.com/key_presses");
 		String getResult = new KeyPressesPage(driver)
 				.enterText("ismailaaaa")
 				.getResult();
 		assertEquals(getResult, "You entered: BACK_SPACE", "Input result incorrect");
 	}
+
 	@Test
 	public void DoubleClick () {
 		BrowserActions.navigateToUrl(driver, "http://cookbook.seleniumacademy.com/DoubleClickDemo.html");
@@ -107,6 +104,16 @@ public class ElementActionBySelenium extends BaseTests {
 		ElementActions.doubleClick(driver, box);
 		assertEquals(ElementActions.getCssValue(driver, box, "background-color"), "rgba(255, 255, 0, 1)");
 	}
+
+	@Test
+	public void hoverAndHoverThenClick () {
+		BrowserActions.navigateToUrl(driver, "https://demo.nopcommerce.com/");
+		By computers = By.xpath("//ul[@class='top-menu notmobile']//a[contains(text(),'Computers')]");
+		new ElementActions(driver)
+				.mouseHover(computers)
+				.mouseHoverAndClick(By.xpath("//ul[@class='top-menu notmobile']//a[contains(text(),'Desktops')]"));
+	}
+
 
 	@Test
 	public void DragDropByLocator () {
@@ -129,4 +136,12 @@ public class ElementActionBySelenium extends BaseTests {
 		ElementActions.clickAndHoldTo(driver, By.xpath("//input[@type='range']"), 10, 0);
 	}
 
+	@Test
+	public void setDatePicker () {
+		BrowserActions.navigateToUrl(driver, "https://formy-project.herokuapp.com/datepicker");
+		By DatePicker = By.id("datepicker");
+		new ElementActions(driver)
+				.type(DatePicker, "01/01/2021")
+				.clickKeyboardKey(DatePicker, Keys.ENTER);
+	}
 }

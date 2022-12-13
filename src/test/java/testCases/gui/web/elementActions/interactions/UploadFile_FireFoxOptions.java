@@ -1,17 +1,13 @@
-package testCases.gui.web.elementActions.fileUpload;
+package testCases.gui.web.elementActions.interactions;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import engine.broswer.BrowserActions;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import testCases.gui.web.BaseTests;
 
-public class UploadFile_FireFoxOptions {
+public class UploadFile_FireFoxOptions extends BaseTests {
 
-    WebDriver driver;
     static String downloadPath = "src/test/resources/Downloads";
 
     public static FirefoxOptions firefoxOption() {
@@ -22,25 +18,10 @@ public class UploadFile_FireFoxOptions {
         option.addPreference("browser.download.manager.showWhenStarting", false);
         return option;
     }
-
-    @BeforeTest
-    public void setup() {
-        WebDriverManager.firefoxdriver().setup();
-        driver = new FirefoxDriver(firefoxOption());
-        driver.get("http://the-internet.herokuapp.com/download");
-        driver.manage().window().maximize();
-    }
-
     @Test
     public void TestDownloadFile() throws InterruptedException {
+        BrowserActions.navigateToUrl(driver, "http://the-internet.herokuapp.com/download");
         driver.findElement(By.linkText("some-file.txt")).click();
         Thread.sleep(3000);
     }
-
-    @AfterTest
-    public void closeBrowser() {
-        driver.quit();
-    }
-
-
 }
