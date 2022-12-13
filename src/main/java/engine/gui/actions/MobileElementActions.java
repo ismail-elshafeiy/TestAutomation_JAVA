@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
-import static engine.gui.actions.ActionsHelper.locatingElementStrategy;
+import static engine.gui.actions.ElementHelper.locatingElementStrategy;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.fail;
 
@@ -77,17 +77,17 @@ public class MobileElementActions {
         return text;
     }
 
-    public MobileElementActions select(By elementLocator, ActionsHelper.SelectBy selectBy, String option) {
+    public MobileElementActions select(By elementLocator, ElementHelper.SelectBy selectBy, String option) {
         select(mobile, elementLocator, selectBy, option);
         return this;
     }
 
-    public MobileElementActions select(By elementLocator, ActionsHelper.SelectBy selectBy, int option) {
+    public MobileElementActions select(By elementLocator, ElementHelper.SelectBy selectBy, int option) {
         select(mobile, elementLocator, selectBy, String.valueOf(option));
         return this;
     }
 
-    public static void select(MobileDriver<MobileElement> mobile, By elementLocator, ActionsHelper.SelectBy selectBy, String option) {
+    public static void select(MobileDriver<MobileElement> mobile, By elementLocator, ElementHelper.SelectBy selectBy, String option) {
         locatingElementStrategy(mobile, elementLocator);
         try {
             Select s = new Select(mobile.findElement(elementLocator));

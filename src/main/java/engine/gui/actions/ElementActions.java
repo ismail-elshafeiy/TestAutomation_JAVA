@@ -1,5 +1,6 @@
 package engine.gui.actions;
 
+import engine.broswer.BrowserActions;
 import engine.broswer.Waits;
 import engine.tools.Logger;
 import io.qameta.allure.Step;
@@ -9,21 +10,16 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
-import static engine.gui.actions.DeviceActions.mouseHover;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.fail;
 
 public class ElementActions {
-	private WebDriver driver;
+	private final WebDriver driver;
 
 	public ElementActions (WebDriver driver) {
 		this.driver = driver;
 	}
 
-	public ElementActions click (By elementLocator) {
-		click(driver, elementLocator);
-		return this;
-	}
 
 	@Step("Click on element: [{elementLocator}]")
 	public static void click (WebDriver driver, By elementLocator) {
@@ -31,12 +27,9 @@ public class ElementActions {
 		mouseHover(driver, elementLocator);
 		try {
 			Waits.getExplicitWait(driver).until(ExpectedConditions.elementToBeClickable(elementLocator));
-		} catch (TimeoutException toe) {
+		} catch (Exception toe) {
 			Logger.logMessage(toe.getMessage());
 			fail(toe.getMessage());
-		} catch (Exception e) {
-			Logger.logMessage(e.getMessage());
-			fail(e.getMessage());
 		}
 		try {
 			// Log element text if not empty. Else, log clicking
@@ -62,13 +55,15 @@ public class ElementActions {
 		}
 	}
 
-	public static void type (WebDriver driver, By elementLocator, String text) {
-		type(driver, elementLocator, text, true);
+	public ElementActions click (By elementLocator) {
+		click(driver, elementLocator);
+		return this;
 	}
+
 
 	@Step("Type data: [{text}] on element: [{elementLocator}]")
 	public static void type (WebDriver driver, By elementLocator, String text, boolean clearBeforeTyping) {
-		ActionsHelper.locatingElementStrategy(driver, elementLocator);
+		ElementHelper.locatingElementStrategy(driver, elementLocator);
 		try {
 			// Clear before typing condition
 			if (!driver.findElement(elementLocator).getAttribute("value").isBlank() && clearBeforeTyping) {
@@ -98,6 +93,10 @@ public class ElementActions {
 						+ driver.findElement(elementLocator).getAttribute("value") + "]");
 	}
 
+	public static void type (WebDriver driver, By elementLocator, String text) {
+		type(driver, elementLocator, text, true);
+	}
+
 	public ElementActions type (By elementLocator, String text) {
 		type(driver, elementLocator, text, true);
 		return this;
@@ -109,19 +108,10 @@ public class ElementActions {
 	}
 
 
-	public ElementActions select (By elementLocator, ActionsHelper.SelectBy selectBy, String option) {
-		select(driver, elementLocator, selectBy, option);
-		return this;
-	}
-
-	public ElementActions select (By elementLocator, ActionsHelper.SelectBy selectBy, int option) {
-		select(driver, elementLocator, selectBy, String.valueOf(option));
-		return this;
-	}
-
-	// Select by string Text or Value
-	public static void select (WebDriver driver, By elementLocator, ActionsHelper.SelectBy selectBy, String option) {
-		ActionsHelper.locatingElementStrategy(driver, elementLocator);
+	//**************************************      Select Actions         **********************************************//
+	//******************************************************************************************************************//
+	public static void select (WebDriver driver, By elementLocator, ElementHelper.SelectBy selectBy, String option) {
+		ElementHelper.locatingElementStrategy(driver, elementLocator);
 		try {
 			Select s = new Select(driver.findElement(elementLocator));
 			Logger.logStep("[Element Action] Select [" + option + "] on element [" + elementLocator + "]");
@@ -138,28 +128,206 @@ public class ElementActions {
 		}
 	}
 
-	public ElementActions clickKeyboardKey (By elementLocator, Keys key) {
-		clickKeyboardKey(driver, elementLocator, key);
+	public ElementActions select (By elementLocator, ElementHelper.SelectBy selectBy, String option) {
+		select(driver, elementLocator, selectBy, option);
+		return this;
+	}
+
+	public ElementActions select (By elementLocator, ElementHelper.SelectBy selectBy, int option) {
+		select(driver, elementLocator, selectBy, String.valueOf(option));
+		return this;
+	}
+
+
+	//**************************************       Device Actions         **********************************************//
+	//******************************************************************************************************************//
+	static Actions actions;
+
+	public static void doubleClick (WebDriver driver, By elementLocator) {
+		ElementHelper.locatingElementStrategy(driver, elementLocator);
+		try {
+			actions = new Actions(driver);
+			Logger.logStep("[Element Action] Double Click on element [" + elementLocator + "]");
+			actions.doubleClick(driver.findElement(elementLocator)).perform();
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+			fail(e.getMessage());
+		}
+	}
+
+	public ElementActions doubleClick (By elementLocator) {
+		doubleClick(driver, elementLocator);
+		return this;
+	}
+	public static void rightClick (WebDriver driver, By elementLocator) {
+		ElementHelper.locatingElementStrategy(driver, elementLocator);
+		try {
+			actions = new Actions(driver);
+			Logger.logStep("[Element Action] Right Click on element [" + elementLocator + "]");
+			actions.contextClick(driver.findElement(elementLocator)).perform();
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+			fail(e.getMessage());
+		}
+	}
+
+	public ElementActions rightClick (By elementLocator) {
+		rightClick(driver, elementLocator);
+		return this;
+	}
+
+
+	public static void mouseHover (WebDriver driver, By elementLocator) {
+		ElementHelper.locatingElementStrategy(driver, elementLocator);
+		try {
+			actions = new Actions(driver);
+			Logger.logStep("[Element Action] Hover on [" + driver.findElement(elementLocator).getText() + "]");
+			actions.moveToElement(driver.findElement(elementLocator)).perform();
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+			fail(e.getMessage());
+		}
+	}
+
+	public ElementActions mouseHover (By elementLocator) {
+		mouseHover(driver, elementLocator);
+		return this;
+	}
+
+	public static void mouseHoverAndClick (WebDriver driver, By elementLocator) {
+		ElementHelper.locatingElementStrategy(driver, elementLocator);
+		try {
+			actions = new Actions(driver);
+			Logger.logStep("[Element Action] Hover on [" + driver.findElement(elementLocator).getText() + "]");
+			actions.moveToElement(driver.findElement(elementLocator)).click().perform();
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+			fail(e.getMessage());
+		}
+	}
+
+	public ElementActions mouseHoverAndClick (By elementLocator) {
+		mouseHoverAndClick(driver, elementLocator);
 		return this;
 	}
 
 	@Step("Click a Keyboard Key on element: [{elementLocator}]")
 	public static void clickKeyboardKey (WebDriver driver, By elementLocator, Keys key) {
-		ActionsHelper.locatingElementStrategy(driver, elementLocator);
+		ElementHelper.locatingElementStrategy(driver, elementLocator);
 		try {
+			actions = new Actions(driver);
 			Logger.logStep("[Element Action] Click a Keyboard key [" + key.name() + "] on element [" + elementLocator + "]");
 			// We click ENTER here! :D
 			driver.findElement(elementLocator).sendKeys(key);
-			((Actions) driver).sendKeys(key).perform();
+			actions.sendKeys(key).perform();
 		} catch (Exception e) {
 			Logger.logMessage(e.getMessage());
 		}
 	}
 
+	public ElementActions clickKeyboardKey (By elementLocator, Keys key) {
+		clickKeyboardKey(driver, elementLocator, key);
+		return this;
+	}
+
+	public static void clickAndSendKeys (WebDriver driver, By elementLocator, String text) {
+		ElementHelper.locatingElementStrategy(driver, elementLocator);
+		try {
+			actions = new Actions(driver);
+			Logger.logStep("[Element Action] Sending Keys [" + text + "] to element [" + elementLocator + "]");
+			actions.click(driver.findElement(elementLocator))
+					.sendKeys(text).build().perform();
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+		}
+	}
+
+	public ElementActions clickAndSendKeys (By elementLocator, String text) {
+		clickAndSendKeys(driver, elementLocator, text);
+		return this;
+	}
+
+	public static void clickAndHoldTo (WebDriver driver, By fromLocator, By toLocator) {
+		ElementHelper.locatingElementStrategy(driver, fromLocator);
+		try {
+			actions = new Actions(driver);
+			Logger.logStep("[Element Action] Click and hold on [" + driver.findElement(fromLocator).getText() + "]");
+			actions.clickAndHold(driver.findElement(fromLocator))
+					.moveToElement(driver.findElement(toLocator))
+					.build()
+					.perform();
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+			fail(e.getMessage());
+		}
+	}
+
+	public ElementActions clickAndHoldTo (By fromLocator, By toLocator) {
+		clickAndHoldTo(driver, fromLocator, toLocator);
+		return this;
+	}
+
+	public static void clickAndHoldTo (WebDriver driver, By fromLocator, int xOffset, int yOffset) {
+		ElementHelper.locatingElementStrategy(driver, fromLocator);
+		try {
+			actions = new Actions(driver);
+			Logger.logStep("[Element Action] Click and hold on [" + driver.findElement(fromLocator).getText() + "] to [" + xOffset + "," + yOffset + "]");
+			actions.clickAndHold(driver.findElement(fromLocator))
+					.moveByOffset(xOffset, yOffset)
+					.release()
+					.build()
+					.perform();
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+			fail(e.getMessage());
+		}
+	}
+
+	public ElementActions clickAndHoldTo (By fromLocator, int xOffset, int yOffset) {
+		clickAndHoldTo(driver, fromLocator, xOffset, yOffset);
+		return this;
+	}
+
+	public static void dragAndDrop (WebDriver driver, By sourceLocator, By targetLocator) {
+		ElementHelper.locatingElementStrategy(driver, sourceLocator);
+		try {
+			actions = new Actions(driver);
+			Logger.logStep("[Element Action] Drag and Drop [" + driver.findElement(sourceLocator).getText() + "] to [" + driver.findElement(targetLocator).getText() + "]");
+			actions.dragAndDrop(driver.findElement(sourceLocator), driver.findElement(targetLocator)).perform();
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+			fail(e.getMessage());
+		}
+	}
+
+	public ElementActions dragAndDrop (By sourceLocator, By targetLocator) {
+		dragAndDrop(driver, sourceLocator, targetLocator);
+		return this;
+	}
+
+	public static void dragAndDrop (WebDriver driver, By sourceLocator, int xOffset, int yOffset) {
+		ElementHelper.locatingElementStrategy(driver, sourceLocator);
+		try {
+			actions = new Actions(driver);
+			Logger.logStep("[Element Action] Drag and Drop [" + driver.findElement(sourceLocator).getText() + "] to [" + xOffset + "," + yOffset + "]");
+			actions.dragAndDropBy(driver.findElement(sourceLocator), xOffset, yOffset).perform();
+		} catch (Exception e) {
+			Logger.logMessage(e.getMessage());
+			fail(e.getMessage());
+		}
+	}
+
+	public ElementActions dragAndDrop (By sourceLocator, int xOffset, int yOffset) {
+		dragAndDrop(driver, sourceLocator, xOffset, yOffset);
+		return this;
+	}
+
+//**********************************************     Getter Methods    **************************************************************//
+//***********************************************************************************************************************************//
 
 	@Step("Get the Text of element: [{elementLocator}]")
 	public static String getText (WebDriver driver, By elementLocator) {
-		ActionsHelper.locatingElementStrategy(driver, elementLocator);
+		ElementHelper.locatingElementStrategy(driver, elementLocator);
 		try {
 			String text = driver.findElement(elementLocator).getText();
 			Logger.logStep("[Element Action] Get the Text of element [" + elementLocator + "]; The Text is [" + text + "]");
@@ -171,7 +339,7 @@ public class ElementActions {
 	}
 
 	public static String getAttributeValue (WebDriver driver, By elementLocator, String attributeName) {
-		ActionsHelper.locatingElementStrategy(driver, elementLocator);
+		ElementHelper.locatingElementStrategy(driver, elementLocator);
 		try {
 			String attributeValue = driver.findElement(elementLocator).getAttribute(attributeName);
 			Logger.logStep("[Element Action] Get the Attribute [" + attributeName + "] Value of element [" + elementLocator + "]; The Value is [" + attributeValue + "]");
@@ -183,7 +351,7 @@ public class ElementActions {
 	}
 
 	public static String getCssValue (WebDriver driver, By elementLocator, String cssValue) {
-		ActionsHelper.locatingElementStrategy(driver, elementLocator);
+		ElementHelper.locatingElementStrategy(driver, elementLocator);
 		try {
 			String cssValueOfElement = driver.findElement(elementLocator).getCssValue(cssValue);
 			Logger.logStep("[Element Action] Get the CSS Value [" + cssValue + "] of element [" + elementLocator + "]; The Value is [" + cssValueOfElement + "]");

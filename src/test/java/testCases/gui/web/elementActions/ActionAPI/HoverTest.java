@@ -1,4 +1,4 @@
-package testCases.gui.web.actions;
+package testCases.gui.web.elementActions.ActionAPI;
 
 import com.practice.gui.pages.homePage.HomePage;
 import com.practice.gui.pages.actions.HoverPage;

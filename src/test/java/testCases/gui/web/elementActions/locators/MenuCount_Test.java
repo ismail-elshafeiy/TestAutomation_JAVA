@@ -1,4 +1,4 @@
-package testCases.gui.web.countList;
+package testCases.gui.web.elementActions.locators;
 
 import com.practice.gui.pages.homePage.HomePage;
 import org.openqa.selenium.By;
@@ -10,23 +10,11 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
+import testCases.gui.web.BaseTests;
 
 import java.util.List;
 
-public class MenuCount_Test {
-    private WebDriver driver;
-
-    @BeforeMethod
-    public void setUp_BeforeMethod() {
-        driver = BrowserFactory.getBrowser();
-    }
-
-    @AfterMethod
-    public void closeBrowser() {
-        BrowserActions.closeAllOpenedBrowserWindows(driver);
-    }
-
-
+public class MenuCount_Test extends BaseTests {
     @Test
     public void countLinks_HomePage() {
         new HomePage(driver).navigateToHomePage()

@@ -1,4 +1,4 @@
-package testCases.gui.web.ElementActions.fileUpload;
+package testCases.gui.web.elementActions.fileUpload;
 
 import com.practice.gui.pages.homePage.HomePage;
 import com.practice.gui.pages.uploadFilePage.FileUploadPage;

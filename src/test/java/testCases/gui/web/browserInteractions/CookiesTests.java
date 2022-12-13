@@ -32,7 +32,7 @@ public class CookiesTests extends BaseTests {
 	@Test
 	public void getAllCookies () {
 		BrowserActions.navigateToUrl(driver, "https://the-internet.herokuapp.com/");
-		BrowserActions.getAllCookies2(driver);
+		BrowserActions.getAllCookies(driver);
 	}
 
 	@Test

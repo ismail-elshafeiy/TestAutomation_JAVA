@@ -1,4 +1,4 @@
-package testCases.gui.web.select;
+package testCases.gui.web.elementActions.select;
 
 import com.practice.gui.pages.select.CheckBoxPage;
 import com.practice.gui.pages.homePage.HomePage;

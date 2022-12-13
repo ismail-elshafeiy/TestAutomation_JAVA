@@ -4,15 +4,17 @@ import engine.broswer.Waits;
 import engine.tools.Logger;
 import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MobileElement;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
 
 import static org.testng.Assert.fail;
 
-public class ActionsHelper {
+public class ElementHelper {
 	public enum SelectBy {
 		TEXT, VALUE, INDEX
 	}
@@ -48,6 +50,43 @@ public class ActionsHelper {
 		} catch (Exception e) {
 			Logger.logMessage(e.getMessage());
 			fail(e.getMessage());
+		}
+	}
+	public static void verifyLink (String urlLink) {
+		try {
+			URL link = new URL(urlLink);
+			HttpURLConnection httpConn = (HttpURLConnection) link.openConnection();
+			httpConn.setConnectTimeout(2000);
+			httpConn.connect();
+			if (httpConn.getResponseCode() == 200) {
+				System.out.println("[" + urlLink + "] - " + httpConn.getResponseMessage() + " - " + httpConn.getResponseCode());
+			} else if (httpConn.getResponseCode() == 404) {
+				System.out.println("[" + urlLink + "] - " + httpConn.getResponseMessage() + " - " + httpConn.getResponseCode());
+			} else {
+				System.out.println("[" + urlLink + "] - " + httpConn.getResponseMessage() + " - " + httpConn.getResponseCode());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void getLinks (WebElement elementLocator) {
+		List<WebElement> links = elementLocator.findElements(By.tagName("a"));
+		System.out.println("The Number of The links is : " + links.size());
+		for (WebElement Link : links) {
+			System.out.println(Link.getAttribute("href"));
+		}
+	}
+
+
+	public static void getCellFromTable (List<WebElement> rows, By tagName) {
+		for (WebElement row : rows) {
+			List<WebElement> cols = row.findElements(tagName);
+			for (WebElement cell : cols) {
+				System.out.println(cell.getText() + "\t");
+			}
+			// To Print Empty line between each row
+			System.out.println();
 		}
 	}
 }

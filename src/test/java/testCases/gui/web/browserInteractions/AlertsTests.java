@@ -2,7 +2,6 @@ package testCases.gui.web.browserInteractions;
 
 import com.practice.gui.pages.alerts.AlertsPage;
 import com.practice.gui.pages.homePage.HomePage;
-import engine.gui.actions.ElementActions;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -13,7 +12,6 @@ import org.testng.annotations.Test;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
 
-import static engine.broswer.BrowserActions.ConfirmAlertType.*;
 import static org.testng.Assert.assertEquals;
 @Epic("Browser Interactions")
 @Feature("Alerts")

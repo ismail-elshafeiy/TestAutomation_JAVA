@@ -49,7 +49,7 @@ public class Logger {
 	@AllureId(value = "1")
 	@Step("{logStep}")
 	public static void logStep (String logStep) {
-		System.out.println("<" + currentTime + "> " + logStep);
+		System.out.println("<" + currentTime + "> " +  logStep);
 		ExtentReport.info(logStep);
 	}
 

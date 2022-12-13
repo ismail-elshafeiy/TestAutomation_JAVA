@@ -1,4 +1,4 @@
-package testCases.gui.web.actions;
+package testCases.gui.web.elementActions.ActionAPI;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;

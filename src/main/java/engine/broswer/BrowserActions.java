@@ -128,6 +128,7 @@ public class BrowserActions {
 		}
 	}
 
+
 	//****** Switch Windows ******//
 	public enum PageType {
 		WINDOW("window"), TAB("tab");
@@ -211,12 +212,12 @@ public class BrowserActions {
 	//**************************************  Alerts Methods **************************************//
 	//*********************************************************************************************//
 
-	public enum ConfirmAlertType {
+	public enum AlertAction {
 		ACCEPT, DISMISS, SET_TEXT, GET_TEXT
 	}
 
 	@Step("Confirm the Alert")
-	public static void alertAction (WebDriver driver, ConfirmAlertType confirmAlertType) {
+	public static void alertAction (WebDriver driver, AlertAction confirmAlertType) {
 		Waits.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
 		Alert alert = driver.switchTo().alert();
 		try {
@@ -268,7 +269,7 @@ public class BrowserActions {
 		}
 	}
 
-	public static void getAllCookies2 (WebDriver driver) {
+	public static void getAllCookies (WebDriver driver) {
 		try {
 			Set<Cookie> cookieSet = driver.manage().getCookies();
 			Logger.logStep("Get All Cookies = " + cookieSet.size());
@@ -291,6 +292,7 @@ public class BrowserActions {
 
 	//**************************************  Frames Methods ************************************** //
 	//*********************************************************************************************//
+
 	/**
 	 * Using driver.switchTo().frame() to handle frames
 	 * using with iframe's ID
@@ -303,6 +305,12 @@ public class BrowserActions {
 			Logger.logMessage(e.getMessage());
 		}
 	}
+
+	public BrowserActions switchToFrame (By elementLocator) {
+		switchToFrame(driver, elementLocator);
+		return this;
+	}
+
 	/**
 	 * Using driver.switchTo().frame() to handle frames
 	 * using with iframe's ID Or name
@@ -315,6 +323,12 @@ public class BrowserActions {
 			Logger.logMessage(e.getMessage());
 		}
 	}
+
+	public BrowserActions switchToFrame (String nameOrId) {
+		switchToFrame(driver, nameOrId);
+		return this;
+	}
+
 	/**
 	 * Using driver.switchTo().frame() to handle frames
 	 * using with iframe's index
@@ -328,8 +342,15 @@ public class BrowserActions {
 		}
 	}
 
+	public BrowserActions switchToFrame (int index) {
+		switchToFrame(driver, index);
+		return this;
+	}
+
 	//**************************************  Navigation Methods ************************************** //
 	//*********************************************************************************************//
+
+
 	public static void goBack (WebDriver driver) {
 		try {
 			Logger.logStep("[Browser Action] Navigate Back from [" + getCurrentUrl(driver) + "]");
@@ -374,8 +395,8 @@ public class BrowserActions {
 	public BrowserActions refreshPage () {
 		refreshPage(driver);
 		return this;
-	}
 
+	}
 
 	//**************************************  Getters Methods **************************************//
 	//*********************************************************************************************//
@@ -413,6 +434,4 @@ public class BrowserActions {
 		getCurrentUrl(driver);
 		return this;
 	}
-
-
 }

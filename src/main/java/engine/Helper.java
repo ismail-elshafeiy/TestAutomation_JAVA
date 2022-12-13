@@ -1,14 +1,8 @@
 package engine;
 
 import engine.tools.Logger;
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
 import org.testng.Reporter;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -67,13 +61,25 @@ public class Helper {
 		return sb.toString();
 	}
 
+
+	public static String generateId () {
+		int i;
+		for (i = 0; i < 100; i++) {
+			System.out.println("#" + i);
+		}
+		return "#" + i;
+	}
+
+
 	public static String generateUuid () {
 		return java.util.UUID.randomUUID().toString();
 	}
 
+
 	public static int getRandomNumberBetweenTwoValues (int lowValue, int highValue) {
 		return new Random().nextInt(highValue - lowValue) + lowValue;
 	}
+
 	public static String getRandomNumberBetweenTwoValuesAsString (int lowValue, int highValue) {
 		return Integer.toString(getRandomNumberBetweenTwoValues(lowValue, highValue));
 	}
