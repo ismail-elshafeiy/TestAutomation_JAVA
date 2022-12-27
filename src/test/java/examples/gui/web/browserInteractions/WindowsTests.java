@@ -43,7 +43,7 @@ public class WindowsTests extends BaseTests {
 	@Test(description = "Set window size")
 	public void testSetWindowSize () {
 		BrowserActions.navigateToUrl(driver, "https://www.w3schools.com/");
-		BrowserActions.setWindowSize(driver, 601, 962);
+		BrowserActions.setWindowSize(driver, 375, 812);
 		BrowserActions.getWindowSize(driver);
 	}
 

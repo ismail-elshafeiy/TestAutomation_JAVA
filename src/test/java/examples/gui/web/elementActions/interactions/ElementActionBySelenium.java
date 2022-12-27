@@ -123,6 +123,14 @@ public class ElementActionBySelenium extends BaseTests {
 		Assert.assertEquals(driver.findElement(target).getText(), "Dropped!");
 	}
 
+	@Test
+	public void dragAndDropByOffset () {
+		BrowserActions.navigateToUrl(driver, "https://jqueryui.com/resources/demos/droppable/default.html");
+		By sourceElement = By.id("draggable");    // Locator to the element you want to drag
+		int xPos = 180;
+		int yPos = 30;
+		ElementActions.dragAndDrop(driver,sourceElement, xPos, yPos);
+	}
 
 	@Test
 	@Description("""
