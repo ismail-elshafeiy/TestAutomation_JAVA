@@ -43,8 +43,8 @@ public class ElementActions {
 			// Click using JavascriptExecutor in case of the click is not performed
 			// successfully and got an exception using the Selenium click method
 			try {
-				((JavascriptExecutor) driver).executeScript("arguments[arguments.length - 1].click();",
-						driver.findElement(elementLocator));
+				((JavascriptExecutor) driver)
+						.executeScript("arguments[arguments.length - 1].click();", driver.findElement(elementLocator));
 			} catch (Exception rootCauseException) {
 				rootCauseException.initCause(exception);
 				Logger.logMessage(exception.getMessage());
@@ -80,7 +80,8 @@ public class ElementActions {
 				// Type using JavascriptExecutor in case of the data is not typed successfully
 				if (!driver.findElement(elementLocator).getAttribute("value").contains(text)) {
 					String currentValue = driver.findElement(elementLocator).getAttribute("value");
-					((JavascriptExecutor) driver).executeScript("arguments[0].setAttribute('value', '" + currentValue + text + "')", driver.findElement(elementLocator));
+					((JavascriptExecutor) driver)
+							.executeScript("arguments[0].setAttribute('value', '" + currentValue + text + "')", driver.findElement(elementLocator));
 				}
 			}
 		} catch (Exception e) {
