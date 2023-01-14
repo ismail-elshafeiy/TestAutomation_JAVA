@@ -104,7 +104,6 @@ public class RestApiActions {
                 String qHeaders = queryableRequestSpecs.getHeaders().toString();
                 Logger.attachApiRequestToAllureReport("Headers", qHeaders.getBytes());
                 ExtentReport.info(MarkupHelper.createCodeBlock("Request Headers: " + "\n" + qHeaders));
-
             }
 
             if (contentType != null) {
@@ -146,21 +145,11 @@ public class RestApiActions {
             request.filter(cookieFilter);
 
             switch (requestType) {
-                case POST:
-                    response = request.post(requestUrl);
-                    break;
-                case GET:
-                    response = request.get(requestUrl);
-                    break;
-                case PUT:
-                    response = request.put(requestUrl);
-                    break;
-                case DELETE:
-                    response = request.delete(requestUrl);
-                    break;
-                case PATCH:
-                    response = request.patch(requestUrl);
-                    break;
+                case POST -> response = request.post(requestUrl);
+                case GET -> response = request.get(requestUrl);
+                case PUT -> response = request.put(requestUrl);
+                case DELETE -> response = request.delete(requestUrl);
+                case PATCH -> response = request.patch(requestUrl);
             }
 
             response.then().spec(responseSpec).statusCode(expectedStatusCode);

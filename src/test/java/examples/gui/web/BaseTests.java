@@ -16,7 +16,7 @@ public class BaseTests {
 		driver = BrowserFactory.getBrowser();
 	}
 
-	@AfterMethod(enabled = false)
+	@AfterMethod
 	public void tearDown (ITestResult result) {
 		BrowserActions.closeAllOpenedBrowserWindows(driver);
 	}
