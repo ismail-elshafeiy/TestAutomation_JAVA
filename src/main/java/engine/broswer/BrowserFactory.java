@@ -1,5 +1,6 @@
 package engine.broswer;
 
+import engine.EyesManager;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -21,11 +22,13 @@ import static org.testng.Assert.fail;
 
 public class BrowserFactory {
 	private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+	protected static EyesManager eyesManager;
 	private static final String propertiesFileName = "project.properties";
 	private static final String browserTypeProperty = PropertiesReader.getProperty(propertiesFileName, "browser.type");
 	private static final String executionTypeProperty = PropertiesReader.getProperty(propertiesFileName, "execution.type");
 	private static final String host = PropertiesReader.getProperty(propertiesFileName, "remote.execution.host");
 	private static final String port = PropertiesReader.getProperty(propertiesFileName, "remote.execution.port");
+	private static final String appName = PropertiesReader.getProperty(propertiesFileName, "app.name");
 
 
 	// Check the Browser and Execution from property file
@@ -33,6 +36,7 @@ public class BrowserFactory {
 	public static synchronized WebDriver getBrowser (BrowserType browserType, ExecutionType executionType) {
 		ITestResult result = Reporter.getCurrentTestResult();
 		ITestContext context = result.getTestContext();
+		eyesManager = new EyesManager(driver.get(), appName);
 		Logger.logStep("Initialize [" + browserType.getValue() + "] Browser and the Execution Type is [" + executionType.getValue() + "]");
 
 		// Remote execution condition

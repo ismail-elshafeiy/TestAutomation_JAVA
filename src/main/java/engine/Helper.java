@@ -12,11 +12,18 @@ import java.util.Random;
 import static org.testng.Assert.fail;
 
 public class Helper {
+	/**
+	 * This method is used to get test method name
+	 * @return String
+	 */
 	public static String getTestMethodName () {
 		Reporter.getCurrentTestResult();
 		return Reporter.getCurrentTestResult().getMethod().getMethodName();
 	}
-
+   /**
+	* This method is used to check if the test is passed or failed
+	* @return boolean
+	*/
 	public static Boolean isCurrentTestPassed () {
 		Reporter.getCurrentTestResult();
 		return Reporter.getCurrentTestResult().isSuccess();

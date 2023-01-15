@@ -49,14 +49,11 @@ public class JavaScriptExecutorBrowserActionsTest extends BaseTests {
 			- Get the URL of page
 			""")
 	public void navigateToPageAndGetUrl () {
-		BrowserActions.navigateToUrl(driver, " https://the-internet.herokuapp.com/");
-		String url = ((JavascriptExecutor) driver).executeScript("return document.URL;").toString();
-		System.out.println(currentTime + " The Url Page 1 is --> " + url);
-		((JavascriptExecutor) driver).executeScript("window.location = 'https://the-internet.herokuapp.com/hovers'");
-		String url2 = ((JavascriptExecutor) driver).executeScript("return document.URL;").toString();
-		System.out.println(currentTime + " The Url  Page 2 is --> " + url2);
-		String domain = ((JavascriptExecutor) driver).executeScript("return document.domain;").toString();
-		System.out.println(currentTime + " The domain is --> " + domain);
+		new BrowserActions(driver)
+				.navigateToUrl(" https://the-internet.herokuapp.com/")
+				.getCurrentUrlUsingJavaScript()
+				.navigateToUrlUsingJavaScript("https://www.google.com/")
+				.getCurrentUrlUsingJavaScript();
 	}
 
 
@@ -81,7 +78,6 @@ public class JavaScriptExecutorBrowserActionsTest extends BaseTests {
 		((JavascriptExecutor) driver).executeScript("arguments[0].style.border='3px solid red'", driver.findElement(element));
 		((JavascriptExecutor) driver).executeScript("window.scrollBy(0,300)");
 	}
-
 
 
 	@Test

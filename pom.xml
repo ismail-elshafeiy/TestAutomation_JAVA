@@ -11,7 +11,6 @@
     <description>Selenium Automation Framework for Testing</description>
     <url>https://github.com/ismail-elshafeiy</url>
 
-
     <properties>
         <selenium.version>4.5.3</selenium.version>
         <appium-java-client.version>7.4.1</appium-java-client.version>
@@ -39,6 +38,8 @@
         <jackson.databind.version>2.9.8</jackson.databind.version>
         <jave-all-deps.version>3.3.1</jave-all-deps.version>
         <video-recorder-testng.version>2.0</video-recorder-testng.version>
+        <javafaker.version>1.0.2</javafaker.version>
+        <applitools.version>5.0.0</applitools.version>
     </properties>
 
     <dependencies>
@@ -287,7 +288,7 @@
         <dependency>
             <groupId>com.github.javafaker</groupId>
             <artifactId>javafaker</artifactId>
-            <version>1.0.2</version>
+            <version>${javafaker.version}</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.automation-remarks/video-recorder -->
         <dependency>
@@ -306,6 +307,13 @@
             <artifactId>testrecorder</artifactId>
             <version>0.1.6</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.applitools/eyes-selenium-java3 -->
+        <dependency>
+            <groupId>com.applitools</groupId>
+            <artifactId>eyes-selenium-java3</artifactId>
+            <version>${applitools.version}</version>
+        </dependency>
+
 
     </dependencies>
 

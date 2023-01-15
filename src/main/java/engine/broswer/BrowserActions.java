@@ -13,6 +13,7 @@ import engine.RecordManager;
 
 import java.util.Set;
 
+import static engine.broswer.BrowserFactory.eyesManager;
 import static org.testng.Assert.fail;
 
 public class BrowserActions {
@@ -39,6 +40,23 @@ public class BrowserActions {
 		navigateToUrl(driver, url);
 		return this;
 	}
+
+	@Step("Navigate to URL using JavaScript: [{url}]")
+	public static void navigateToUrlUsingJavaScript (WebDriver driver,String url) {
+		try {
+			Logger.logStep("[Browser Action] Navigate to URL using JavaScript [" + url + "]");
+			((JavascriptExecutor) driver).executeScript("window.location = '" + url + "'");
+		} catch (Exception e) {
+			Logger.logStep(e.getMessage());
+			fail(e.getMessage());
+		}
+	}
+	@Step("Navigate to URL using JavaScript: [{url}]")
+	public BrowserActions navigateToUrlUsingJavaScript (String url) {
+		navigateToUrlUsingJavaScript(driver, url);
+		return this;
+	}
+
 
 	//************* Windows Methods ************//
 	//*********************************************************************************************//
@@ -187,6 +205,7 @@ public class BrowserActions {
 		}
 		RecordManager.attachVideoRecording();
 		closeAllOpenedBrowserWindows(driver);
+		eyesManager.abort();
 	}
 
 	@Step("Close All Opened Browser Windows.....")
@@ -203,6 +222,7 @@ public class BrowserActions {
 		}
 	}
 
+	// TODO: handle record Video
 	public static synchronized void closeDriver (int hashCode) {
 		if (System.getProperty("videoParams_scope").trim().equals("DriverSession")) {
 			RecordManager.attachVideoRecording();
@@ -429,9 +449,42 @@ public class BrowserActions {
 		}
 		return url;
 	}
-
+	public static String getCurrentPageUsingJavaScript (WebDriver driver) {
+		String page = "";
+		try {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			page = (String) js.executeScript("return document.title");
+			Logger.logStep("[Browser Action] Get current page using JavaScript [" + page + "]");
+		} catch (Exception e) {
+			Logger.logStep(e.getMessage());
+			fail(e.getMessage());
+		}
+		return page;
+	}
+	public BrowserActions getCurrentPageUsingJavaScript () {
+		getCurrentUrlUsingJavaScript(driver);
+		return this;
+	}
 	public BrowserActions getCurrentUrl () {
 		getCurrentUrl(driver);
 		return this;
 	}
+	public static String getCurrentUrlUsingJavaScript (WebDriver driver) {
+		String page = "";
+		try {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			page = (String) js.executeScript("return document.domain;");
+			Logger.logStep("[Browser Action] Get current url using JavaScript [" + page + "]");
+		} catch (Exception e) {
+			Logger.logStep(e.getMessage());
+			fail(e.getMessage());
+		}
+		return page;
+	}
+	public BrowserActions getCurrentUrlUsingJavaScript () {
+		getCurrentUrlUsingJavaScript(driver);
+		return this;
+	}
+
+
 }
