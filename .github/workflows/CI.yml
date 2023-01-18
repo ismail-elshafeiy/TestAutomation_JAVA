@@ -17,14 +17,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
-        uses: actions/setup-java@v3.9.0
+        uses: actions/setup-java@v3
         with:
-          java-version: 17
+          java-version: '17'
           distribution: 'zulu'
+
       - name: Set up Selenium Grid with one hub and four Chrome nodes
         run: docker-compose -f src/main/resources/docker-compose.yml up --scale chrome=4 --remove-orphans -d
       - name: Check running containers
         run: docker ps
+
       - name: Run tests - Chrome Headless
         continue-on-error: true
         run: mvn test -Dtest="examples.gui.web.elementActions.**" -Dexecution.type=Remote
@@ -48,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Extent Report
-          path: "ExtendReport/ExtentReports.html"
+          path: "ExtentReports.html"
 
 #    - name: Get Allure history
 #      uses: actions/checkout@v3
