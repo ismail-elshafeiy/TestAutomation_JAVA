@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: CI Tests on Ubuntu
+name: CI Tests
 
 on:
   push:
@@ -10,47 +10,78 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-    name: Test on Ubuntu
-    runs-on: [ ubuntu-latest ]
+  browser:
+    name: Run Tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-22.04, windows-latest, macOS-12 ]
     
     steps:
       - uses: actions/checkout@v3
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.4.1
+        with:
+          node-version: '16'
+
+      - name: Set up Selenium Grid with one hub and four Chrome nodes
+        if: runner.os == 'Linux'
+        run: docker-compose -f src/main/resources/docker-compose.yml up --scale chrome=4 --remove-orphans -d
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'zulu'
 
-      - name: Set up Selenium Grid with one hub and four Chrome nodes
-        run: docker-compose -f src/main/resources/docker-compose.yml up --scale chrome=4 --remove-orphans -d
       - name: Check running containers
+        if: runner.os == 'Linux'
         run: docker ps
 
-      - name: Run tests - Chrome Headless
+      - name: Run tests on Linux/MacOS
+        if: runner.os != 'Windows'
         continue-on-error: true
-        run: mvn test -Dtest="examples.gui.web.elementActions.**" -Dexecution.type=Remote
+        run: |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+               mvn test -Dexecution.type="remote" -Dbrowser.type="Google Chrome" -Dtest="examples.gui.web.elementActions.**"
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+               mvn test -Dexecution.type="Local Headless" -Dbrowser.type="Google Chrome" -Dtest="examples.gui.web.elementActions.**"
+          else
+               echo "$RUNNER_OS not supported"
+               exit 1
+          fi
+
+      - name: Run tests on Windows
+        if: runner.os == 'Windows'
+        continue-on-error: true
+        run: |
+          mvn test -Dexecution.type="remote" -Dbrowser.type="Mozilla Firefox" -Dtest="examples.gui.web.elementActions.**"
 
       - name: Generate Allure report
         run: mvn allure:report
-
       - name: Copy patch file to allure-maven-plugin folder
         run: cp src/main/resources/allow-file-access_open-report_chrome_windows.bat target/site/allure-maven-plugin
-
       - name: Check files in the allure-maven-plugin folder
         run: ls target/site/allure-maven-plugin
-
       - name: Upload Allure Report
         uses: actions/upload-artifact@v3
         with:
           name: Allure Report
           path: "target/site/allure-maven-plugin"
 
-      - name: Upload Extent Report
+      - name: Upload Extent Report as Pipeline Artifact
+        if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: Extent Report
-          path: "ExtentReports.html"
+          name: ${{ runner.os }} - Desktop Browsers Tests Extent Report
+          path: "ExtentReport/ExtentReports.html"
+
+      - name: Upload Console Logs as Pipeline Artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ runner.os }} - Desktop Browsers Tests Extent Report
+          path: "ConsoleLogs"
 
 #    - name: Get Allure history
 #      uses: actions/checkout@v3
