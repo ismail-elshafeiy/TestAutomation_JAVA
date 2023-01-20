@@ -34,7 +34,7 @@
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
         <junit.version>4.13.2</junit.version>
-        <junit.dataprovider.version>2.9</junit.dataprovider.version>
+        <junit.dataprovider.version>2.10</junit.dataprovider.version>
         <jackson.databind.version>2.9.8</jackson.databind.version>
         <jave-all-deps.version>3.3.1</jave-all-deps.version>
         <video-recorder-testng.version>2.0</video-recorder-testng.version>
