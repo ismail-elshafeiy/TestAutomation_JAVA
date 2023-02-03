@@ -25,7 +25,7 @@
         <extentreports.version>5.0.9</extentreports.version>
         <commons-io.version>2.11.0</commons-io.version>
         <aspectj.version>1.9.9.1</aspectj.version>
-        <jackson.databind.version>2.14.1</jackson.databind.version>
+        <jackson.databind.version>2.14.2</jackson.databind.version>
         <wiremock.version>2.33.2</wiremock.version>
         <slf4j.version>2.0.6</slf4j.version>
         <json-simple.version>1.1.1</json-simple.version>
