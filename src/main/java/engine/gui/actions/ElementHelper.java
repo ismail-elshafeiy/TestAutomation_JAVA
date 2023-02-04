@@ -2,8 +2,6 @@ package engine.gui.actions;
 
 import engine.broswer.Waits;
 import engine.tools.Logger;
-import io.appium.java_client.MobileDriver;
-import io.appium.java_client.MobileElement;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -37,7 +35,7 @@ public class ElementHelper {
 		}
 	}
 
-	public static void locatingElementStrategy (MobileDriver<MobileElement> mobile, By elementLocator) {
+/*	public static void locatingElementStrategy (MobileDriver<MobileElement> mobile, By elementLocator) {
 		try {
 			Waits.getExplicitWait(mobile).until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
 			if (!mobile.findElement(elementLocator).isDisplayed()) {
@@ -51,7 +49,7 @@ public class ElementHelper {
 			Logger.logMessage(e.getMessage());
 			fail(e.getMessage());
 		}
-	}
+	}*/
 	public static void verifyLink (String urlLink) {
 		try {
 			URL link = new URL(urlLink);

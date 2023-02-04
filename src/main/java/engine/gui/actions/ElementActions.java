@@ -114,13 +114,13 @@ public class ElementActions {
 	public static void select (WebDriver driver, By elementLocator, ElementHelper.SelectBy selectBy, String option) {
 		ElementHelper.locatingElementStrategy(driver, elementLocator);
 		try {
-			Select s = new Select(driver.findElement(elementLocator));
+			Select select = new Select(driver.findElement(elementLocator));
 			Logger.logStep("[Element Action] Select [" + option + "] on element [" + elementLocator + "]");
-			assertFalse(s.isMultiple());
+			assertFalse(select.isMultiple());
 			switch (selectBy) {
-				case TEXT -> s.selectByVisibleText(option);
-				case VALUE -> s.selectByValue(option);
-				case INDEX -> s.selectByIndex(Integer.parseInt(option));
+				case TEXT -> select.selectByVisibleText(option);
+				case VALUE -> select.selectByValue(option);
+				case INDEX -> select.selectByIndex(Integer.parseInt(option));
 				default -> Logger.logMessage("Unexpected value: " + selectBy);
 			}
 		} catch (Exception e) {

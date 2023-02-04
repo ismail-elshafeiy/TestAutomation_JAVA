@@ -1,3 +1,4 @@
+/*
 package engine;
 
 import engine.tools.Logger;
@@ -77,3 +78,4 @@ public class MobileFactory {
 		}
 	}
 }
+*/
