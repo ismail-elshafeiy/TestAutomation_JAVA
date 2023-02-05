@@ -23,8 +23,8 @@ public class Login_ReadDataUsingExcel extends DataProvider {
 	public void login_readDataFromExcelFile () {
 		new HomePage(driver).navigateToHomePage()
 				.clickFormAuthentication()
-				.setUsername(getCellData(2, 0))
-				.setPassword(getCellData(2, 1))
+				.setUsername(getCellData("email", 1))
+				.setPassword(getCellData("password", 2))
 				.clickLoginButton();
 		assertTrue(SecureAreaPage.getAlertText()
 						.contains(Objects.requireNonNull(getCellData("expectedResult_successMessage", 2))),
@@ -44,7 +44,6 @@ public class Login_ReadDataUsingExcel extends DataProvider {
 	}
 
 	private WebDriver driver;
-
 	String filePath = "src/test/resources/TestData/loginData.xlsx";
 
 	@BeforeClass
@@ -60,6 +59,9 @@ public class Login_ReadDataUsingExcel extends DataProvider {
 
 	@AfterMethod (dependsOnGroups = "approach1" + "approach2" + "approach3")
 	public void closeBrowser () {
+		new ExcelFileManager(new File(filePath));
+		switchToSheet("Login data");
+		setCellData("Pass", 3, 1);
 		driver.quit();
 	}
 

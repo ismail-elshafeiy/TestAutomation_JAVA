@@ -1,6 +1,7 @@
 package engine.tools.io;
 
 import org.apache.poi.EmptyFileException;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.*;
 import engine.tools.Logger;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -8,11 +9,8 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 import static org.testng.Assert.fail;
@@ -20,16 +18,21 @@ import static org.testng.Assert.fail;
 public class ExcelFileManager {
 
 	private FileInputStream fis;
-	private XSSFWorkbook workbook;
-	private XSSFSheet sheet;
+	private static XSSFWorkbook workbook;
+	private static XSSFSheet currentSheet;
 	private XSSFRow row;
-	private XSSFCell cell;
+	private static XSSFCell cell;
 	private static File spreadSheet;
-	private static Sheet currentSheet;
+	// private static Sheet currentSheet;
 	private static Map<String, Integer> columns;
 	private static final String errorMessageException = " Error Message Exception: --> ";
 	private static final String testMethodName = " Test Method Name:  ";
 
+	/**
+	 * Constructor to load the Excel file from the root directory of the project
+	 *
+	 * @param filePathFromRoot Enter the path of the file from the root directory of the project
+	 */
 	public ExcelFileManager (File filePathFromRoot) {
 		String fileErrorMessage = testMethodName + "Couldn't find the desired file. [ " + filePathFromRoot + " ]. ";
 		try {
@@ -38,7 +41,7 @@ public class ExcelFileManager {
 			this.fis = new FileInputStream(filePathFromRoot);
 			this.workbook = new XSSFWorkbook(this.fis);
 			this.fis.close();
-			Logger.logMessage("File has been loaded successfully." + System.lineSeparator() + "File Path: " + filePathFromRoot.getAbsolutePath());
+			Logger.logStep("File has been loaded successfully." + System.lineSeparator() + "File Path: " + filePathFromRoot.getAbsolutePath());
 		} catch ( IOException | OutOfMemoryError e ) {
 			Logger.logMessage(fileErrorMessage + errorMessageException + e.getMessage());
 			Assert.fail(fileErrorMessage + errorMessageException + e.getMessage());
@@ -51,23 +54,22 @@ public class ExcelFileManager {
 	/**
 	 * Switch to your Sheet in case you have multiple sheets in your Excel file
 	 *
-	 * @param name Enter the name of the Sheet
+	 * @param sheetName Enter the sheetName of the Sheet
 	 */
-	public static void switchToSheet (String name) {
+	public static void switchToSheet (String sheetName) {
 		try ( Workbook workbooks = WorkbookFactory.create(spreadSheet) ) {
-			currentSheet = workbooks.getSheet(name);
-			Logger.logMessage("Switched to sheet: [ " + name + " ] from file: [ " + spreadSheet + " ].");
+			currentSheet = (XSSFSheet) workbooks.getSheet(sheetName);
+			Logger.logStep("Switched to sheet: [ " + sheetName + " ] from file: [ " + spreadSheet + " ].");
 			getRowCountInSheet();
 			currentSheet.getRow(0).forEach(cell -> {
 				columns.put(cell.getStringCellValue(), cell.getColumnIndex());
-				Logger.logMessage("Column name: [ " + cell.getStringCellValue() + " ], Column index: [ " + cell.getColumnIndex() + " ].");
+				Logger.logStep("Column sheetName: [ " + cell.getStringCellValue() + " ], Column index: [ " + cell.getColumnIndex() + " ].");
 			});
 		} catch ( Exception e ) {
-			Logger.logMessage(testMethodName + "Couldn't find the desired sheet. [ " + name + " ]." + errorMessageException + e.getMessage());
-			Assert.fail(testMethodName + "Couldn't find the desired sheet. [ " + name + " ]." + errorMessageException + e.getMessage());
+			Logger.logMessage(testMethodName + "Couldn't find the desired sheet. [ " + sheetName + " ]." + errorMessageException + e.getMessage());
+			Assert.fail(testMethodName + "Couldn't find the desired sheet. [ " + sheetName + " ]." + errorMessageException + e.getMessage());
 		}
 	}
-
 
 	/**
 	 * Get the cell by Column name and Row number from your Excel file
@@ -84,10 +86,6 @@ public class ExcelFileManager {
 				fail(testMethodName + "Can't find the row number [ " + rowNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ]");
 			}
 			return getCellDataAsString(dataRow.getCell(columns.get(columnName)));
-		} catch ( NullPointerException e ) {
-
-			Logger.logStep(columnErrorMessage + errorMessageException + e.getMessage());
-			fail(columnErrorMessage + errorMessageException + e.getMessage());
 		} catch ( Exception e ) {
 			Logger.logMessage(columnErrorMessage + errorMessageException + e.getMessage());
 			fail(columnErrorMessage + errorMessageException + e.getMessage());
@@ -95,18 +93,66 @@ public class ExcelFileManager {
 		return null;
 	}
 
+	public static String getCellData (String sheetName, String columnName, int rowNumber) {
+		switchToSheet(sheetName);
+		return getCellData(columnName, rowNumber);
+	}
+
+	public static void setCellData (String value, int columnNumber, int rowNumber) {
+		String columnErrorMessage = testMethodName + "Can't find the column name [ " + columnNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ]  ";
+		try {
+//			Row dataRow = currentSheet.getRow(rowNumber - 1);
+//			if ( dataRow == null ) {
+//				Logger.logMessage(testMethodName + "Can't find the row number [ " + rowNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ] ");
+//				fail(testMethodName + "Can't find the row number [ " + rowNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ]");
+//			}
+//			Cell cell = dataRow.getCell(columns.get(columnName));
+//			if ( cell == null ) {
+//				cell = dataRow.createCell(columns.get(columnName));
+//			}
+			//create a new cell in the row at index 6
+			cell = currentSheet.createRow(rowNumber).createCell(columnNumber);
+			cell.setCellValue(value);
+			FileOutputStream fos = new FileOutputStream(spreadSheet);
+			workbook.write(fos);
+			fos.close();
+		} catch ( Exception e ) {
+			Logger.logMessage(columnErrorMessage + errorMessageException + e.getMessage());
+			fail(columnErrorMessage + errorMessageException + e.getMessage());
+		}
+	}
+
+	/**
+	 * Get the cell by Column and Row number from your Excel file
+	 *
+	 * @param rowNumber    Enter the row  of the Sheet index start from 1
+	 * @param columnNumber Enter the column number of the Sheet index start from 1
+	 *
+	 * @return String cell data as String
+	 */
+	public static String getCellData (String sheetName, int rowNumber, int columnNumber) {
+		switchToSheet(sheetName);
+		Row dataRow = currentSheet.getRow(rowNumber - 1);
+		if ( dataRow == null ) {
+			Logger.logMessage(testMethodName + "Can't find the row number [" + rowNumber + "] from the sheet [" + currentSheet.getSheetName() + "] ");
+			fail(testMethodName + "Can't find the row number [" + rowNumber + "] from the sheet [" + currentSheet.getSheetName() + "]");
+		}
+		return getCellDataAsString(dataRow.getCell(columnNumber));
+	}
+
 	/**
 	 * Get the cell by Column Name from your Excel fil
 	 *
-	 * @param columnName
+	 * @param columnName Enter the column Name
 	 *
 	 * @return String value of the cell
 	 */
 	public static String getCellData (String columnName) {
 		try {
+			Logger.logStep("Getting the cell data from the column name: [ " + columnName + " ] from the sheet [ " + currentSheet.getSheetName() + " ] ");
 			return getCellData(columnName, 2);
 		} catch ( NullPointerException e ) {
-			Logger.logStep("Can't find the columnName name [" + columnName + "] from the sheet [" + currentSheet.getSheetName() + "]  " + errorMessageException + e.getMessage() + testMethodName);
+			Logger.logMessage("Can't find the columnName name [" + columnName + "] from the sheet [" + currentSheet.getSheetName() + "]  " + errorMessageException + e.getMessage() + testMethodName);
 			fail("Can't find the columnName name [" + columnName + "]..Null Pointer Exception --> " + errorMessageException + e.getMessage() + testMethodName);
 		} catch ( Exception e ) {
 			Logger.logMessage("Can't find the columnName Name name [" + columnName + "]........" + errorMessageException + e.getMessage() + testMethodName);
@@ -115,23 +161,37 @@ public class ExcelFileManager {
 		return columnName;
 	}
 
-	/**
-	 * Get the cell by Column and Row number from your Excel file
-	 *
-	 * @param rowNumber
-	 * @param columnNumber
-	 *
-	 * @return String cell data as String
-	 */
-	public static String getCellData (int rowNumber, int columnNumber) {
-		Row dataRow = currentSheet.getRow(rowNumber - 1);
-		if ( dataRow == null ) {
-			Logger.logStep(testMethodName + "Can't find the row number [" + rowNumber + "] from the sheet [" + currentSheet.getSheetName() + "] ");
-			fail(testMethodName + "Can't find the row number [" + rowNumber + "] from the sheet [" + currentSheet.getSheetName() + "]");
+
+	private static int getRowCountInSheet () {
+		int rowCount = 0;
+		try {
+			rowCount = getLastRowNumber() - getFirstRowNumber();
+			Logger.logStep("Row count from the sheet [" + currentSheet.getSheetName() + "] is [ " + rowCount + " ]");
+		} catch ( Exception e ) {
+			Logger.logMessage("Can't find the row count from the sheet [" + currentSheet.getSheetName() + "]  " + errorMessageException + e.getMessage() + testMethodName);
+			fail("Can't find the row count from the sheet [" + currentSheet.getSheetName() + "]  " + errorMessageException + e.getMessage() + testMethodName);
 		}
-		return getCellDataAsString(dataRow.getCell(columnNumber));
+		return rowCount;
 	}
 
+	/**
+	 * Get the last row number from your Excel file
+	 */
+	public static void getData () {
+		//get all rows in the sheet
+		int rowCount = getRowCountInSheet();
+		//iterate over all the row to print the data present in each cell.
+		for ( int i = 0; i <= rowCount; i++ ) {
+			//get cell count in a row
+			int cellCount = currentSheet.getRow(i).getLastCellNum();
+			//iterate over each cell to print its value
+			Logger.logStep("Row " + i + " data is :");
+			for ( int j = 0; j < cellCount; j++ ) {
+				Logger.logStep(currentSheet.getRow(i).getCell(j).getStringCellValue() + ",");
+			}
+			System.out.println();
+		}
+	}
 
 	public static int getFirstRowNumber () {
 		return currentSheet.getFirstRowNum();
@@ -149,18 +209,6 @@ public class ExcelFileManager {
 		return currentSheet.getRow(0).getLastCellNum();
 	}
 
-	public static int getRowCountInSheet () {
-		int rowCount = 0;
-		try {
-			rowCount = getLastRowNumber() - getFirstRowNumber();
-			Logger.logMessage("Row count from the sheet [" + currentSheet.getSheetName() + "] is [ " + rowCount + " ]");
-		} catch ( Exception e ) {
-			Logger.logMessage("Can't find the row count from the sheet [" + currentSheet.getSheetName() + "]  " + errorMessageException + e.getMessage() + testMethodName);
-			fail("Can't find the row count from the sheet [" + currentSheet.getSheetName() + "]  " + errorMessageException + e.getMessage() + testMethodName);
-		}
-		return rowCount;
-	}
-
 	/**
 	 * @param cell Enter the cell  of the Sheet
 	 */
@@ -168,6 +216,9 @@ public class ExcelFileManager {
 		return switch ( cell.getCellType() ) {
 			case STRING -> cell.getStringCellValue();
 			case NUMERIC -> String.valueOf((int) cell.getNumericCellValue());
+			case BOOLEAN -> String.valueOf(cell.getBooleanCellValue());
+			case FORMULA -> cell.getCellFormula();
+			case BLANK -> "";
 			default -> "";
 		};
 	}
@@ -175,4 +226,6 @@ public class ExcelFileManager {
 	private String getDefaultSheetName () {
 		return this.workbook.getSheetName(0);
 	}
+
+
 }

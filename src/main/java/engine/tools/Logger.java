@@ -35,7 +35,7 @@ public class Logger {
 	public static org.apache.logging.log4j.Logger log = LogManager.getLogger(Logger.class.getName());
 	private static final org.slf4j.Logger slf4jLogger = LoggerFactory.getLogger(Logger.class);
 	private static final boolean debugMode = false;
-	static String currentTime = Helper.getCurrentTime("dd-MM-yyyy HH:mm:ss.SSS a");
+	static String currentTime = Helper.getCurrentTime("dd-MM-yyyy HH:mm:ss");
 	static PrintWriter writer;
 	static LogEntries logEntries;
 	static Logs logs;
@@ -44,21 +44,34 @@ public class Logger {
 	/**
 	 * Log step that will be added as a step in the execution report
 	 *
-	 * @param logStep logged by action
+	 * @param logStep logged by action that will be added as a step in the execution report (e.g. click on button)
 	 */
-	@AllureId(value = "1")
-	@Step("{logStep}")
+	@AllureId (value = "1")
+	@Step ("{logStep}")
 	public static void logStep (String logStep) {
-		System.out.println("<" + currentTime + "> " +  logStep);
+		System.out.println("<" + currentTime + "> " + logStep);
 		ExtentReport.info(logStep);
 	}
 
+	/**
+	 * Log message that will be added as a message in the execution report
+	 *
+	 * @param logMessage logged by exception / assertion message that will be added as a message in the execution report
+	 */
 	public static void logMessage (String logMessage) {
-		System.out.println("<" + currentTime + "> " + logMessage);
+		System.out.println("<" + currentTime + "> " + System.lineSeparator() + logMessage);
 		ExtentReport.info(logMessage);
 	}
 
-	@Attachment(value = "log Console")
+	/**
+	 * Log console error, warming and info that will be added as a error in the execution report
+	 *
+	 * @param driver driver instance
+	 * @param result test result
+	 *
+	 * @throws IOException
+	 */
+	@Attachment (value = "log Console")
 	public static void logConsoleLogs (WebDriver driver, ITestResult result) throws IOException {
 		logs = driver.manage().logs();
 		logEntries = logs.get(LogType.BROWSER);
@@ -66,13 +79,13 @@ public class Logger {
 		writer = new PrintWriter(filePath, StandardCharsets.UTF_8);
 		Logger.logStep("Console logs for Test Case: [" + result.getMethod().getMethodName() + "] are saved in [ " + filePath + " ]");
 		try {
-			for (LogEntry logEntry : logEntries) {
+			for ( LogEntry logEntry : logEntries ) {
 				writer.println("Console log found in Test- " + result.getName());
 				writer.println("__________________________________________________________");
-				if (logEntry.getMessage().toLowerCase().contains("error")) {
+				if ( logEntry.getMessage().toLowerCase().contains("error") ) {
 					writer.println("Error Message in Console: [" + logEntry.getMessage() + "]");
 					Logger.logStep("Error Message in Console: [" + logEntry.getMessage() + "]");
-				} else if (logEntry.getMessage().toLowerCase().contains("warning")) {
+				} else if ( logEntry.getMessage().toLowerCase().contains("warning") ) {
 					writer.println("Warning Message in Console: [" + logEntry.getMessage() + "]");
 					Logger.logStep("Warning Message in Console: [" + logEntry.getMessage() + "]");
 				} else {
@@ -80,7 +93,7 @@ public class Logger {
 					Logger.logStep("Information Message in Console: [" + logEntry.getMessage() + "]");
 				}
 			}
-		} catch (Exception e) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 			Logger.logMessage("Console logs not found: " + e.getMessage());
 		} finally {
@@ -107,7 +120,7 @@ public class Logger {
 			// Load The AUT
 			BrowserActions.navigateToUrl(chromeDriver, url);
 
-		} catch (Exception e) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
 
@@ -116,49 +129,74 @@ public class Logger {
 
 	// *****************************************  Take Screen Shot Methods  *****************************************//
 	//**************************************************************************************************************//
+
+	/**
+	 * Take the screen shot and save it in the ScreenShot folder
+	 *
+	 * @param driver - WebDriver instance
+	 */
 	public static void takeScreenShotToFile (WebDriver driver) {
 		try {
 			logStep("Screenshot taken for Test Case ..... [" + Helper.getTestMethodName() + "]");
 			File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 			FileUtils.copyFile(srcFile, new File("./ScreenShot/" + Helper.getTestMethodName() + ".png"));
-		} catch (Exception e) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 			Logger.logMessage("Screenshot not taken: " + e.getMessage());
 		}
 	}
 
 	/**
+	 * Take the screen shot and save it in the ScreenShot folder
 	 * Checks if the Test Result is Fail
+	 * If yes, then take the screen shot and save it in the ScreenShot folder
+	 *
+	 * @param driver - WebDriver instance
+	 * @param result - Test Result
 	 */
 	public static void takeScreenShotToFile (WebDriver driver, ITestResult result) {
 		try {
-			if (ITestResult.FAILURE == result.getStatus()) {
+			if ( ITestResult.FAILURE == result.getStatus() ) {
 				logStep("Screenshot taken for Test Case Failed ..... [" + result.getName() + "]");
 				takeScreenShotToFile(driver);
 			}
-		} catch (Exception e) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 			Logger.logMessage("Screenshot not taken: " + e.getMessage());
 		}
 	}
 
+	/**
+	 * Take Screenshot of the Element using the WebDriver class and the getScreenshotAs method
+	 *
+	 * @param driver  - WebDriver Instance of the Browser
+	 * @param locator - Locator of the Element
+	 */
 	public static void takeElementScreenShot (WebDriver driver, By locator) {
 		String locatorName = driver.findElement(locator).getText();
 		try {
 			Logger.logStep("Screenshot taken for Element ..... [" + locatorName + "]");
 			File srcFile = driver.findElement(locator).getScreenshotAs(OutputType.FILE);
 			FileUtils.copyFile(srcFile, new File("./ScreenShot/" + locatorName + ".png"));
-		} catch (Exception e) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 			Logger.logMessage("Element Screenshot not taken: " + e.getMessage());
 		}
 	}
 
+	/**
+	 * Take Full Page Screenshot using the FirefoxDriver class and the getFullPageScreenshotAs method
+	 *
+	 * @param driver    - WebDriver Instance of the Browser
+	 * @param imageName - Name of the Image to be saved in the ScreenShot folder
+	 *
+	 * @throws IOException
+	 */
 	public static void takeFullPageScreenshot (WebDriver driver, String imageName) throws IOException {
 		try {
 			File source = ((FirefoxDriver) driver).getFullPageScreenshotAs(OutputType.FILE);
 			FileUtils.copyFile(source, new File("./ScreenShot/" + imageName + "_FullPage.png"));
-		} catch (Exception e) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 			Logger.logMessage("Full Page Screenshot not taken: " + e.getMessage());
 		}
@@ -167,6 +205,15 @@ public class Logger {
 
 	// *****************************************  Print Method  *****************************************//
 	//******************************************************************************************************//
+
+	/**
+	 * Print the page using the PrintOptions class and the PrintsPage interface of the WebDriver class
+	 *
+	 * @param driver    - WebDriver Instance of the Browser
+	 * @param pageRange - Page Range to be printed
+	 *
+	 * @throws
+	 */
 	public static void printPage (WebDriver driver, int pageRange) throws IOException {
 		try {
 			PrintsPage printer = ((PrintsPage) driver);
@@ -175,7 +222,7 @@ public class Logger {
 			Pdf pdf = printer.print(printOptions);
 			logStep("Printing" + driver.getTitle() + "page....... ");
 			Files.write(new File("Pdf/" + driver.getTitle() + ".pdf").toPath(), OutputType.BYTES.convertFromBase64Png(pdf.getContent()));
-		} catch (Exception e) {
+		} catch ( Exception e ) {
 			e.printStackTrace();
 			Logger.logMessage("Page not printed: " + e.getMessage());
 		}
@@ -183,34 +230,57 @@ public class Logger {
 
 	// *****************************************  Attach Methods  *****************************************//
 	//******************************************************************************************************//
+
+	/**
+	 * Attach the Screenshot to the Extent Report
+	 *
+	 * @param driver - WebDriver Instance of the Browser
+	 *
+	 * @return Media - Media Entity Builder Instance of the Screenshot
+	 */
 	public static Media attachScreenshotToExtentReport (WebDriver driver) {
 		return MediaEntityBuilder
 				.createScreenCaptureFromBase64String(((TakesScreenshot) driver)
 						.getScreenshotAs(OutputType.BASE64), "Full Page Screenshot").build();
 	}
 
-	@Attachment(value = "Full Page Screenshot", type = "image/png")
+	/**
+	 * Attach the Screenshot to the allure report
+	 *
+	 * @param driver - WebDriver Instance of the Browser
+	 *
+	 * @return byte[] - Byte Array of the Screenshot
+	 */
+	@Attachment (value = "Full Page Screenshot", type = "image/png")
 	public static byte[] attachScreenshotToAllureReport (WebDriver driver) {
 		return ((TakesScreenshot) driver)
 				.getScreenshotAs(OutputType.BYTES);
 	}
 
-	@Attachment(value = "API Request - {type}", type = "text/json")
+	/**
+	 * Attach the api request to the allure report
+	 *
+	 * @param type - Type
+	 * @param b    - Byte Array of the API Request
+	 *
+	 * @return
+	 */
+	@Attachment (value = "API Request - {type}", type = "text/json")
 	public static byte[] attachApiRequestToAllureReport (String type, byte[] b) {
 		return attachTextJson(b);
 	}
 
-	@Attachment(value = "API Response", type = "text/json")
+	@Attachment (value = "API Response", type = "text/json")
 	public static byte[] attachApiResponseToAllureReport (byte[] b) {
 		return attachTextJson(b);
 	}
 
 	private static synchronized void attachBasedOnFileType (String attachmentType, ByteArrayOutputStream
 			attachmentContent, String attachmentDescription) {
-		if (attachmentType.toLowerCase().contains("screenshot")) {
+		if ( attachmentType.toLowerCase().contains("screenshot") ) {
 			Allure.addAttachment(attachmentDescription, "image/png", new ByteArrayInputStream(attachmentContent.toByteArray()), ".png");
 //            attachImageToExtentReport("image/png", new ByteArrayInputStream(attachmentContent.toByteArray()));
-		} else if (attachmentType.toLowerCase().contains("recording")) {
+		} else if ( attachmentType.toLowerCase().contains("recording") ) {
 			Allure.addAttachment(attachmentDescription, "video/mp4", new ByteArrayInputStream(attachmentContent.toByteArray()), ".mp4");
 		} else {
 			Allure.addAttachment(attachmentDescription, new ByteArrayInputStream(attachmentContent.toByteArray()));
@@ -222,7 +292,7 @@ public class Logger {
 	public static byte[] attachTextJson (byte[] b) {
 		try {
 			return b;
-		} catch (Exception e) {
+		} catch ( Exception e ) {
 			return null;
 		}
 	}
@@ -236,7 +306,7 @@ public class Logger {
 		var baos = new ByteArrayOutputStream();
 		try {
 			attachmentContent.transferTo(baos);
-		} catch (IOException e) {
+		} catch ( IOException e ) {
 			var error = "Error while creating Attachment";
 			slf4jLogger.info(error, e);
 			Reporter.log(error, false);

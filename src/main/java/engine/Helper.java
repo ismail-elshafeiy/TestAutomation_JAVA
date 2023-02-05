@@ -40,18 +40,32 @@ public class Helper {
 		return getCurrentTime("ddMMyyyyHHmmssSSS");
 	}
 
+	/**
+	 * This method is used to get current time in a specific format (ddMMyyyyHHmmssSSS)
+	 *
+	 * @param dateFormat
+	 *
+	 * @return
+	 */
 	public static String getCurrentTime (String dateFormat) {
 		String currentTime = "";
 		try {
 			currentTime = new SimpleDateFormat(dateFormat).format(new Date());
-		} catch (IllegalArgumentException e) {
+		} catch ( IllegalArgumentException e ) {
 			Logger.logStep(e.getMessage());
 			fail(e.getMessage());
 		}
 		return currentTime;
 	}
 
-
+	/**
+	 * This method is used to get random number between two values
+	 *
+	 * @param min
+	 * @param max
+	 *
+	 * @return int result
+	 */
 	public static int getRandomNumbers (int min, int max) {
 		Random random = new Random();
 		int Low = min;
@@ -60,10 +74,17 @@ public class Helper {
 		return Result;
 	}
 
+	/**
+	 * This method is used to get random string with specific length
+	 *
+	 * @param length
+	 *
+	 * @return String
+	 */
 	public static String getRandomString (int length) {
 		StringBuilder sb = new StringBuilder();
 		Random random = new Random();
-		for (int i = 0; i < length; i++) {
+		for ( int i = 0; i < length; i++ ) {
 			sb.append(random.nextInt(10));
 		}
 		return sb.toString();
@@ -72,34 +93,60 @@ public class Helper {
 
 	public static String generateId () {
 		int i;
-		for (i = 0; i < 100; i++) {
+		for ( i = 0; i < 100; i++ ) {
 			System.out.println("#" + i);
 		}
 		return "#" + i;
 	}
 
-
+	/**
+	 * This method is used to generate UUID
+	 *
+	 * @return String
+	 */
 	public static String generateUuid () {
 		return java.util.UUID.randomUUID().toString();
 	}
 
-
+	/**
+	 * This method is used to get random number between two values
+	 *
+	 * @param lowValue
+	 * @param highValue
+	 *
+	 * @return int
+	 */
 	public static int getRandomNumberBetweenTwoValues (int lowValue, int highValue) {
 		return new Random().nextInt(highValue - lowValue) + lowValue;
 	}
 
+	/**
+	 * This method is used to get random number between two values as String
+	 *
+	 * @param lowValue
+	 * @param highValue
+	 *
+	 * @return String
+	 */
 	public static String getRandomNumberBetweenTwoValuesAsString (int lowValue, int highValue) {
 		return Integer.toString(getRandomNumberBetweenTwoValues(lowValue, highValue));
 	}
 
+	/**
+	 * This method is used to get random string with specific length
+	 *
+	 * @param length
+	 *
+	 * @return
+	 */
 	public static String getAlphaNumericString (int length) {
 		byte[] array = new byte[256];
 		new Random().nextBytes(array);
 		String randomString = new String(array, Charset.forName("UTF-8"));
 		StringBuffer r = new StringBuffer();
-		for (int k = 0; k < randomString.length(); k++) {
+		for ( int k = 0; k < randomString.length(); k++ ) {
 			char ch = randomString.charAt(k);
-			if (((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9')) && (length > 0)) {
+			if ( ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9')) && (length > 0) ) {
 				r.append(ch);
 				length--;
 			}
