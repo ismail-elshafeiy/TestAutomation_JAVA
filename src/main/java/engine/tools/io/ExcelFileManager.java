@@ -1,7 +1,6 @@
 package engine.tools.io;
 
 import org.apache.poi.EmptyFileException;
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.*;
 import engine.tools.Logger;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -9,10 +8,8 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.Assert;
-
 import java.io.*;
 import java.util.*;
-
 import static org.testng.Assert.fail;
 
 public class ExcelFileManager {
@@ -48,6 +45,23 @@ public class ExcelFileManager {
 		} catch ( EmptyFileException e ) {
 			Logger.logMessage(testMethodName + "Please check the target file, as it may be corrupted. [ " + filePathFromRoot + " ]." + errorMessageException + e.getMessage());
 			Assert.fail(testMethodName + "Please check the target file, as it may be corrupted. [ " + filePathFromRoot + " ]." + errorMessageException + e.getMessage());
+		}
+	}
+
+	// TODO: 1/29/2020  set Excel File
+	public void setExcelFile (String excelFilePath, String sheetName) throws IOException {
+		try {
+			//Create an object of File class to open xls file
+			File file = new File(excelFilePath);
+			//Create an object of FileInputStream class to read excel file
+			FileInputStream inputStream = new FileInputStream(file);
+			//creating workbook instance that refers to .xls file
+			workbook = new XSSFWorkbook(inputStream);
+			//creating a Sheet object
+			currentSheet = workbook.getSheet(sheetName);
+		} catch ( Exception e ) {
+			Logger.logMessage("Error in reading data from excel file... Message --> " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -98,6 +112,7 @@ public class ExcelFileManager {
 		return getCellData(columnName, rowNumber);
 	}
 
+	//TODO: Refactor set cell data
 	public static void setCellData (String value, int columnNumber, int rowNumber) {
 		String columnErrorMessage = testMethodName + "Can't find the column name [ " + columnNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ]  ";
 		try {
@@ -138,6 +153,14 @@ public class ExcelFileManager {
 			fail(testMethodName + "Can't find the row number [" + rowNumber + "] from the sheet [" + currentSheet.getSheetName() + "]");
 		}
 		return getCellDataAsString(dataRow.getCell(columnNumber));
+	}
+
+	// TODO: 11/12/2019  add the method to get the cell data as string but need to refactor the code
+	public void setCellValue (int rowNum, int cellNum, String cellValue, String excelFilePath) throws IOException {
+		//creating a new cell in row and setting value to it
+		currentSheet.getRow(rowNum).createCell(cellNum).setCellValue(cellValue);
+		FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+		workbook.write(outputStream);
 	}
 
 	/**

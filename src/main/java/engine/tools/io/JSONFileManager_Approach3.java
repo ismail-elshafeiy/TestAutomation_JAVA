@@ -1,10 +1,8 @@
 package engine.tools.io;
 
 import io.restassured.path.json.JsonPath;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-
 import static org.testng.Assert.fail;
 
 public class JSONFileManager_Approach3 {
