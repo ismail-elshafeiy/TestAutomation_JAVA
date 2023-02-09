@@ -2,6 +2,8 @@ package examples.gui.web.browserInteractions;
 
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
+import engine.broswer.BrowserFactoryHelper;
+import engine.broswer.BrowserFactoryHelper.*;
 import engine.tools.Logger;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -9,8 +11,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.openqa.selenium.*;
 import org.testng.annotations.Test;
-import engine.broswer.BrowserFactory.BrowserType;
-import engine.broswer.BrowserFactory.ExecutionType;
+
 import java.io.IOException;
 
 @Epic("Browser Interactions")
@@ -61,8 +62,7 @@ public class ReferenceTests {
 			""")
 	public void printWindow () throws IOException {
 		driver = BrowserFactory.getBrowser(BrowserType.GOOGLE_CHROME, ExecutionType.LOCAL_HEADLESS);
-		BrowserActions.navigateToUrl(driver, "https://www.google.com/");
-		driver.get("https://www.selenium.dev");
+		BrowserActions.navigateToUrl(driver, "https://www.selenium.dev");
 		Logger.printPage(driver, 6);
 	}
 }

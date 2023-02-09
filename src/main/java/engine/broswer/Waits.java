@@ -1,5 +1,6 @@
 package engine.broswer;
 
+import engine.tools.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,9 +18,11 @@ public class Waits {
 			.parseInt(PropertiesReader.getProperty("project.properties", "fluentWait.polling"));
 
 	public static void implicitWait (WebDriver driver) {
+		Logger.logStep("Implicit wait for [ " + TIMEOUT + " ] seconds");
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TIMEOUT));
 	}
 	public static void implicitWait (WebDriver driver, int timeout) {
+		Logger.logStep("Implicit wait for [ " + timeout + " ] seconds");
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
 	}
 

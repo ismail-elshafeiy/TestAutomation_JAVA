@@ -5,6 +5,7 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import engine.ExtentReport;
 import engine.tools.Logger;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.*;
 
 public class TestngListener implements ISuiteListener, ITestListener, IInvokedMethodListener {
@@ -37,7 +38,7 @@ public class TestngListener implements ISuiteListener, ITestListener, IInvokedMe
 	}
 	@Override
 	public void onTestStart (ITestResult result) {
-		ExtentReport.createTest(result.getName());
+		//	ExtentReport.createTest(result.getName());
 	}
 	@Override
 	public void onFinish (ITestContext context) {
@@ -57,6 +58,7 @@ public class TestngListener implements ISuiteListener, ITestListener, IInvokedMe
 			try {
 				Logger.attachScreenshotToAllureReport(driver);
 				ExtentReport.fail(Logger.attachScreenshotToExtentReport(driver));
+				ExtentReport.fail(Logger.attachFullPageScreenShotToExtentReport((FirefoxDriver) driver));
 //				Logger.logConsoleLogs(driver, result);
 			} catch (Throwable e) {
 				Logger.logMessage("Error:  " + e.getMessage());
@@ -96,7 +98,6 @@ public class TestngListener implements ISuiteListener, ITestListener, IInvokedMe
 			} else {
 				ExtentReport.removeTest(testResult.getName());
 			}
-//	    ExtentReport.removeTest(testResult.getName());
 		} else {
 			System.out.println("Starting Test Case: [" + testResult.getName() + "]");
 		}

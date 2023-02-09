@@ -10,10 +10,8 @@ import org.testng.ITestResult;
 import engine.tools.Logger;
 import engine.PropertiesReader;
 import engine.RecordManager;
-
 import java.util.Set;
-
-import static engine.broswer.BrowserFactory.eyesManager;
+import static engine.broswer.BrowserFactoryHelper.eyesManager;
 import static org.testng.Assert.fail;
 
 public class BrowserActions {

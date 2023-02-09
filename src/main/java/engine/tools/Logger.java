@@ -14,7 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.v104.log.Log;
+import org.openqa.selenium.devtools.v109.log.Log;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
@@ -83,14 +83,14 @@ public class Logger {
 				writer.println("Console log found in Test- " + result.getName());
 				writer.println("__________________________________________________________");
 				if ( logEntry.getMessage().toLowerCase().contains("error") ) {
-					writer.println("Error Message in Console: [" + logEntry.getMessage() + "]");
-					Logger.logStep("Error Message in Console: [" + logEntry.getMessage() + "]");
+					writer.println(currentTime + "Error Message in Console: [" + logEntry.getMessage() + "]");
+					Logger.logStep(currentTime + "Error Message in Console: [" + logEntry.getMessage() + "]");
 				} else if ( logEntry.getMessage().toLowerCase().contains("warning") ) {
-					writer.println("Warning Message in Console: [" + logEntry.getMessage() + "]");
-					Logger.logStep("Warning Message in Console: [" + logEntry.getMessage() + "]");
+					writer.println(currentTime + "Warning Message in Console: [" + logEntry.getMessage() + "]");
+					Logger.logStep(currentTime + "Warning Message in Console: [" + logEntry.getMessage() + "]");
 				} else {
-					writer.println("Information Message in Console: [" + logEntry.getMessage() + "]");
-					Logger.logStep("Information Message in Console: [" + logEntry.getMessage() + "]");
+					writer.println(currentTime + "Information Message in Console: [" + logEntry.getMessage() + "]");
+					Logger.logStep(currentTime + "Information Message in Console: [" + logEntry.getMessage() + "]");
 				}
 			}
 		} catch ( Exception e ) {
@@ -168,6 +168,7 @@ public class Logger {
 
 	/**
 	 * Take Screenshot of the Element using the WebDriver class and the getScreenshotAs method
+	 * Save the Screenshot in the ScreenShot folder with the name of the Element Locator Name + .png extension
 	 *
 	 * @param driver  - WebDriver Instance of the Browser
 	 * @param locator - Locator of the Element
@@ -186,6 +187,7 @@ public class Logger {
 
 	/**
 	 * Take Full Page Screenshot using the FirefoxDriver class and the getFullPageScreenshotAs method
+	 * Save the Screenshot in the ScreenShot folder with the name of the Image Name + _FullPage.png extension
 	 *
 	 * @param driver    - WebDriver Instance of the Browser
 	 * @param imageName - Name of the Image to be saved in the ScreenShot folder
@@ -203,31 +205,6 @@ public class Logger {
 	}
 
 
-	// *****************************************  Print Method  *****************************************//
-	//******************************************************************************************************//
-
-	/**
-	 * Print the page using the PrintOptions class and the PrintsPage interface of the WebDriver class
-	 *
-	 * @param driver    - WebDriver Instance of the Browser
-	 * @param pageRange - Page Range to be printed
-	 *
-	 * @throws
-	 */
-	public static void printPage (WebDriver driver, int pageRange) throws IOException {
-		try {
-			PrintsPage printer = ((PrintsPage) driver);
-			PrintOptions printOptions = new PrintOptions();
-			printOptions.setPageRanges(String.valueOf(pageRange));
-			Pdf pdf = printer.print(printOptions);
-			logStep("Printing" + driver.getTitle() + "page....... ");
-			Files.write(new File("Pdf/" + driver.getTitle() + ".pdf").toPath(), OutputType.BYTES.convertFromBase64Png(pdf.getContent()));
-		} catch ( Exception e ) {
-			e.printStackTrace();
-			Logger.logMessage("Page not printed: " + e.getMessage());
-		}
-	}
-
 	// *****************************************  Attach Methods  *****************************************//
 	//******************************************************************************************************//
 
@@ -241,7 +218,13 @@ public class Logger {
 	public static Media attachScreenshotToExtentReport (WebDriver driver) {
 		return MediaEntityBuilder
 				.createScreenCaptureFromBase64String(((TakesScreenshot) driver)
-						.getScreenshotAs(OutputType.BASE64), "Full Page Screenshot").build();
+						.getScreenshotAs(OutputType.BASE64), Helper.getTestMethodName() + currentTime + "_Screenshot").build();
+	}
+
+	public static Media attachFullPageScreenShotToExtentReport (FirefoxDriver driver) {
+		return MediaEntityBuilder
+				.createScreenCaptureFromBase64String(String.valueOf((driver)
+						.getFullPageScreenshotAs(OutputType.FILE)), Helper.getTestMethodName() + currentTime + "_fullPage").build();
 	}
 
 	/**
@@ -251,11 +234,16 @@ public class Logger {
 	 *
 	 * @return byte[] - Byte Array of the Screenshot
 	 */
-	@Attachment (value = "Full Page Screenshot", type = "image/png")
+	@Attachment (value = "Screenshot", type = "image/png")
 	public static byte[] attachScreenshotToAllureReport (WebDriver driver) {
 		return ((TakesScreenshot) driver)
 				.getScreenshotAs(OutputType.BYTES);
 	}
+//	@Attachment (value = "Full Page Screenshot", type = "image/png")
+//	public static byte[] attachScreenshotToAllureReport (WebDriver driver) {
+//		return ((TakesScreenshot) driver)
+//				.getScreenshotAs(OutputType.BYTES);
+//	}
 
 	/**
 	 * Attach the api request to the allure report
@@ -273,6 +261,36 @@ public class Logger {
 	@Attachment (value = "API Response", type = "text/json")
 	public static byte[] attachApiResponseToAllureReport (byte[] b) {
 		return attachTextJson(b);
+	}
+
+	@Attachment (value = "Log Console", type = "text/json")
+	public static byte[] attachLogConsoleToAllureReport (byte[] b) {
+		return attachTextJson(b);
+	}
+
+	// *****************************************  Print Method  *****************************************//
+	//******************************************************************************************************//
+
+	/**
+	 * Print the page using the PrintOptions class and the PrintsPage interface of the WebDriver class
+	 *
+	 * @param driver    - WebDriver Instance of the Browser
+	 * @param pageRange - Page Range to be printed
+	 *
+	 * @throws
+	 */
+	public static void printPage (WebDriver driver, int pageRange) throws IOException {
+		try {
+			logStep("Printing" + driver.getTitle() + "page....... ");
+			PrintsPage printer = ((PrintsPage) driver);
+			PrintOptions printOptions = new PrintOptions();
+			printOptions.setPageRanges(String.valueOf(pageRange));
+			Pdf pdf = printer.print(printOptions);
+			Files.write(new File("Pdf/" + driver.getTitle() + currentTime + ".pdf").toPath(), OutputType.BYTES.convertFromBase64Png(pdf.getContent()));
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			Logger.logMessage("Page not printed: " + e.getMessage());
+		}
 	}
 
 	private static synchronized void attachBasedOnFileType (String attachmentType, ByteArrayOutputStream
