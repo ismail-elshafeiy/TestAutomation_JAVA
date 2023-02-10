@@ -1,7 +1,8 @@
 package engine.broswer;
 
-import engine.EyesManager;
-import engine.PropertiesReader;
+import engine.Waits;
+import engine.validations.EyesManager;
+import engine.dataDriven.PropertiesReader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
@@ -10,16 +11,18 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 
+import static engine.dataDriven.PropertiesReader.*;
+
 public class BrowserFactoryHelper {
 
 	protected static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 	protected static EyesManager eyesManager;
-	protected static final String propertiesFileName = "project.properties";
+
 	protected static final String browserType = PropertiesReader.getProperty(propertiesFileName, "browser.type");
 	protected static final String executionType = PropertiesReader.getProperty(propertiesFileName, "execution.type");
 	protected static final String host = PropertiesReader.getProperty(propertiesFileName, "remote.execution.host");
 	protected static final String port = PropertiesReader.getProperty(propertiesFileName, "remote.execution.port");
-	protected static final String appName = PropertiesReader.getProperty(propertiesFileName, "app.name");
+	//protected static final String appName = PropertiesReader.getProperty(propertiesFileName, "app.name");
 
 	/**
 	 * This enum will hold the browser types that we support in our framework (chrome, firefox, edge)

@@ -4,7 +4,7 @@ import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.json.simple.JSONObject;
-import engine.PropertiesReader;
+import engine.dataDriven.PropertiesReader;
 import engine.api.actions.RestApiActions;
 
 public class RestApiBase {

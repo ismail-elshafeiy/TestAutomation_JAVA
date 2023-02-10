@@ -1,7 +1,7 @@
 /*
 package engine.gui.actions;
 
-import engine.broswer.Waits;
+import engine.Waits;
 import engine.tools.Logger;
 import io.appium.java_client.MobileDriver;
 import io.appium.java_client.MobileElement;

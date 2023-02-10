@@ -1,6 +1,8 @@
 package engine;
 
-import engine.tools.Logger;
+import engine.listeners.Logger;
+import org.testng.ITestContext;
+import org.testng.ITestResult;
 import org.testng.Reporter;
 
 import java.nio.charset.Charset;
@@ -28,6 +30,7 @@ public class Helper {
 		Reporter.getCurrentTestResult();
 		return Reporter.getCurrentTestResult().isSuccess();
 	}
+
 
 	public static String getDate () {
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");

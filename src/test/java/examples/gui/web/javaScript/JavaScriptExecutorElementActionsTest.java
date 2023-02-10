@@ -1,6 +1,6 @@
 package examples.gui.web.javaScript;
 
-import engine.broswer.Waits;
+import engine.Waits;
 import io.qameta.allure.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;

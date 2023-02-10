@@ -1,5 +1,7 @@
 package engine.broswer;
 
+import engine.evidence.Attachments;
+import engine.Waits;
 import engine.gui.actions.ElementActions;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
@@ -7,10 +9,12 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.ITestResult;
-import engine.tools.Logger;
-import engine.PropertiesReader;
-import engine.RecordManager;
+import engine.listeners.Logger;
+import engine.dataDriven.PropertiesReader;
+import engine.evidence.RecordManager;
+
 import java.util.Set;
+
 import static engine.broswer.BrowserFactoryHelper.eyesManager;
 import static org.testng.Assert.fail;
 
@@ -197,8 +201,8 @@ public class BrowserActions {
 	@Step("Check the test result and Close All Opened Browser Windows.....")
 	public static void closeAllOpenedBrowserWindows (WebDriver driver, ITestResult result) throws Throwable {
 		if (ITestResult.FAILURE == result.getStatus()) {
-			Logger.attachScreenshotToAllureReport(driver);
-			Logger.attachScreenshotToExtentReport(driver);
+			Attachments.attachScreenshotToAllureReport(driver);
+			Attachments.attachScreenshotToExtentReport(driver);
 			Logger.logConsoleLogs(driver, result);
 		}
 		RecordManager.attachVideoRecording();

@@ -2,7 +2,7 @@ package examples.gui.web.browserInteractions;
 
 import engine.broswer.BrowserActions;
 import engine.gui.actions.ElementActions;
-import engine.tools.Logger;
+import engine.listeners.Logger;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;

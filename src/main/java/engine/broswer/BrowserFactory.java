@@ -1,6 +1,5 @@
 package engine.broswer;
 
-import engine.EyesManager;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -8,7 +7,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import engine.tools.Logger;
+import engine.listeners.Logger;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -27,7 +27,7 @@ public class BrowserFactory {
 	 */
 	@Step ("Initializing a new Web GUI Browser!.....")
 	public static synchronized WebDriver getBrowser (BrowserType browserType, ExecutionType executionType) {
-		eyesManager = new EyesManager(driver.get(), appName);
+		//eyesManager = new EyesManager(driver.get(), appName);
 		Logger.logStep("Initialize [" + browserType.getValue() + "] Browser and the Execution Type is [" + executionType.getValue() + "]");
 
 		boolean googleChrome = browserType == BrowserType.GOOGLE_CHROME || (browserType == BrowserType.FROM_PROPERTIES && BrowserFactoryHelper.browserType.equalsIgnoreCase("google chrome"));

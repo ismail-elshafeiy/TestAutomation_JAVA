@@ -1,7 +1,7 @@
 package engine.gui.actions;
 
-import engine.broswer.Waits;
-import engine.tools.Logger;
+import engine.Waits;
+import engine.listeners.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 

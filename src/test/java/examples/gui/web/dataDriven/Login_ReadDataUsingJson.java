@@ -4,13 +4,15 @@ import com.practice.gui.pages.homePage.HomePage;
 import com.practice.gui.pages.inputs.SecureAreaPage;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
-import engine.tools.io.JSONFileManager;
-import engine.tools.io.JSONFileManager_Approach2;
+import engine.dataDriven.JSONFileManager;
+import engine.dataDriven.JSONFileManager_Approach2;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
 import java.io.FileNotFoundException;
+
 import static engine.broswer.BrowserFactoryHelper.*;
 import static org.testng.Assert.assertTrue;
 
@@ -46,7 +48,7 @@ public class Login_ReadDataUsingJson {
 
 	@BeforeMethod
 	public void setup_BeforeMethod () throws FileNotFoundException {
-		driver = BrowserFactory.getBrowser(BrowserType.MOZILLA_FIREFOX, ExecutionType.LOCAL_HEADLESS);
+		driver = BrowserFactory.getBrowser();
 		jsonFileManager = new JSONFileManager("src/test/resources/TestData/TestData.json");
 	}
 

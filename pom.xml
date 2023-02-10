@@ -357,7 +357,9 @@
                             </property>
                             <property>
                                 <name>listener</name>
-                                <value>engine.tools.listeners.TestngListener, engine.tools.listeners.WebListener</value>
+                                <value>engine.listeners.TestngListener,
+                                    engine.listeners.WebListener
+                                </value>
                             </property>
                         </properties>
                     </configuration>

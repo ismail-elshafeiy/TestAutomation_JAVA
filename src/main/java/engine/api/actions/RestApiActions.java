@@ -1,6 +1,7 @@
 package engine.api.actions;
 
 import com.aventstack.extentreports.markuputils.MarkupHelper;
+import engine.evidence.Attachments;
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -16,7 +17,7 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import io.restassured.specification.SpecificationQuerier;
 import engine.ExtentReport;
-import engine.tools.Logger;
+import engine.listeners.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -102,42 +103,42 @@ public class RestApiActions {
             if (headers != null) {
                 request.headers(headers);
                 String qHeaders = queryableRequestSpecs.getHeaders().toString();
-                Logger.attachApiRequestToAllureReport("Headers", qHeaders.getBytes());
+                Attachments.attachApiRequestToAllureReport("Headers", qHeaders.getBytes());
                 ExtentReport.info(MarkupHelper.createCodeBlock("Request Headers: " + "\n" + qHeaders));
             }
 
             if (contentType != null) {
                 request.contentType(contentType);
                 String qContentType = queryableRequestSpecs.getContentType();
-                Logger.attachApiRequestToAllureReport("Content Type", qContentType.getBytes());
+                Attachments.attachApiRequestToAllureReport("Content Type", qContentType.getBytes());
                 ExtentReport.info(MarkupHelper.createCodeBlock("Request Content Type: " + qContentType));
             }
 
             if (formParams != null) {
                 request.formParams(formParams);
                 String qFormParams = queryableRequestSpecs.getFormParams().toString();
-                Logger.attachApiRequestToAllureReport("Form params", qFormParams.getBytes());
+                Attachments.attachApiRequestToAllureReport("Form params", qFormParams.getBytes());
                 ExtentReport.info(MarkupHelper.createCodeBlock("Request Form params: " + "\n" + qFormParams));
             }
 
             if (queryParams != null) {
                 request.queryParams(queryParams);
                 String qQueryParams = queryableRequestSpecs.getQueryParams().toString();
-                Logger.attachApiRequestToAllureReport("Query params", qQueryParams.getBytes());
+                Attachments.attachApiRequestToAllureReport("Query params", qQueryParams.getBytes());
                 ExtentReport.info(MarkupHelper.createCodeBlock("Request Query params: " + "\n" + qQueryParams));
             }
 
             if (body != null) {
                 request.body(body);
                 String qBody = queryableRequestSpecs.getBody().toString();
-                Logger.attachApiRequestToAllureReport("Body", qBody.getBytes());
+                Attachments.attachApiRequestToAllureReport("Body", qBody.getBytes());
                 ExtentReport.info(MarkupHelper.createCodeBlock("Request Body: " + "\n" + qBody));
             }
 
             if (cookies != null) {
                 request.cookies(cookies);
                 String qCookies = queryableRequestSpecs.getCookies().toString();
-                Logger.attachApiRequestToAllureReport("Cookies", qCookies.getBytes());
+                Attachments.attachApiRequestToAllureReport("Cookies", qCookies.getBytes());
                 ExtentReport.info(MarkupHelper.createCodeBlock("Request Cookies: " + "\n" + qCookies));
             }
 
@@ -158,7 +159,7 @@ public class RestApiActions {
             Logger.logStep(e.getMessage());
             fail(e.getMessage());
         }
-        Logger.attachApiResponseToAllureReport(response.asByteArray());
+        Attachments.attachApiResponseToAllureReport(response.asByteArray());
         ExtentReport.info(MarkupHelper.createCodeBlock("API Response: " + "\n" + response.asPrettyString()));
         return response;
     }

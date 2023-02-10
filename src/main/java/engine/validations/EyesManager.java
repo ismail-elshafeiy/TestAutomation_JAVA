@@ -1,4 +1,4 @@
-package engine;
+package engine.validations;
 
 import com.applitools.eyes.BatchInfo;
 import com.applitools.eyes.selenium.Eyes;

@@ -1,10 +1,10 @@
 package examples.gui.web.browserInteractions;
 
+import engine.evidence.Attachments;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
-import engine.broswer.BrowserFactoryHelper;
 import engine.broswer.BrowserFactoryHelper.*;
-import engine.tools.Logger;
+import engine.evidence.ScreenShot;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -28,7 +28,7 @@ public class ReferenceTests {
 	public void takeScreenShotTest () {
 		driver = BrowserFactory.getBrowser();
 		BrowserActions.navigateToUrl(driver, "https://www.google.com/");
-		Logger.takeScreenShotToFile(driver);
+		ScreenShot.takeScreenShotToFile(driver);
 	}
 
 	@Story("Screen Shots")
@@ -40,7 +40,7 @@ public class ReferenceTests {
 	public void takeElementScreenShotTest () {
 		driver = BrowserFactory.getBrowser();
 		BrowserActions.navigateToUrl(driver, "https://www.google.com/");
-		Logger.takeElementScreenShot(driver, By.xpath("//a[text()='Gmail']"));
+		ScreenShot.takeElementScreenShot(driver, By.xpath("//a[text()='Gmail']"));
 	}
 
 	@Story("Full Page Screen Shot")
@@ -51,7 +51,7 @@ public class ReferenceTests {
 	public void takeFullPage_Screenshot () throws IOException {
 		driver = BrowserFactory.getBrowser(BrowserType.MOZILLA_FIREFOX, ExecutionType.LOCAL);
 		BrowserActions.navigateToUrl(driver, "https://www.selenium.dev/");
-		Logger.takeFullPageScreenshot(driver, "Selenium Full Page Screenshot");
+		ScreenShot.takeFullPageScreenshot(driver, "Selenium Full Page Screenshot");
 	}
 
 	@Story("Print Page")
@@ -63,6 +63,6 @@ public class ReferenceTests {
 	public void printWindow () throws IOException {
 		driver = BrowserFactory.getBrowser(BrowserType.GOOGLE_CHROME, ExecutionType.LOCAL_HEADLESS);
 		BrowserActions.navigateToUrl(driver, "https://www.selenium.dev");
-		Logger.printPage(driver, 6);
+		Attachments.printPage(driver, 6);
 	}
 }

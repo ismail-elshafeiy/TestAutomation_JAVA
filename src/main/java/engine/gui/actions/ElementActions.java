@@ -1,8 +1,7 @@
 package engine.gui.actions;
 
-import engine.broswer.BrowserActions;
-import engine.broswer.Waits;
-import engine.tools.Logger;
+import engine.Waits;
+import engine.listeners.Logger;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;

@@ -2,8 +2,8 @@ package examples.gui.web.dataDriven;
 
 import com.practice.gui.pages.homePage.HomePage;
 import com.practice.gui.pages.inputs.SecureAreaPage;
-import engine.tools.io.ExcelFileManager;
-import engine.tools.io.DataProvider;
+import engine.dataDriven.ExcelFileManager;
+import engine.dataDriven.DataProvider;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -14,7 +14,7 @@ import engine.broswer.BrowserFactory;
 import java.io.File;
 import java.util.Objects;
 
-import static engine.tools.io.ExcelFileManager.*;
+import static engine.dataDriven.ExcelFileManager.*;
 import static org.testng.Assert.assertTrue;
 
 public class Login_ReadDataUsingExcel extends DataProvider {

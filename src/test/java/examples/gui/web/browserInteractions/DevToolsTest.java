@@ -2,7 +2,7 @@ package examples.gui.web.browserInteractions;
 
 import engine.broswer.BrowserActions;
 import engine.gui.actions.ElementActions;
-import engine.tools.Logger;
+import engine.listeners.Logger;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
