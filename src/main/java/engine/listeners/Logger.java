@@ -40,7 +40,6 @@ public class Logger {
 	@Step ("{logStep}")
 	public static void logStep (String logStep) {
 		System.out.println("<" + currentTime + "> " + logStep);
-		log.info(log);
 		ExtentReport.info(logStep);
 	}
 

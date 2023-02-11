@@ -5,10 +5,10 @@ import static io.restassured.RestAssured.get;
 import io.restassured.path.xml.XmlPath;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import engine.dataDriven.ExcelFileManager;
+import engine.dataDriven.ExcelFileManager1;
 
 public class data_driven {
-    ExcelFileManager spreedSheet;
+    ExcelFileManager1 spreedSheet;
     // dataProvider = Function Name
     @Test(dataProvider = "test_data")
     public void dataDriven_testcase(String customer_id,

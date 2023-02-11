@@ -2,6 +2,7 @@ package examples.gui.web.elementActions.select;
 
 import com.practice.gui.pages.select.CheckBoxPage;
 import com.practice.gui.pages.homePage.HomePage;
+import engine.dataDriven.ExcelFileManager;
 import io.qameta.allure.*;
 import org.openqa.selenium.*;
 import org.testng.Assert;
@@ -10,7 +11,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
-import engine.dataDriven.ExcelFileManager;
+import engine.dataDriven.ExcelFileManager1;
 
 public class CheckBox {
     private WebDriver driver;

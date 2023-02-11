@@ -3,6 +3,7 @@ package examples.gui.web.dataDriven;
 import com.practice.gui.pages.homePage.HomePage;
 import com.practice.gui.pages.inputs.SecureAreaPage;
 import engine.dataDriven.ExcelFileManager;
+import engine.dataDriven.ExcelFileManager1;
 import engine.dataDriven.DataProvider;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
@@ -14,7 +15,8 @@ import engine.broswer.BrowserFactory;
 import java.io.File;
 import java.util.Objects;
 
-import static engine.dataDriven.ExcelFileManager.*;
+import static engine.dataDriven.ExcelFileManager.getCellData;
+import static engine.dataDriven.ExcelFileManager1.*;
 import static org.testng.Assert.assertTrue;
 
 public class Login_ReadDataUsingExcel extends DataProvider {
@@ -23,8 +25,8 @@ public class Login_ReadDataUsingExcel extends DataProvider {
 	public void login_readDataFromExcelFile () {
 		new HomePage(driver).navigateToHomePage()
 				.clickFormAuthentication()
-				.setUsername(getCellData("email", 1))
-				.setPassword(getCellData("password", 2))
+				.setUsername(excelFileTestDataReader.getCellData1("tomsmith", "password"))
+				.setPassword(excelFileTestDataReader.getCellData1("tomsmith2", "password"))
 				.clickLoginButton();
 		assertTrue(SecureAreaPage.getAlertText()
 						.contains(Objects.requireNonNull(getCellData("expectedResult_successMessage", 2))),
@@ -45,11 +47,14 @@ public class Login_ReadDataUsingExcel extends DataProvider {
 
 	private WebDriver driver;
 	String filePath = "src/test/resources/TestData/loginData.xlsx";
+	private ExcelFileManager1 excelFileTestDataReader;
 
 	@BeforeClass
 	public void setup_BeforeMethod () {
-		new ExcelFileManager(new File(filePath));
-		ExcelFileManager.switchToSheet("Login data");
+		new ExcelFileManager("src/main/resources/config.xlsx");
+		ExcelFileManager.switchToSheet("setup");
+		excelFileTestDataReader = new ExcelFileManager1(filePath);
+		excelFileTestDataReader.switchToSheet("Login data");
 	}
 
 	@BeforeMethod
@@ -59,9 +64,10 @@ public class Login_ReadDataUsingExcel extends DataProvider {
 
 	@AfterMethod (dependsOnGroups = "approach1" + "approach2" + "approach3")
 	public void closeBrowser () {
-		new ExcelFileManager(new File(filePath));
-		switchToSheet("Login data");
-		setCellData("Pass", 3, 1);
+		new ExcelFileManager(filePath);
+
+		ExcelFileManager.switchToSheet("Login data");
+		ExcelFileManager.setCellData("Pass", 3, 1);
 		driver.quit();
 	}
 

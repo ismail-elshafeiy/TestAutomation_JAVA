@@ -29,13 +29,12 @@ public class BrowserFactory {
 	public static synchronized WebDriver getBrowser (BrowserType browserType, ExecutionType executionType) {
 		//eyesManager = new EyesManager(driver.get(), appName);
 		Logger.logStep("Initialize [" + browserType.getValue() + "] Browser and the Execution Type is [" + executionType.getValue() + "]");
-
-		boolean googleChrome = browserType == BrowserType.GOOGLE_CHROME || (browserType == BrowserType.FROM_PROPERTIES && BrowserFactoryHelper.browserType.equalsIgnoreCase("google chrome"));
-		boolean mozillaFirefox = browserType == BrowserType.MOZILLA_FIREFOX || (browserType == BrowserType.FROM_PROPERTIES && BrowserFactoryHelper.browserType.equalsIgnoreCase("mozilla firefox"));
-		boolean microsoftEdge = browserType == BrowserType.MICROSOFT_EDGE || (browserType == BrowserType.FROM_PROPERTIES && BrowserFactoryHelper.browserType.equalsIgnoreCase("microsoft edge"));
+		boolean googleChrome = browserType == BrowserType.GOOGLE_CHROME || (browserType == BrowserType.FROM_EXCEL && BrowserFactoryHelper.browserType.equalsIgnoreCase("google chrome"));
+		boolean mozillaFirefox = browserType == BrowserType.MOZILLA_FIREFOX || (browserType == BrowserType.FROM_EXCEL && BrowserFactoryHelper.browserType.equalsIgnoreCase("mozilla firefox"));
+		boolean microsoftEdge = browserType == BrowserType.MICROSOFT_EDGE || (browserType == BrowserType.FROM_EXCEL && BrowserFactoryHelper.browserType.equalsIgnoreCase("microsoft edge"));
 		String browserTypeWarningMsg = "The driver is null! because the browser type [" + BrowserFactoryHelper.browserType + "] is not valid/supported; Please choose a valid browser type from the given choices in the properties file";
 		// Remote execution condition
-		if ( executionType == ExecutionType.REMOTE || (executionType == ExecutionType.FROM_PROPERTIES && BrowserFactoryHelper.executionType.equalsIgnoreCase("remote")) ) {
+		if ( executionType == ExecutionType.REMOTE || (executionType == ExecutionType.FROM_EXCEL && BrowserFactoryHelper.executionType.equalsIgnoreCase("remote")) ) {
 			if ( googleChrome ) {
 				try {
 					driver.set(new RemoteWebDriver(new URL("http://" + host + ":" + port + "/wd/hub"), getChromeOptions()));
@@ -64,7 +63,7 @@ public class BrowserFactory {
 			}
 		}
 		// Local execution condition
-		else if ( executionType == ExecutionType.LOCAL || (executionType == ExecutionType.FROM_PROPERTIES && BrowserFactoryHelper.executionType.equalsIgnoreCase("local")) ) {
+		else if ( executionType == ExecutionType.LOCAL || (executionType == ExecutionType.FROM_EXCEL && BrowserFactoryHelper.executionType.equalsIgnoreCase("local")) ) {
 			if ( googleChrome ) {
 				WebDriverManager.chromedriver().setup();
 				driver.set(new ChromeDriver());
@@ -87,7 +86,7 @@ public class BrowserFactory {
 			}
 		}
 		// Local Headless execution condition
-		else if ( executionType == ExecutionType.LOCAL_HEADLESS || (executionType == ExecutionType.FROM_PROPERTIES && BrowserFactoryHelper.executionType.equalsIgnoreCase("local headless")) ) {
+		else if ( executionType == ExecutionType.LOCAL_HEADLESS || (executionType == ExecutionType.FROM_EXCEL && BrowserFactoryHelper.executionType.equalsIgnoreCase("local headless")) ) {
 			if ( googleChrome ) {
 				WebDriverManager.chromedriver().setup();
 				driver.set(new ChromeDriver(getChromeOptions()));
@@ -113,7 +112,7 @@ public class BrowserFactory {
 	}
 
 	public static WebDriver getBrowser () {
-		return getBrowser(BrowserFactoryHelper.BrowserType.FROM_PROPERTIES, BrowserFactoryHelper.ExecutionType.FROM_PROPERTIES);
+		return getBrowser(BrowserType.FROM_EXCEL, ExecutionType.FROM_EXCEL);
 	}
 
 

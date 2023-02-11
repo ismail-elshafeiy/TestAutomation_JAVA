@@ -1,8 +1,9 @@
 package engine.broswer;
 
 import engine.Waits;
+import engine.dataDriven.ExcelFileManager;
+import engine.dataDriven.ExcelFileManager1;
 import engine.validations.EyesManager;
-import engine.dataDriven.PropertiesReader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
@@ -11,17 +12,14 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 
-import static engine.dataDriven.PropertiesReader.*;
-
 public class BrowserFactoryHelper {
 
 	protected static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 	protected static EyesManager eyesManager;
-
-	protected static final String browserType = PropertiesReader.getProperty(propertiesFileName, "browser.type");
-	protected static final String executionType = PropertiesReader.getProperty(propertiesFileName, "execution.type");
-	protected static final String host = PropertiesReader.getProperty(propertiesFileName, "remote.execution.host");
-	protected static final String port = PropertiesReader.getProperty(propertiesFileName, "remote.execution.port");
+	public static String browserType = ExcelFileManager.getCellData("values", 2);
+	protected static final String executionType = ExcelFileManager.getCellData("values", 3);
+	protected static final String host = ExcelFileManager.getCellData("values", 4);
+	protected static final String port = ExcelFileManager.getCellData("values", 5);
 	//protected static final String appName = PropertiesReader.getProperty(propertiesFileName, "app.name");
 
 	/**
@@ -31,7 +29,7 @@ public class BrowserFactoryHelper {
 		MOZILLA_FIREFOX("Mozilla Firefox"),
 		GOOGLE_CHROME("Google Chrome"),
 		MICROSOFT_EDGE("Edge"),
-		FROM_PROPERTIES(browserType);
+		FROM_EXCEL(browserType);
 		private final String value;
 
 		BrowserType (String type) {
@@ -47,7 +45,10 @@ public class BrowserFactoryHelper {
 	 * This enum will hold the execution types that we support in our framework (local, remote, local headless) and will also be used to read the execution type from the properties file
 	 */
 	public enum ExecutionType {
-		LOCAL("Local"), REMOTE("Remote"), LOCAL_HEADLESS("Local Headless"), FROM_PROPERTIES(executionType);
+		LOCAL("Local"),
+		REMOTE("Remote"),
+		LOCAL_HEADLESS("Local Headless"),
+		FROM_EXCEL(executionType);
 		private final String value;
 
 		ExecutionType (String type) {
@@ -91,10 +92,14 @@ public class BrowserFactoryHelper {
 	 * This method will check if the user wants to maximize the browser window or not and will maximize it if the
 	 */
 	protected static void checkMaximizeOptionFromProperty () {
-		if ( PropertiesReader.getProperty(propertiesFileName, "maximize").equalsIgnoreCase("true") ) {
-			BrowserActions.maximizeWindow(driver.get());
-		} else {
-			BrowserActions.setWindowSize(driver.get());
+		try {
+			if ( ExcelFileManager.getCellData("values", 6).equalsIgnoreCase("true") ) {
+				BrowserActions.maximizeWindow(driver.get());
+			} else {
+				BrowserActions.setWindowSize(driver.get());
+			}
+		} catch ( Exception e ) {
+			e.printStackTrace();
 		}
 	}
 

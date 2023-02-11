@@ -2,13 +2,14 @@ package examples.gui.web.filLoginForm;
 
 import com.practice.gui.pages.homePage.HomePage;
 import com.practice.gui.pages.inputs.SecureAreaPage;
+import engine.dataDriven.ExcelFileManager;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
-import engine.dataDriven.ExcelFileManager;
+import engine.dataDriven.ExcelFileManager1;
 
 import java.io.File;
 
@@ -23,7 +24,7 @@ public class Login_Test {
     @BeforeMethod
     public void setup_BeforeMethod() {
         driver = BrowserFactory.getBrowser();
-        testDataFile = new ExcelFileManager(new File ("src/test/resources/TestData/TestData.xlsx"));
+        testDataFile = new ExcelFileManager("src/test/resources/TestData/TestData.xlsx");
         testDataFile.switchToSheet("login");
     }
 
