@@ -49,17 +49,17 @@ public class Dropdown {
 
     @Test
     public void selectOptionByValue() {
-        String option1 = testDataFile.getCellData("option", 2);
-        String option1TextSelected = new HomePage(driver).navigateToHomePage()
-                .clickDropDown()
-                .selectByValue(option1)
-                .getSelectOptionText("Option 1");
+        String option1 = testDataFile.getCellData(2, "option");
+		String option1TextSelected = new HomePage(driver).navigateToHomePage()
+				.clickDropDown()
+				.selectByValue(option1)
+				.getSelectOptionText("Option 1");
         Assert.assertEquals(option1TextSelected, "Option 1");
     }
 
     @Test
     public void selectOptionByVisible() {
-        String option2 = testDataFile.getCellData("option", 3);
+		String option2 = testDataFile.getCellData(3, "option");
         new HomePage(driver).navigateToHomePage()
                 .clickDropDown()
                 .selectByVisible(option2);

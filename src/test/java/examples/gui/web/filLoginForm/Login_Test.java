@@ -35,18 +35,18 @@ public class Login_Test {
 
     @Test
     public void testSuccessfulLogin() {
-        String email= testDataFile.getCellData("email",2);
-        String password = testDataFile.getCellData("password",2);
-        String expectedResult_successMessage = testDataFile.getCellData("expectedResult_successMessage",2);
+		String email = testDataFile.getCellData(2, "email");
+		String password = testDataFile.getCellData(2, "password");
+		String expectedResult_successMessage = testDataFile.getCellData(2, "expectedResult_successMessage");
 
-        new HomePage(driver).navigateToHomePage()
-                .clickFormAuthentication()
-                .setUsername(email)
-                .setPassword(password)
-                .clickLoginButton();
-        assertTrue(SecureAreaPage.getAlertText().contains(expectedResult_successMessage),
-                "Check Alert Message");
-    }
+		new HomePage(driver).navigateToHomePage()
+				.clickFormAuthentication()
+				.setUsername(email)
+				.setPassword(password)
+				.clickLoginButton();
+		assertTrue(SecureAreaPage.getAlertText().contains(expectedResult_successMessage),
+				"Check Alert Message");
+	}
 
 
 }

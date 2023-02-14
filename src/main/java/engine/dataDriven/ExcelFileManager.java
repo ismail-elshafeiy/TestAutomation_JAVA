@@ -44,16 +44,13 @@ public class ExcelFileManager {
 		try {
 			spreadSheet = new File(filePathFromRoot);
 			columns = new HashMap<String, Integer>();
-			this.fis = new FileInputStream(filePathFromRoot);
-			this.workbook = new XSSFWorkbook(this.fis);
-			this.fis.close();
+			fis = new FileInputStream(filePathFromRoot);
+			workbook = new XSSFWorkbook(fis);
+			fis.close();
 			Logger.logStep("File has been loaded successfully --> File Path: " + filePathFromRoot);
 		} catch ( IOException | OutOfMemoryError e ) {
 			Logger.logMessage(fileErrorMessage + errorMessageException + e.getMessage());
 			Assert.fail(fileErrorMessage + errorMessageException + e.getMessage());
-		} catch ( EmptyFileException e ) {
-			Logger.logMessage(testMethodName + "Please check the target file, as it may be corrupted. [ " + filePathFromRoot + " ]." + errorMessageException + e.getMessage());
-			Assert.fail(testMethodName + "Please check the target file, as it may be corrupted. [ " + filePathFromRoot + " ]." + errorMessageException + e.getMessage());
 		}
 	}
 
@@ -100,8 +97,7 @@ public class ExcelFileManager {
 	 * @param columnName enter the column Name name
 	 * @param rowNumber  Enter the row  of the Sheet index start from 1
 	 */
-	public static String getCellData (String columnName, int rowNumber) {
-
+	public static String getCellData (int rowNumber, String columnName) {
 		String columnErrorMessage = testMethodName + "Can't find the column name [ " + columnName + " ] from the sheet [ " + currentSheet.getSheetName() + " ]  ";
 		try {
 			Row dataRow = currentSheet.getRow(rowNumber - 1);
@@ -109,6 +105,7 @@ public class ExcelFileManager {
 				Logger.logStep(testMethodName + "Can't find the row number [ " + rowNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ] ");
 				fail(testMethodName + "Can't find the row number [ " + rowNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ]");
 			}
+			Logger.logStep("Getting cell data from column [ " + columnName + " ] and row [ " + rowNumber + " ] from sheet [ " + currentSheet.getSheetName() + " ]");
 			return getCellDataAsString(dataRow.getCell(columns.get(columnName)));
 		} catch ( Exception e ) {
 			Logger.logMessage(columnErrorMessage + errorMessageException + e.getMessage());
@@ -117,9 +114,26 @@ public class ExcelFileManager {
 		return null;
 	}
 
-	public static String getCellData (String sheetName, String columnName, int rowNumber) {
+	public static String getCellData (String rowNumber, String columnName) {
+		String columnErrorMessage = testMethodName + "Can't find the column name [ " + columnName + " ] from the sheet [ " + currentSheet.getSheetName() + " ]  ";
+		try {
+			Row dataRow = currentSheet.getRow(getRowCountInSheet() - 1);
+			if ( dataRow == null ) {
+				Logger.logStep(testMethodName + "Can't find the row number [ " + rowNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ] ");
+				fail(testMethodName + "Can't find the row number [ " + rowNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ]");
+			}
+			Logger.logStep("Getting cell data from column [ " + columnName + " ] and row [ " + rowNumber + " ] from sheet [ " + currentSheet.getSheetName() + " ]");
+			return getCellDataAsString(dataRow.getCell(columns.get(columnName)));
+		} catch ( Exception e ) {
+			Logger.logMessage(columnErrorMessage + errorMessageException + e.getMessage());
+			fail(columnErrorMessage + errorMessageException + e.getMessage());
+		}
+		return null;
+	}
+
+	public static String getCellData (String sheetName, int rowNumber, String columnName) {
 		switchToSheet(sheetName);
-		return getCellData(columnName, rowNumber);
+		return getCellData(rowNumber, columnName);
 	}
 
 	/**
@@ -150,7 +164,7 @@ public class ExcelFileManager {
 	public static String getCellData (String columnName) {
 		try {
 			Logger.logStep("Getting the cell data from the column name: [ " + columnName + " ] from the sheet [ " + currentSheet.getSheetName() + " ] ");
-			return getCellData(columnName, 2);
+			return getCellData( 2,columnName);
 		} catch ( NullPointerException e ) {
 			Logger.logMessage("Can't find the columnName name [" + columnName + "] from the sheet [" + currentSheet.getSheetName() + "]  " + errorMessageException + e.getMessage() + testMethodName);
 			fail("Can't find the columnName name [" + columnName + "]..Null Pointer Exception --> " + errorMessageException + e.getMessage() + testMethodName);
@@ -162,7 +176,7 @@ public class ExcelFileManager {
 	}
 
 	//TODO: Refactor set cell data
-	public static void setCellData (String value, int columnNumber, int rowNumber) {
+	public static void setCellData (String value, int rowNumber, int columnNumber) {
 		String columnErrorMessage = testMethodName + "Can't find the column name [ " + columnNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ]  ";
 		try {
 //			Row dataRow = currentSheet.getRow(rowNumber - 1);

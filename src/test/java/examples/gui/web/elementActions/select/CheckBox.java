@@ -41,13 +41,13 @@ public class CheckBox {
 
     @Test
     public void checkbox2() {
-        String state = testDataFile.getCellData("state", 3);
-        int orderOfList = Integer.parseInt(testDataFile.getCellData("orderOfList", 3));
-        new HomePage(driver).navigateToHomePage()
-                .clickCheckBoxesPage()
-                .clickOn_CheckBox(state, orderOfList);
-        Assert.assertTrue(! driver.findElement(CheckBoxPage.checkBox(orderOfList)).isSelected());
-    }
+		String state = testDataFile.getCellData(3, "state");
+		int orderOfList = Integer.parseInt(testDataFile.getCellData(3, "orderOfList"));
+		new HomePage(driver).navigateToHomePage()
+				.clickCheckBoxesPage()
+				.clickOn_CheckBox(state, orderOfList);
+		Assert.assertTrue(! driver.findElement(CheckBoxPage.checkBox(orderOfList)).isSelected());
+	}
 
     @Test
     public void checkBoxesTest() {

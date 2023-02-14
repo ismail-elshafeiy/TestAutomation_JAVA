@@ -1,7 +1,6 @@
 package engine.broswer;
 
 import engine.dataDriven.ExcelFileManager;
-import engine.dataDriven.ExcelFileManager1;
 import engine.evidence.Attachments;
 import engine.Waits;
 import engine.gui.actions.ElementActions;
@@ -111,8 +110,8 @@ public class BrowserActions {
 	public static void setWindowSize (WebDriver driver) {
 		//	String width = PropertiesReader.getProperty("project.properties", "width");
 		//	String height = PropertiesReader.getProperty("project.properties", "height");
-		String width = ExcelFileManager.getCellData("values", 7);
-		String height = ExcelFileManager.getCellData("values", 8);
+		String width = ExcelFileManager.getCellData(7, "values");
+		String height = ExcelFileManager.getCellData(8, "values");
 		try {
 			Logger.logStep("[Browser Action] Set Window Resolution as Width [" + width + "] and Height [" + height + "]");
 			Dimension dimension = new Dimension(Integer.parseInt(width), Integer.parseInt(height));

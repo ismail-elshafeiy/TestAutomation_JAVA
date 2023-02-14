@@ -8,9 +8,9 @@ public class DataProvider {
 		int numberOfColumns = ExcelFileManager.getLastColumnNumber();
 		Object[][] data = new Object[numberOfRows][numberOfColumns];
 		for ( int row = 0; row < numberOfRows; row++ ) {
-			data[row][0] = ExcelFileManager.getCellData("email", row + 1);
-			data[row][1] = ExcelFileManager.getCellData("password", row + 1);
-			data[row][2] = ExcelFileManager.getCellData("expectedResult_successMessage", row + 1);
+			data[row][0] = ExcelFileManager.getCellData(row + 1, "email");
+			data[row][1] = ExcelFileManager.getCellData(row + 1, "password");
+			data[row][2] = ExcelFileManager.getCellData(row + 1, "expectedResult_successMessage");
 		}
 		return data;
 	}

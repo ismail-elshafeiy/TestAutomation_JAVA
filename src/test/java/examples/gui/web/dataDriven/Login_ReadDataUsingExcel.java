@@ -12,11 +12,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import engine.broswer.BrowserFactory;
 
-import java.io.File;
-import java.util.Objects;
-
-import static engine.dataDriven.ExcelFileManager.getCellData;
-import static engine.dataDriven.ExcelFileManager1.*;
 import static org.testng.Assert.assertTrue;
 
 public class Login_ReadDataUsingExcel extends DataProvider {
@@ -25,11 +20,23 @@ public class Login_ReadDataUsingExcel extends DataProvider {
 	public void login_readDataFromExcelFile () {
 		new HomePage(driver).navigateToHomePage()
 				.clickFormAuthentication()
-				.setUsername(excelFileTestDataReader.getCellData1("tomsmith", "password"))
-				.setPassword(excelFileTestDataReader.getCellData1("tomsmith2", "password"))
+				.setUsername(excelFileTestDataReader1.getCellData("login Data2", "email1", "email"))
+				.setPassword(excelFileTestDataReader1.getCellData("login Data2", "email1", "password"))
 				.clickLoginButton();
 		assertTrue(SecureAreaPage.getAlertText()
-						.contains(Objects.requireNonNull(getCellData("expectedResult_successMessage", 2))),
+						.contains(excelFileTestDataReader1.getCellData("login data2", "email1", "expected result")),
+				"Check Alert Message");
+	}
+
+	@Test (groups = "approach1")
+	public void login_readDataFromExcelFile1 () {
+		new HomePage(driver).navigateToHomePage()
+				.clickFormAuthentication()
+				.setUsername(ExcelFileManager.getCellData(2, "email"))
+				.setPassword(ExcelFileManager.getCellData(2, "password"))
+				.clickLoginButton();
+		assertTrue(SecureAreaPage.getAlertText()
+						.contains(ExcelFileManager.getCellData(2, "expected result")),
 				"Check Alert Message");
 	}
 
@@ -46,28 +53,31 @@ public class Login_ReadDataUsingExcel extends DataProvider {
 	}
 
 	private WebDriver driver;
-	String filePath = "src/test/resources/TestData/loginData.xlsx";
-	private ExcelFileManager1 excelFileTestDataReader;
+	String filePath = "src/test/resources/TestData/LoginData.xlsx";
+	private ExcelFileManager1 excelFileTestDataReader1;
+	private ExcelFileManager excelFileTestDataReader;
 
 	@BeforeClass
-	public void setup_BeforeMethod () {
-		new ExcelFileManager("src/main/resources/config.xlsx");
-		ExcelFileManager.switchToSheet("setup");
-		excelFileTestDataReader = new ExcelFileManager1(filePath);
-		excelFileTestDataReader.switchToSheet("Login data");
+	public void setTestData () {
+		//new ExcelFileManager(filePath);
+		//ExcelFileManager.switchToSheet("Login Data2");
+		excelFileTestDataReader1 = new ExcelFileManager1(filePath);
+		//excelFileTestDataReader1.switchToSheet("Login data");
 	}
 
 	@BeforeMethod
 	public void setup () {
+		excelFileTestDataReader = new ExcelFileManager("src/main/resources/config.xlsx");
+		ExcelFileManager.switchToSheet("setup");
 		driver = BrowserFactory.getBrowser();
 	}
 
 	@AfterMethod (dependsOnGroups = "approach1" + "approach2" + "approach3")
 	public void closeBrowser () {
-		new ExcelFileManager(filePath);
+		//new ExcelFileManager(filePath);
 
-		ExcelFileManager.switchToSheet("Login data");
-		ExcelFileManager.setCellData("Pass", 3, 1);
+		//ExcelFileManager.switchToSheet("Login data");
+		//ExcelFileManager.setCellData("Pass", 3, 1);
 		driver.quit();
 	}
 

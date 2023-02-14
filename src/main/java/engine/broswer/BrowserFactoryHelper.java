@@ -2,7 +2,6 @@ package engine.broswer;
 
 import engine.Waits;
 import engine.dataDriven.ExcelFileManager;
-import engine.dataDriven.ExcelFileManager1;
 import engine.validations.EyesManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -16,10 +15,10 @@ public class BrowserFactoryHelper {
 
 	protected static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 	protected static EyesManager eyesManager;
-	public static String browserType = ExcelFileManager.getCellData("values", 2);
-	protected static final String executionType = ExcelFileManager.getCellData("values", 3);
-	protected static final String host = ExcelFileManager.getCellData("values", 4);
-	protected static final String port = ExcelFileManager.getCellData("values", 5);
+	public static String browserType = ExcelFileManager.getCellData(2, "values");
+	protected static final String executionType = ExcelFileManager.getCellData(3, "values");
+	protected static final String host = ExcelFileManager.getCellData(4, "values");
+	protected static final String port = ExcelFileManager.getCellData(5, "values");
 	//protected static final String appName = PropertiesReader.getProperty(propertiesFileName, "app.name");
 
 	/**
@@ -52,6 +51,38 @@ public class BrowserFactoryHelper {
 		private final String value;
 
 		ExecutionType (String type) {
+			this.value = type;
+		}
+
+		String getValue () {
+			return value;
+		}
+	}
+
+	public enum Environment {
+		DEV("Local"),
+		STG("Remote"),
+		UAT("Local Headless"),
+		PROD("Local Headless");
+		private final String value;
+
+		Environment (String type) {
+			this.value = type;
+		}
+
+		String getValue () {
+			return value;
+		}
+	}
+
+	public enum TestDataAccount {
+		DEV("Local"),
+		STG("Remote"),
+		UAT("Local Headless"),
+		PROD("Local Headless");
+		private final String value;
+
+		TestDataAccount (String type) {
 			this.value = type;
 		}
 
@@ -93,7 +124,7 @@ public class BrowserFactoryHelper {
 	 */
 	protected static void checkMaximizeOptionFromProperty () {
 		try {
-			if ( ExcelFileManager.getCellData("values", 6).equalsIgnoreCase("true") ) {
+			if ( ExcelFileManager.getCellData(6, "values").equalsIgnoreCase("true") ) {
 				BrowserActions.maximizeWindow(driver.get());
 			} else {
 				BrowserActions.setWindowSize(driver.get());
