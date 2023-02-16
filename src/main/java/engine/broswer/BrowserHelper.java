@@ -2,6 +2,7 @@ package engine.broswer;
 
 import engine.Waits;
 import engine.dataDriven.ExcelFileManager;
+import engine.dataDriven.PropertiesReader;
 import engine.validations.EyesManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -11,15 +12,16 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 
-public class BrowserFactoryHelper {
-
+public class BrowserHelper {
 	protected static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 	protected static EyesManager eyesManager;
-	public static String browserType = ExcelFileManager.getCellData(2, "values");
-	protected static final String executionType = ExcelFileManager.getCellData(3, "values");
-	protected static final String host = ExcelFileManager.getCellData(4, "values");
-	protected static final String port = ExcelFileManager.getCellData(5, "values");
-	//protected static final String appName = PropertiesReader.getProperty(propertiesFileName, "app.name");
+	public static final String BROWSER_TYPE = ExcelFileManager.getCellData("browser type ", "value");
+	protected static final String EXECUTION_TYPE = ExcelFileManager.getCellData("execution type ", "value");
+	protected static final String HOST = ExcelFileManager.getCellData("host", "value");
+	protected static final String PORT = ExcelFileManager.getCellData("port", "value");
+	private static final String IS_MAXIMIZE = ExcelFileManager.getCellData("maximize", "value");
+	protected static String width = PropertiesReader.getProperty("project.properties", "width");
+	protected static String height = PropertiesReader.getProperty("project.properties", "height");
 
 	/**
 	 * This enum will hold the browser types that we support in our framework (chrome, firefox, edge)
@@ -28,7 +30,7 @@ public class BrowserFactoryHelper {
 		MOZILLA_FIREFOX("Mozilla Firefox"),
 		GOOGLE_CHROME("Google Chrome"),
 		MICROSOFT_EDGE("Edge"),
-		FROM_EXCEL(browserType);
+		FROM_EXCEL(BROWSER_TYPE);
 		private final String value;
 
 		BrowserType (String type) {
@@ -47,7 +49,7 @@ public class BrowserFactoryHelper {
 		LOCAL("Local"),
 		REMOTE("Remote"),
 		LOCAL_HEADLESS("Local Headless"),
-		FROM_EXCEL(executionType);
+		FROM_EXCEL(EXECUTION_TYPE);
 		private final String value;
 
 		ExecutionType (String type) {
@@ -124,7 +126,7 @@ public class BrowserFactoryHelper {
 	 */
 	protected static void checkMaximizeOptionFromProperty () {
 		try {
-			if ( ExcelFileManager.getCellData(6, "values").equalsIgnoreCase("true") ) {
+			if ( IS_MAXIMIZE.equalsIgnoreCase("true") ) {
 				BrowserActions.maximizeWindow(driver.get());
 			} else {
 				BrowserActions.setWindowSize(driver.get());
@@ -144,4 +146,17 @@ public class BrowserFactoryHelper {
 			e.printStackTrace();
 		}
 	}
+
+	private static String checkBrowserType (String browserType) {
+		if ( browserType.equalsIgnoreCase("chrome") ) {
+			return "Google Chrome";
+		} else if ( browserType.equalsIgnoreCase("firefox") ) {
+			return "Mozilla Firefox";
+		} else if ( browserType.equalsIgnoreCase("edge") ) {
+			return "Edge";
+		} else {
+			return "Google Chrome";
+		}
+	}
+
 }

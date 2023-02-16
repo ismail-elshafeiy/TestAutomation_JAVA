@@ -2,133 +2,140 @@ package engine.dataDriven;
 
 import engine.listeners.Logger;
 import org.apache.poi.EmptyFileException;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.Assert;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static org.testng.Assert.fail;
 
 public class ExcelFileManager {
-
-	private FileInputStream fis;
+	private static FileInputStream fis;
 	private static XSSFWorkbook workbook;
-	private static XSSFSheet currentSheet;
-	private XSSFRow row;
+	private static XSSFSheet sheet;
+	private static XSSFRow row;
 	private static XSSFCell cell;
-	private static File spreadSheet;
-	// private static Sheet currentSheet;
-	private static Map<String, Integer> columns;
+	private static String excelFilePath;
 	private static final String errorMessageException = " Error Message Exception: --> ";
-	private static final String testMethodName = " Test Method Name:  ";
 
 	/**
-	 * Constructor to load the Excel file from the root directory of the project
+	 * Creates a new instance of the test data Excel reader using the target Excel
+	 * file path
 	 *
-	 * @param filePathFromRoot Enter the path of the file from the root directory of the project
+	 * @param excelFilePath target test data Excel file path
 	 */
-	public ExcelFileManager (String filePathFromRoot) {
-		String fileErrorMessage = testMethodName + "Couldn't find the desired file. [ " + filePathFromRoot + " ]. ";
+	public ExcelFileManager (String excelFilePath) {
+		initializeVariables();
+		this.excelFilePath = excelFilePath;
 		try {
-			spreadSheet = new File(filePathFromRoot);
-			columns = new HashMap<String, Integer>();
-			fis = new FileInputStream(filePathFromRoot);
+			fis = new FileInputStream(excelFilePath);
 			workbook = new XSSFWorkbook(fis);
 			fis.close();
-			Logger.logStep("File has been loaded successfully --> File Path: " + filePathFromRoot);
+			Logger.logMessage("Reading test data from the following file [" + excelFilePath + "].");
 		} catch ( IOException | OutOfMemoryError e ) {
-			Logger.logMessage(fileErrorMessage + errorMessageException + e.getMessage());
-			Assert.fail(fileErrorMessage + errorMessageException + e.getMessage());
+			Assert.fail("Couldn't find the desired file. [" + excelFilePath + "].", e);
+		} catch ( EmptyFileException e ) {
+			Assert.fail("Please check the target file, as it may be corrupted. [" + excelFilePath + "].", e);
 		}
-	}
-
-	// TODO: 1/29/2020  set Excel File
-	public void setExcelFile (String excelFilePath, String sheetName) throws IOException {
+		List<List<Object>> attachments = new ArrayList<>();
+		List<Object> testDataFileAttachment = null;
 		try {
-			//Create an object of File class to open xls file
-			File file = new File(excelFilePath);
-			//Create an object of FileInputStream class to read excel file
-			FileInputStream inputStream = new FileInputStream(file);
-			//creating workbook instance that refers to .xls file
-			workbook = new XSSFWorkbook(inputStream);
-			//creating a Sheet object
-			currentSheet = workbook.getSheet(sheetName);
-		} catch ( Exception e ) {
-			Logger.logMessage("Error in reading data from excel file... Message --> " + e.getMessage());
-			e.printStackTrace();
+			testDataFileAttachment = Arrays.asList("Test Data", "Excel",
+					new FileInputStream(excelFilePath));
+		} catch ( FileNotFoundException e ) {
+			//unreachable code because if the file was not found then the reader would have failed at a previous step
 		}
+		attachments.add(testDataFileAttachment);
 	}
 
 	/**
 	 * Switch to your Sheet in case you have multiple sheets in your Excel file
 	 *
-	 * @param sheetName Enter the sheetName of the Sheet
+	 * @param sheetName enter the name of the sheet you want to switch to
 	 */
 	public static void switchToSheet (String sheetName) {
-		try ( Workbook workbooks = WorkbookFactory.create(spreadSheet) ) {
-			currentSheet = (XSSFSheet) workbooks.getSheet(sheetName);
-			Logger.logStep("Switched to sheet: [ " + sheetName + " ] from file: [ " + spreadSheet + " ].");
-			//getRowCountInSheet();
-			currentSheet.getRow(0).forEach(cell -> {
-				columns.put(cell.getStringCellValue(), cell.getColumnIndex());
-				//Logger.logStep("Column sheetName: [ " + cell.getStringCellValue() + " ], Column index: [ " + cell.getColumnIndex() + " ].");
-			});
+		try {
+			sheet = workbook.getSheet(sheetName);
+			Logger.logStep("Switched to sheet: [ " + sheetName + " ] from file: [ " + excelFilePath + " ].");
 		} catch ( Exception e ) {
-			Logger.logMessage(testMethodName + "Couldn't find the desired sheet. [ " + sheetName + " ]." + errorMessageException + e.getMessage());
-			Assert.fail(testMethodName + "Couldn't find the desired sheet. [ " + sheetName + " ]." + errorMessageException + e.getMessage());
+			Logger.logMessage("Couldn't find the desired sheet. [ " + sheetName + " ]." + errorMessageException + e.getMessage());
+			fail("Couldn't find the desired sheet. [ " + sheetName + " ]." + errorMessageException + e.getMessage());
+		}
+	}
+
+
+	/**
+	 * Reads cell data from a specific sheet name inside the Excel file Reads cell
+	 * data using row name (1st column) and column name
+	 * <p>
+	 * the name of the target Excel sheet
+	 *
+	 * @param rowName    Enter the row name of the Sheet
+	 * @param columnName the value of the first cell of the target column
+	 *
+	 * @return the value of the target cell within the target row and column within
+	 * the target sheet
+	 */
+	public static String getCellData (String rowName, String columnName) {
+		try {
+			int rowNum = getRowNumberFromRowName(rowName);
+			int colNum = getColumnNumberFromColumnName(columnName);
+			// get the desired row
+			row = sheet.getRow(rowNum); // why use -1 here?
+			// get the desired cell
+			cell = row.getCell(colNum);
+			// return cell value given the different cell types
+			return getCellData();
+		} catch ( Exception e ) {
+			fail("Failed to read data from row [" + rowName + "] and column [" + columnName
+					+ "] in the Test Data Sheet [" + sheet + "], under the following path [" + excelFilePath
+					+ "].", e);
+			return "";
 		}
 	}
 
 	/**
+	 * Get the cell by Column and Row name  from your Excel file using sheet name as parameter to switch to the sheet first
+	 *
+	 * @param sheetName  Enter the sheetName of the Sheet
+	 * @param rowName    Enter the row name of the Sheet
+	 * @param columnName Enter the column Name name
+	 *
+	 * @return the value of the target cell within the target row and column within the target sheet
+	 */
+	public static String getCellData (String sheetName, String rowName, String columnName) {
+		return getCellData(sheetName, rowName, columnName);
+	}
+
+	// ************ Get Cell Data By index  ************//
+
+	/**
 	 * Get the cell by Column name and Row number from your Excel file
 	 *
-	 * @param columnName enter the column Name name
+	 * @param columnName Enter the column Name name
 	 * @param rowNumber  Enter the row  of the Sheet index start from 1
 	 */
 	public static String getCellData (int rowNumber, String columnName) {
-		String columnErrorMessage = testMethodName + "Can't find the column name [ " + columnName + " ] from the sheet [ " + currentSheet.getSheetName() + " ]  ";
 		try {
-			Row dataRow = currentSheet.getRow(rowNumber - 1);
-			if ( dataRow == null ) {
-				Logger.logStep(testMethodName + "Can't find the row number [ " + rowNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ] ");
-				fail(testMethodName + "Can't find the row number [ " + rowNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ]");
-			}
-			Logger.logStep("Getting cell data from column [ " + columnName + " ] and row [ " + rowNumber + " ] from sheet [ " + currentSheet.getSheetName() + " ]");
-			return getCellDataAsString(dataRow.getCell(columns.get(columnName)));
+			int colNum = getColumnNumberFromColumnName(columnName);
+			row = sheet.getRow(rowNumber - 1);
+			cell = row.getCell(colNum);
+			return getCellData();
 		} catch ( Exception e ) {
-			Logger.logMessage(columnErrorMessage + errorMessageException + e.getMessage());
-			fail(columnErrorMessage + errorMessageException + e.getMessage());
+			fail("Failed to read data from row [" + rowNumber + "] and column [" + columnName
+					+ "] in the Test Data Sheet [" + sheet + "], under the following path [" + excelFilePath
+					+ "].", e);
+			return "";
 		}
-		return null;
-	}
-
-	public static String getCellData (String rowNumber, String columnName) {
-		String columnErrorMessage = testMethodName + "Can't find the column name [ " + columnName + " ] from the sheet [ " + currentSheet.getSheetName() + " ]  ";
-		try {
-			Row dataRow = currentSheet.getRow(getRowCountInSheet() - 1);
-			if ( dataRow == null ) {
-				Logger.logStep(testMethodName + "Can't find the row number [ " + rowNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ] ");
-				fail(testMethodName + "Can't find the row number [ " + rowNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ]");
-			}
-			Logger.logStep("Getting cell data from column [ " + columnName + " ] and row [ " + rowNumber + " ] from sheet [ " + currentSheet.getSheetName() + " ]");
-			return getCellDataAsString(dataRow.getCell(columns.get(columnName)));
-		} catch ( Exception e ) {
-			Logger.logMessage(columnErrorMessage + errorMessageException + e.getMessage());
-			fail(columnErrorMessage + errorMessageException + e.getMessage());
-		}
-		return null;
 	}
 
 	public static String getCellData (String sheetName, int rowNumber, String columnName) {
@@ -144,135 +151,187 @@ public class ExcelFileManager {
 	 *
 	 * @return String cell data as String
 	 */
-	public static String getCellData (String sheetName, int rowNumber, int columnNumber) {
-		switchToSheet(sheetName);
-		Row dataRow = currentSheet.getRow(rowNumber - 1);
-		if ( dataRow == null ) {
-			Logger.logMessage(testMethodName + "Can't find the row number [" + rowNumber + "] from the sheet [" + currentSheet.getSheetName() + "] ");
-			fail(testMethodName + "Can't find the row number [" + rowNumber + "] from the sheet [" + currentSheet.getSheetName() + "]");
+	public static String getCellData (int rowNumber, int columnNumber) {
+		try {
+			row = sheet.getRow(rowNumber - 1);
+			cell = row.getCell(columnNumber - 1);
+			return getCellData();
+		} catch ( Exception e ) {
+			fail("Failed to read data from row [" + rowNumber + "] and column [" + columnNumber
+					+ "] in the Test Data Sheet [" + sheet + "], under the following path [" + excelFilePath
+					+ "].", e);
+			return "";
 		}
-		return getCellDataAsString(dataRow.getCell(columnNumber));
 	}
 
 	/**
-	 * Get the cell by Column Name from your Excel fil
+	 * Get the cell by Column and Row number from your Excel file using sheet name as parameter to switch to the sheet first
 	 *
-	 * @param columnName Enter the column Name
+	 * @param sheetName    Enter the sheet name to switch to
+	 * @param rowNumber    Enter the row number of the Sheet index start from 1
+	 * @param columnNumber Enter the column number of the Sheet index start from 1
 	 *
-	 * @return String value of the cell
+	 * @return String cell data as String value of the target cell within the target row and column within the target sheet
 	 */
-	public static String getCellData (String columnName) {
+	public static String getCellData (String sheetName, int rowNumber, int columnNumber) {
+		switchToSheet(sheetName);
+		return getCellData(rowNumber, columnNumber);
+	}
+
+	// ****************************** private methods ********************************//
+	private static void initializeVariables () {
+		fis = null;
+		workbook = null;
+		sheet = null;
+		row = null;
+		cell = null;
+		excelFilePath = "";
+	}
+
+	private static int getRowNumberFromRowName (String rowName) {
 		try {
-			Logger.logStep("Getting the cell data from the column name: [ " + columnName + " ] from the sheet [ " + currentSheet.getSheetName() + " ] ");
-			return getCellData( 2,columnName);
-		} catch ( NullPointerException e ) {
-			Logger.logMessage("Can't find the columnName name [" + columnName + "] from the sheet [" + currentSheet.getSheetName() + "]  " + errorMessageException + e.getMessage() + testMethodName);
-			fail("Can't find the columnName name [" + columnName + "]..Null Pointer Exception --> " + errorMessageException + e.getMessage() + testMethodName);
+			// get the row number that corresponds to the desired rowName within the first
+			// column [0]
+			for ( int i = 0; i <= sheet.getLastRowNum(); i++ ) {
+				row = sheet.getRow(i);
+				// get the first cell of each row, and compare it to rowName
+				// if they match then that's the row we want
+				if ( row != null && row.getCell(0).getStringCellValue().equals(rowName) ) {
+					return i;
+				}
+				// in certain cases if the row is empty, its value is set to null, and hence a
+				// null pointer exception is thrown when
+				// you try to get the cell from it.
+				// we can skip this exception by checking if row != null.
+			}
+
+			// in case you provided valid data type, no exceptions were thrown, and yet the
+			// rowName you mentioned was not present in this sheet
+			fail("Failed to get the row number that corresponds to rowName [" + rowName + "] in the Test Data Sheet ["
+					+ sheet + "], under the following path [" + excelFilePath + "].");
+			return - 1; // in case of failure this line is unreachable
 		} catch ( Exception e ) {
-			Logger.logMessage("Can't find the columnName Name name [" + columnName + "]........" + errorMessageException + e.getMessage() + testMethodName);
-			fail("Can't find the columnName Name name [" + columnName + "]........" + errorMessageException + e.getMessage() + testMethodName);
+			fail("Failed to get the row number that corresponds to rowName [" + rowName + "] in the Test Data Sheet ["
+					+ sheet + "], under the following path [" + excelFilePath + "].", e);
+			return - 1; // in case of failure this line is unreachable
 		}
-		return columnName;
 	}
 
-	//TODO: Refactor set cell data
-	public static void setCellData (String value, int rowNumber, int columnNumber) {
-		String columnErrorMessage = testMethodName + "Can't find the column name [ " + columnNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ]  ";
+	private static int getColumnNumberFromColumnName (String columnName) {
 		try {
-//			Row dataRow = currentSheet.getRow(rowNumber - 1);
-//			if ( dataRow == null ) {
-//				Logger.logMessage(testMethodName + "Can't find the row number [ " + rowNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ] ");
-//				fail(testMethodName + "Can't find the row number [ " + rowNumber + " ] from the sheet [ " + currentSheet.getSheetName() + " ]");
-//			}
-//			Cell cell = dataRow.getCell(columns.get(columnName));
-//			if ( cell == null ) {
-//				cell = dataRow.createCell(columns.get(columnName));
-//			}
-			//create a new cell in the row at index 6
-			cell = currentSheet.createRow(rowNumber).createCell(columnNumber);
-			cell.setCellValue(value);
-			FileOutputStream fos = new FileOutputStream(spreadSheet);
-			workbook.write(fos);
-			fos.close();
+			// get the column number that corresponds to the desired columnName within the
+			// target row [row_Num]
+			// if no column name is provided, retrieves data from the 2nd
+			// column (1st Value in the test data file)
+			if ( ! columnName.equals("") ) {
+				row = sheet.getRow(0);
+				for ( int i = 0; i < row.getLastCellNum(); i++ ) {
+					// get the first cell of each column, and compare it to columnName
+					// if they match then that's the column we want
+					if ( row.getCell(i).getStringCellValue().equals(columnName) ) {
+						return i;
+					}
+				}
+			} else {
+				return 1;
+			}
+			// in case you provided valid data type, no exceptions were thrown, and yet the
+			// columnName you mentioned was not present in this sheet
+			fail("Failed to get the column number that corresponds to columnName [" + columnName
+					+ "] in the Test Data Sheet [" + sheet + "], under the following path [" + excelFilePath
+					+ "].");
+			return - 1; // in case of failure this line is unreachable
 		} catch ( Exception e ) {
-			Logger.logMessage(columnErrorMessage + errorMessageException + e.getMessage());
-			fail(columnErrorMessage + errorMessageException + e.getMessage());
+			fail("Failed to get the column number that corresponds to columnName [" + columnName
+					+ "] in the Test Data Sheet [" + sheet + "], under the following path [" + excelFilePath
+					+ "].", e);
+			return - 1; // in case of failure this line is unreachable
 		}
 	}
 
-	// TODO: 11/12/2019  add the method to get the cell data as string but need to refactor the code
-	public void setCellValue (int rowNum, int cellNum, String cellValue, String excelFilePath) throws IOException {
-		//creating a new cell in row and setting value to it
-		currentSheet.getRow(rowNum).createCell(cellNum).setCellValue(cellValue);
-		FileOutputStream outputStream = new FileOutputStream(excelFilePath);
-		workbook.write(outputStream);
+	private static String getCellData () {
+		try {
+			if ( cell.getCellType() == CellType.STRING ) {
+				return cell.getStringCellValue();
+			} else if ( cell.getCellType() == CellType.NUMERIC || cell.getCellType() == CellType.FORMULA ) {
+				String cellValue = java.lang.String.valueOf(cell.getNumericCellValue());
+				if ( cellValue.contains(".0") ) {
+					cellValue = cellValue.split("\\.")[0];
+				}
+				if ( DateUtil.isCellDateFormatted(cell) ) {
+					DateFormat df = new SimpleDateFormat("dd/MM/yy");
+					Date date = cell.getDateCellValue();
+					cellValue = df.format(date);
+				}
+				return cellValue;
+			} else if ( cell.getCellType() == CellType.BOOLEAN ) {
+				return java.lang.String.valueOf(cell.getBooleanCellValue());
+			} else {
+				return "";
+			}
+		} catch ( Exception e ) {
+			return "";
+		}
 	}
 
-	private static int getRowCountInSheet () {
+
+	private int getRowCountInSheet () {
 		int rowCount = 0;
 		try {
 			rowCount = getLastRowNumber() - getFirstRowNumber();
-			Logger.logStep("Row count from the sheet [" + currentSheet.getSheetName() + "] is [ " + rowCount + " ]");
+			Logger.logStep("Row count from the sheet [" + sheet.getSheetName() + "] is [ " + rowCount + " ]");
 		} catch ( Exception e ) {
-			Logger.logMessage("Can't find the row count from the sheet [" + currentSheet.getSheetName() + "]  " + errorMessageException + e.getMessage() + testMethodName);
-			fail("Can't find the row count from the sheet [" + currentSheet.getSheetName() + "]  " + errorMessageException + e.getMessage() + testMethodName);
+			Logger.logMessage("Can't find the row count from the sheet [" + sheet.getSheetName() + "]  " + errorMessageException + e.getMessage());
+			fail("Can't find the row count from the sheet [" + sheet.getSheetName() + "]  " + errorMessageException + e.getMessage());
 		}
 		return rowCount;
+	}
+
+	// ************ helper Methods  ************//
+	public int getFirstRowNumber () {
+		return sheet.getFirstRowNum();
+	}
+
+	public int getLastRowNumber () {
+		return sheet.getLastRowNum();
+	}
+
+	public int getFirstColumnNumber () {
+		return sheet.getRow(0).getFirstCellNum();
+	}
+
+	public int getLastColumnNumber () {
+		return sheet.getRow(0).getLastCellNum();
 	}
 
 	/**
 	 * Get the last row number from your Excel file
 	 */
-	public static void getData () {
+	public void getAllDataInSheet (String sheetName) {
+		switchToSheet(sheetName);
 		//get all rows in the sheet
 		int rowCount = getRowCountInSheet();
 		//iterate over all the row to print the data present in each cell.
 		for ( int i = 0; i <= rowCount; i++ ) {
 			//get cell count in a row
-			int cellCount = currentSheet.getRow(i).getLastCellNum();
+			int cellCount = sheet.getRow(i).getLastCellNum();
 			//iterate over each cell to print its value
 			Logger.logStep("Row " + i + " data is :");
 			for ( int j = 0; j < cellCount; j++ ) {
-				Logger.logStep(currentSheet.getRow(i).getCell(j).getStringCellValue() + ",");
+				Logger.logStep(sheet.getRow(i).getCell(j).getStringCellValue() + ",");
 			}
 			System.out.println();
 		}
 	}
 
-	public static int getFirstRowNumber () {
-		return currentSheet.getFirstRowNum();
-	}
-
-	public static int getLastRowNumber () {
-		return currentSheet.getLastRowNum();
-	}
-
-	public static int getFirstColumnNumber () {
-		return currentSheet.getRow(0).getFirstCellNum();
-	}
-
-	public static int getLastColumnNumber () {
-		return currentSheet.getRow(0).getLastCellNum();
-	}
-
 
 	/**
-	 * @param cell Enter the cell  of the Sheet
+	 * Extracts the first sheet name from the desired workbook.
+	 *
+	 * @return the first sheet name for the current test data file
 	 */
-	private static String getCellDataAsString (Cell cell) {
-		return switch ( cell.getCellType() ) {
-			case STRING -> cell.getStringCellValue();
-			case NUMERIC -> String.valueOf((int) cell.getNumericCellValue());
-			case BOOLEAN -> String.valueOf(cell.getBooleanCellValue());
-			case FORMULA -> cell.getCellFormula();
-			case BLANK -> "";
-			default -> "";
-		};
-	}
-
 	private String getDefaultSheetName () {
-		return this.workbook.getSheetName(0);
+		return workbook.getSheetName(0);
 	}
-
 
 }

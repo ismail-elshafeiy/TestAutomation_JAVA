@@ -3,7 +3,7 @@ package examples.gui.web.browserInteractions;
 import engine.evidence.Attachments;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
-import engine.broswer.BrowserFactoryHelper.*;
+import engine.broswer.BrowserHelper.*;
 import engine.evidence.ScreenShot;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;

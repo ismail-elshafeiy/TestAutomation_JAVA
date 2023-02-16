@@ -2,13 +2,14 @@ package examples.api.rest.run_script_dataDriven;
 
 import static io.restassured.RestAssured.get;
 
+import engine.dataDriven.ExcelFileManager;
 import io.restassured.path.xml.XmlPath;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import engine.dataDriven.ExcelFileManager1;
+;
 
 public class data_driven {
-    ExcelFileManager1 spreedSheet;
+    ExcelFileManager excelFileManager;
     // dataProvider = Function Name
     @Test(dataProvider = "test_data")
     public void dataDriven_testcase(String customer_id,

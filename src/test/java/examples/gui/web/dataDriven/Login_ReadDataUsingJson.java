@@ -5,7 +5,6 @@ import com.practice.gui.pages.inputs.SecureAreaPage;
 import engine.broswer.BrowserActions;
 import engine.broswer.BrowserFactory;
 import engine.dataDriven.ExcelFileManager;
-import engine.dataDriven.ExcelFileManager1;
 import engine.dataDriven.JSONFileManager;
 import engine.dataDriven.JSONFileManager_Approach2;
 import org.openqa.selenium.WebDriver;
@@ -13,8 +12,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.io.File;
 
 import static org.testng.Assert.assertTrue;
 
@@ -47,12 +44,13 @@ public class Login_ReadDataUsingJson {
 	private JSONFileManager jsonFileManager;
 
 	private JSONFileManager_Approach2 jsonFileAppr2;
+	private ExcelFileManager excelFileTestDataReader;
 
 
 	@BeforeClass
 	public void setup_BeforeClass () {
 		new ExcelFileManager("src/main/resources/config.xlsx");
-		ExcelFileManager.switchToSheet("setup");
+		excelFileTestDataReader.switchToSheet("setup");
 		jsonFileManager = new JSONFileManager("src/test/resources/TestData/TestData.json");
 	}
 

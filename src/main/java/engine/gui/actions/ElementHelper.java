@@ -21,7 +21,7 @@ public class ElementHelper {
 		try {
 			// Wait for the element to be visible
 			Waits.getExplicitWait(driver).until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
-			Waits.getFluentWait(driver, 2).until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
+			Waits.getFluentWait(driver).until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
 			// Scroll the element into view to handle some browsers cases
 			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(false);", driver.findElement(elementLocator));
 			// Check if the element is displayed
