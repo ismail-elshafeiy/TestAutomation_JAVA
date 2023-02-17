@@ -136,20 +136,19 @@ public class Attachments {
 		createAttachment(attachmentType, attachmentName, attachmentContent);
 	}
 
-	private static void createAttachment (String attachmentType, String attachmentName, InputStream
-			attachmentContent) {
-		var baos = new ByteArrayOutputStream();
-		try {
-			attachmentContent.transferTo(baos);
-		} catch ( IOException e ) {
-			var error = "Error while creating Attachment";
-			Logger.slf4jLogger.info(error, e);
-			Reporter.log(error, false);
+	private static void createAttachment (String attachmentType, String attachmentName, InputStream attachmentContent) {
+		if ( attachmentContent != null && Boolean.FALSE.equals(Boolean.parseBoolean(System.getProperty("disableLogging"))) ) {
+			var baos = new ByteArrayOutputStream();
+			try {
+				attachmentContent.transferTo(baos);
+			} catch ( IOException e ) {
+				var error = "Error while creating Attachment";
+				Logger.logMessage(error + e.getMessage());
+				Reporter.log(error, false);
+			}
+			String attachmentDescription = attachmentType + " - " + attachmentName;
+			logAttachmentAction(attachmentType, attachmentName, baos);
 		}
-		String attachmentDescription = attachmentType + " - ";
-//        String attachmentDescription = "Attachment: " + attachmentType + " - " + attachmentName;
-		attachBasedOnFileType(attachmentType, baos, attachmentDescription);
-		logAttachmentAction(attachmentType, attachmentName, baos);
 	}
 
 	private static synchronized void logAttachmentAction (String attachmentType, String

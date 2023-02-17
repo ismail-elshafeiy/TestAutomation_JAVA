@@ -1,18 +1,29 @@
 package engine.evidence;
 
+import engine.FileActions;
 import engine.Helper;
 import engine.listeners.Logger;
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import org.imgscalr.Scalr;
+import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.ITestResult;
 
-import java.io.File;
+import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
+import javax.imageio.stream.ImageOutputStream;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.nio.file.FileSystems;
 
 public class ScreenShot {
+	private static String gifRelativePathWithFileName = "";
+	private static final Boolean CREATE_GIF = Boolean.valueOf(System.getProperty("createAnimatedGif").trim());
+	private static final int GIF_FRAME_DELAY = Integer.parseInt(System.getProperty("animatedGif_frameDelay").trim());
+	private static ThreadLocal<ImageOutputStream> gifOutputStream = new ThreadLocal<>();
+	private static ThreadLocal<AnimatedGifManager> gifWriter = new ThreadLocal<>();
+
 	/**
 	 * Take the screen shot and save it in the ScreenShot folder
 	 *
@@ -84,4 +95,5 @@ public class ScreenShot {
 			Logger.logMessage("Full Page Screenshot not taken: " + e.getMessage());
 		}
 	}
+
 }

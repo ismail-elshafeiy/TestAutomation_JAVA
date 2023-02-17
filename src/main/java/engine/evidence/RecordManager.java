@@ -3,11 +3,17 @@ package engine.evidence;
 import com.automation.remarks.video.RecorderFactory;
 import com.automation.remarks.video.recorder.IVideoRecorder;
 import com.automation.remarks.video.recorder.VideoRecorder;
+
 import engine.Helper;
-import engine.evidence.Attachments;
 import engine.listeners.Logger;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidStartScreenRecordingOptions;
+import io.appium.java_client.ios.IOSDriver;
+
+import io.appium.java_client.ios.IOSStartScreenRecordingOptions;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import ws.schild.jave.Encoder;
 import ws.schild.jave.EncoderException;
 import ws.schild.jave.MultimediaObject;
@@ -16,64 +22,95 @@ import ws.schild.jave.encode.EncodingAttributes;
 import ws.schild.jave.encode.VideoAttributes;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.time.Duration;
 import java.util.Base64;
 
 import static com.automation.remarks.video.RecordingUtils.doVideoProcessing;
 
 public class RecordManager {
-    // TODO: Refactor Record Video class
     private static final Boolean RECORD_VIDEO = true;
     private static final ThreadLocal<IVideoRecorder> recorder = new ThreadLocal<>();
     private static final ThreadLocal<WebDriver> videoDriver = new ThreadLocal<>();
     private static boolean isRecordingStarted = false;
 
-    private RecordManager() {
+    private RecordManager () {
         throw new IllegalStateException("Utility class");
     }
 
-    public static synchronized void startVideoRecording() {
-        try {
-            if ( Boolean.TRUE.equals(RECORD_VIDEO)
-                    && RECORD_VIDEO
-                    && recorder.get() == null ) {
-                recorder.set(RecorderFactory.getRecorder(VideoRecorder.conf().recorderType()));
-                recorder.get().start();
+    //TODO: the animated GIF should follow the same path as the video
+    public static void startVideoRecording (WebDriver driver) {
+        startVideoRecording();
+
+    }
+
+    public static void startVideoRecording () {
+        recorder.set(RecorderFactory.getRecorder(VideoRecorder.conf().recorderType()));
+        recorder.get().start();
+
+    }
+
+    public static void attachVideoRecording (Path pathToRecording) {
+        if ( pathToRecording != null ) {
+            String testMethodName = Helper.getTestMethodName();
+            try {
+                Attachments.attach("Video Recording", testMethodName,
+                        new FileInputStream(pathToRecording.toString()));
+            } catch ( FileNotFoundException e ) {
+                Logger.logMessage(e.getMessage());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.logMessage("Failed to start video recording with execution type = Local : Stack Trace --> " + e);
         }
     }
 
-    public static synchronized String attachVideoRecording() {
+    public static void attachVideoRecording () {
+        Attachments.attach("Video Recording", Helper.getTestMethodName(), getVideoRecording());
+    }
+
+    public static String getVideoRecordingFilePath () {
+        try {
+            String tempFilePath = "target/tempVideoFile/";
+            FileUtils.copyInputStreamToFile(getVideoRecording(), new File(tempFilePath));
+            return tempFilePath;
+        } catch ( IOException e ) {
+            Logger.logMessage(e.getMessage());
+            return "";
+        }
+    }
+
+    public static InputStream getVideoRecording () {
+        InputStream inputStream = null;
         String pathToRecording = "";
         String testMethodName = Helper.getTestMethodName();
+
         if ( Boolean.TRUE.equals(RECORD_VIDEO) && recorder.get() != null ) {
-            pathToRecording = doVideoProcessing(
-                    Helper.isCurrentTestPassed(), recorder.get().stopAndSave(System.currentTimeMillis() + "_" + testMethodName));
+            pathToRecording = doVideoProcessing(Helper.isCurrentTestPassed(), recorder.get().stopAndSave(System.currentTimeMillis() + "_" + testMethodName));
             try {
-                Attachments.attach("Video Recording", testMethodName, new FileInputStream(encodeRecording(pathToRecording)));
-                FileUtils.copyFile(new File(pathToRecording), new File("./videoRecords/" + testMethodName + ".mp4"));
-            } catch (FileNotFoundException e) {
-                Logger.logMessage(String.valueOf(e));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                inputStream = new FileInputStream(encodeRecording(pathToRecording));
+            } catch ( FileNotFoundException e ) {
+                Logger.logMessage(e.getMessage());
+//                inputStream = new ByteArrayInputStream(new byte[0]);
             }
             recorder.set(null);
+
         } else if ( Boolean.TRUE.equals(RECORD_VIDEO) && videoDriver.get() != null ) {
             String base64EncodedRecording = "";
-            Attachments.attach("Video Recording", testMethodName,
-                    new ByteArrayInputStream(Base64.getDecoder().decode(base64EncodedRecording)));
+            if ( videoDriver.get() instanceof AndroidDriver androidDriver ) {
+                base64EncodedRecording = androidDriver.stopRecordingScreen();
+            } else if ( videoDriver.get() instanceof IOSDriver iosDriver ) {
+                base64EncodedRecording = iosDriver.stopRecordingScreen();
+            }
+            inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(base64EncodedRecording));
             videoDriver.set(null);
             isRecordingStarted = false;
         }
-        return pathToRecording;
+        return inputStream;
     }
 
-    private static synchronized File encodeRecording(String pathToRecording) {
+    private static File encodeRecording (String pathToRecording) {
         File source = new File(pathToRecording);
         File target = new File(pathToRecording.replace("avi", "mp4"));
         try {
+
             AudioAttributes audio = new AudioAttributes();
             audio.setCodec("libvorbis");
             VideoAttributes video = new VideoAttributes();
@@ -84,7 +121,7 @@ public class RecordManager {
             Encoder encoder = new Encoder();
             encoder.encode(new MultimediaObject(source), target, attrs);
         } catch (EncoderException e) {
-            Logger.logMessage(String.valueOf(e));
+            Logger.logMessage(e.getMessage());
         }
         return target;
     }

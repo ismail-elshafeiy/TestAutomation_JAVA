@@ -1,5 +1,6 @@
 package engine.broswer;
 
+import engine.evidence.RecordManager;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
@@ -72,6 +73,7 @@ public class DriverFactory {
 				driver.set(new ChromeDriver(getChromeOptions()));
 				setITestContext();
 				checkMaximizeOption();
+				RecordManager.startVideoRecording(driver.get());
 			} else if ( mozillaFirefox ) {
 				WebDriverManager.firefoxdriver().setup();
 				driver.set(new FirefoxDriver());
@@ -111,6 +113,7 @@ public class DriverFactory {
 			Logger.logMessage(warningMsg);
 			fail(warningMsg);
 		}
+		// start session
 		return driver.get();
 	}
 

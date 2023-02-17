@@ -4,9 +4,14 @@ import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import engine.evidence.Attachments;
 import engine.ExtentReport;
+import engine.evidence.RecordManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class TestngListener implements ISuiteListener, ITestListener, IInvokedMethodListener {
 
@@ -119,5 +124,23 @@ public class TestngListener implements ISuiteListener, ITestListener, IInvokedMe
 			System.out.println("Finished Test Case: [" + testResult.getName() + "]");
 		}
 		System.out.println(boundaryBeforeAfter + "\n");
+	}
+
+	public static void attachTestArtifacts (ITestResult iTestResult) {
+		ITestNGMethod iTestNGMethod = iTestResult.getMethod();
+
+		if ( ! Arrays.asList("suiteSetup", "suiteTeardown", "classTeardown").contains(iTestNGMethod.getMethodName()) ) {
+			List<String> attachments = new ArrayList<>();
+			String attachment;
+			if ( System.getProperty("videoParams_scope").trim().equals("TestMethod") ) {
+				RecordManager.attachVideoRecording();
+				attachment = RecordManager.getVideoRecordingFilePath();
+				if ( ! attachment.equals("") )
+					attachments.add(attachment);
+			}
+			// attachment = ScreenshotManager.attachAnimatedGif();
+
+
+		}
 	}
 }

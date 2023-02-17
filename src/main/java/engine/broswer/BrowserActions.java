@@ -198,6 +198,9 @@ public class BrowserActions {
 			Attachments.attachScreenshotToAllureReport(driver);
 			Attachments.attachScreenshotToExtentReport(driver);
 			Logger.logConsoleLogs(driver, result);
+			if ( System.getProperty("videoParams_scope").trim().equals("DriverSession") ) {
+				RecordManager.attachVideoRecording();
+			}
 		}
 		RecordManager.attachVideoRecording();
 		closeAllOpenedBrowserWindows(driver);
@@ -218,12 +221,6 @@ public class BrowserActions {
 		}
 	}
 
-	// TODO: handle record Video
-	public static synchronized void closeDriver (int hashCode) {
-		if ( System.getProperty("videoParams_scope").trim().equals("DriverSession") ) {
-			RecordManager.attachVideoRecording();
-		}
-	}
 
 	//**************************************  Alerts Methods **************************************//
 	//*********************************************************************************************//
