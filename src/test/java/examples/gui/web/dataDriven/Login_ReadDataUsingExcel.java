@@ -2,6 +2,7 @@ package examples.gui.web.dataDriven;
 
 import com.practice.gui.pages.homePage.HomePage;
 import com.practice.gui.pages.inputs.SecureAreaPage;
+import engine.broswer.BrowserHelper;
 import engine.dataDriven.ExcelFileManager;;
 import engine.dataDriven.DataProvider;
 import org.openqa.selenium.WebDriver;
@@ -9,7 +10,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import engine.broswer.BrowserFactory;
+import engine.broswer.DriverFactory;
 
 import static org.testng.Assert.assertTrue;
 
@@ -75,11 +76,12 @@ public class Login_ReadDataUsingExcel extends DataProvider {
 	public void setTestEnvironment () {
 		excelFileTestDataReader = new ExcelFileManager("src/main/resources/config.xlsx");
 		ExcelFileManager.switchToSheet("setup");
+
 	}
 
 	@BeforeMethod
 	public void setup () {
-		driver = BrowserFactory.getBrowser();
+		driver = DriverFactory.getBrowser();
 		excelFileTestDataReader = new ExcelFileManager(filePath);
 	}
 

@@ -40,7 +40,7 @@ public class ExcelFileManager {
 			fis = new FileInputStream(excelFilePath);
 			workbook = new XSSFWorkbook(fis);
 			fis.close();
-			Logger.logMessage("Reading test data from the following file [" + excelFilePath + "].");
+			Logger.logStep("Reading test data from the following file [" + excelFilePath + "].");
 		} catch ( IOException | OutOfMemoryError e ) {
 			Assert.fail("Couldn't find the desired file. [" + excelFilePath + "].", e);
 		} catch ( EmptyFileException e ) {
@@ -204,7 +204,6 @@ public class ExcelFileManager {
 				// you try to get the cell from it.
 				// we can skip this exception by checking if row != null.
 			}
-
 			// in case you provided valid data type, no exceptions were thrown, and yet the
 			// rowName you mentioned was not present in this sheet
 			fail("Failed to get the row number that corresponds to rowName [" + rowName + "] in the Test Data Sheet ["

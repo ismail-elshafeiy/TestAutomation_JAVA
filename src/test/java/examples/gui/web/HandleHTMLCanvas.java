@@ -10,7 +10,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import engine.broswer.BrowserActions;
-import engine.broswer.BrowserFactory;
+import engine.broswer.DriverFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class HandleHTMLCanvas {
 
     @BeforeMethod
     public void setUp_BeforeMethod() {
-        driver = BrowserFactory.getBrowser();
+		driver = DriverFactory.getBrowser();
     }
 
     @AfterMethod

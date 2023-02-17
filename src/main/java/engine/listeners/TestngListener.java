@@ -65,11 +65,10 @@ public class TestngListener implements ISuiteListener, ITestListener, IInvokedMe
 			try {
 				Attachments.attachScreenshotToAllureReport(driver);
 				ExtentReport.fail(Attachments.attachScreenshotToExtentReport(driver));
-				ExtentReport.fail(Attachments.attachFullPageScreenShotToExtentReport((FirefoxDriver) driver));
+//				ExtentReport.fail(Attachments.attachFullPageScreenShotToExtentReport((FirefoxDriver) driver));
 //				Logger.logConsoleLogs(driver, result);
 			} catch ( Throwable e ) {
 				Logger.logMessage("Error:  " + e.getMessage());
-				throw new RuntimeException(e);
 			}
 		}
 		ExtentReport.fail(MarkupHelper.createLabel(result.getMethod().getMethodName() + " Failed!", ExtentColor.RED));

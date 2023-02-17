@@ -39,7 +39,7 @@ public class Logger {
 	@AllureId (value = "1")
 	@Step ("{logStep}")
 	public static void logStep (String logStep) {
-		System.out.println("<" + currentTime + "> " + logStep);
+		System.out.println(currentTime + " INFO : " + logStep);
 		ExtentReport.info(logStep);
 	}
 
@@ -49,7 +49,7 @@ public class Logger {
 	 * @param logMessage logged by exception / assertion message that will be added as a message in the execution report
 	 */
 	public static void logMessage (String logMessage) {
-		System.out.println("<" + currentTime + "> " + System.lineSeparator() + logMessage);
+		System.out.println(currentTime + " Message: " + System.lineSeparator() + logMessage);
 		ExtentReport.info(logMessage);
 	}
 

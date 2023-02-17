@@ -3,7 +3,7 @@ package examples.gui.web.dataDriven;
 import com.practice.gui.pages.homePage.HomePage;
 import com.practice.gui.pages.inputs.SecureAreaPage;
 import engine.broswer.BrowserActions;
-import engine.broswer.BrowserFactory;
+import engine.broswer.DriverFactory;
 import engine.dataDriven.ExcelFileManager;
 import engine.dataDriven.JSONFileManager;
 import engine.dataDriven.JSONFileManager_Approach2;
@@ -56,7 +56,7 @@ public class Login_ReadDataUsingJson {
 
 	@BeforeMethod
 	public void setup_BeforeMethod () {
-		driver = BrowserFactory.getBrowser();
+		driver = DriverFactory.getBrowser();
 	}
 
 	@AfterMethod

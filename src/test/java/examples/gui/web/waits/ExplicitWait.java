@@ -8,7 +8,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import engine.broswer.BrowserActions;
-import engine.broswer.BrowserFactory;
+import engine.broswer.DriverFactory;
 
 import static org.testng.AssertJUnit.assertTrue;
 
@@ -17,8 +17,8 @@ public class ExplicitWait {
 
     @BeforeMethod
     public void setUp_BeforeMethod() {
-        driver = BrowserFactory.getBrowser();
-        driver.navigate().to("https://www.google.com/");
+		driver = DriverFactory.getBrowser();
+		driver.navigate().to("https://www.google.com/");
         System.out.println("Title: " + driver.getTitle());
     }
 

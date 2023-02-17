@@ -1,6 +1,6 @@
 package engine.gui.actions;
 
-import engine.Waits;
+import engine.broswer.Waits;
 import engine.listeners.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -35,21 +35,6 @@ public class ElementHelper {
 		}
 	}
 
-/*	public static void locatingElementStrategy (MobileDriver<MobileElement> mobile, By elementLocator) {
-		try {
-			Waits.getExplicitWait(mobile).until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
-			if (!mobile.findElement(elementLocator).isDisplayed()) {
-				Logger.logStep("The element [" + elementLocator.toString() + "] is not Displayed");
-				fail("The element [" + elementLocator + "] is not Displayed");
-			}
-		} catch (TimeoutException toe) {
-			Logger.logMessage(toe.getMessage());
-			fail(toe.getMessage());
-		} catch (Exception e) {
-			Logger.logMessage(e.getMessage());
-			fail(e.getMessage());
-		}
-	}*/
 	public static void verifyLink (String urlLink) {
 		try {
 			URL link = new URL(urlLink);

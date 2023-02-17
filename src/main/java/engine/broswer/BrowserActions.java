@@ -1,7 +1,6 @@
 package engine.broswer;
 
 import engine.evidence.Attachments;
-import engine.Waits;
 import engine.gui.actions.ElementActions;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;

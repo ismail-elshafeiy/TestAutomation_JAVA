@@ -11,14 +11,14 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import engine.broswer.BrowserActions;
-import engine.broswer.BrowserFactory;
+import engine.broswer.DriverFactory;
 
 public class JQueryMenus {
     private WebDriver driver;
 
     @BeforeMethod
     public void setUp_BeforeMethod() {
-        driver = BrowserFactory.getBrowser();
+		driver = DriverFactory.getBrowser();
     }
 
     @AfterMethod

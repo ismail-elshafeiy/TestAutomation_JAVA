@@ -1,7 +1,7 @@
 package examples.gui.web;
 
 import engine.broswer.BrowserActions;
-import engine.broswer.BrowserFactory;
+import engine.broswer.DriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
@@ -13,7 +13,7 @@ public class BaseTests {
 
 	@BeforeMethod
 	public void setUp () {
-		driver = BrowserFactory.getBrowser();
+		driver = DriverFactory.getBrowser();
 	}
 
 	@AfterMethod

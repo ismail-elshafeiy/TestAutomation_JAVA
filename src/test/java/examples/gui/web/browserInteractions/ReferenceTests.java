@@ -2,7 +2,7 @@ package examples.gui.web.browserInteractions;
 
 import engine.evidence.Attachments;
 import engine.broswer.BrowserActions;
-import engine.broswer.BrowserFactory;
+import engine.broswer.DriverFactory;
 import engine.broswer.BrowserHelper.*;
 import engine.evidence.ScreenShot;
 import io.qameta.allure.Description;
@@ -26,7 +26,7 @@ public class ReferenceTests {
 			The WebDriver endpoint screenshot returns screenshot which is encoded in Base64 format.	
 				""")
 	public void takeScreenShotTest () {
-		driver = BrowserFactory.getBrowser();
+		driver = DriverFactory.getBrowser();
 		BrowserActions.navigateToUrl(driver, "https://www.google.com/");
 		ScreenShot.takeScreenShotToFile(driver);
 	}
@@ -38,7 +38,7 @@ public class ReferenceTests {
 				The WebDriver endpoint screenshot returns screenshot which is encoded in Base64 format		
 			""")
 	public void takeElementScreenShotTest () {
-		driver = BrowserFactory.getBrowser();
+		driver = DriverFactory.getBrowser();
 		BrowserActions.navigateToUrl(driver, "https://www.google.com/");
 		ScreenShot.takeElementScreenShot(driver, By.xpath("//a[text()='Gmail']"));
 	}
@@ -49,7 +49,7 @@ public class ReferenceTests {
 	
 			""")
 	public void takeFullPage_Screenshot () throws IOException {
-		driver = BrowserFactory.getBrowser(BrowserType.MOZILLA_FIREFOX, ExecutionType.LOCAL);
+		driver = DriverFactory.getBrowser(BrowserType.MOZILLA_FIREFOX, ExecutionType.LOCAL);
 		BrowserActions.navigateToUrl(driver, "https://www.selenium.dev/");
 		ScreenShot.takeFullPageScreenshot(driver, "Selenium Full Page Screenshot");
 	}
@@ -61,7 +61,7 @@ public class ReferenceTests {
 			Note: This requires Chromium Browsers to be in headless mode
 			""")
 	public void printWindow () throws IOException {
-		driver = BrowserFactory.getBrowser(BrowserType.GOOGLE_CHROME, ExecutionType.LOCAL_HEADLESS);
+		driver = DriverFactory.getBrowser(BrowserType.GOOGLE_CHROME, ExecutionType.LOCAL_HEADLESS);
 		BrowserActions.navigateToUrl(driver, "https://www.selenium.dev");
 		Attachments.printPage(driver, 6);
 	}
