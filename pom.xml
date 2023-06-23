@@ -19,7 +19,7 @@
         <testng.version>7.7.1</testng.version>
         <rest-assured.version>5.3.0</rest-assured.version>
         <poi-ooxml.version>5.2.3</poi-ooxml.version>
-        <allure-testng.version>2.22.0</allure-testng.version>
+        <allure-testng.version>2.22.2</allure-testng.version>
         <allure-maven.version>2.12.0</allure-maven.version>
         <allure-maven-report.version>2.10.0</allure-maven-report.version>
         <extentreports.version>5.0.9</extentreports.version>
