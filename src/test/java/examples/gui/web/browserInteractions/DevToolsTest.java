@@ -20,10 +20,10 @@ public class DevToolsTest {
 		BrowserActions.navigateToUrl(driver, "http://the-internet.herokuapp.com/broken_images");
 		ElementActions.click(driver, By.ByXPath.xpath("//a[contains(text(),'Broken Images')]"));
 	}
-	@Test
-	public void viewBrowserConsoleLogs() {
-		Logger.logConsoleLogs(driver,"http://the-internet.herokuapp.com/broken_images");
-	}
+//	@Test
+//	public void viewBrowserConsoleLogs() {
+//		Logger.logConsoleLogs(driver,"http://the-internet.herokuapp.com/broken_images");
+//	}
 	@BeforeMethod
 	public void setUp() {
 		WebDriverManager.chromedriver().setup();

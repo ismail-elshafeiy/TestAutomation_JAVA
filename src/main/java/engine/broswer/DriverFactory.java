@@ -70,7 +70,7 @@ public class DriverFactory {
 		else if ( executionType == ExecutionType.LOCAL || (executionType == ExecutionType.FROM_EXCEL && BrowserHelper.EXECUTION_TYPE.equalsIgnoreCase("local")) ) {
 			if ( googleChrome ) {
 				WebDriverManager.chromedriver().setup();
-				driver.set(new ChromeDriver(getChromeOptions()));
+				driver.set(new ChromeDriver());
 				setITestContext();
 				checkMaximizeOption();
 				RecordManager.startVideoRecording(driver.get());

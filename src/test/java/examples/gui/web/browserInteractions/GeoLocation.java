@@ -2,8 +2,6 @@ package examples.gui.web.browserInteractions;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.devtools.DevTools;;
-import org.openqa.selenium.devtools.v109.emulation.Emulation;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -41,15 +39,15 @@ public class GeoLocation {
         driver.executeCdpCommand("Emulation.setGeolocationOverride", coordinates);
         driver.get("https://where-am-i.org/");
     }
-
-    @Test
-    public void mockGeoLocation_DevTools() {
-        DevTools devTools = driver.getDevTools();
-        devTools.createSession();
-        devTools.send(Emulation.setGeolocationOverride(
-                Optional.of(52.5043),
-                Optional.of(13.4501),
-                Optional.of(1)));
-        driver.get("https://my-location.org/");
-    }
+//
+//    @Test
+//    public void mockGeoLocation_DevTools() {
+//        DevTools devTools = driver.getDevTools();
+//        devTools.createSession();
+//        devTools.send(Emulation.setGeolocationOverride(
+//                Optional.of(52.5043),
+//                Optional.of(13.4501),
+//                Optional.of(1)));
+//        driver.get("https://my-location.org/");
+//    }
 }

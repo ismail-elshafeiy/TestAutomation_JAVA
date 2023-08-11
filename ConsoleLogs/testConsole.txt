@@ -1,0 +1,12 @@
+Console log found in Test- testConsole
+__________________________________________________________
+Information Message in Console: [http://the-internet.herokuapp.com/asdf.jpg - Failed to load resource: the server responded with a status of 404 (Not Found)]
+Console log found in Test- testConsole
+__________________________________________________________
+Information Message in Console: [http://298279967.log.optimizely.com/event?a=298279967&d=298279967&y=false&n=http%3A%2F%2Fthe-internet.herokuapp.com%2Fbroken_images&u=oeu1670872283754r0.9912588330427856&wxhr=true&t=1670872283758&f=298349752,318188263 - Failed to load resource: net::ERR_NAME_NOT_RESOLVED]
+Console log found in Test- testConsole
+__________________________________________________________
+Information Message in Console: [http://the-internet.herokuapp.com/hjkl.jpg - Failed to load resource: the server responded with a status of 404 (Not Found)]
+Console log found in Test- testConsole
+__________________________________________________________
+Information Message in Console: [http://the-internet.herokuapp.com/favicon.ico - Failed to load resource: the server responded with a status of 404 (Not Found)]

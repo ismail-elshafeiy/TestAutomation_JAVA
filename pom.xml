@@ -12,43 +12,81 @@
     <url>https://github.com/ismail-elshafeiy</url>
 
     <properties>
-        <selenium.version>4.8.0</selenium.version>
-        <appium-java-client.version>8.3.0</appium-java-client.version>
-        <webdrivermanager.version>5.3.1</webdrivermanager.version>
-        <playwright.version>1.35.0</playwright.version>
-        <testng.version>7.7.1</testng.version>
+        <!-- Dependencies and Plug-ins Version Numbers Parameters -->
+        <selenium.version>4.10.0</selenium.version>
+        <playwright.version>1.26.1</playwright.version>
+        <appium-java-client.version>8.5.1</appium-java-client.version>
+        <webdrivermanager.version>5.3.3</webdrivermanager.version>
         <rest-assured.version>5.3.0</rest-assured.version>
-        <poi-ooxml.version>5.2.3</poi-ooxml.version>
-        <allure-testng.version>2.22.0</allure-testng.version>
+        <testng.version>7.8.0</testng.version>
+        <cucumber.version>7.12.1</cucumber.version>
+        <applitools-eyes.version>4.14.0</applitools-eyes.version>
+        <!--  Data       -->
+        <javafaker.version>1.0.2</javafaker.version>
+        <pdfbox.version>2.0.28</pdfbox.version>
+        <apachepoi.version>5.2.3</apachepoi.version>
+        <json-simple.version>1.1.1</json-simple.version>
+        <json-path.version>2.8.0</json-path.version>
+        <json-schema-validator.version>5.3.0</json-schema-validator.version>
+        <org.yaml.version>2.0</org.yaml.version>
+        <!-- Reports frameworks -->
+        <allure-testng.version>2.22.1</allure-testng.version>
         <allure-maven.version>2.12.0</allure-maven.version>
         <allure-maven-report.version>2.10.0</allure-maven-report.version>
         <extentreports.version>5.0.9</extentreports.version>
-        <commons-io.version>2.11.0</commons-io.version>
-        <aspectj.version>1.9.9.1</aspectj.version>
-        <jackson.databind.version>2.14.1</jackson.databind.version>
-        <wiremock.version>2.35.0</wiremock.version>
-        <slf4j.version>2.0.6</slf4j.version>
-        <json-simple.version>1.1.1</json-simple.version>
-        <httpcomponents.version>4.5.13</httpcomponents.version>
-        <json-schema-validator.version>4.5.1</json-schema-validator.version>
-        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M8</maven-surefire-plugin.version>
-        <junit.version>4.13.2</junit.version>
-        <junit.dataprovider.version>2.9</junit.dataprovider.version>
-        <jackson.databind.version>2.9.8</jackson.databind.version>
-        <jave-all-deps.version>3.3.1</jave-all-deps.version>
         <video-recorder-testng.version>2.0</video-recorder-testng.version>
-        <javafaker.version>1.0.2</javafaker.version>
-        <applitools.version>5.0.0</applitools.version>
+        <jave-all-deps.version>3.3.1</jave-all-deps.version>
+        <!--      Data base -->
+        <mssql-jdbc.version>9.4.1.jre16-preview</mssql-jdbc.version>
+        <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
+        <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
+        <httpcomponents.version>4.5.13</httpcomponents.version>
+        <!--     dep   -->
+        <aspectj.version>1.9.19</aspectj.version> <!-- 1.9.7 DO NOT UPDATE -->
+        <skyscreamer-jsonassert.version>1.5.1</skyscreamer-jsonassert.version>
+        <mime-util.version>2.1.3</mime-util.version>
+        <commons-io.version>2.12.0</commons-io.version>
+        <org.slf4j.version>2.0.1</org.slf4j.version>
+        <jcraft-jsch.version>0.1.55</jcraft-jsch.version>
+        <cverges-expect4j.version>1.9</cverges-expect4j.version>
+        <sikulixapi.version>2.0.5</sikulixapi.version> <!-- Do not update before running the test locally -->
+
+        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
+        <wiremock.version>2.33.2</wiremock.version>
+        <!--mvn dep-->
+        <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+        <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
+        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+        <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
+        <maven-scm-publish-plugin.version>3.2.1</maven-scm-publish-plugin.version>
+        <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
     </properties>
 
+    <!-- SELENIUM WEBDRIVER -->
     <dependencies>
-        <!-- SELENIUM WEBDRIVER -->
-        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java     -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.netty/netty-handler -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-handler</artifactId>
+            <version>4.1.93.Final</version>
         </dependency>
 
         <!-- APPIUM -->
@@ -60,6 +98,10 @@
                 <exclusion>
                     <groupId>org.seleniumhq.selenium</groupId>
                     <artifactId>selenium-java</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.seleniumhq.selenium</groupId>
+                    <artifactId>selenium-remote-driver</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.seleniumhq.selenium</groupId>
@@ -80,9 +122,16 @@
             </exclusions>
         </dependency>
 
+        <!-- Playwright -->
         <dependency>
-            <!-- WEBDRIVER MANAGER -->
-            <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager     -->
+            <groupId>com.microsoft.playwright</groupId>
+            <artifactId>playwright</artifactId>
+            <version>${playwright.version}</version>
+        </dependency>
+
+        <!-- WEBDRIVER MANAGER -->
+        <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager     -->
+        <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
             <version>${webdrivermanager.version}</version>
@@ -91,43 +140,19 @@
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-api</artifactId>
                 </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- TESTNG DEPENDENCIES -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <exclusions>
                 <exclusion>
                     <groupId>com.google.guava</groupId>
                     <artifactId>guava</artifactId>
                 </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <!-- TESTNG DEPENDENCIES -->
-            <!-- https://mvnrepository.com/artifact/org.testng/testng        -->
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
-        </dependency>
-
-        <dependency>
-            <!-- REST ASSURED -->
-            <!--  https://mvnrepository.com/artifact/io.rest-assured/rest-assured        -->
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>${rest-assured.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.json/json -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20220924</version>
-        </dependency>
-
-
-        <dependency>
-            <!-- EXCEL FILE  -->
-            <!--  https://mvnrepository.com/artifact/org.apache.poi/poi       -->
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>${poi-ooxml.version}</version>
-            <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-api</artifactId>
@@ -135,6 +160,201 @@
             </exclusions>
         </dependency>
 
+        <!-- REST ASSURED -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>${json-simple.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${json-path.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>${skyscreamer-jsonassert.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.medsea.mimeutil</groupId>
+            <artifactId>mime-util</artifactId>
+            <version>${mime-util.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>${json-schema-validator.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jdk8 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+        <!-- DATABASE CONNECTORS -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>${mysql-connector-java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>${mssql-jdbc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.db2.jcc</groupId>
+            <artifactId>db2jcc</artifactId>
+            <version>db2jcc4</version>
+        </dependency>
+
+        <!-- VISUAL VALIDATIONS & ELEMENT IDENTIFICATION -->
+        <dependency>
+            <groupId>com.applitools</groupId>
+            <artifactId>eyes-images-java4</artifactId>
+            <version>${applitools-eyes.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.applitools</groupId>
+            <artifactId>eyes-selenium-java3</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openpnp</groupId>
+            <artifactId>opencv</artifactId>
+            <version>4.7.0-0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sikulix</groupId>
+            <artifactId>sikulixapi</artifactId>
+            <version>${sikulixapi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.openpnp</groupId>
+                    <artifactId>opencv</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-nop</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jul-to-slf4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jcl-over-slf4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>log4j-over-slf4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.pdfbox</groupId>
+                    <artifactId>pdfbox</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20220924</version>
+        </dependency>
+
+        <!-- EXCEL FILE MANIPULATION -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${apachepoi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jcl-over-slf4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${apachepoi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>xml-apis</groupId>
+                    <artifactId>xml-apis</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- PDF Validation -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>${pdfbox.version}</version>
+        </dependency>
+
+        <!--  utility classes       -->
         <dependency>
             <!--  https://mvnrepository.com/artifact/commons-io/commons-io         -->
             <groupId>commons-io</groupId>
@@ -148,7 +368,7 @@
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-plugin-api</artifactId>
-            <version>2.22.4</version>
+            <version>2.20.1</version>
         </dependency>
         <dependency>
             <groupId>io.qameta.allure</groupId>
@@ -166,13 +386,14 @@
             </exclusions>
         </dependency>
 
+        <!-- EXTENT REPORTS -->
+        <!--   https://mvnrepository.com/artifact/com.aventstack/extentreports  -->
         <dependency>
-            <!-- EXTENT REPORTS -->
-            <!--   https://mvnrepository.com/artifact/com.aventstack/extentreports  -->
             <groupId>com.aventstack</groupId>
             <artifactId>extentreports</artifactId>
             <version>${extentreports.version}</version>
         </dependency>
+
         <!-- VIDEO RECORDING -->
         <!-- https://mvnrepository.com/artifact/ws.schild/jave-all-deps -->
         <dependency>
@@ -217,13 +438,13 @@
             <!--  https://mvnrepository.com/artifact/org.slf4j/slf4j-api        -->
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
+            <version>${org.slf4j.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j.version}</version>
+            <version>${org.slf4j.version}</version>
         </dependency>
 
         <dependency>
@@ -250,33 +471,9 @@
             <version>1.18.24</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.tngtech.junit.dataprovider</groupId>
-            <artifactId>junit4-dataprovider</artifactId>
-            <version>${junit.dataprovider.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.databind.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.github.tomakehurst</groupId>
             <artifactId>wiremock-jre8</artifactId>
-            <version>2.35.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.databind.version}</version>
+            <version>2.33.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -290,34 +487,152 @@
             <artifactId>javafaker</artifactId>
             <version>${javafaker.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.automation-remarks/video-recorder -->
+        <!-- VIDEO RECORDING -->
+        <!-- https://mvnrepository.com/artifact/ws.schild/jave-all-deps -->
+        <dependency>
+            <groupId>ws.schild</groupId>
+            <artifactId>jave-all-deps</artifactId>
+            <version>${jave-all-deps.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.automation-remarks/video-recorder-testng -->
         <dependency>
             <groupId>com.automation-remarks</groupId>
-            <artifactId>video-recorder</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.microsoft.playwright</groupId>
-            <artifactId>playwright</artifactId>
-            <version>${playwright.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.github.almondtools/testrecorder -->
-        <dependency>
-            <groupId>com.github.almondtools</groupId>
-            <artifactId>testrecorder</artifactId>
-            <version>0.1.6</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.applitools/eyes-selenium-java3 -->
-        <dependency>
-            <groupId>com.applitools</groupId>
-            <artifactId>eyes-selenium-java3</artifactId>
-            <version>${applitools.version}</version>
+            <artifactId>video-recorder-testng</artifactId>
+            <version>${video-recorder-testng.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.testng</groupId>
+                    <artifactId>testng</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
+        <!-- TRANSITIVE LOGGING -->
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j2-impl -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
+            <version>2.20.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.20.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-1.2-api -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-1.2-api</artifactId>
+            <version>2.20.0</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>32.0.0-jre</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.28</version>
+        </dependency>
+
+        <!-- https://github.com/google/tink/blob/master/docs/JAVA-HOWTO.md -->
+        <dependency>
+            <groupId>com.google.crypto.tink</groupId>
+            <artifactId>tink</artifactId>
+            <version>1.9.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.protobuf</groupId>
+                    <artifactId>protobuf-java</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.crypto.tink</groupId>
+            <artifactId>tink-awskms</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.crypto.tink</groupId>
+            <artifactId>tink-gcpkms</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+
+        <!--YAML -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${org.yaml.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.aeonbits.owner/owner -->
+        <dependency>
+            <groupId>org.aeonbits.owner</groupId>
+            <artifactId>owner-java8</artifactId>
+            <version>1.0.12</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${jacoco-maven-plugin.version}</version>
+            <type>maven-plugin</type>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.16.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.3.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
+
     <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources/allure</directory>
+                <targetPath>${project.basedir}/target/classes/resources/allure</targetPath>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/src/main/resources/properties/default</directory>
+                <targetPath>${project.basedir}/target/classes/resources/properties/default</targetPath>
+            </resource>
+        </resources>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -357,8 +672,7 @@
                             </property>
                             <property>
                                 <name>listener</name>
-                                <value>engine.listeners.TestngListener,
-                                    engine.listeners.WebListener
+                                <value>engine.listeners.TestngListener, engine.listeners.WebListener
                                 </value>
                             </property>
                         </properties>
@@ -375,7 +689,6 @@
                 <testNGSuite>src\test\resources\TestSuits\regression.xml</testNGSuite>
             </properties>
         </profile>
-
     </profiles>
 
 </project>

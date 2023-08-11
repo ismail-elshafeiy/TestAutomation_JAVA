@@ -1,6 +1,7 @@
 package examples.gui.web;
 
 import engine.broswer.BrowserActions;
+import engine.broswer.BrowserHelper;
 import engine.broswer.DriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
@@ -13,7 +14,7 @@ public class BaseTests {
 
 	@BeforeMethod
 	public void setUp () {
-		driver = DriverFactory.getBrowser();
+		driver = DriverFactory.getBrowser(BrowserHelper.BrowserType.GOOGLE_CHROME, BrowserHelper.ExecutionType.LOCAL);
 	}
 
 	@AfterMethod

@@ -1,5 +1,6 @@
 package examples.api.rest.TestAPIs_Booking;
 
+
 import static org.hamcrest.Matchers.equalTo;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;

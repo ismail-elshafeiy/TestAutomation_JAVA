@@ -3,7 +3,7 @@ import com.automation.remarks.video.annotations.Video;
 
 import org.testng.annotations.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 
 public class recordVideo {

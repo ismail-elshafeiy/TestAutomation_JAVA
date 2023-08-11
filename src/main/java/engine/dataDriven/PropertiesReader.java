@@ -1,6 +1,7 @@
 package engine.dataDriven;
 
 import engine.listeners.Logger;
+import org.openqa.selenium.MutableCapabilities;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -31,22 +32,15 @@ public class PropertiesReader {
 		Logger.logStep("Property value for [ " + propertyName + " ] is: [" + p.getProperty(propertyName) + "] from file: [ " + propertyFileName + " ]");
 		return p.getProperty(propertyName);
 	}
+	public static MutableCapabilities getCustomWebDriverDesiredCapabilities() {
+		MutableCapabilities customDriverOptions = new MutableCapabilities();
+		java.util.Properties props = System.getProperties();
+		props.forEach((key, value) -> {
+			if (String.valueOf(key).toLowerCase().startsWith("capabilities.") && !String.valueOf(value).isBlank()) {
+				customDriverOptions.setCapability(String.valueOf(key).split("capabilities.")[1], String.valueOf(value));
+			}
+		});
+		return customDriverOptions;
+	}
 
-/*    public static void loadProperties () {
-        Properties properties = new Properties();
-        Collection<File> propertiesFilesList;
-        propertiesFilesList = FileUtils.listFiles(new File(propRoot), new String[]{"properties"}, true);
-        propertiesFilesList.forEach(propertyFile -> {
-            try {
-                properties.load(new FileInputStream(propertyFile));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                System.out.println(e.getMessage());
-            } catch (IOException ioe) {
-                System.out.println(ioe.getMessage());
-            }
-            properties.putAll(System.getProperties());
-            System.getProperties().putAll(properties);
-        });
-    }*/
 }
