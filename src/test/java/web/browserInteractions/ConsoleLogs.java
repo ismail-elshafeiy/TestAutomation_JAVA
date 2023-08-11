@@ -1,8 +1,7 @@
 package web.browserInteractions;
 
 import engine.broswer.BrowserActions;
-import engine.gui.actions.ElementActions;
-import engine.listeners.Logger;
+import engine.guiActions.ElementActions;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;

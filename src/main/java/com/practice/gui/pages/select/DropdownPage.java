@@ -1,12 +1,12 @@
 package com.practice.gui.pages.select;
 
-import engine.gui.actions.ElementHelper;
+import engine.guiActions.ElementHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-import engine.gui.actions.ElementActions;
+import engine.guiActions.ElementActions;
 import java.util.List;
 import java.util.stream.Collectors;
 

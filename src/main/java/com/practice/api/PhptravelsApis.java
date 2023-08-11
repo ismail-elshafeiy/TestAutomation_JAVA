@@ -4,7 +4,7 @@ import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import engine.ExtentReport;
 import engine.dataDriven.PropertiesReader;
-import engine.api.actions.RestApiActions;
+import engine.apiActions.RestApiActions;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 

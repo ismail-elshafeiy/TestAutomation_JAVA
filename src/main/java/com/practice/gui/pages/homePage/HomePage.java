@@ -9,7 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import engine.broswer.BrowserActions;
-import engine.gui.actions.ElementActions;
+import engine.guiActions.ElementActions;
 import engine.dataDriven.PropertiesReader;
 
 import java.util.List;

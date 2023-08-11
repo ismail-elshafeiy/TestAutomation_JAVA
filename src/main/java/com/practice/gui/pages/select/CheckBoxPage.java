@@ -2,7 +2,7 @@ package com.practice.gui.pages.select;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import engine.gui.actions.ElementActions;
+import engine.guiActions.ElementActions;
 
 public class CheckBoxPage {
     private WebDriver driver;

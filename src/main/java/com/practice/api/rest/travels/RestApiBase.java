@@ -5,7 +5,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.json.simple.JSONObject;
 import engine.dataDriven.PropertiesReader;
-import engine.api.actions.RestApiActions;
+import engine.apiActions.RestApiActions;
 
 public class RestApiBase {
     private RestApiActions apiObject;

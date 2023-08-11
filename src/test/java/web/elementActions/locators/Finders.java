@@ -1,7 +1,7 @@
 package web.elementActions.locators;
 
 import engine.broswer.BrowserActions;
-import engine.gui.actions.ElementActions;
+import engine.guiActions.ElementActions;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -14,7 +14,7 @@ import web.BaseTests;
 
 import java.util.List;
 
-import static engine.gui.actions.ElementHelper.*;
+import static engine.guiActions.ElementHelper.*;
 
 @Epic("ElementActions")
 @Feature("Locators")

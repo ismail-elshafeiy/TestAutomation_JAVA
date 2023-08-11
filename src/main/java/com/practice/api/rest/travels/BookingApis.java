@@ -3,7 +3,7 @@ package com.practice.api.rest.travels;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.json.simple.JSONObject;
-import engine.api.actions.RestApiActions;
+import engine.apiActions.RestApiActions;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -2,7 +2,7 @@ package com.practice.gui.pages.alerts;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import engine.gui.actions.ElementActions;
+import engine.guiActions.ElementActions;
 
 public class AlertsPage {
 

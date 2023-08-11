@@ -3,7 +3,7 @@ package web.elementActions.interactions;
 import com.practice.gui.pages.homePage.HomePage;
 import com.practice.gui.pages.keys.KeyPressesPage;
 import engine.broswer.BrowserActions;
-import engine.gui.actions.ElementActions;
+import engine.guiActions.ElementActions;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import jdk.jfr.Description;
