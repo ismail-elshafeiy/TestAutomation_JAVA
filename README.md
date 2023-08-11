@@ -144,29 +144,3 @@ docker-compose -f src/main/resources/docker-compose.yml down --remove-orphans
  </details>
 
 ---
-
-<br/>
-  <details>
-    <summary>
-      <strong> 👉 Click here to see the browser Factory allowed in this project </strong> 
-</summary>
-
-- Using the ChromeOptions to set the browser options (setHeadless, addArguments, setCapability)
-- Using DevTools to get the browser (console error/warring messages, Network Conditions)
-- Get the location by 2 ways (executeCdpCommand, Emulation.setGeolocationOverride)
-
- </details>
-
-<br/>
-  <details>
-    <summary>
-      <strong> 👉 Click here to see the browser Actions allowed in this project </strong> 
-</summary>
-
-- Browser Operation (getTitle() , getCurrentUrl() , getPageSource())
-- Browser Navigation (get(""), navigate().To("") , navigate().Back() , navigate().forward() , navigate().refresh())
-- Browser Window (maximize() , minimize() , fullscreen() , close() , quit())
-- Browser Alerts (acceptAlert() , dismissAlert() , getAlertText() , sendKeysToAlert())
-- Browser Cookies (getCookies() , getCookieNamed() , addCookie() , deleteCookie() , deleteAllCookies())
-
- </details>
