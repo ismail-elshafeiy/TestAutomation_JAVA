@@ -18,7 +18,7 @@ jobs:
         os: [ ubuntu-22.04, windows-latest, macOS-12 ]
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.6.0
         with:
@@ -84,7 +84,7 @@ jobs:
           path: "ConsoleLogs"
 
 #    - name: Get Allure history
-#      uses: actions/checkout@v3
+#      uses: actions/checkout@v4
 #      if: always()
 #      continue-on-error: true
 #      with:
