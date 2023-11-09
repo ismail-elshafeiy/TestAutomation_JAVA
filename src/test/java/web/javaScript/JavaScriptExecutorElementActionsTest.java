@@ -1,12 +1,12 @@
 package web.javaScript;
 
-import engine.broswer.Waits;
+import com.engine.Waits;
 import io.qameta.allure.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import engine.broswer.BrowserActions;
+import com.engine.actions.BrowserActions;
 import web.BaseTests;
 
 import static org.testng.AssertJUnit.assertEquals;

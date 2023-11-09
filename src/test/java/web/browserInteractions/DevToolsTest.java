@@ -1,8 +1,7 @@
 package web.browserInteractions;
 
-import engine.broswer.BrowserActions;
-import engine.guiActions.ElementActions;
-import io.github.bonigarcia.wdm.WebDriverManager;
+import com.engine.actions.BrowserActions;
+import com.engine.actions.ElementActions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
@@ -25,7 +24,7 @@ public class DevToolsTest {
 //	}
 	@BeforeMethod
 	public void setUp() {
-		WebDriverManager.chromedriver().setup();
+        //WebDriverManager.chromedriver().setup();
 		driver = new ChromeDriver();
 		devTools = driver.getDevTools();
 	}

@@ -1,6 +1,6 @@
 package web.elementActions.locators;
 
-import com.practice.gui.pages.homePage.HomePage;
+import practice.gui.pages.homePage.HomePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;

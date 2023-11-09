@@ -1,12 +1,12 @@
 package web.dataDriven;
 
-import com.practice.gui.pages.homePage.HomePage;
-import com.practice.gui.pages.inputs.SecureAreaPage;
-import engine.broswer.BrowserActions;
-import engine.broswer.DriverFactory;
-import engine.dataDriven.ExcelFileManager;
-import engine.dataDriven.JSONFileManager;
-import engine.dataDriven.JSONFileManager_Approach2;
+import practice.gui.pages.homePage.HomePage;
+import practice.gui.pages.inputs.SecureAreaPage;
+import com.engine.actions.BrowserActions;
+import com.engine.driver.DriverFactory;
+import com.engine.dataDriven.ExcelFileManager;
+import com.engine.dataDriven.JSONFileManager;
+import com.engine.dataDriven.JSONFileManager_Approach2;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;

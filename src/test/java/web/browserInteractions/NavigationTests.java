@@ -1,9 +1,10 @@
 package web.browserInteractions;
 
+import com.engine.evidence.ScreenShot;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.testng.annotations.Test;
-import engine.broswer.BrowserActions;
+import com.engine.actions.BrowserActions;
 import web.BaseTests;
 
 @Epic("Browser Interactions")
@@ -18,5 +19,6 @@ public class NavigationTests extends BaseTests {
 				.goForward()
 				.navigateToUrl("https://github.com/ismail-elshafeiy")
 				.goBack();
+        ScreenShot.takeFullScreenShoot(driver);
 	}
 }

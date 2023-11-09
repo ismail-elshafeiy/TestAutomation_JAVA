@@ -1,7 +1,7 @@
 package web.elementActions.locators;
 
-import engine.broswer.BrowserActions;
-import engine.guiActions.ElementActions;
+import com.engine.actions.BrowserActions;
+import com.engine.actions.ElementActions;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;

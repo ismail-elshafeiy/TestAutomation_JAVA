@@ -1,6 +1,6 @@
 package web.browserInteractions;
 
-import engine.broswer.BrowserActions;
+import com.engine.actions.BrowserActions;
 import io.qameta.allure.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;

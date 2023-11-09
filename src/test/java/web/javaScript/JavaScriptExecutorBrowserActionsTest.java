@@ -1,11 +1,11 @@
 package web.javaScript;
 
-import engine.Helper;
+import com.engine.Helper;
 import io.qameta.allure.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.testng.annotations.Test;
-import engine.broswer.BrowserActions;
+import com.engine.actions.BrowserActions;
 import web.BaseTests;
 
 import static org.testng.AssertJUnit.assertEquals;

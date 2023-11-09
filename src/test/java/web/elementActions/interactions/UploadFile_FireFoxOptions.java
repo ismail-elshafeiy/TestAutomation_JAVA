@@ -1,6 +1,6 @@
 package web.elementActions.interactions;
 
-import engine.broswer.BrowserActions;
+import com.engine.actions.BrowserActions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.annotations.Test;

@@ -1,8 +1,6 @@
 package web.browserInteractions;
 
-import engine.broswer.BrowserActions;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.Dimension;
+import com.engine.actions.BrowserActions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -22,7 +20,7 @@ public class ResponsiveTests {
 
 	@BeforeMethod
 	public void setUp () {
-		WebDriverManager.chromedriver().setup();
+        //WebDriverManager.chromedriver().setup();
 		Map<String, String> deviceMobEmu = new HashMap<>();
 		deviceMobEmu.put("deviceName", "iPhone 12 Pro");
 		ChromeOptions chromeOpt = new ChromeOptions();

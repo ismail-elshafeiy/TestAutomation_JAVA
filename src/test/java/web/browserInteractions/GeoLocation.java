@@ -1,20 +1,21 @@
 package web.browserInteractions;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+
 import org.openqa.selenium.chrome.ChromeDriver;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+
 
 public class GeoLocation {
     ChromeDriver driver;
 
     @BeforeMethod
     public void setUp() {
-        WebDriverManager.chromedriver().setup();
+        //  WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
     }
@@ -39,7 +40,7 @@ public class GeoLocation {
         driver.executeCdpCommand("Emulation.setGeolocationOverride", coordinates);
         driver.get("https://where-am-i.org/");
     }
-//
+
 //    @Test
 //    public void mockGeoLocation_DevTools() {
 //        DevTools devTools = driver.getDevTools();

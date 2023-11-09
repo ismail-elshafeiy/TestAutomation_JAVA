@@ -1,8 +1,8 @@
 package web.browserInteractions;
 
-import engine.broswer.BrowserActions;
-import engine.guiActions.ElementActions;
-import io.github.bonigarcia.wdm.WebDriverManager;
+import com.engine.actions.BrowserActions;
+import com.engine.actions.ElementActions;
+
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.openqa.selenium.By;
@@ -27,7 +27,7 @@ public class ConsoleLogs{
 //	}
 	@BeforeMethod
 	public void setUp() {
-		WebDriverManager.chromedriver().setup();
+        //WebDriverManager.chromedriver().setup();
 		driver = new ChromeDriver();
 	}
 

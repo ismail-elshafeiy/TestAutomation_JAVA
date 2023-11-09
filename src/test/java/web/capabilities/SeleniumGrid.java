@@ -1,6 +1,5 @@
 package web.capabilities;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +12,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import engine.broswer.BrowserActions;
+import com.engine.actions.BrowserActions;
 
 import java.net.URL;
 
@@ -74,7 +73,7 @@ public class SeleniumGrid {
 		options.addArguments("--start-fullscreen");
 		options.addArguments("--incognito");
 		options.addArguments("--mute-audio");
-		WebDriverManager.chromedriver().setup();
+        //WebDriverManager.chromedriver().setup();
 		WebDriver driver = new ChromeDriver(options);
 		driver.get("http://google.com");
 

@@ -1,6 +1,6 @@
 package visualTest;
 
-import com.practice.gui.pages.visualPage.SearchPage;
+import practice.gui.pages.visualPage.SearchPage;
 import junit.framework.Assert;
 import org.openqa.selenium.By;
 

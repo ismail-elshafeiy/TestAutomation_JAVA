@@ -10,8 +10,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import engine.broswer.BrowserActions;
-import engine.broswer.DriverFactory;
+import com.engine.actions.BrowserActions;
+import com.engine.driver.DriverFactory;
 
 public class JQueryMenus {
     private WebDriver driver;

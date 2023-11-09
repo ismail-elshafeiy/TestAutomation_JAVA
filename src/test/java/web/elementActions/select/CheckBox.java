@@ -1,16 +1,16 @@
 package web.elementActions.select;
 
-import com.practice.gui.pages.select.CheckBoxPage;
-import com.practice.gui.pages.homePage.HomePage;
-import engine.dataDriven.ExcelFileManager;
+import practice.gui.pages.select.CheckBoxPage;
+import practice.gui.pages.homePage.HomePage;
+import com.engine.dataDriven.ExcelFileManager;
 import io.qameta.allure.*;
 import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import engine.broswer.BrowserActions;
-import engine.broswer.DriverFactory;
+import com.engine.actions.BrowserActions;
+import com.engine.driver.DriverFactory;
 
 public class CheckBox {
     private WebDriver driver;

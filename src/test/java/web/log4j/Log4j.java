@@ -1,6 +1,6 @@
 package web.log4j;
 
-import engine.guiActions.ElementActions;
+import com.engine.actions.ElementActions;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.Test;

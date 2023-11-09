@@ -1,6 +1,6 @@
 package web.elementActions.locators;
 
-import engine.guiActions.ElementActions;
+import com.engine.actions.ElementActions;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.openqa.selenium.By;

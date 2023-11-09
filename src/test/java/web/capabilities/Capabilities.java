@@ -1,7 +1,5 @@
 package web.capabilities;
 
-
-import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -42,7 +40,7 @@ public class Capabilities {
 //        Run in headless mode, i.e., without a UI or display server dependencies.
         options.addArguments("--headless ");
 
-        WebDriverManager.chromedriver().setup();
+        //WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver(options);
 //        DriverContext.driver.get("http://google.com");
     }

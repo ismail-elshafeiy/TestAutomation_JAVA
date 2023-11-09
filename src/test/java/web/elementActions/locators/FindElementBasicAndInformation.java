@@ -1,6 +1,6 @@
 package web.elementActions.locators;
 
-import engine.guiActions.ElementActions;
+import com.engine.actions.ElementActions;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.*;
-import engine.broswer.BrowserActions;
+import com.engine.actions.BrowserActions;
 import web.BaseTests;
 
 @Epic("ElementActions")

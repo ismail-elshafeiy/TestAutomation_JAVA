@@ -1,9 +1,8 @@
 package visualTest;
 
 
-
-import com.practice.gui.pages.visualPage.InvoiceGeneratorPage;
-import com.practice.gui.pages.visualPage.InvoicePreviewPage;
+import practice.gui.pages.visualPage.InvoiceGeneratorPage;
+import practice.gui.pages.visualPage.InvoicePreviewPage;
 import junit.framework.Assert;
 
 import org.testng.annotations.Test;

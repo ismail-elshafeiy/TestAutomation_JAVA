@@ -1,7 +1,7 @@
 package web.browserInteractions;
 
-import com.practice.gui.pages.alerts.AlertsPage;
-import com.practice.gui.pages.homePage.HomePage;
+import practice.gui.pages.alerts.AlertsPage;
+import practice.gui.pages.homePage.HomePage;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -9,8 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import engine.broswer.BrowserActions;
-import engine.broswer.DriverFactory;
+import com.engine.actions.BrowserActions;
+import com.engine.driver.DriverFactory;
 
 import static org.testng.Assert.assertEquals;
 @Epic("Browser Interactions")

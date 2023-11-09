@@ -1,7 +1,8 @@
 package java.oop.inheriteance;
 
-import oop.overridingAndOverloading.A_Rectangle;
-import oop.overridingAndOverloading.B_Square;
+
+import java.oop.overridingAndOverloading.A_Rectangle;
+import java.oop.overridingAndOverloading.B_Square;
 
 public class E_inheritanceTester {
 

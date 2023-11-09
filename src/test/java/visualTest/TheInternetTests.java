@@ -1,7 +1,7 @@
 package visualTest;
 
 
-import com.practice.gui.pages.visualPage.SortableDataTablesPage;
+import practice.gui.pages.visualPage.SortableDataTablesPage;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 

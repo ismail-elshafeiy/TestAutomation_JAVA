@@ -1,15 +1,15 @@
 package web.elementActions.interactions;
 
-import com.practice.gui.pages.homePage.HomePage;
-import com.practice.gui.pages.uploadFilePage.FileUploadPage;
+import practice.gui.pages.homePage.HomePage;
+import practice.gui.pages.uploadFilePage.FileUploadPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import web.BaseTests;
 
 import java.awt.*;
 
-import static com.practice.gui.pages.uploadFilePage.FileUploadPage.fileUploader_dragDrop;
-import static com.practice.gui.pages.uploadFilePage.FileUploadPage.uploadedFiles_text;
+import static practice.gui.pages.uploadFilePage.FileUploadPage.fileUploader_dragDrop;
+import static practice.gui.pages.uploadFilePage.FileUploadPage.uploadedFiles_text;
 
 public class UploadFilesTest extends BaseTests {
 

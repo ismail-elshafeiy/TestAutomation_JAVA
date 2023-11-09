@@ -1,10 +1,10 @@
 package web.browserInteractions;
 
-import engine.evidence.Attachments;
-import engine.broswer.BrowserActions;
-import engine.broswer.DriverFactory;
-import engine.broswer.BrowserHelper.*;
-import engine.evidence.ScreenShot;
+import com.engine.driver.DriverHelper;
+import com.engine.evidence.Attachments;
+import com.engine.actions.BrowserActions;
+import com.engine.driver.DriverFactory;
+import com.engine.evidence.ScreenShot;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -49,7 +49,7 @@ public class ReferenceTests {
 	
 			""")
 	public void takeFullPage_Screenshot () throws IOException {
-		driver = DriverFactory.getBrowser(BrowserType.MOZILLA_FIREFOX, ExecutionType.LOCAL);
+		driver = DriverFactory.getBrowser(DriverHelper.BrowserType.MOZILLA_FIREFOX, DriverHelper.ExecutionType.LOCAL);
 		BrowserActions.navigateToUrl(driver, "https://www.selenium.dev/");
 		ScreenShot.takeFullPageScreenshot(driver, "Selenium Full Page Screenshot");
 	}
@@ -61,7 +61,7 @@ public class ReferenceTests {
 			Note: This requires Chromium Browsers to be in headless mode
 			""")
 	public void printWindow () throws IOException {
-		driver = DriverFactory.getBrowser(BrowserType.GOOGLE_CHROME, ExecutionType.LOCAL_HEADLESS);
+		driver = DriverFactory.getBrowser(DriverHelper.BrowserType.GOOGLE_CHROME, DriverHelper.ExecutionType.LOCAL_HEADLESS);
 		BrowserActions.navigateToUrl(driver, "https://www.selenium.dev");
 		Attachments.printPage(driver, 6);
 	}

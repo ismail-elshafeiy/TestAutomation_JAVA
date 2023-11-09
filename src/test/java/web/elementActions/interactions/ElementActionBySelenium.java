@@ -1,9 +1,9 @@
 package web.elementActions.interactions;
 
-import com.practice.gui.pages.homePage.HomePage;
-import com.practice.gui.pages.keys.KeyPressesPage;
-import engine.broswer.BrowserActions;
-import engine.guiActions.ElementActions;
+import practice.gui.pages.homePage.HomePage;
+import practice.gui.pages.keys.KeyPressesPage;
+import com.engine.actions.BrowserActions;
+import com.engine.actions.ElementActions;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import jdk.jfr.Description;
@@ -18,13 +18,14 @@ import static org.testng.Assert.assertEquals;
 @Epic("ElementActions")
 @Feature("Actions")
 public class ElementActionBySelenium extends BaseTests {
+
 	@Test
 	@Description("Performing KeyBoard actions Test Case")
 	public void sendingKeysAndCLick () {
 		BrowserActions.navigateToUrl(driver, "https://the-internet.herokuapp.com/login");
 		new ElementActions(driver)
 				.clickAndSendKeys(By.id("username"), "tomsmith")
-				.clickAndSendKeys(By.id("password"), "SuperSecretPassword!")
+                .typeEncrypt(By.id("password"), "SuperSecretPassword!")
 				.mouseHoverAndClick(By.cssSelector("button.radius"));
 	}
 

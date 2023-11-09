@@ -1,10 +1,11 @@
 package api.graphQL;
 import static io.restassured.RestAssured.baseURI;
-import com.practice.api.graphQL.GraphQlApiObject;
+
+import practice.api.graphQL.GraphQlApiObject;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import engine.apiActions.GraphQlActions;
+import com.engine.actions.GraphQlActions;
 
 public class GraphQlTest {
     private GraphQlApiObject graphQlApiObject;

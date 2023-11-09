@@ -1,8 +1,8 @@
 package web.elementActions.select;
 
-import com.practice.gui.pages.homePage.HomePage;
-import com.practice.gui.pages.select.DropdownPage;
-import engine.dataDriven.ExcelFileManager;
+import practice.gui.pages.homePage.HomePage;
+import practice.gui.pages.select.DropdownPage;
+import com.engine.dataDriven.ExcelFileManager;
 import io.qameta.allure.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,9 +13,9 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import engine.broswer.BrowserActions;
-import engine.broswer.DriverFactory;
-import engine.guiActions.ElementActions;
+import com.engine.actions.BrowserActions;
+import com.engine.driver.DriverFactory;
+import com.engine.actions.ElementActions;
 
 import static org.testng.Assert.*;
 

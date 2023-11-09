@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import engine.broswer.BrowserActions;
+import com.engine.actions.BrowserActions;
 import web.BaseTests;
 
 @Epic("Browser Interactions")

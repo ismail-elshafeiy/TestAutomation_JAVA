@@ -1,12 +1,12 @@
 package api.restAssured;
 
-import com.practice.api.rest.travels.RestApiBase;
-import com.practice.api.rest.travels.BookingApis;
+import practice.api.rest.travels.RestApiBase;
+import practice.api.rest.travels.BookingApis;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import engine.apiActions.RestApiActions;
+import com.engine.actions.RestApiActions;
 
 import static org.testng.Assert.assertEquals;
 

@@ -1,16 +1,17 @@
 package web.dataDriven;
 
-import com.practice.gui.pages.homePage.HomePage;
-import com.practice.gui.pages.inputs.SecureAreaPage;
-import engine.broswer.BrowserHelper;
-import engine.dataDriven.ExcelFileManager;;
-import engine.dataDriven.DataProvider;
+import com.engine.dataDriven.DataProvider;
+import com.engine.dataDriven.ExcelFileManager;
+import com.engine.driver.DriverFactory;
+import practice.gui.pages.homePage.HomePage;
+import practice.gui.pages.inputs.SecureAreaPage;
+
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import engine.broswer.DriverFactory;
+
 
 import static org.testng.Assert.assertTrue;
 

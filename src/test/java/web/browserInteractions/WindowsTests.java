@@ -1,6 +1,6 @@
 package web.browserInteractions;
 
-import engine.broswer.BrowserActions;
+import com.engine.actions.BrowserActions;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
