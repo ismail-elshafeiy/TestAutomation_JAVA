@@ -33,7 +33,7 @@
         <allure-testng.version>2.24.0</allure-testng.version>
         <allure-maven.version>2.12.0</allure-maven.version>
         <allure-maven-report.version>2.10.0</allure-maven-report.version>
-        <extentreports.version>5.0.9</extentreports.version>
+        <extentreports.version>5.1.1</extentreports.version>
         <video-recorder-testng.version>2.0</video-recorder-testng.version>
         <jave-all-deps.version>3.3.1</jave-all-deps.version>
         <!--      Data base -->
