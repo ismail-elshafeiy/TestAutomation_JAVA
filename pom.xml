@@ -13,7 +13,7 @@
 
     <properties>
         <!-- Dependencies and Plug-ins Version Numbers Parameters -->
-        <selenium.version>4.10.0</selenium.version>
+        <selenium.version>4.15.0</selenium.version>
         <playwright.version>1.26.1</playwright.version>
         <appium-java-client.version>8.5.1</appium-java-client.version>
         <webdrivermanager.version>5.5.3</webdrivermanager.version>
