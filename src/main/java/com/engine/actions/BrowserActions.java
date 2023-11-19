@@ -1,6 +1,7 @@
 package com.engine.actions;
 
 import com.engine.Waits;
+import com.engine.constants.FrameworkConstants;
 import com.engine.evidence.Attachments;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
@@ -12,7 +13,6 @@ import com.engine.listeners.CustomReporter;
 
 import java.util.Set;
 
-import static com.engine.driver.DriverHelper.*;
 import static org.testng.Assert.fail;
 
 public class BrowserActions {
@@ -58,7 +58,7 @@ public class BrowserActions {
     }
 
 
-    //************* Windows Methods ************//
+    //*************************************    Windows Methods   **********************************//
     //*********************************************************************************************//
 
     //****** Window Positions and Size ******//
@@ -68,7 +68,7 @@ public class BrowserActions {
             CustomReporter.logStep("[Browser Action] Maximize the Browser Window");
             driver.manage().window().maximize();
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
         }
     }
 
@@ -78,7 +78,7 @@ public class BrowserActions {
             CustomReporter.logStep("[Browser Action] minimize the Browser Window");
             driver.manage().window().minimize();
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
         }
     }
 
@@ -88,7 +88,7 @@ public class BrowserActions {
             CustomReporter.logStep("[Browser Action] Full Screen the Browser Window");
             driver.manage().window().fullscreen();
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
         }
     }
 
@@ -99,19 +99,18 @@ public class BrowserActions {
             Dimension dimension = new Dimension(width, height);
             driver.manage().window().setSize(dimension);
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
         }
     }
 
     @Step("Set the Window Size [{width}], [{height}]")
     public static void setWindowSize(WebDriver driver) {
-
         try {
-            CustomReporter.logStep("[Browser Action] Set Window Resolution as Width [" + width + "] and Height [" + height + "]");
-            Dimension dimension = new Dimension(Integer.parseInt(width), Integer.parseInt(height));
+            CustomReporter.logStep("[Browser Action] Set Window Resolution as Width [" + FrameworkConstants.WIDTH + "] and Height [" + FrameworkConstants.WIDTH + "]");
+            Dimension dimension = new Dimension(Integer.parseInt(FrameworkConstants.WIDTH), Integer.parseInt(FrameworkConstants.HEIGHT));
             driver.manage().window().setSize(dimension);
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
         }
     }
 
@@ -121,7 +120,7 @@ public class BrowserActions {
             Dimension dimension = driver.manage().window().getSize();
             CustomReporter.logStep("[Browser Action] Window Size : [ " + dimension + " ]");
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
         }
     }
 
@@ -131,7 +130,7 @@ public class BrowserActions {
             CustomReporter.logStep("[Browser Action] Set Window Positions");
             driver.manage().window().setPosition(new Point(x, y));
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
         }
     }
 
@@ -141,7 +140,7 @@ public class BrowserActions {
             Point point = driver.manage().window().getPosition();
             CustomReporter.logStep("[Browser Action] Window Positions : [ " + point + " ]");
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
         }
     }
 
@@ -170,7 +169,7 @@ public class BrowserActions {
                 }
             }
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
         }
     }
 
@@ -188,9 +187,9 @@ public class BrowserActions {
                     CustomReporter.logStep("[Browser Action] Switch to new Window Title: " + driver.getTitle());
                 }
             }
-            CustomReporter.logMessage("All Windows= " + handles.size());
+            CustomReporter.logErrorMessage("All Windows= " + handles.size());
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
         }
     }
 
@@ -217,10 +216,10 @@ public class BrowserActions {
             try {
                 driver.quit();
             } catch (WebDriverException rootCauseException) {
-                CustomReporter.logMessage(rootCauseException.getMessage());
+                CustomReporter.logErrorMessage(rootCauseException.getMessage());
             }
         } else {
-            CustomReporter.logMessage("Windows are already closed and the driver object is null.");
+            CustomReporter.logErrorMessage("Windows are already closed and the driver object is null.");
         }
     }
 
@@ -229,7 +228,12 @@ public class BrowserActions {
     //*********************************************************************************************//
 
     public enum AlertAction {
-        ACCEPT, DISMISS, SET_TEXT, GET_TEXT
+        ACCEPT("accept"), DISMISS("dismiss"), SET_TEXT("Text"), GET_TEXT("Get Text");
+        private final String alertType;
+
+        AlertAction(String alertType) {
+            this.alertType = alertType;
+        }
     }
 
     @Step("Confirm the Alert")
@@ -252,7 +256,7 @@ public class BrowserActions {
                 }
             }
         } catch (Exception e) {
-            CustomReporter.logMessage("Alert is not present" + e.getMessage());
+            CustomReporter.logErrorMessage("Alert is not present" + e.getMessage());
         }
 
     }
@@ -264,7 +268,7 @@ public class BrowserActions {
             CustomReporter.logStep("[Browser Action] Send Keys the Alert");
             driver.switchTo().alert().sendKeys(text);
         } catch (Exception e) {
-            CustomReporter.logMessage("Alert is not present" + e.getMessage());
+            CustomReporter.logErrorMessage("Alert is not present" + e.getMessage());
         }
     }
 
@@ -297,7 +301,7 @@ public class BrowserActions {
                 CustomReporter.logStep("Cookie Expiry: " + cookie.getExpiry());
             }
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
 
         }
     }
@@ -318,7 +322,7 @@ public class BrowserActions {
             CustomReporter.logStep("[Browser Action] Switch to Frame by Locator: " + elementLocator.toString());
             driver.switchTo().frame(driver.findElement(elementLocator));
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
         }
     }
 
@@ -336,7 +340,7 @@ public class BrowserActions {
             CustomReporter.logStep("[Browser Action] Switch to Frame by name Or id: " + nameOrId.toString());
             driver.switchTo().frame(nameOrId);
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
         }
     }
 
@@ -354,7 +358,7 @@ public class BrowserActions {
             CustomReporter.logStep("[Browser Action] Switch to Frame by index : " + index);
             driver.switchTo().frame(index);
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
         }
     }
 
@@ -387,7 +391,7 @@ public class BrowserActions {
             driver.navigate().forward();
             CustomReporter.logStep("[Browser Action] Navigate Forward [" + getCurrentUrl(driver) + "]");
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -402,7 +406,7 @@ public class BrowserActions {
             CustomReporter.logStep("[Browser Action] Refresh current page [" + getCurrentUrl(driver) + "]");
             driver.navigate().refresh();
         } catch (Exception e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
             fail(e.getMessage());
         }
         driver.navigate().forward();

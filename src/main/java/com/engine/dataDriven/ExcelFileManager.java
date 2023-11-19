@@ -67,7 +67,7 @@ public class ExcelFileManager {
 			sheet = workbook.getSheet(sheetName);
             CustomReporter.logStep("Switched to sheet: [ " + sheetName + " ] from file: [ " + excelFilePath + " ].");
 		} catch ( Exception e ) {
-            CustomReporter.logMessage("Couldn't find the desired sheet. [ " + sheetName + " ]." + errorMessageException + e.getMessage());
+            CustomReporter.logErrorMessage("Couldn't find the desired sheet. [ " + sheetName + " ]." + errorMessageException + e.getMessage());
 			fail("Couldn't find the desired sheet. [ " + sheetName + " ]." + errorMessageException + e.getMessage());
 		}
 	}
@@ -280,7 +280,7 @@ public class ExcelFileManager {
 			rowCount = getLastRowNumber() - getFirstRowNumber();
             CustomReporter.logStep("Row count from the sheet [" + sheet.getSheetName() + "] is [ " + rowCount + " ]");
 		} catch ( Exception e ) {
-            CustomReporter.logMessage("Can't find the row count from the sheet [" + sheet.getSheetName() + "]  " + errorMessageException + e.getMessage());
+            CustomReporter.logErrorMessage("Can't find the row count from the sheet [" + sheet.getSheetName() + "]  " + errorMessageException + e.getMessage());
 			fail("Can't find the row count from the sheet [" + sheet.getSheetName() + "]  " + errorMessageException + e.getMessage());
 		}
 		return rowCount;

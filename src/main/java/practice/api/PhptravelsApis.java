@@ -16,8 +16,8 @@ import java.util.Map;
 public class PhptravelsApis {
 	// testss
     private RestApiActions apiObject;
-    public static final String BASE_URL = PropertiesReader.getProperty("automationPractice.properties",
-	    "phptravels.baseuri");
+//    public static final String BASE_URL = PropertiesReader.getPropertyValue("automationPractice.properties",
+//	    "phptravels.baseuri");
 
     // Expected status codes
     public enum Status {

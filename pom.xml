@@ -36,6 +36,7 @@
         <extentreports.version>5.0.9</extentreports.version>
         <video-recorder-testng.version>2.0</video-recorder-testng.version>
         <jave-all-deps.version>3.3.1</jave-all-deps.version>
+        <javax.mail.version>1.6.2</javax.mail.version>
         <!--      Data base -->
         <mssql-jdbc.version>9.4.1.jre16-preview</mssql-jdbc.version>
         <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
@@ -94,6 +95,33 @@
             <artifactId>ashot</artifactId>
             <version>0.1.2</version>
         </dependency>
+        <!--https://mvnrepository.com/artifact/com.sun.mail/javax.mail/		 -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>${javax.mail.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client-jetty</artifactId>
+            <version>1.34.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-gmail</artifactId>
+            <version>v1-rev20220404-2.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+        </dependency>
+
 
 
         <!-- APPIUM -->

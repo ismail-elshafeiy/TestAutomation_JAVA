@@ -1,5 +1,6 @@
 package practice.gui.pages.homePage;
 
+import com.engine.constants.FrameworkConstants;
 import practice.gui.pages.inputs.ForgotPasswordPage;
 import practice.gui.pages.inputs.LoginPage;
 import practice.gui.pages.select.DropdownPage;
@@ -10,7 +11,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import com.engine.actions.BrowserActions;
 import com.engine.actions.ElementActions;
-import com.engine.dataDriven.PropertiesReader;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class HomePage {
     }
 
     // Ho
-    private final String homeUrlTau = PropertiesReader.getProperty("project.properties", "TAU.homeUrl");
+    //   private final String homeUrlTau = PropertiesReader.getPropertyValue("config.properties", "TAU.homeUrl");
 
     private final By getAll_LinksInHome = By.xpath("//ul/li/a");
 
@@ -59,7 +59,7 @@ public class HomePage {
      */
 
     public HomePage navigateToHomePage() {
-        BrowserActions.navigateToUrl(driver, homeUrlTau);
+        BrowserActions.navigateToUrl(driver, FrameworkConstants.HOME_URL_TAU);
         return this;
     }
 

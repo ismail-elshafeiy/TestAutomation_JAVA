@@ -1,4 +1,4 @@
-package com.engine.properties;
+package com.engine.config;
 
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Config.HotReload;

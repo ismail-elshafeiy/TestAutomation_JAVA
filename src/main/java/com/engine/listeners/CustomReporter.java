@@ -1,6 +1,7 @@
 package com.engine.listeners;
 
 import com.engine.Helper;
+import com.engine.constants.FrameworkConstants;
 import com.engine.dataDriven.PropertiesReader;
 import com.engine.report.ExtentReport;
 import com.google.common.base.Throwables;
@@ -52,23 +53,23 @@ public class CustomReporter {
 
     @Step("{text}")
     public static void logStep(String text) {
-        createLogEntry(text, Level.INFO);
+        createLog(text, Level.INFO);
         ExtentReport.info(text);
     }
 
     @Step("{text}")
     public static void logWarn(String text) {
-        createLogEntry(text, Level.WARN);
+        createLog(text, Level.WARN);
         ExtentReport.info(text);
     }
     @Step("{logStep}")
     public static void logError(String text) {
-        createLogEntry(text, Level.ERROR);
+        createLog(text, Level.ERROR);
         ExtentReport.info(text);
     }
 
     public static void logConsole(String text) {
-        createLogEntry(text, Level.INFO);
+        createLog(text, Level.INFO);
     }
 
     /**
@@ -76,13 +77,13 @@ public class CustomReporter {
      *
      * @param message logged by exception / assertion message that will be added as a message in the execution report
      */
-    public static void logMessage(String message) {
-        createLogEntry(message, Level.ERROR);
-        ExtentReport.fail(message);
+    public static void logErrorMessage(String message) {
+        createLog(message, Level.ERROR);
+        ExtentReport.fail(FrameworkConstants.ICON_SMILEY_FAIL + " " + message);
     }
 
     public static void fail(String message) {
-        CustomReporter.logMessage(message);
+        CustomReporter.logErrorMessage(message);
         ExtentReport.fail(message);
         Assert.fail(message);
     }
@@ -129,10 +130,10 @@ public class CustomReporter {
     }
 
     public static void logThrowable(Throwable t) {
-        createLogEntry(formatStackTraceToLogEntry(t), Level.ERROR);
+        createLog(formatStackTraceToLogEntry(t), Level.ERROR);
     }
 
-    public static void createLogEntry(String logText, Level loglevel) {
+    public static void createLog(String logText, Level loglevel) {
         String timestamp = (new SimpleDateFormat(TIMESTAMP_FORMAT)).format(new Date(System.currentTimeMillis()));
         if (logText == null) {
             logText = "null";
@@ -145,7 +146,7 @@ public class CustomReporter {
         logger.log(loglevel, logText.trim());
     }
 
-    private static void createLogEntry(String logText, boolean addToConsoleLog) {
+    private static void createLog(String logText, boolean addToConsoleLog) {
         String timestamp = (new SimpleDateFormat(TIMESTAMP_FORMAT)).format(new Date(System.currentTimeMillis()));
         if (logText == null) {
             logText = "null";
@@ -203,7 +204,7 @@ public class CustomReporter {
                 "Exception Stacktrace", formatStackTraceToLogEntry(throwable));
         attachments.add(actualValueAttachment);
         if (failedFileManager != ElementActions.class)
-            CustomReporter.logMessage(message + rootCause);
+            CustomReporter.logErrorMessage(message + rootCause);
         Assert.fail(message + rootCause, throwable);
     }
 
@@ -240,7 +241,7 @@ public class CustomReporter {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logMessage("Console logs not found: " + e.getMessage());
+            CustomReporter.logErrorMessage("Console logs not found: " + e.getMessage());
         } finally {
             writer.close();
         }

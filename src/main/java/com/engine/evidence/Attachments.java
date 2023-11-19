@@ -109,7 +109,7 @@ public class Attachments {
             Files.write(new File("Pdf/" + driver.getTitle() + currentTime + ".pdf").toPath(), OutputType.BYTES.convertFromBase64Png(pdf.getContent()));
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logMessage("Page not printed: " + e.getMessage());
+            CustomReporter.logErrorMessage("Page not printed: " + e.getMessage());
         }
     }
 
@@ -161,7 +161,7 @@ public class Attachments {
                     extentTest.get().info(MediaEntityBuilder.createScreenCaptureFromBase64String(image).build());
                 }
             } catch (IOException e) {
-                CustomReporter.logMessage("Failed to attach screenshot to extentReport.");
+                CustomReporter.logErrorMessage("Failed to attach screenshot to extentReport.");
             }
         }
     }
@@ -177,7 +177,7 @@ public class Attachments {
                     default -> extentTest.get().info(MarkupHelper.createCodeBlock(codeBlock));
                 }
             } catch (IOException e) {
-                CustomReporter.logMessage("Failed to attach code block to extentReport.");
+                CustomReporter.logErrorMessage("Failed to attach code block to extentReport.");
             }
         }
     }

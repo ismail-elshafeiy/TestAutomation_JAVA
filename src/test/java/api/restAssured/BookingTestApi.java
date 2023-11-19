@@ -1,5 +1,6 @@
 package api.restAssured;
 
+import com.engine.constants.FrameworkConstants;
 import practice.api.rest.travels.RestApiBase;
 import practice.api.rest.travels.BookingApis;
 import io.restassured.response.Response;
@@ -18,7 +19,7 @@ public class BookingTestApi {
 
     @BeforeClass
     public void beforeClass() {
-        apiObject = new RestApiActions(RestApiBase.BASE_URL);
+        apiObject = new RestApiActions(FrameworkConstants.BASE_URL);
         apiBase = new RestApiBase(apiObject);
         String token = apiBase.getAccessToken("admin", "password123");
         bookingApis = new BookingApis(apiObject, token);

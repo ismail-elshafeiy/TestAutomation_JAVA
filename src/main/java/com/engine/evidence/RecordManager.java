@@ -52,7 +52,7 @@ public class RecordManager {
                 Attachments.attach("Video Recording", testMethodName,
                         new FileInputStream(pathToRecording.toString()));
             } catch ( FileNotFoundException e ) {
-                CustomReporter.logMessage(e.getMessage());
+                CustomReporter.logErrorMessage(e.getMessage());
             }
         }
     }
@@ -67,7 +67,7 @@ public class RecordManager {
             FileUtils.copyInputStreamToFile(getVideoRecording(), new File(tempFilePath));
             return tempFilePath;
         } catch ( IOException e ) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
             return "";
         }
     }
@@ -82,7 +82,7 @@ public class RecordManager {
             try {
                 inputStream = new FileInputStream(encodeRecording(pathToRecording));
             } catch ( FileNotFoundException e ) {
-                CustomReporter.logMessage(e.getMessage());
+                CustomReporter.logErrorMessage(e.getMessage());
 //                inputStream = new ByteArrayInputStream(new byte[0]);
             }
             recorder.set(null);
@@ -116,7 +116,7 @@ public class RecordManager {
             Encoder encoder = new Encoder();
             encoder.encode(new MultimediaObject(source), target, attrs);
         } catch (EncoderException e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
         }
         return target;
     }

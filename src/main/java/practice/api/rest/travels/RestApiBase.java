@@ -8,19 +8,18 @@ import com.engine.dataDriven.PropertiesReader;
 import com.engine.actions.RestApiActions;
 
 public class RestApiBase {
-    private RestApiActions apiObject;
-    public static final String BASE_URL = PropertiesReader.getProperty(
-            "project.properties", "rest.baseUrl");
+    private final RestApiActions apiObject;
+
 
     public enum StatusCode {
         SUCCESS(200), SUCCESS_DELETE(201);
-        private int code;
+        private final int code;
 
         StatusCode(int code) {
             this.code = code;
         }
 
-        protected int getCode() {
+        int getCode() {
             return code;
         }
     }
@@ -28,13 +27,13 @@ public class RestApiBase {
 
     public enum status {
         SUCCESS("Success"), FAIL("Fail");
-        private String status;
+        private final String status;
 
         status(String status) {
             this.status = status;
         }
 
-        protected String getStatus() {
+        private String getStatus() {
             return status;
         }
     }

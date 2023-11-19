@@ -11,6 +11,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
+import static com.engine.constants.FrameworkConstants.*;
+
 public class DriverHelper {
     /**
      * This class will hold all the browser related methods and variables that we will use in our framework,
@@ -20,21 +22,14 @@ public class DriverHelper {
      */
     protected static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
     protected static EyesManager eyesManager;
-    //  protected static final String EXECUTION_TYPE = ExcelFileManager.getCellData("execution type ", "value");
-    // protected static final String BROWSER_TYPE = ExcelFileManager.getCellData("browser type ", "value");
-
-    //protected static final String HOST = ExcelFileManager.getCellData("host", "value");
-    //protected static final String PORT = ExcelFileManager.getCellData("port", "value");
-    public static final String EXECUTION_TYPE = PropertiesReader.getProperty("project.properties", "executionType");
-    public static final String BROWSER_TYPE = PropertiesReader.getProperty("project.properties", "browserType");
-    public static final String HOST = PropertiesReader.getProperty("project.properties", "host");
-    public static final String PORT = PropertiesReader.getProperty("project.properties", "port");
-    public static String width = PropertiesReader.getProperty("project.properties", "width");
-    public static String height = PropertiesReader.getProperty("project.properties", "height");
-    // public static final int TIMEOUT_EXPLICIT = Integer.parseInt(ExcelFileManager.getCellData("timeout explicit", "value"));
-    //public static final int POLLING = Integer.parseInt(ExcelFileManager.getCellData("polling fluent", "value"));
-    public static final int TIMEOUT_EXPLICIT = Integer.parseInt(PropertiesReader.getProperty("project.properties", "timeoutImplicitDefault"));
-    public static final int POLLING = Integer.parseInt(PropertiesReader.getProperty("project.properties", "fluentWaitpolling"));
+//    public static final String EXECUTION_TYPE = PropertiesReader.getPropertyValue("config.properties", "executionType");
+//    public static final String BROWSER_TYPE = PropertiesReader.getPropertyValue("config.properties", "browserType");
+//    public static final String HOST = PropertiesReader.getPropertyValue("config.properties", "host");
+//    public static final String PORT = PropertiesReader.getPropertyValue("config.properties", "port");
+//    public static String width = PropertiesReader.getPropertyValue("config.properties", "width");
+//    public static String height = PropertiesReader.getPropertyValue("config.properties", "height");
+//    public static final int TIMEOUT_EXPLICIT = Integer.parseInt(PropertiesReader.getPropertyValue("config.properties", "timeoutImplicitDefault"));
+//    public static final int POLLING = Integer.parseInt(PropertiesReader.getPropertyValue("config.properties", "fluentWaitpolling"));
 
     /**
      * This enum will hold the browser types that we support in our framework (chrome, firefox, edge)
@@ -118,7 +113,7 @@ public class DriverHelper {
                 BrowserActions.setWindowSize(driver.get());
             }
         } catch (Exception e) {
-            CustomReporter.logMessage("Error while set window size :" + e.getMessage());
+            CustomReporter.logErrorMessage("Error while set window size :" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -127,13 +122,13 @@ public class DriverHelper {
         try {
             String timeoutImplicit = "";
             if (timeoutImplicit.equalsIgnoreCase("") || TIMEOUT_EXPLICIT > 30) {
-                String timeoutImplicitDefault = PropertiesReader.getProperty("project.properties", "timeoutImplicitDefault");
-                Waits.implicitWait(driver.get(), Integer.parseInt(timeoutImplicitDefault));
+                // String timeoutImplicitDefault = PropertiesReader.getPropertyValue("config.properties", "timeoutImplicitDefault");
+                Waits.implicitWait(driver.get(), TIMEOUT_EXPLICIT);
             } else {
                 Waits.implicitWait(driver.get(), Integer.parseInt(timeoutImplicit));
             }
         } catch (Exception e) {
-            CustomReporter.logMessage("Error while set implicit wait :" + e.getMessage());
+            CustomReporter.logErrorMessage("Error while set implicit wait :" + e.getMessage());
             e.printStackTrace();
         }
     }

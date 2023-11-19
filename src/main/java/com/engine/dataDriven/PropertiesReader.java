@@ -1,39 +1,83 @@
 package com.engine.dataDriven;
 
+import com.engine.actions.FileActions;
 import com.engine.listeners.CustomReporter;
 import lombok.Getter;
 import org.openqa.selenium.MutableCapabilities;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.LinkedList;
 import java.util.Properties;
 
 public class PropertiesReader {
 
     @Getter
     private static final String CUSTOM_PROPERTIES_FOLDER_PATH = "src/main/resources/properties";
+
 	private static FileReader reader = null;
-	public static final String propertiesFileName = "project.properties";
-	private static Properties p = new Properties();
+	public static final String propertiesFileName = "config.properties";
+	private static Properties properties;
+	private static String linkFile;
+	private static FileInputStream file;
+	private static FileOutputStream out;
 
+	public static Properties loadAllFiles() {
+		LinkedList<String> files = new LinkedList<>();
+		files.add("src/main/resources/properties/config.properties");
+		files.add("src/main/resources/properties/allure.properties");
+		try {
+			properties = new Properties();
+			for (String f : files) {
+				Properties tempProp = new Properties();
+				linkFile = FileActions.getDir() + f;
+				file = new FileInputStream(linkFile);
+				tempProp.load(file);
+				properties.putAll(tempProp);
+			}
+			file.close();
+			CustomReporter.logStep("Loaded all properties files.");
+			return properties;
+		} catch (IOException e) {
+			CustomReporter.logErrorMessage("Warning !! Can not Load All File.");
+			return new Properties();
+		}
+	}
 
-	public static String getProperty (String propertyFileName, String propertyName) {
+	public static String getPropertyValue(String propertyFileName, String propertyName) {
         String propPath = getCUSTOM_PROPERTIES_FOLDER_PATH() + "/" + propertyFileName;
+		properties = new Properties();
 		try {
 			reader = new FileReader(propPath);
 		} catch ( FileNotFoundException e ) {
-            CustomReporter.logMessage("No file found in the given path: " + propPath);
+			CustomReporter.logErrorMessage(e.getMessage() + " No file found in the given path: " + propPath);
 			e.printStackTrace();
 		}
 		try {
-			p.load(reader);
+			properties.load(reader);
 		} catch ( IOException e ) {
-            CustomReporter.logMessage("Couldn't find any properties with the given property name: " + propertyName);
+			CustomReporter.logErrorMessage(e.getMessage() + " Couldn't find any properties with the given property name: " + propertyName);
 			e.printStackTrace();
 		}
-        CustomReporter.logStep("Property value for [ " + propertyName + " ] is: [" + p.getProperty(propertyName) + "] from file: [ " + propertyFileName + " ]");
-		return p.getProperty(propertyName);
+		CustomReporter.logStep("Property value for [ " + propertyName + " ] is: [" + properties.getProperty(propertyName) + "] from file: [ " + propertyFileName + " ]");
+		return properties.getProperty(propertyName);
+	}
+
+	public static void setPropertyValue(String propertiesFileName, String key, String value) {
+		String propPath = getCUSTOM_PROPERTIES_FOLDER_PATH() + "/" + propertiesFileName;
+		properties = new Properties();
+		try {
+			out = new FileOutputStream(propPath);
+		} catch (FileNotFoundException e) {
+			CustomReporter.logErrorMessage(e.getMessage() + " No file found in the given path: " + propPath);
+			e.printStackTrace();
+		}
+		try {
+			properties.setProperty(key, value);
+			properties.store(out, "Set value for key: " + key + " to: " + value);
+		} catch (Exception e) {
+			CustomReporter.logErrorMessage(e.getMessage() + " Couldn't find any properties with the given property name: " + key);
+			e.printStackTrace();
+		}
 	}
 	public static MutableCapabilities getCustomWebDriverDesiredCapabilities() {
 		MutableCapabilities customDriverOptions = new MutableCapabilities();

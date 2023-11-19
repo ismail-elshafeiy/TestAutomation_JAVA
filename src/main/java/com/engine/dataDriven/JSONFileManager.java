@@ -31,7 +31,7 @@ public class JSONFileManager {
         try {
             filePath = (new File(relativePath)).getAbsolutePath();
         } catch (Exception var3) {
-            CustomReporter.logMessage(String.valueOf(var3));
+            CustomReporter.logErrorMessage(String.valueOf(var3));
         }
         return filePath;
     }
@@ -41,8 +41,8 @@ public class JSONFileManager {
         try {
             this.reader = new FileReader(getAbsolutePath(this.jsonFilePath));
         } catch (FileNotFoundException var2) {
-            CustomReporter.logMessage(String.valueOf(var2));
-            CustomReporter.logMessage("Couldn't read the file. [" + this.jsonFilePath + "].");
+            CustomReporter.logErrorMessage(String.valueOf(var2));
+            CustomReporter.logErrorMessage("Couldn't read the file. [" + this.jsonFilePath + "].");
             Assert.fail("Couldn't find the file. [" + this.jsonFilePath + "].");
         }
     }
@@ -72,12 +72,12 @@ public class JSONFileManager {
                     break;
             }
         } catch (ClassCastException var5) {
-            CustomReporter.logMessage(String.valueOf(var5));
-            CustomReporter.logMessage("Incorrect jsonPath. [" + jsonPath + "].");
+            CustomReporter.logErrorMessage(String.valueOf(var5));
+            CustomReporter.logErrorMessage("Incorrect jsonPath. [" + jsonPath + "].");
             Assert.fail("Incorrect jsonPath. [" + jsonPath + "].");
         } catch (IllegalArgumentException | JsonPathException var6) {
-            CustomReporter.logMessage(String.valueOf(var6));
-            CustomReporter.logMessage("Couldn't read the file. [" + this.jsonFilePath + "].");
+            CustomReporter.logErrorMessage(String.valueOf(var6));
+            CustomReporter.logErrorMessage("Couldn't read the file. [" + this.jsonFilePath + "].");
             Assert.fail("Couldn't read the  file. [" + this.jsonFilePath + "].");
         }
         return testData;

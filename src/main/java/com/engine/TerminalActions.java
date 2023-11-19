@@ -163,9 +163,9 @@ public class TerminalActions {
         }
 
         if (!attachments.equals(new ArrayList<>())) {
-            CustomReporter.logMessage(message);
+            CustomReporter.logErrorMessage(message);
         } else {
-            CustomReporter.logMessage(message);
+            CustomReporter.logErrorMessage(message);
         }
         return message;
     }
@@ -286,7 +286,7 @@ public class TerminalActions {
             session = jsch.getSession(sshUsername, sshHostName, sshPortNumber);
             session.setConfig(config);
             session.connect();
-            CustomReporter.logMessage("Successfully created SSH Session.");
+            CustomReporter.logErrorMessage("Successfully created SSH Session.");
         } catch (JSchException rootCauseException) {
             failAction(testData, rootCauseException);
         }
@@ -326,7 +326,7 @@ public class TerminalActions {
         String finalDirectory = directory;
         internalCommands.forEach(command -> {
             command = command.contains(".bat") && !command.contains(".\\") ? ".\\" + command : command;
-            CustomReporter.logMessage("Executing: \"" + command + "\" locally.");
+            CustomReporter.logErrorMessage("Executing: \"" + command + "\" locally.");
             try {
                 ProcessBuilder pb = new ProcessBuilder();
                 pb.directory(new File(finalDirectory));
@@ -350,7 +350,7 @@ public class TerminalActions {
                     BufferedReader rdr = new BufferedReader(isr);
                     while ((line = rdr.readLine()) != null) {
                         if (Boolean.TRUE.equals(verbose)) {
-                            CustomReporter.logMessage(line);
+                            CustomReporter.logErrorMessage(line);
                         }
                         logs.append(line);
                         logs.append("\n");
@@ -359,7 +359,7 @@ public class TerminalActions {
                     rdr = new BufferedReader(isr);
                     while ((line = rdr.readLine()) != null) {
                         if (Boolean.TRUE.equals(verbose)) {
-                            CustomReporter.logMessage(line);
+                            CustomReporter.logErrorMessage(line);
                         }
                         logs.append("\n");
                         logs.append(line);
@@ -395,7 +395,7 @@ public class TerminalActions {
         StringBuilder exitStatuses = new StringBuilder();
         int sessionTimeout = Integer.parseInt(String.valueOf(60 * 1000));
         // remote execution
-        CustomReporter.logMessage(
+        CustomReporter.logErrorMessage(
                 "Attempting to perform the following command remotely. Command: \"" + longCommand + "\"");
         Session remoteSession = createSSHsession();
         if (remoteSession != null) {

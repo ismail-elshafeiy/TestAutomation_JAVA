@@ -31,8 +31,8 @@ public class ScreenshotManager {
     private static final org.openqa.selenium.Dimension TARGET_WINDOW_SIZE = new Dimension(1920, 1080);
     private static ThreadLocal<ImageOutputStream> gifOutputStream = new ThreadLocal<>();
     private static ThreadLocal<AnimatedGifManager> gifWriter = new ThreadLocal<>();
-    private static String gifOptions = System.getProperty("project.properties", "createAnimatedGif");
-    private static String gifDelay = System.getProperty("project.properties", "animatedGif_frameDelay");
+    private static String gifOptions = System.getProperty("config.properties", "createAnimatedGif");
+    private static String gifDelay = System.getProperty("config.properties", "animatedGif_frameDelay");
 
     public static String attachAnimatedGif() {
         // stop and attach
@@ -55,7 +55,7 @@ public class ScreenshotManager {
                 // this happens when the gif fails to start, maybe the browser window was
                 // already closed
             } catch (IOException | NullPointerException | IllegalStateException e) {
-                CustomReporter.logMessage(e.getMessage());
+                CustomReporter.logErrorMessage(e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -106,7 +106,7 @@ public class ScreenshotManager {
                 // method
                 // or this happens when the window is already closed
             } catch (IOException | WebDriverException e) {
-                CustomReporter.logMessage(e.getMessage());
+                CustomReporter.logErrorMessage(e.getMessage());
             }
         }
     }
@@ -138,7 +138,7 @@ public class ScreenshotManager {
             // leave the gif intact and will attach it even after failing to append to it
         } catch (WebDriverException | IOException | IllegalStateException | IllegalArgumentException |
                  NullPointerException e) {
-            CustomReporter.logMessage(e.getMessage());
+            CustomReporter.logErrorMessage(e.getMessage());
             e.printStackTrace();
         }
     }

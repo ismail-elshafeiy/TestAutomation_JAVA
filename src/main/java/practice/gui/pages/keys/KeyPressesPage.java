@@ -17,7 +17,7 @@ public class KeyPressesPage {
 
     public KeyPressesPage enterText(String text) {
         ElementActions.type(driver, inputField, text);
-        ElementActions.clickKeyboardKey(driver, inputField,Keys.BACK_SPACE);
+        ElementActions.keyPress(driver, inputField, Keys.BACK_SPACE);
         return this;
     }
 

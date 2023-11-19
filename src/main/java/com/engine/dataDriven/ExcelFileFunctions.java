@@ -48,7 +48,7 @@ class ExcelFileFunctions {
 			fis.close();
             CustomReporter.logStep("File has been loaded successfully --> File Path: " + filePathFromRoot);
 		} catch ( IOException | OutOfMemoryError e ) {
-            CustomReporter.logMessage(fileErrorMessage + errorMessageException + e.getMessage());
+            CustomReporter.logErrorMessage(fileErrorMessage + errorMessageException + e.getMessage());
 			Assert.fail(fileErrorMessage + errorMessageException + e.getMessage());
 		}
 	}
@@ -65,7 +65,7 @@ class ExcelFileFunctions {
 			//creating a Sheet object
 			currentSheet = workbook.getSheet(sheetName);
 		} catch ( Exception e ) {
-            CustomReporter.logMessage("Error in reading data from excel file... Message --> " + e.getMessage());
+            CustomReporter.logErrorMessage("Error in reading data from excel file... Message --> " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -85,7 +85,7 @@ class ExcelFileFunctions {
 				//Logger.logStep("Column sheetName: [ " + cell.getStringCellValue() + " ], Column index: [ " + cell.getColumnIndex() + " ].");
 			});
 		} catch ( Exception e ) {
-            CustomReporter.logMessage(testMethodName + "Couldn't find the desired sheet. [ " + sheetName + " ]." + errorMessageException + e.getMessage());
+            CustomReporter.logErrorMessage(testMethodName + "Couldn't find the desired sheet. [ " + sheetName + " ]." + errorMessageException + e.getMessage());
 			Assert.fail(testMethodName + "Couldn't find the desired sheet. [ " + sheetName + " ]." + errorMessageException + e.getMessage());
 		}
 	}
@@ -107,7 +107,7 @@ class ExcelFileFunctions {
             CustomReporter.logStep("Getting cell data from column [ " + columnName + " ] and row [ " + rowNumber + " ] from sheet [ " + currentSheet.getSheetName() + " ]");
 			return getCellDataAsString(dataRow.getCell(columns.get(columnName)));
 		} catch ( Exception e ) {
-            CustomReporter.logMessage(columnErrorMessage + errorMessageException + e.getMessage());
+            CustomReporter.logErrorMessage(columnErrorMessage + errorMessageException + e.getMessage());
 			fail(columnErrorMessage + errorMessageException + e.getMessage());
 		}
 		return null;
@@ -124,7 +124,7 @@ class ExcelFileFunctions {
             CustomReporter.logStep("Getting cell data from column [ " + columnName + " ] and row [ " + rowNumber + " ] from sheet [ " + currentSheet.getSheetName() + " ]");
 			return getCellDataAsString(dataRow.getCell(columns.get(columnName)));
 		} catch ( Exception e ) {
-            CustomReporter.logMessage(columnErrorMessage + errorMessageException + e.getMessage());
+            CustomReporter.logErrorMessage(columnErrorMessage + errorMessageException + e.getMessage());
 			fail(columnErrorMessage + errorMessageException + e.getMessage());
 		}
 		return null;
@@ -147,7 +147,7 @@ class ExcelFileFunctions {
 		switchToSheet(sheetName);
 		Row dataRow = currentSheet.getRow(rowNumber - 1);
 		if ( dataRow == null ) {
-            CustomReporter.logMessage(testMethodName + "Can't find the row number [" + rowNumber + "] from the sheet [" + currentSheet.getSheetName() + "] ");
+            CustomReporter.logErrorMessage(testMethodName + "Can't find the row number [" + rowNumber + "] from the sheet [" + currentSheet.getSheetName() + "] ");
 			fail(testMethodName + "Can't find the row number [" + rowNumber + "] from the sheet [" + currentSheet.getSheetName() + "]");
 		}
 		return getCellDataAsString(dataRow.getCell(columnNumber));
@@ -165,10 +165,10 @@ class ExcelFileFunctions {
             CustomReporter.logStep("Getting the cell data from the column name: [ " + columnName + " ] from the sheet [ " + currentSheet.getSheetName() + " ] ");
 			return getCellData(2, columnName);
 		} catch ( NullPointerException e ) {
-            CustomReporter.logMessage("Can't find the columnName name [" + columnName + "] from the sheet [" + currentSheet.getSheetName() + "]  " + errorMessageException + e.getMessage() + testMethodName);
+            CustomReporter.logErrorMessage("Can't find the columnName name [" + columnName + "] from the sheet [" + currentSheet.getSheetName() + "]  " + errorMessageException + e.getMessage() + testMethodName);
 			fail("Can't find the columnName name [" + columnName + "]..Null Pointer Exception --> " + errorMessageException + e.getMessage() + testMethodName);
 		} catch ( Exception e ) {
-            CustomReporter.logMessage("Can't find the columnName Name name [" + columnName + "]........" + errorMessageException + e.getMessage() + testMethodName);
+            CustomReporter.logErrorMessage("Can't find the columnName Name name [" + columnName + "]........" + errorMessageException + e.getMessage() + testMethodName);
 			fail("Can't find the columnName Name name [" + columnName + "]........" + errorMessageException + e.getMessage() + testMethodName);
 		}
 		return columnName;
@@ -194,7 +194,7 @@ class ExcelFileFunctions {
 			workbook.write(fos);
 			fos.close();
 		} catch ( Exception e ) {
-            CustomReporter.logMessage(columnErrorMessage + errorMessageException + e.getMessage());
+            CustomReporter.logErrorMessage(columnErrorMessage + errorMessageException + e.getMessage());
 			fail(columnErrorMessage + errorMessageException + e.getMessage());
 		}
 	}
@@ -213,7 +213,7 @@ class ExcelFileFunctions {
 			rowCount = getLastRowNumber() - getFirstRowNumber();
             CustomReporter.logStep("Row count from the sheet [" + currentSheet.getSheetName() + "] is [ " + rowCount + " ]");
 		} catch ( Exception e ) {
-            CustomReporter.logMessage("Can't find the row count from the sheet [" + currentSheet.getSheetName() + "]  " + errorMessageException + e.getMessage() + testMethodName);
+            CustomReporter.logErrorMessage("Can't find the row count from the sheet [" + currentSheet.getSheetName() + "]  " + errorMessageException + e.getMessage() + testMethodName);
 			fail("Can't find the row count from the sheet [" + currentSheet.getSheetName() + "]  " + errorMessageException + e.getMessage() + testMethodName);
 		}
 		return rowCount;

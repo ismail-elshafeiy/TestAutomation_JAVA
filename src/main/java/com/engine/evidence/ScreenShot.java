@@ -33,7 +33,7 @@ public class ScreenShot {
 			FileUtils.copyFile(srcFile, new File("./ScreenShot/" + Helper.getTestMethodName() + ".png"));
 		} catch ( Exception e ) {
 			e.printStackTrace();
-            CustomReporter.logMessage("Screenshot not taken: " + e.getMessage());
+            CustomReporter.logErrorMessage("Screenshot not taken: " + e.getMessage());
 		}
 	}
 
@@ -53,7 +53,7 @@ public class ScreenShot {
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
-            CustomReporter.logMessage("Screenshot not taken: " + e.getMessage());
+            CustomReporter.logErrorMessage("Screenshot not taken: " + e.getMessage());
 		}
 	}
 
@@ -72,7 +72,7 @@ public class ScreenShot {
 			FileUtils.copyFile(srcFile, new File("./ScreenShot/" + locatorName + ".png"));
 		} catch ( Exception e ) {
 			e.printStackTrace();
-            CustomReporter.logMessage("Element Screenshot not taken: " + e.getMessage());
+            CustomReporter.logErrorMessage("Element Screenshot not taken: " + e.getMessage());
 		}
 	}
 
@@ -89,7 +89,7 @@ public class ScreenShot {
 			FileUtils.copyFile(source, new File("./ScreenShot/" + imageName + "_FullPage.png"));
 		} catch ( Exception e ) {
 			e.printStackTrace();
-            CustomReporter.logMessage("Full Page Screenshot not taken: " + e.getMessage());
+            CustomReporter.logErrorMessage("Full Page Screenshot not taken: " + e.getMessage());
         }
     }
 
