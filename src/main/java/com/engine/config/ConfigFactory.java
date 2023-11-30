@@ -9,8 +9,8 @@ public class ConfigFactory {
     private ConfigFactory() {
     }
 
-    public static Configuration getConfigs() {
-        return ConfigCache.getOrCreate(Configuration.class);
+    public static Configurations getConfigs() {
+        return ConfigCache.getOrCreate(Configurations.class);
 
     }
 

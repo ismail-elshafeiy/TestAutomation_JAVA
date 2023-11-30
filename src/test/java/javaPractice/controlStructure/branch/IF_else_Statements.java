@@ -2,7 +2,7 @@ package javaPractice.controlStructure.branch;
 
 import java.util.Scanner;
 
-public class B_if_else_Statements {
+public class IF_else_Statements {
 
     /*
      * IF ELSE
@@ -13,6 +13,7 @@ public class B_if_else_Statements {
 
 
     public static void main(String args[]) {
+
 
         //Initialize values we know
         int quota = 10;

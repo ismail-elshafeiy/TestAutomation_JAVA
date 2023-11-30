@@ -7,7 +7,7 @@ import java.util.Scanner;
  * NESTED LOOPS:
  * Find the average of each student's test scores
  */
-public class D_NestedLoop {
+public class NestedLoop {
 
     public static void main(String args[]) {
 

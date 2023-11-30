@@ -18,10 +18,13 @@ public class B_HomeAreaCalculator {
         /*******************
          * RECTANGLE 1
          ********************/
+        System.out.println("Enter your name:");
+        Scanner scanner = new Scanner(System.in);
+        String name = scanner.next();
+        greetUser(name);
 
         //Create instance of Rectangle class
         A_Rectangle room1 = new A_Rectangle();
-        Scanner scanner = new Scanner(System.in);
 
         System.out.println("please enter the width of room");
         room1.setWidth(scanner.nextDouble());
@@ -45,5 +48,11 @@ public class B_HomeAreaCalculator {
         double totalArea = areaOfRoom1 + areaOfRoom2;
 
         System.out.println("Area of both rooms: " + totalArea);
+        scanner.close();
+    }
+
+    public static void greetUser(String name) {
+
+        System.out.println("Hi there, " + name);
     }
 }

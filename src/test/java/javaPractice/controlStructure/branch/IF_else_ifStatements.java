@@ -2,7 +2,7 @@ package javaPractice.controlStructure.branch;
 
 import java.util.Scanner;
 
-public class D_If_else_ifStatements {
+public class IF_else_ifStatements {
     /**
      * "The if-Else-if_Statement"  is interchangeable with  " Switch Statement "
      * If situation A occurs, do something.

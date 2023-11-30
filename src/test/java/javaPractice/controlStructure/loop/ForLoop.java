@@ -2,7 +2,7 @@ package javaPractice.controlStructure.loop;
 
 import java.util.Scanner;
 
-public class C2_ForLoop {
+public class ForLoop {
 
     /*
      * LOOP BREAK
@@ -35,12 +35,25 @@ public class C2_ForLoop {
         }
     }
 
-    public static class L3_ForLoop {
+    public static class ForLoop2 {
 
         public static void main(String[] args) {
             for (int i = 0; i < 5; i++) {
                 System.out.println("The loop control variable value is : " + i);
             }
+        }
+
+    }
+
+    public static class DoWhileLoop {
+
+        public static void main(String[] args) {
+            int i = 0;
+            do {
+                System.out.println("The Variable value is : " + i);
+                i++;
+
+            } while (i < 5);
         }
 
     }

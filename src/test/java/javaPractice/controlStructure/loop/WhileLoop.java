@@ -12,7 +12,7 @@ import java.util.Scanner;
  *
  *
  */
-public class A_WhileLoop {
+public class WhileLoop {
 
     public static void main(String args[]) {
 
@@ -36,6 +36,12 @@ public class A_WhileLoop {
         //Calculate gross
         double gross = rate * hoursWorked;
         System.out.println("Gross pay: $" + gross);
+        int i = 0;
+
+        while (i <= 5) {
+            System.out.println("The variable value is :" + i);
+            i++;
+        }
 
     }
 }

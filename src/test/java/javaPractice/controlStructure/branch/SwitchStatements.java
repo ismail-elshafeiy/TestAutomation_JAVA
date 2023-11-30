@@ -2,7 +2,7 @@ package javaPractice.controlStructure.branch;
 
 import java.util.Scanner;
 
-public class E_SwitchStatements {
+public class SwitchStatements {
     /*
      *
      * " The Switch Statement " is interchangeable with " if-Else-if_Statement "

@@ -2,7 +2,7 @@ package javaPractice.controlStructure.branch;
 
 import java.util.Scanner;
 
-public class if_Statements {
+public class IF_Statements {
     public static void main(String args[]) {
 
         //Initialize known values

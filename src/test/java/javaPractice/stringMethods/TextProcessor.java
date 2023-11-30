@@ -1,4 +1,4 @@
-package javaPractice.string;
+package javaPractice.stringMethods;
 
 public class TextProcessor {
 

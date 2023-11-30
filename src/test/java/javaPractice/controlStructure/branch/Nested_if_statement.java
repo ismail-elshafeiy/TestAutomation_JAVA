@@ -9,7 +9,7 @@ import java.util.Scanner;
  *
  * in this Case the user should make for example 2 Condition If (U=1){(if U=2) Ok, Do that }
  */
-public class C_Nested_if_statement {
+public class Nested_if_statement {
 
     public static void main(String args[]) {
 
