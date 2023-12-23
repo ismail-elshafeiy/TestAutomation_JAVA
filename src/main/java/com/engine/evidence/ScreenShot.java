@@ -1,7 +1,7 @@
 package com.engine.evidence;
 
 import com.engine.Helper;
-import com.engine.listeners.CustomReporter;
+import com.engine.reports.CustomReporter;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -12,6 +12,7 @@ import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
+import java.awt.image.BufferedImage;
 import java.io.*;
 
 public class ScreenShot {
@@ -28,7 +29,7 @@ public class ScreenShot {
 	 */
 	public static void takeScreenShotToFile (WebDriver driver) {
 		try {
-            CustomReporter.logStep("Screenshot taken for Test Case ..... [" + Helper.getTestMethodName() + "]");
+            CustomReporter.logInfoStep("Screenshot taken for Test Case ..... [" + Helper.getTestMethodName() + "]");
 			File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 			FileUtils.copyFile(srcFile, new File("./ScreenShot/" + Helper.getTestMethodName() + ".png"));
 		} catch ( Exception e ) {
@@ -48,7 +49,7 @@ public class ScreenShot {
 	public static void takeScreenShotToFile (WebDriver driver, ITestResult result) {
 		try {
 			if ( ITestResult.FAILURE == result.getStatus() ) {
-                CustomReporter.logStep("Screenshot taken for Test Case Failed ..... [" + result.getName() + "]");
+                CustomReporter.logInfoStep("Screenshot taken for Test Case Failed ..... [" + result.getName() + "]");
 				takeScreenShotToFile(driver);
 			}
 		} catch ( Exception e ) {
@@ -67,7 +68,7 @@ public class ScreenShot {
 	public static void takeElementScreenShot (WebDriver driver, By locator) {
 		String locatorName = driver.findElement(locator).getText();
 		try {
-            CustomReporter.logStep("Screenshot taken for Element ..... [" + locatorName + "]");
+            CustomReporter.logInfoStep("Screenshot taken for Element ..... [" + locatorName + "]");
 			File srcFile = driver.findElement(locator).getScreenshotAs(OutputType.FILE);
 			FileUtils.copyFile(srcFile, new File("./ScreenShot/" + locatorName + ".png"));
 		} catch ( Exception e ) {
@@ -93,16 +94,29 @@ public class ScreenShot {
         }
     }
 
-    public static void takeFullScreenShoot(WebDriver driver) {
+    public static void takeFullScreenShoot(WebDriver driver, String filePath) {
 
         //take screenshot of the entire page
-        Screenshot screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(100)).takeScreenshot(driver);
+        Screenshot screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000)).takeScreenshot(driver);
         try {
-            ImageIO.write(screenshot.getImage(), "PNG", new File("src/test/resources/downloadFiles/" + Helper.getTestMethodName() + ".png"));
+            ImageIO.write(screenshot.getImage(), "PNG", new File(filePath + Helper.getTestMethodName() + ".png"));
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 	}
+
+    public static BufferedImage takeFullScreenShoot2(WebDriver driver, String filePath) {
+
+        //take screenshot of the entire page
+        Screenshot screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000)).takeScreenshot(driver);
+        try {
+            ImageIO.write(screenshot.getImage(), "PNG", new File(filePath + Helper.getTestMethodName() + ".png"));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return screenshot.getImage();
+    }
 
 }

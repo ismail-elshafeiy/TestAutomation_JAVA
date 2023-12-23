@@ -2,8 +2,7 @@ package com.engine.driver;
 
 import com.engine.Waits;
 import com.engine.actions.BrowserActions;
-import com.engine.dataDriven.PropertiesReader;
-import com.engine.listeners.CustomReporter;
+import com.engine.reports.CustomReporter;
 import com.engine.validations.EyesManager;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;

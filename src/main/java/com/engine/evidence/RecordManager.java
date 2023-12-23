@@ -5,7 +5,8 @@ import com.automation.remarks.video.recorder.IVideoRecorder;
 import com.automation.remarks.video.recorder.VideoRecorder;
 
 import com.engine.Helper;
-import com.engine.listeners.CustomReporter;
+import com.engine.reports.CustomReporter;
+import com.engine.reports.Attachments;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 

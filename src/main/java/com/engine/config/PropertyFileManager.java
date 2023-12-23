@@ -1,11 +1,10 @@
 package com.engine.config;
 
 import com.engine.actions.FileActions;
-import com.engine.listeners.CustomReporter;
+import com.engine.reports.CustomReporter;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.MutableCapabilities;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,7 +12,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Objects;
-
 public final class PropertyFileManager {
 
     @Getter
@@ -37,7 +35,7 @@ public final class PropertyFileManager {
 
     private static void readPropertyFiles(String propertiesFolderPath) {
         if (propertiesFolderPath != null) {
-            CustomReporter.logStep("Reading properties directory: " + propertiesFolderPath);
+            CustomReporter.logInfoStep("Reading properties directory: " + propertiesFolderPath);
             try {
                 java.util.Properties properties = new java.util.Properties();
                 if (propertiesFolderPath.contains(".jar")) {
@@ -54,7 +52,7 @@ public final class PropertyFileManager {
                     File propertyFile;
                     for (int i = 0; i < propertiesFilesList.size(); i++) {
                         propertyFile = (File) (propertiesFilesList.toArray())[i];
-                        CustomReporter.logStep("Loading properties file: " + propertyFile);
+                        CustomReporter.logInfoStep("Loading properties file: " + propertyFile);
                         loadPropertiesFileIntoSystemProperties(properties, propertyFile);
                     }
                 } else {

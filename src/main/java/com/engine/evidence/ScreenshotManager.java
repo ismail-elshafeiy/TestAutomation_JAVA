@@ -2,7 +2,8 @@ package com.engine.evidence;
 
 import com.engine.Helper;
 import com.engine.actions.FileActions;
-import com.engine.listeners.CustomReporter;
+import com.engine.reports.CustomReporter;
+import com.engine.reports.Attachments;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.imgscalr.Scalr;

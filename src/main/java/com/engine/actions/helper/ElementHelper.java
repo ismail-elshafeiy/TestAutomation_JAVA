@@ -1,7 +1,7 @@
 package com.engine.actions.helper;
 
 import com.engine.Waits;
-import com.engine.listeners.CustomReporter;
+import com.engine.reports.CustomReporter;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -26,7 +26,7 @@ public class ElementHelper {
 			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(false);", driver.findElement(elementLocator));
 			// Check if the element is displayed
 			if (!driver.findElement(elementLocator).isDisplayed()) {
-                CustomReporter.logStep("The element [" + elementLocator.toString() + "] is not Displayed");
+                CustomReporter.logInfoStep("The element [" + elementLocator.toString() + "] is not Displayed");
 				fail("The element [" + elementLocator + "] is not Displayed");
 			}
 		} catch (Exception toe) {

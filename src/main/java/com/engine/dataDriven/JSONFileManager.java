@@ -1,8 +1,10 @@
 package com.engine.dataDriven;
 
-import com.engine.listeners.CustomReporter;
+import com.engine.reports.CustomReporter;
 import io.restassured.path.json.JsonPath;
 import io.restassured.path.json.exception.JsonPathException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.testng.Assert;
 
 import java.io.File;
@@ -11,8 +13,9 @@ import java.io.FileReader;
 
 
 public class JSONFileManager {
-    private final String jsonFilePath;
-    private FileReader reader = null;
+    private String jsonFilePath;
+    private static FileReader reader = null;
+
 
     /**
      * Enter yot JSONFile Path
@@ -23,29 +26,26 @@ public class JSONFileManager {
     public JSONFileManager(String jsonFilePath) {
         this.jsonFilePath = jsonFilePath;
         this.initializeReader();
-
     }
 
-    public static String getAbsolutePath(String relativePath) {
-        String filePath = "";
+    public JSONFileManager() {
+    }
+
+    public static JSONObject getTestData(String jsonFilePath, String dataFileName) {
+        JSONObject jsonObject = null;
         try {
-            filePath = (new File(relativePath)).getAbsolutePath();
-        } catch (Exception var3) {
-            CustomReporter.logErrorMessage(String.valueOf(var3));
+            reader = new FileReader(jsonFilePath + dataFileName);
+            JSONParser jsonParser = new JSONParser();
+            jsonObject = (JSONObject) jsonParser.parse(reader);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        return filePath;
+        return jsonObject;
     }
 
-    private void initializeReader() {
-        this.reader = null;
-        try {
-            this.reader = new FileReader(getAbsolutePath(this.jsonFilePath));
-        } catch (FileNotFoundException var2) {
-            CustomReporter.logErrorMessage(String.valueOf(var2));
-            CustomReporter.logErrorMessage("Couldn't read the file. [" + this.jsonFilePath + "].");
-            Assert.fail("Couldn't find the file. [" + this.jsonFilePath + "].");
-        }
-    }
+
+
+
 
     /**
      * Get the value of the JSON key
@@ -68,7 +68,7 @@ public class JSONFileManager {
         try {
             switch (dataType) {
                 case STRING:
-                    testData = JsonPath.from(this.reader).getString(jsonPath);
+                    testData = JsonPath.from(reader).getString(jsonPath);
                     break;
             }
         } catch (ClassCastException var5) {
@@ -83,8 +83,31 @@ public class JSONFileManager {
         return testData;
     }
 
-    public static enum DataType {
+
+    private void initializeReader() {
+        this.reader = null;
+        try {
+            reader = new FileReader(getAbsolutePath(this.jsonFilePath));
+        } catch (FileNotFoundException var2) {
+            CustomReporter.logErrorMessage(String.valueOf(var2));
+            CustomReporter.logErrorMessage("Couldn't read the file. [" + this.jsonFilePath + "].");
+            Assert.fail("Couldn't find the file. [" + this.jsonFilePath + "]. + \n" + var2.getMessage());
+        }
+    }
+
+    public static String getAbsolutePath(String relativePath) {
+        String filePath = "";
+        try {
+            filePath = (new File(relativePath)).getAbsolutePath();
+        } catch (Exception var3) {
+            CustomReporter.logErrorMessage(String.valueOf(var3));
+        }
+        return filePath;
+    }
+
+    public enum DataType {
         STRING;
+
         private DataType() {
         }
     }

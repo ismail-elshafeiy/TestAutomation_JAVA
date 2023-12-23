@@ -1,11 +1,10 @@
-package com.engine;
+package com.engine.actions;
 
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import com.engine.actions.FileActions;
-import com.engine.listeners.CustomReporter;
+import com.engine.reports.CustomReporter;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.io.BufferedReader;
@@ -51,19 +50,6 @@ public class TerminalActions {
         this.verbose = verbose;
     }
 
-    /**
-     * This constructor is used for local terminal actions inside a docker.
-     *
-     * @param dockerName     the name of the docker instance that you want to
-     *                       execute the terminal command inside
-     * @param dockerUsername the username which will be used to access the docker
-     *                       instance. Must have the access/privilege to execute the
-     *                       terminal command
-     */
-    public TerminalActions(String dockerName, String dockerUsername) {
-        this.dockerName = dockerName;
-        this.dockerUsername = dockerUsername;
-    }
 
     /**
      * This constructor is used for remote terminal actions.
@@ -118,8 +104,6 @@ public class TerminalActions {
         this.sshUsername = sshUsername;
         this.sshKeyFileFolderName = sshKeyFileFolderName;
         this.sshKeyFileName = sshKeyFileName;
-        this.dockerName = dockerName;
-        this.dockerUsername = dockerUsername;
     }
 
     public static TerminalActions getInstance() {

@@ -1,9 +1,8 @@
 package com.engine.actions;
 
 import com.engine.Helper;
-import com.engine.TerminalActions;
 import com.google.common.hash.Hashing;
-import com.engine.listeners.CustomReporter;
+import com.engine.reports.CustomReporter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;

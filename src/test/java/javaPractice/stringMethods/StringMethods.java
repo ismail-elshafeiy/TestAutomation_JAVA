@@ -1,5 +1,4 @@
 package javaPractice.stringMethods;
-
 import java.util.Arrays;
 
 public class StringMethods {
@@ -228,7 +227,6 @@ public class StringMethods {
             System.out.println(result);
         }
     }
-
     public static class replaceAllExample {
         public static void main(String[] args) {
             String myStr = "Hello ismail ismail ismail ismail";
@@ -236,7 +234,6 @@ public class StringMethods {
             System.out.println(result);
         }
     }
-
     public static class replaceFirstExample {
         public static void main(String[] args) {
             String myStr = "Hello ismail ismail ismail ismail";
@@ -244,7 +241,6 @@ public class StringMethods {
             System.out.println(result);
         }
     }
-
     public static class splitExample {
         public static void main(String[] args) {
             String myStr = "Hello_ismail_ismail_ismail_ismail";
@@ -254,7 +250,6 @@ public class StringMethods {
             System.out.println(Arrays.toString(result));
         }
     }
-
     public static class startsWithExample {
         public static void main(String[] args) {
             String myStr = "Hello";
@@ -263,7 +258,6 @@ public class StringMethods {
             System.out.println(myStr.startsWith("o"));
         }
     }
-
     public static class subSequenceExample {
         public static void main(String[] args) {
             String myStr = "Hello";
@@ -271,7 +265,6 @@ public class StringMethods {
             System.out.println(result);
         }
     }
-
     public static class substringExample {
         public static void main(String[] args) {
             String myStr = "Hello";
@@ -279,7 +272,6 @@ public class StringMethods {
             System.out.println(result);
         }
     }
-
     public static class toCharArrayExample {
         public static void main(String[] args) {
             String myStr = "Hello";
@@ -287,7 +279,6 @@ public class StringMethods {
             System.out.println(Arrays.toString(result));
         }
     }
-
     public static class toLowerCaseExample {
         public static void main(String[] args) {
             String myStr = "HELLO WORLD";
@@ -295,7 +286,6 @@ public class StringMethods {
             System.out.println(result);
         }
     }
-
     public static class toStringExample {
         public static void main(String[] args) {
             String myStr = "Hello";
@@ -303,7 +293,6 @@ public class StringMethods {
             System.out.println(result);
         }
     }
-
     public static class toUpperCaseExample {
         public static void main(String[] args) {
             String myStr = "Hello World";
@@ -311,7 +300,6 @@ public class StringMethods {
             System.out.println(result);
         }
     }
-
     public static class trimExample {
         public static void main(String[] args) {
             String myStr = "   Hello World   ";
@@ -319,7 +307,6 @@ public class StringMethods {
             System.out.println(result);
         }
     }
-
     public static class valueOfExample {
         public static void main(String[] args) {
             int myInt = 5;

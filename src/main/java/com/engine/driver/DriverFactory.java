@@ -7,7 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import com.engine.listeners.CustomReporter;
+import com.engine.reports.CustomReporter;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.Reporter;
@@ -31,7 +31,7 @@ public class DriverFactory {
     @Step("Initializing a new Web GUI Browser!.....")
     public static synchronized WebDriver getBrowser(BrowserType browserType, ExecutionType executionType) {
         //eyesManager = new EyesManager(driver.get(), appName);
-        CustomReporter.logStep("Initialize [" + browserType.getValue() + "] Browser and the Execution Type is [" + executionType.getValue() + "]");
+        CustomReporter.logInfoStep("Initialize [" + browserType.getValue() + "] Browser and the Execution Type is [" + executionType.getValue() + "]");
         boolean googleChrome = browserType == BrowserType.GOOGLE_CHROME || (browserType == BrowserType.FROM_EXCEL && BROWSER_TYPE.equalsIgnoreCase("google chrome"));
         boolean mozillaFirefox = browserType == BrowserType.MOZILLA_FIREFOX || (browserType == BrowserType.FROM_EXCEL && BROWSER_TYPE.equalsIgnoreCase("mozilla firefox"));
         boolean microsoftEdge = browserType == BrowserType.MICROSOFT_EDGE || (browserType == BrowserType.FROM_EXCEL && BROWSER_TYPE.equalsIgnoreCase("microsoft edge"));

@@ -1,5 +1,6 @@
 package webPractice.browserInteractions;
 
+import com.engine.reports.Attachments;
 import com.engine.evidence.ScreenShot;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -19,6 +20,9 @@ public class NavigationTests extends BaseTests {
 				.goForward()
 				.navigateToUrl("https://github.com/ismail-elshafeiy")
 				.goBack();
-        ScreenShot.takeFullScreenShoot(driver);
+		ScreenShot.takeFullScreenShoot(driver, "ScreenShot/");
+		Attachments.attachScreenshotToExtentReport2(driver);
+
+
 	}
 }

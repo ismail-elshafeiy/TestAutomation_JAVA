@@ -2,10 +2,11 @@ package com.engine.listeners;
 
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
-import com.engine.evidence.Attachments;
+import com.engine.reports.Attachments;
 import com.engine.evidence.RecordVideo;
 import com.engine.mail.EmailSendUtils;
-import com.engine.report.ExtentReport;
+import com.engine.reports.CustomReporter;
+import com.engine.reports.ExtentReport;
 import com.engine.evidence.RecordManager;
 import org.openqa.selenium.WebDriver;
 import org.testng.*;
@@ -45,7 +46,7 @@ public class TestngListener implements ISuiteListener, ITestListener, IInvokedMe
 		//FileActions.getInstance().createFolder(Properties.paths.services());
 		//FileActions.getInstance().writeToFile(Properties.paths.services(), "org.testng.ITestNGListener", "com.engine.listeners.TestngListener");
 		CustomReporter.createImportantReportEntry("Starting Test Suite;" + runBy);
-		ExtentReport.initReports();
+        ExtentReport.initializeExtentReport();
 	}
 
 	@Override

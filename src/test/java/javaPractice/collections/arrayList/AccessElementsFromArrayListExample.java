@@ -22,11 +22,12 @@ public class AccessElementsFromArrayListExample {
 
         // Retrieve the element at a given index
         String bestCompany = topCompanies.get(0);
-        String secondBestCompany = topCompanies.get(1);
-        String lastCompany = topCompanies.get(topCompanies.size() - 1);
-
         System.out.println("Best Company: " + bestCompany);
+
+        String secondBestCompany = topCompanies.get(1);
         System.out.println("Second Best Company: " + secondBestCompany);
+
+        String lastCompany = topCompanies.get(topCompanies.size() - 1);
         System.out.println("Last Company in the list: " + lastCompany);
 
         // Modify the element at a given index

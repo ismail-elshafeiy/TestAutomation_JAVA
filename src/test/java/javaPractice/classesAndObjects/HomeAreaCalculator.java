@@ -11,7 +11,7 @@ import java.util.Scanner;
  *  used for members of a class which can be accessed without using an instance of the class to do
  *  Because it’s not associated with an instantiation, these members have no state.
  * */
-public class B_HomeAreaCalculator {
+public class HomeAreaCalculator {
 
     public static void main(String args[]) {
 
@@ -24,7 +24,7 @@ public class B_HomeAreaCalculator {
         greetUser(name);
 
         //Create instance of Rectangle class
-        A_Rectangle room1 = new A_Rectangle();
+        Rectangle room1 = new Rectangle();
 
         System.out.println("please enter the width of room");
         room1.setWidth(scanner.nextDouble());
@@ -40,7 +40,7 @@ public class B_HomeAreaCalculator {
          ********************/
 
         //Create instance of Rectangle class by using the default constructor
-        A_Rectangle room2 = new A_Rectangle(30, 75);
+        Rectangle room2 = new Rectangle(30, 75);
 
         double areaOfRoom2 = room2.calculateArea();
         System.out.println("the second room: " + areaOfRoom2);

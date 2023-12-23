@@ -1,7 +1,7 @@
 package webPractice.browserInteractions;
 
 import com.engine.driver.DriverHelper;
-import com.engine.evidence.Attachments;
+import com.engine.reports.Attachments;
 import com.engine.actions.BrowserActions;
 import com.engine.driver.DriverFactory;
 import com.engine.evidence.ScreenShot;

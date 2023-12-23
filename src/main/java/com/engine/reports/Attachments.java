@@ -1,4 +1,4 @@
-package com.engine.evidence;
+package com.engine.reports;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
@@ -6,7 +6,7 @@ import com.aventstack.extentreports.markuputils.CodeLanguage;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.model.Media;
 import com.engine.Helper;
-import com.engine.listeners.CustomReporter;
+import com.engine.evidence.ScreenShot;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 import org.apache.commons.io.IOUtils;
@@ -15,6 +15,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.print.PrintOptions;
 import org.testng.Reporter;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -44,6 +45,10 @@ public class Attachments {
                         .getScreenshotAs(OutputType.BASE64), Helper.getTestMethodName() + currentTime + "_Screenshot").build();
     }
 
+    public static BufferedImage attachScreenshotToExtentReport2(WebDriver driver) {
+        return ScreenShot.takeFullScreenShoot2(driver, Helper.getTestMethodName() + currentTime + "_Screenshot");
+    }
+
     public static Media attachFullPageScreenShotToExtentReport(FirefoxDriver driver) {
         return MediaEntityBuilder
                 .createScreenCaptureFromBase64String(String.valueOf((driver)
@@ -66,7 +71,7 @@ public class Attachments {
 //		return ((TakesScreenshot) driver)
 //				.getScreenshotAs(OutputType.BYTES);
 //	}
-
+//TODO: attach diff types of files to allure report
     /**
      * Attach the api request to the allure report
      *
@@ -101,7 +106,7 @@ public class Attachments {
      */
     public static void printPage(WebDriver driver, int pageRange) throws IOException {
         try {
-            CustomReporter.logStep("Printing" + driver.getTitle() + "page....... ");
+            CustomReporter.logInfoStep("Printing" + driver.getTitle() + "page....... ");
             PrintsPage printer = ((PrintsPage) driver);
             PrintOptions printOptions = new PrintOptions();
             printOptions.setPageRanges(String.valueOf(pageRange));
@@ -203,7 +208,21 @@ public class Attachments {
         createAttachment(attachmentType, attachmentName, attachmentContent);
     }
 
-    private static void createAttachment(String attachmentType, String attachmentName, InputStream attachmentContent) {
+    /**
+     * Adds a new attachment using the input parameters provided. The attachment is
+     * displayed as a step in the execution report. Used for Screenshots.
+     *
+     * @param attachmentType    the type of this attachment
+     * @param attachmentName    the name of this attachment
+     * @param attachmentContent the content of this attachment
+     */
+    public static void attach(String attachmentType, String attachmentName, String attachmentContent) {
+        if (!attachmentContent.trim().isEmpty()) {
+            createAttachment(attachmentType, attachmentName, new ByteArrayInputStream(attachmentContent.getBytes()));
+        }
+    }
+
+    public static void createAttachment(String attachmentType, String attachmentName, InputStream attachmentContent) {
         if (attachmentContent != null) {
             var byteArrayOutputStream = new ByteArrayOutputStream();
             try {
@@ -228,7 +247,7 @@ public class Attachments {
 
     private static synchronized void logAttachmentAction(String attachmentType, String
             attachmentName, ByteArrayOutputStream attachmentContent) {
-        CustomReporter.logStep("Successfully created attachment \"" + attachmentType + " - " + attachmentName + "\"");
+        CustomReporter.logInfoStep("Successfully created attachment \"" + attachmentType + " - " + attachmentName + "\"");
         String timestamp = Helper.getCurrentTime();
         String theString;
         var br = new BufferedReader(

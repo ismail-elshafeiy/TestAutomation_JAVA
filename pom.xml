@@ -30,13 +30,18 @@
         <json-schema-validator.version>5.3.0</json-schema-validator.version>
         <org.yaml.version>2.0</org.yaml.version>
         <!-- Reports frameworks -->
-        <allure-testng.version>2.24.0</allure-testng.version>
+        <allure-testng.version>2.25.0</allure-testng.version>
         <allure-maven.version>2.12.0</allure-maven.version>
         <allure-maven-report.version>2.10.0</allure-maven-report.version>
+        <allure-environment-writer.version>1.0.0</allure-environment-writer.version>
+        <allure.cmd.download.url>
+            https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline
+        </allure.cmd.download.url>
         <extentreports.version>5.0.9</extentreports.version>
         <video-recorder-testng.version>2.0</video-recorder-testng.version>
         <jave-all-deps.version>3.3.1</jave-all-deps.version>
         <javax.mail.version>1.6.2</javax.mail.version>
+        <slf4j.version>2.0.9</slf4j.version>
         <!--      Data base -->
         <mssql-jdbc.version>9.4.1.jre16-preview</mssql-jdbc.version>
         <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
@@ -228,6 +233,23 @@
             <artifactId>jsonassert</artifactId>
             <version>${skyscreamer-jsonassert.version}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>eu.medsea.mimeutil</groupId>
             <artifactId>mime-util</artifactId>
@@ -399,12 +421,26 @@
 
 
         <!-- ALLURE REPORTING -->
-        <!--  https://mvnrepository.com/artifact/io.qameta.allure/allure-testng -->
+        <!-- required by Allure.addAttachment -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-plugin-api</artifactId>
-            <version>2.20.1</version>
+            <version>2.25.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-attachments</artifactId>
+            <version>${allure-testng.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.github.automatedowl/allure-environment-writer -->
+        <dependency>
+            <groupId>com.github.automatedowl</groupId>
+            <artifactId>allure-environment-writer</artifactId>
+            <version>${allure-environment-writer.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>

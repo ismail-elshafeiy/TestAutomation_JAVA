@@ -2,8 +2,7 @@ package practice.api;
 
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
-import com.engine.report.ExtentReport;
-import com.engine.dataDriven.PropertiesReader;
+import com.engine.reports.ExtentReport;
 import com.engine.actions.RestApiActions;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;

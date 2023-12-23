@@ -1,6 +1,5 @@
-package com.engine.report;
+package com.engine.reports;
 
-import com.aventstack.extentreports.AnalysisStrategy;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
@@ -9,10 +8,11 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.model.Media;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import com.aventstack.extentreports.reporter.configuration.ViewName;
 import com.engine.Helper;
+import com.engine.constants.FrameworkConstants;
+import com.engine.utils.IconUtils;
 
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExtentReport {
@@ -21,17 +21,35 @@ public class ExtentReport {
     private static ExtentTest extentTest;
     static String currentTime = Helper.getCurrentTime("yyyy-MM-dd_HH-mm");
 
-    public static void initReports() {
+    public static void initializeExtentReport() {
         extentReports = new ExtentReports();
-        ExtentSparkReporter extentSparkReporter = new ExtentSparkReporter("ExtentReport/ExtentReports.html");
+        ExtentSparkReporter extentSparkReporter = new ExtentSparkReporter("ExtentReport/ExtentReports.html")
+                .viewConfigurer()
+                .viewOrder()
+                .as(new ViewName[]{
+                        ViewName.DASHBOARD,
+                        ViewName.TEST,
+                        ViewName.EXCEPTION,
+                        ViewName.CATEGORY,
+                        ViewName.AUTHOR,
+                        ViewName.DEVICE})
+                .apply();
         extentReports.attachReporter(extentSparkReporter);
         extentSparkReporter.config().setTheme(Theme.STANDARD);
+        extentSparkReporter.config().setEncoding("utf-8");
+        extentSparkReporter.config().thumbnailForBase64(true);
         extentSparkReporter.config().setDocumentTitle("Extent Report");
         extentSparkReporter.config().setReportName("Test Automation-Extent Report");
         extentReports.setSystemInfo("Framework Name", "Test Automation");
         extentReports.setSystemInfo("Author", "Ismail elshafeiy");
         extentReports.addTestRunnerOutput("Test Runner Output");
-
+        extentReports.setSystemInfo("Framework version", "1.1.1");
+        extentReports.setSystemInfo("Operating System", IconUtils.getOSIcon() + " " + System.getProperty("os.name"));
+        extentReports.setSystemInfo("Browser", IconUtils.getBrowserIcon() + " " + FrameworkConstants.BROWSER_TYPE);
+        extentReports.setSystemInfo("Java", "v " + System.getProperty("java.version") + " - " + System.getProperty("java.home"));
+        extentReports.setSystemInfo("Java vendor", System.getProperty("java.vendor") + " - " + System.getProperty("java.vendor.url"));
+        extentReports.setSystemInfo("User", System.getProperty("user.name") + " - " + System.getProperty("user.dir"));
+        extentReports.setSystemInfo("User Settings", "TZ: " + System.getProperty("user.timezone") + ", Country: " + System.getProperty("user.country") + ", Language: " + System.getProperty("user.language"));
     }
 
     public static void addTestRunnerOutput(String data) {

@@ -1,18 +1,19 @@
 package webPractice.dataDriven;
 
+import com.engine.reports.CustomReporter;
 import practice.gui.pages.homePage.HomePage;
 import practice.gui.pages.inputs.SecureAreaPage;
 import com.engine.actions.BrowserActions;
 import com.engine.driver.DriverFactory;
 import com.engine.dataDriven.ExcelFileManager;
 import com.engine.dataDriven.JSONFileManager;
-import com.engine.dataDriven.JSONFileManager_Approach2;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import static com.engine.dataDriven.TextFileActions.*;
 import static org.testng.Assert.assertTrue;
 
 public class Login_ReadDataUsingJson {
@@ -20,17 +21,26 @@ public class Login_ReadDataUsingJson {
 	@Test
 	public void testSuccessfulLogin_readDataFromJsonFile () {
 		new HomePage(driver).navigateToHomePage()
-				.clickFormAuthentication().setUsername(jsonFileManager.getTestData("email")).setPassword(jsonFileManager.getTestData("password")).clickLoginButton();
+				.clickFormAuthentication()
+				.setUsername(jsonFileManager.getTestData("user.email"))
+				.setPassword(jsonFileManager.getTestData("user.password"))
+				.clickLoginButton();
+		new BrowserActions(driver).capturePageSnapshot();
 		assertTrue(SecureAreaPage.getAlertText().contains(jsonFileManager.getTestData("expectedResult_successMessage")), "Check Alert Message");
+
 	}
 
 
 	@Test
 	public void testSuccessfulLogin3 () {
-		String email = String.valueOf(jsonFileAppr2.getDataFile("email"));
-		String password = String.valueOf(jsonFileAppr2.getDataFile("password"));
+		String email = String.valueOf(jsonFileManager.getTestData("user.email"));
+		String password = String.valueOf(jsonFileManager.getTestData("user.password"));
 //        String expectedResult_successMessage = jsonFileManager.getTestData("expectedResult_successMessage");
-
+		setTextFile("src/test/resources/TestData/TestData.txt", email + "\n" + password + "\n");
+		String line1 = getTextFile("src/test/resources/TestData/TestData.txt", 0);
+		CustomReporter.logConsole("line1: " + line1);
+		String textFile = getAllTextFile("src/test/resources/TestData/TestData.txt");
+		CustomReporter.logConsole("textFile: " + textFile);
 		new HomePage(driver)
 				.navigateToHomePage()
 				.clickFormAuthentication()
@@ -43,7 +53,6 @@ public class Login_ReadDataUsingJson {
 	private WebDriver driver;
 	private JSONFileManager jsonFileManager;
 
-	private JSONFileManager_Approach2 jsonFileAppr2;
 	private ExcelFileManager excelFileTestDataReader;
 
 

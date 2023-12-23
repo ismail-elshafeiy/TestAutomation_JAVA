@@ -1,14 +1,15 @@
-package com.engine.listeners;
+package com.engine.reports;
 
 import com.engine.Helper;
 import com.engine.constants.FrameworkConstants;
 import com.engine.dataDriven.PropertiesReader;
-import com.engine.report.ExtentReport;
 import com.google.common.base.Throwables;
 import com.engine.actions.ElementActions;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 
+import io.qameta.allure.model.Status;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,6 +45,19 @@ public class CustomReporter {
     static Logs logs;
     private static WebDriver driver;
 
+    private static final String BOUNDARY_SPACES = "                                                                                                                  ";
+
+    private CustomReporter() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    static void print(String data) {
+        System.out.println(data);
+    }
+
+    public static void lineSeparator() {
+        print(BOUNDARY_SPACES);
+    }
 
     /**
      * Log step that will be added as a step in the execution report
@@ -52,25 +66,29 @@ public class CustomReporter {
      */
 
     @Step("{text}")
-    public static void logStep(String text) {
+    public static void logInfoStep(String text) {
         createLog(text, Level.INFO);
         ExtentReport.info(text);
     }
 
-    @Step("{text}")
-    public static void logWarn(String text) {
+
+    public static void logPassed(String text) {
+        createLog(text, Level.INFO);
+        ExtentReport.pass(text);
+    }
+
+    public static void logWarning(String text) {
+        CustomReporter.logConsole("Kindly check the warning message below: ", Level.WARN, "33");
         createLog(text, Level.WARN);
-        ExtentReport.info(text);
-    }
-    @Step("{logStep}")
-    public static void logError(String text) {
-        createLog(text, Level.ERROR);
-        ExtentReport.info(text);
+        ExtentReport.warning(text);
     }
 
-    public static void logConsole(String text) {
-        createLog(text, Level.INFO);
+    public static void logError(String text) {
+        CustomReporter.logConsole("Kindly check the error message below: ", Level.ERROR, "31");
+        createLog(text, Level.ERROR);
+        ExtentReport.fail(text);
     }
+
 
     /**
      * Log message that will be added as a message in the execution report
@@ -80,14 +98,39 @@ public class CustomReporter {
     public static void logErrorMessage(String message) {
         createLog(message, Level.ERROR);
         ExtentReport.fail(FrameworkConstants.ICON_SMILEY_FAIL + " " + message);
-    }
-
-    public static void fail(String message) {
-        CustomReporter.logErrorMessage(message);
-        ExtentReport.fail(message);
         Assert.fail(message);
+
     }
 
+    public static void logConsole(String text, Level level) {
+        String log = "\033[37m" + text.trim() + "\033[0m";
+        createLog(log, level);
+    }
+
+    public static void logConsole(String text) {
+        createLog(text, Level.INFO);
+    }
+
+    /**
+     * This method is used to log in console with custom level and color
+     *
+     * @param text  to be logged in console
+     * @param level of the log
+     * @param color Red: 31, Green: 32, Yellow: 33, Blue: 34, Magenta: 35, Cyan: 36, White: 37.
+     */
+    public static void logConsole(String text, Level level, String color) {
+        String log = "\033[" + color + "m" + text.trim();
+        createLog(log, level);
+    }
+
+
+    public static void log(String logText, List<List<Object>> attachments) {
+        if (attachments != null && !attachments.isEmpty() && (attachments.size() > 1 || (attachments.get(0) != null && !attachments.get(0).isEmpty()))) {
+            writeStepToReport(logText, attachments);
+        } else {
+            writeStepToReport(logText);
+        }
+    }
 
     public static void createImportantReportEntry(String logText) {
         String log = System.lineSeparator() +
@@ -160,8 +203,9 @@ public class CustomReporter {
             logger.log(Level.INFO, logText.trim());
         }
     }
+
     private static void initializeLogger() {
-        Configurator.initialize(null, PropertiesReader.getCUSTOM_PROPERTIES_FOLDER_PATH() + "/log4j2.properties");
+        Configurator.initialize(null, PropertiesReader.CUSTOM_PROPERTIES_FOLDER_PATH + "/log4j2.properties");
         logger = LogManager.getLogger(CustomReporter.class.getName());
     }
 
@@ -185,10 +229,10 @@ public class CustomReporter {
         }
         return logBuilder.toString();
     }
+
     public static void failReporter(Class<?> failedFileManager, String message, Throwable throwable) {
         String actionName = "fail";
         String rootCause = " Root cause: \"" + Throwables.getRootCause(throwable).getClass().getName() + ": " + Throwables.getRootCause(throwable).getLocalizedMessage().split("\n")[0] + "\"";
-
         for (StackTraceElement stackTraceElement : Arrays.stream(Thread.currentThread().getStackTrace()).toList()) {
             var methodName = stackTraceElement.getMethodName();
             if (!methodName.toLowerCase().contains("fail")) {
@@ -197,7 +241,6 @@ public class CustomReporter {
             }
         }
         actionName = Helper.convertToSentenceCase(actionName);
-
         List<List<Object>> attachments = new ArrayList<>();
         List<Object> actualValueAttachment = Arrays.asList(Helper.convertToSentenceCase(failedFileManager.getSimpleName()) + " - " +
                         Helper.convertToSentenceCase(actionName),
@@ -208,6 +251,48 @@ public class CustomReporter {
         Assert.fail(message + rootCause, throwable);
     }
 
+
+    @Step("{logText}")
+    static void writeStepToReport(String logText, List<List<Object>> attachments) {
+        createLog(logText, false);
+        if (attachments != null && !attachments.isEmpty()) {
+            attachments.forEach(attachment -> {
+                if (attachment != null && !attachment.isEmpty() && attachment.get(2).getClass().toString().toLowerCase().contains("string")
+                        && !attachment.get(2).getClass().toString().contains("StringInputStream")) {
+                    if (!attachment.get(2).toString().isEmpty()) {
+                        Attachments.attach(attachment.get(0).toString(), attachment.get(1).toString(), attachment.get(2).toString());
+                    }
+                } else if (attachment != null && !attachment.isEmpty()) {
+                    if (attachment.get(2) instanceof byte[]) {
+                        Attachments.attach(attachment.get(0).toString(), attachment.get(1).toString(), new ByteArrayInputStream((byte[]) attachment.get(2)));
+                    } else {
+                        Attachments.attach(attachment.get(0).toString(), attachment.get(1).toString(), (InputStream) attachment.get(2));
+                    }
+                }
+            });
+        }
+    }
+
+    public static void writeStepToReport(String logText) {
+        createLog(logText, true);
+        Allure.step(logText, getAllureStepStatus(logText));
+    }
+
+    private static Status getAllureStepStatus(String logText) {
+        if (logText != null && logText.toLowerCase().contains("failed")) {
+            return Status.FAILED;
+        }
+        if (Reporter.getCurrentTestResult() != null) {
+            var testNgStatus = Reporter.getCurrentTestResult().getStatus();
+            return switch (testNgStatus) {
+                case ITestResult.FAILURE -> Status.FAILED;
+                case ITestResult.SKIP -> Status.SKIPPED;
+                default -> Status.PASSED;
+            };
+        } else {
+            return Status.PASSED;
+        }
+    }
 
 
     /**
@@ -223,20 +308,20 @@ public class CustomReporter {
         logEntries = logs.get(LogType.BROWSER);
         String filePath = System.getProperty("user.dir") + "/ConsoleLogs/" + result.getMethod().getMethodName() + ".txt";
         writer = new PrintWriter(filePath, StandardCharsets.UTF_8);
-        CustomReporter.logStep("Console logs for Test Case: [" + result.getMethod().getMethodName() + "] are saved in [ " + filePath + " ]");
+        CustomReporter.logInfoStep("Console logs for Test Case: [" + result.getMethod().getMethodName() + "] are saved in [ " + filePath + " ]");
         try {
             for (LogEntry logEntry : logEntries) {
                 writer.println("Console log found in Test- " + result.getName());
                 writer.println("__________________________________________________________");
                 if (logEntry.getMessage().toLowerCase().contains("error")) {
                     writer.println(currentTime + "Error Message in Console: [" + logEntry.getMessage() + "]");
-                    CustomReporter.logStep(currentTime + "Error Message in Console: [" + logEntry.getMessage() + "]");
+                    CustomReporter.logInfoStep(currentTime + "Error Message in Console: [" + logEntry.getMessage() + "]");
                 } else if (logEntry.getMessage().toLowerCase().contains("warning")) {
                     writer.println(currentTime + "Warning Message in Console: [" + logEntry.getMessage() + "]");
-                    CustomReporter.logStep(currentTime + "Warning Message in Console: [" + logEntry.getMessage() + "]");
+                    CustomReporter.logInfoStep(currentTime + "Warning Message in Console: [" + logEntry.getMessage() + "]");
                 } else {
                     writer.println(currentTime + "Information Message in Console: [" + logEntry.getMessage() + "]");
-                    CustomReporter.logStep(currentTime + "Information Message in Console: [" + logEntry.getMessage() + "]");
+                    CustomReporter.logInfoStep(currentTime + "Information Message in Console: [" + logEntry.getMessage() + "]");
                 }
             }
         } catch (Exception e) {
@@ -246,6 +331,7 @@ public class CustomReporter {
             writer.close();
         }
     }
+
 //
 //	public static void logConsoleLogs (ChromeDriver chromeDriver, String url) {
 //		try {

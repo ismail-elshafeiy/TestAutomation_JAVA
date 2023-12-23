@@ -4,7 +4,7 @@ package javaPractice.classesAndObjects;
  *  Objects are structures which contain data in the form of fields and methods.
  * */
 //This class is made to be a general representation.
-public class A_Rectangle {
+public class Rectangle {
 
     private double length;
     private double width;
@@ -17,7 +17,7 @@ public class A_Rectangle {
      * then they can use this constructor without passing anything.
      * And the default constructor is typically used to assign default values to the fields.
      */
-    public A_Rectangle() {
+    public Rectangle() {
         length = 0;
         width = 0;
     }
@@ -28,7 +28,7 @@ public class A_Rectangle {
      */
 
     //pass us a length and pass us a width, and we'll set those values
-    public A_Rectangle(double length, double width) {
+    public Rectangle(double length, double width) {
         this.length = length; //can be set this way
         setWidth(width); //or can be set this way. these are only different here to demo alternative options
     }

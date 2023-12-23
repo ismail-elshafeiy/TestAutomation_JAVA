@@ -1,6 +1,6 @@
 package com.engine;
 
-import com.engine.listeners.CustomReporter;
+import com.engine.reports.CustomReporter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.FluentWait;
@@ -10,7 +10,6 @@ import java.time.Duration;
 
 import static com.engine.constants.FrameworkConstants.POLLING;
 import static com.engine.constants.FrameworkConstants.TIMEOUT_EXPLICIT;
-import static com.engine.driver.DriverHelper.*;
 
 public class Waits {
 
@@ -32,7 +31,7 @@ public class Waits {
      * @param timeout - timeout in seconds
      */
     public static void implicitWait(WebDriver driver, int timeout) {
-        CustomReporter.logStep("Implicit wait for [ " + timeout + " ] seconds");
+        CustomReporter.logInfoStep("Implicit wait for [ " + timeout + " ] seconds");
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
 
     }
@@ -45,6 +44,10 @@ public class Waits {
 
     public static WebDriverWait getExplicitWait(WebDriver driver) {
         return new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT_EXPLICIT));
+    }
+
+    public static WebDriverWait getExplicitWait(WebDriver driver, int timeout) {
+        return new WebDriverWait(driver, Duration.ofSeconds(timeout));
     }
 
     /**
@@ -64,5 +67,6 @@ public class Waits {
     public static Boolean waitForElementToBeDisplayed(WebDriver driver, By elementLocator, int timeout) {
         return driver.findElement(elementLocator).isDisplayed();
     }
+
 
 }

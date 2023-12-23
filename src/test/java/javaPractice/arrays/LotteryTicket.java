@@ -5,7 +5,7 @@ import java.util.Random;
 
 // Searching Arrays
 
-public class A_LotteryTicket {
+public class LotteryTicket {
     /*
      *  constant variable --> is a field within your class whose value does not change. (variable name in all caps)
      *

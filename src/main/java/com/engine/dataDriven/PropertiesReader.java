@@ -1,8 +1,7 @@
 package com.engine.dataDriven;
 
 import com.engine.actions.FileActions;
-import com.engine.listeners.CustomReporter;
-import lombok.Getter;
+import com.engine.reports.CustomReporter;
 import org.openqa.selenium.MutableCapabilities;
 
 import java.io.*;
@@ -11,8 +10,9 @@ import java.util.Properties;
 
 public class PropertiesReader {
 
-    @Getter
-    private static final String CUSTOM_PROPERTIES_FOLDER_PATH = "src/main/resources/properties";
+
+    //    @Getter
+    public static final String CUSTOM_PROPERTIES_FOLDER_PATH = "src/main/resources/properties";
 
 	private static FileReader reader = null;
 	public static final String propertiesFileName = "config.properties";
@@ -35,7 +35,7 @@ public class PropertiesReader {
 				properties.putAll(tempProp);
 			}
 			file.close();
-			CustomReporter.logStep("Loaded all properties files.");
+            CustomReporter.logInfoStep("Loaded all properties files.");
 			return properties;
 		} catch (IOException e) {
 			CustomReporter.logErrorMessage("Warning !! Can not Load All File.");
@@ -44,7 +44,7 @@ public class PropertiesReader {
 	}
 
 	public static String getPropertyValue(String propertyFileName, String propertyName) {
-        String propPath = getCUSTOM_PROPERTIES_FOLDER_PATH() + "/" + propertyFileName;
+        String propPath = CUSTOM_PROPERTIES_FOLDER_PATH + "/" + propertyFileName;
 		properties = new Properties();
 		try {
 			reader = new FileReader(propPath);
@@ -58,12 +58,12 @@ public class PropertiesReader {
 			CustomReporter.logErrorMessage(e.getMessage() + " Couldn't find any properties with the given property name: " + propertyName);
 			e.printStackTrace();
 		}
-		CustomReporter.logStep("Property value for [ " + propertyName + " ] is: [" + properties.getProperty(propertyName) + "] from file: [ " + propertyFileName + " ]");
+        CustomReporter.logInfoStep("Property value for [ " + propertyName + " ] is: [" + properties.getProperty(propertyName) + "] from file: [ " + propertyFileName + " ]");
 		return properties.getProperty(propertyName);
 	}
 
 	public static void setPropertyValue(String propertiesFileName, String key, String value) {
-		String propPath = getCUSTOM_PROPERTIES_FOLDER_PATH() + "/" + propertiesFileName;
+        String propPath = CUSTOM_PROPERTIES_FOLDER_PATH + "/" + propertiesFileName;
 		properties = new Properties();
 		try {
 			out = new FileOutputStream(propPath);

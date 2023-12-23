@@ -1,17 +1,21 @@
 package com.engine.actions;
 
+import com.engine.Helper;
 import com.engine.Waits;
 import com.engine.constants.FrameworkConstants;
-import com.engine.evidence.Attachments;
+import com.engine.reports.Attachments;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.bidi.BiDiException;
+import org.openqa.selenium.chromium.ChromiumDriver;
+import org.openqa.selenium.devtools.DevToolsException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.ITestResult;
-import com.engine.listeners.CustomReporter;
+import com.engine.reports.CustomReporter;
 
-import java.util.Set;
+import java.util.*;
 
 import static org.testng.Assert.fail;
 
@@ -25,11 +29,11 @@ public class BrowserActions {
     @Step("Navigate to URL: [{url}]")
     public static void navigateToUrl(WebDriver driver, String url) {
         try {
-            CustomReporter.logStep("[Browser Action] Navigate to URL [" + url + "]");
+            CustomReporter.logInfoStep("[Browser Action] Navigate to URL [" + url + "]");
             driver.get(url);
             ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
         } catch (Exception e) {
-            CustomReporter.logStep(e.getMessage());
+            CustomReporter.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -43,10 +47,10 @@ public class BrowserActions {
     @Step("Navigate to URL using JavaScript: [{url}]")
     public static void navigateToUrlUsingJavaScript(WebDriver driver, String url) {
         try {
-            CustomReporter.logStep("[Browser Action] Navigate to URL using JavaScript [" + url + "]");
+            CustomReporter.logInfoStep("[Browser Action] Navigate to URL using JavaScript [" + url + "]");
             ((JavascriptExecutor) driver).executeScript("window.location = '" + url + "'");
         } catch (Exception e) {
-            CustomReporter.logStep(e.getMessage());
+            CustomReporter.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -65,7 +69,7 @@ public class BrowserActions {
     @Step("Maximize the Browser Window")
     public static void maximizeWindow(WebDriver driver) {
         try {
-            CustomReporter.logStep("[Browser Action] Maximize the Browser Window");
+            CustomReporter.logInfoStep("[Browser Action] Maximize the Browser Window");
             driver.manage().window().maximize();
         } catch (Exception e) {
             CustomReporter.logErrorMessage(e.getMessage());
@@ -75,7 +79,7 @@ public class BrowserActions {
     @Step("Minimize the Browser Window")
     public static void minimizeWindow(WebDriver driver) {
         try {
-            CustomReporter.logStep("[Browser Action] minimize the Browser Window");
+            CustomReporter.logInfoStep("[Browser Action] minimize the Browser Window");
             driver.manage().window().minimize();
         } catch (Exception e) {
             CustomReporter.logErrorMessage(e.getMessage());
@@ -85,7 +89,7 @@ public class BrowserActions {
     @Step("Full Screen the Browser Window")
     public static void fullScreenWindow(WebDriver driver) {
         try {
-            CustomReporter.logStep("[Browser Action] Full Screen the Browser Window");
+            CustomReporter.logInfoStep("[Browser Action] Full Screen the Browser Window");
             driver.manage().window().fullscreen();
         } catch (Exception e) {
             CustomReporter.logErrorMessage(e.getMessage());
@@ -95,7 +99,7 @@ public class BrowserActions {
     @Step("Set the Window Size [{width}], [{height}]")
     public static void setWindowSize(WebDriver driver, int width, int height) {
         try {
-            CustomReporter.logStep("[Browser Action] Set Window Resolution as Width [" + width + "] and Height [" + height + "]");
+            CustomReporter.logInfoStep("[Browser Action] Set Window Resolution as Width [" + width + "] and Height [" + height + "]");
             Dimension dimension = new Dimension(width, height);
             driver.manage().window().setSize(dimension);
         } catch (Exception e) {
@@ -106,7 +110,7 @@ public class BrowserActions {
     @Step("Set the Window Size [{width}], [{height}]")
     public static void setWindowSize(WebDriver driver) {
         try {
-            CustomReporter.logStep("[Browser Action] Set Window Resolution as Width [" + FrameworkConstants.WIDTH + "] and Height [" + FrameworkConstants.WIDTH + "]");
+            CustomReporter.logInfoStep("[Browser Action] Set Window Resolution as Width [" + FrameworkConstants.WIDTH + "] and Height [" + FrameworkConstants.WIDTH + "]");
             Dimension dimension = new Dimension(Integer.parseInt(FrameworkConstants.WIDTH), Integer.parseInt(FrameworkConstants.HEIGHT));
             driver.manage().window().setSize(dimension);
         } catch (Exception e) {
@@ -118,7 +122,7 @@ public class BrowserActions {
     public static void getWindowSize(WebDriver driver) {
         try {
             Dimension dimension = driver.manage().window().getSize();
-            CustomReporter.logStep("[Browser Action] Window Size : [ " + dimension + " ]");
+            CustomReporter.logInfoStep("[Browser Action] Window Size : [ " + dimension + " ]");
         } catch (Exception e) {
             CustomReporter.logErrorMessage(e.getMessage());
         }
@@ -127,7 +131,7 @@ public class BrowserActions {
     @Step("Set Window Positions")
     public static void setWindowPositions(WebDriver driver, int x, int y) {
         try {
-            CustomReporter.logStep("[Browser Action] Set Window Positions");
+            CustomReporter.logInfoStep("[Browser Action] Set Window Positions");
             driver.manage().window().setPosition(new Point(x, y));
         } catch (Exception e) {
             CustomReporter.logErrorMessage(e.getMessage());
@@ -138,7 +142,7 @@ public class BrowserActions {
     public static void getWindowPositions(WebDriver driver) {
         try {
             Point point = driver.manage().window().getPosition();
-            CustomReporter.logStep("[Browser Action] Window Positions : [ " + point + " ]");
+            CustomReporter.logInfoStep("[Browser Action] Window Positions : [ " + point + " ]");
         } catch (Exception e) {
             CustomReporter.logErrorMessage(e.getMessage());
         }
@@ -160,11 +164,11 @@ public class BrowserActions {
         try {
             switch (pageType) {
                 case WINDOW -> {
-                    CustomReporter.logStep("[Browser Action] Switch to new Window Title: " + driver.getTitle() + " [" + url + "]");
+                    CustomReporter.logInfoStep("[Browser Action] Switch to new Window Title: " + driver.getTitle() + " [" + url + "]");
                     driver.switchTo().newWindow(WindowType.WINDOW).get(url);
                 }
                 case TAB -> {
-                    CustomReporter.logStep("[Browser Action] Switch to new Tab Title: " + driver.getTitle() + " [" + url + "]");
+                    CustomReporter.logInfoStep("[Browser Action] Switch to new Tab Title: " + driver.getTitle() + " [" + url + "]");
                     driver.switchTo().newWindow(WindowType.TAB).get(url);
                 }
             }
@@ -184,7 +188,7 @@ public class BrowserActions {
             for (String childWindow : handles) {
                 if (!parentWindow.equals(childWindow)) {
                     driver.switchTo().window(childWindow);
-                    CustomReporter.logStep("[Browser Action] Switch to new Window Title: " + driver.getTitle());
+                    CustomReporter.logInfoStep("[Browser Action] Switch to new Window Title: " + driver.getTitle());
                 }
             }
             CustomReporter.logErrorMessage("All Windows= " + handles.size());
@@ -211,7 +215,7 @@ public class BrowserActions {
 
     @Step("Close All Opened Browser Windows.....")
     public static void closeAllOpenedBrowserWindows(WebDriver driver) {
-        CustomReporter.logStep("[Browser Action] Close all Opened Browser Windows");
+        CustomReporter.logInfoStep("[Browser Action] Close all Opened Browser Windows");
         if (driver != null) {
             try {
                 driver.quit();
@@ -243,15 +247,15 @@ public class BrowserActions {
         try {
             switch (confirmAlertType) {
                 case ACCEPT -> {
-                    CustomReporter.logStep("[Browser Action] Confirm the Alert");
+                    CustomReporter.logInfoStep("[Browser Action] Confirm the Alert");
                     alert.accept();
                 }
                 case DISMISS -> {
-                    CustomReporter.logStep("[Browser Action] Dismiss the Alert");
+                    CustomReporter.logInfoStep("[Browser Action] Dismiss the Alert");
                     alert.dismiss();
                 }
                 case GET_TEXT -> {
-                    CustomReporter.logStep("[Browser Action] Get Text from the Alert");
+                    CustomReporter.logInfoStep("[Browser Action] Get Text from the Alert");
                     alert.getText();
                 }
             }
@@ -265,7 +269,7 @@ public class BrowserActions {
     public static void alertAction(WebDriver driver, String text) {
         Waits.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
         try {
-            CustomReporter.logStep("[Browser Action] Send Keys the Alert");
+            CustomReporter.logInfoStep("[Browser Action] Send Keys the Alert");
             driver.switchTo().alert().sendKeys(text);
         } catch (Exception e) {
             CustomReporter.logErrorMessage("Alert is not present" + e.getMessage());
@@ -292,13 +296,13 @@ public class BrowserActions {
     public static void getAllCookies(WebDriver driver) {
         try {
             Set<Cookie> cookieSet = driver.manage().getCookies();
-            CustomReporter.logStep("Get All Cookies = " + cookieSet.size());
+            CustomReporter.logInfoStep("Get All Cookies = " + cookieSet.size());
             for (Cookie cookie : cookieSet) {
-                CustomReporter.logStep("Cookie Domain: " + cookie.getDomain());
-                CustomReporter.logStep("Cookie Name: " + cookie.getName());
-                CustomReporter.logStep("Cookie Value: " + cookie.getValue());
-                CustomReporter.logStep("Cookie Path: " + cookie.getPath());
-                CustomReporter.logStep("Cookie Expiry: " + cookie.getExpiry());
+                CustomReporter.logInfoStep("Cookie Domain: " + cookie.getDomain());
+                CustomReporter.logInfoStep("Cookie Name: " + cookie.getName());
+                CustomReporter.logInfoStep("Cookie Value: " + cookie.getValue());
+                CustomReporter.logInfoStep("Cookie Path: " + cookie.getPath());
+                CustomReporter.logInfoStep("Cookie Expiry: " + cookie.getExpiry());
             }
         } catch (Exception e) {
             CustomReporter.logErrorMessage(e.getMessage());
@@ -319,7 +323,7 @@ public class BrowserActions {
      **/
     public static void switchToFrame(WebDriver driver, By elementLocator) {
         try {
-            CustomReporter.logStep("[Browser Action] Switch to Frame by Locator: " + elementLocator.toString());
+            CustomReporter.logInfoStep("[Browser Action] Switch to Frame by Locator: " + elementLocator.toString());
             driver.switchTo().frame(driver.findElement(elementLocator));
         } catch (Exception e) {
             CustomReporter.logErrorMessage(e.getMessage());
@@ -337,7 +341,7 @@ public class BrowserActions {
      **/
     public static void switchToFrame(WebDriver driver, String nameOrId) {
         try {
-            CustomReporter.logStep("[Browser Action] Switch to Frame by name Or id: " + nameOrId.toString());
+            CustomReporter.logInfoStep("[Browser Action] Switch to Frame by name Or id: " + nameOrId.toString());
             driver.switchTo().frame(nameOrId);
         } catch (Exception e) {
             CustomReporter.logErrorMessage(e.getMessage());
@@ -355,7 +359,7 @@ public class BrowserActions {
      **/
     public static void switchToFrame(WebDriver driver, int index) {
         try {
-            CustomReporter.logStep("[Browser Action] Switch to Frame by index : " + index);
+            CustomReporter.logInfoStep("[Browser Action] Switch to Frame by index : " + index);
             driver.switchTo().frame(index);
         } catch (Exception e) {
             CustomReporter.logErrorMessage(e.getMessage());
@@ -373,10 +377,10 @@ public class BrowserActions {
 
     public static void goBack(WebDriver driver) {
         try {
-            CustomReporter.logStep("[Browser Action] Navigate Back from [" + getCurrentUrl(driver) + "]");
+            CustomReporter.logInfoStep("[Browser Action] Navigate Back from [" + getCurrentUrl(driver) + "]");
             driver.navigate().back();
         } catch (Exception e) {
-            CustomReporter.logStep(e.getMessage());
+            CustomReporter.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -389,7 +393,7 @@ public class BrowserActions {
     public static void goForward(WebDriver driver) {
         try {
             driver.navigate().forward();
-            CustomReporter.logStep("[Browser Action] Navigate Forward [" + getCurrentUrl(driver) + "]");
+            CustomReporter.logInfoStep("[Browser Action] Navigate Forward [" + getCurrentUrl(driver) + "]");
         } catch (Exception e) {
             CustomReporter.logErrorMessage(e.getMessage());
             fail(e.getMessage());
@@ -403,7 +407,7 @@ public class BrowserActions {
 
     public static void refreshPage(WebDriver driver) {
         try {
-            CustomReporter.logStep("[Browser Action] Refresh current page [" + getCurrentUrl(driver) + "]");
+            CustomReporter.logInfoStep("[Browser Action] Refresh current page [" + getCurrentUrl(driver) + "]");
             driver.navigate().refresh();
         } catch (Exception e) {
             CustomReporter.logErrorMessage(e.getMessage());
@@ -424,9 +428,9 @@ public class BrowserActions {
         String title = "";
         try {
             title = driver.getTitle();
-            CustomReporter.logStep("[Browser Action] Get page Title [" + title + "]");
+            CustomReporter.logInfoStep("[Browser Action] Get page Title [" + title + "]");
         } catch (Exception e) {
-            CustomReporter.logStep(e.getMessage());
+            CustomReporter.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
         return title;
@@ -441,10 +445,10 @@ public class BrowserActions {
         String url = "";
         try {
             url = driver.getCurrentUrl();
-            CustomReporter.logStep("[Browser Action] Get current URL [" + url + "]");
+            CustomReporter.logInfoStep("[Browser Action] Get current URL [" + url + "]");
         } catch (
                 Exception e) {
-            CustomReporter.logStep(e.getMessage());
+            CustomReporter.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
         return url;
@@ -455,9 +459,9 @@ public class BrowserActions {
         try {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             page = (String) js.executeScript("return document.title");
-            CustomReporter.logStep("[Browser Action] Get current page using JavaScript [" + page + "]");
+            CustomReporter.logInfoStep("[Browser Action] Get current page using JavaScript [" + page + "]");
         } catch (Exception e) {
-            CustomReporter.logStep(e.getMessage());
+            CustomReporter.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
         return page;
@@ -478,9 +482,9 @@ public class BrowserActions {
         try {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             page = (String) js.executeScript("return document.domain;");
-            CustomReporter.logStep("[Browser Action] Get current url using JavaScript [" + page + "]");
+            CustomReporter.logInfoStep("[Browser Action] Get current url using JavaScript [" + page + "]");
         } catch (Exception e) {
-            CustomReporter.logStep(e.getMessage());
+            CustomReporter.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
         return page;
@@ -489,6 +493,85 @@ public class BrowserActions {
     public BrowserActions getCurrentUrlUsingJavaScript() {
         getCurrentUrlUsingJavaScript(driver);
         return this;
+    }
+
+    public BrowserActions capturePageSnapshot() {
+        var serializedPageData = capturePageSnapshot(driver);
+        passAction(driver, serializedPageData);
+        return this;
+    }
+
+    public static String capturePageSnapshot(WebDriver driver) {
+        CustomReporter.logConsole("Capturing page snapshot...");
+        var serializedPageData = "";
+        try {
+            if (driver instanceof ChromiumDriver chromiumDriver) {
+                var result = chromiumDriver.executeCdpCommand("Page.captureSnapshot", new HashMap<>());
+                serializedPageData = (String) ((Map<String, ?>) result).get("data");
+            } else {
+                // get page source
+                serializedPageData = driver.getPageSource();
+            }
+            return serializedPageData;
+        } catch (BiDiException | DevToolsException exception) {
+            CustomReporter.logErrorMessage(exception.getMessage());
+            return capturePageSnapshot(driver);
+        } catch (WebDriverException webDriverException) {
+            // unknown error: unhandled inspector error: {"code":-32000,"message":"Failed to generate MHTML"
+            // try again but just get the regular page source this time
+            return capturePageSnapshot(driver);
+        } catch (Exception rootCauseException) {
+            CustomReporter.logErrorMessage(rootCauseException.getMessage());
+            return serializedPageData;
+        }
+    }
+
+    public static void passAction(WebDriver driver, String testData) {
+        String actionName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        passAction(driver, actionName, testData);
+    }
+
+    public static void passAction(WebDriver driver, String actionName, String testData) {
+        reportActionResult(driver, actionName, testData, true);
+    }
+
+    private static String reportActionResult(WebDriver driver, String actionName, String testData,
+                                             Boolean passFailStatus,
+                                             Exception... rootCauseException) {
+        actionName = Helper.convertToSentenceCase(actionName);
+        String message;
+        if (Boolean.TRUE.equals(passFailStatus)) {
+            message = "Browser Action: " + actionName;
+        } else {
+            message = "Browser Action: " + actionName + " failed";
+        }
+
+        List<List<Object>> attachments = new ArrayList<>();
+        if (testData != null && !testData.isEmpty()) {
+            if (testData.length() >= 500 || testData.contains("</iframe>") || testData.contains("</html>") || testData.startsWith("From: <Saved by Blink>")) {
+                List<Object> actualValueAttachment = Arrays.asList("Browser Action Test Data - " + actionName,
+                        "Actual Value", testData);
+                attachments.add(actualValueAttachment);
+            } else {
+                message = message + " \"" + testData.trim() + "\"";
+            }
+        }
+
+        if (rootCauseException != null && rootCauseException.length >= 1) {
+            List<Object> actualValueAttachment = Arrays.asList("Browser Action Exception - " + actionName,
+                    "Stacktrace", CustomReporter.formatStackTraceToLogEntry(rootCauseException[0]));
+            attachments.add(actualValueAttachment);
+        }
+
+        message = message + ".";
+
+        message = message.replace("Browser Action: ", "");
+        if (!attachments.equals(new ArrayList<>())) {
+            CustomReporter.log(message, attachments);
+        } else {
+            CustomReporter.logInfoStep(message);
+        }
+        return message;
     }
 
 

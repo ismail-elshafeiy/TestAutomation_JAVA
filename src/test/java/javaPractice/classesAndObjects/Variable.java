@@ -8,7 +8,7 @@ import java.util.Scanner;
  * anyone who makes more than $25,000 and has a credit score
  * of 700 or better. Reject all others.
  */
-public class B_Variable {
+public class Variable {
 
     static int requiredSalary = 25000;
     static int requiredCreditScore = 700;

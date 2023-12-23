@@ -1,7 +1,7 @@
 package com.engine.actions;
 
 import com.aventstack.extentreports.markuputils.MarkupHelper;
-import com.engine.evidence.Attachments;
+import com.engine.reports.Attachments;
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -16,8 +16,8 @@ import io.restassured.specification.QueryableRequestSpecification;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import io.restassured.specification.SpecificationQuerier;
-import com.engine.report.ExtentReport;
-import com.engine.listeners.CustomReporter;
+import com.engine.reports.ExtentReport;
+import com.engine.reports.CustomReporter;
 
 import java.util.List;
 import java.util.Map;
@@ -89,7 +89,7 @@ public class RestApiActions {
         String requestUrl = baseUrl + serviceName;
         request = RestAssured.given().spec(requestSpec);
         queryableRequestSpecs = SpecificationQuerier.query(request);
-        CustomReporter.logStep("Request URL: [" + requestUrl + "] | Request Method: [" + requestType.getValue() + "] | Expected Status Code: [" + expectedStatusCode + "]");
+        CustomReporter.logInfoStep("Request URL: [" + requestUrl + "] | Request Method: [" + requestType.getValue() + "] | Expected Status Code: [" + expectedStatusCode + "]");
         try {
             if (headers != null) {
                 request.headers(headers);
@@ -138,7 +138,7 @@ public class RestApiActions {
             }
             response.then().spec(responseSpec).statusCode(expectedStatusCode);
         } catch (Exception e) {
-            CustomReporter.logStep(e.getMessage());
+            CustomReporter.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
         Attachments.attachApiResponseToAllureReport(response.asByteArray());
@@ -151,7 +151,7 @@ public class RestApiActions {
         try {
             value = response.jsonPath().getString(jsonPath);
         } catch (ClassCastException | JsonPathException | IllegalArgumentException e) {
-            CustomReporter.logStep(e.getMessage());
+            CustomReporter.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
         if (value != null) {
@@ -166,7 +166,7 @@ public class RestApiActions {
         try {
             listValue = response.jsonPath().getList(jsonPath);
         } catch (ClassCastException | JsonPathException | IllegalArgumentException e) {
-            CustomReporter.logStep(e.getMessage());
+            CustomReporter.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
         if (listValue != null) {
