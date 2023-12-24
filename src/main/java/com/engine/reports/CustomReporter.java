@@ -2,7 +2,7 @@ package com.engine.reports;
 
 import com.engine.Helper;
 import com.engine.constants.FrameworkConstants;
-import com.engine.dataDriven.PropertiesReader;
+import com.engine.dataDriven.PropertiesManager;
 import com.google.common.base.Throwables;
 import com.engine.actions.ElementActions;
 import io.qameta.allure.Allure;
@@ -84,7 +84,6 @@ public class CustomReporter {
     }
 
     public static void logError(String text) {
-        CustomReporter.logConsole("Kindly check the error message below: ", Level.ERROR, "31");
         createLog(text, Level.ERROR);
         ExtentReport.fail(text);
     }
@@ -205,7 +204,7 @@ public class CustomReporter {
     }
 
     private static void initializeLogger() {
-        Configurator.initialize(null, PropertiesReader.CUSTOM_PROPERTIES_FOLDER_PATH + "/log4j2.properties");
+        Configurator.initialize(null, PropertiesManager.CUSTOM_PROPERTIES_FOLDER_PATH + "/log4j2.properties");
         logger = LogManager.getLogger(CustomReporter.class.getName());
     }
 

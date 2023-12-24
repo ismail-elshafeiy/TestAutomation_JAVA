@@ -290,7 +290,7 @@ public class ExcelFileManager {
 		}
 	}
 
-	private static String getCellData() {
+	public static String getCellData() {
 		try {
 			if (cell.getCellType() == CellType.STRING) {
 				return cell.getStringCellValue();

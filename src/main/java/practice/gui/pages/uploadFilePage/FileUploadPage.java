@@ -33,7 +33,7 @@ public class FileUploadPage {
      * @param absolutePathOfFile The complete path of the file to upload
      */
     // TODO check what is the problem with my framework when using type instead of "sendKeys"
-    public FileUploadPage uploadFileBy_inputFile(String absolutePathOfFile) throws InterruptedException {
+    public FileUploadPage uploadFileBy_inputFile(String absolutePathOfFile) {
         driver.findElement(inputField).sendKeys(absolutePathOfFile);
         return new FileUploadPage(driver);
     }

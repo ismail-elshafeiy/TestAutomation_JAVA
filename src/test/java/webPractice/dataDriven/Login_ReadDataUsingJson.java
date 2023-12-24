@@ -1,5 +1,6 @@
 package webPractice.dataDriven;
 
+import com.engine.dataDriven.CSVFileManager;
 import com.engine.reports.CustomReporter;
 import practice.gui.pages.homePage.HomePage;
 import practice.gui.pages.inputs.SecureAreaPage;
@@ -13,7 +14,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static com.engine.dataDriven.TextFileActions.*;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+
+import static com.engine.dataDriven.CSVFileManager.*;
+import static com.engine.dataDriven.TextFileManager.*;
 import static org.testng.Assert.assertTrue;
 
 public class Login_ReadDataUsingJson {
@@ -32,7 +38,12 @@ public class Login_ReadDataUsingJson {
 
 
 	@Test
-	public void testSuccessfulLogin3 () {
+    public void testSuccessfulLogin3() throws IOException {
+//		new CSVFileManager("src/test/resources/TestData/CSVFile.csv");
+//		String text = String.valueOf(excelFileTestDataReader.getCellData());
+//		CustomReporter.logConsole("text: " + text);
+        readDataLineByLine("src/test/resources/TestData/CSVFile.csv");
+
 		String email = String.valueOf(jsonFileManager.getTestData("user.email"));
 		String password = String.valueOf(jsonFileManager.getTestData("user.password"));
 //        String expectedResult_successMessage = jsonFileManager.getTestData("expectedResult_successMessage");
@@ -49,6 +60,18 @@ public class Login_ReadDataUsingJson {
 //        assertTrue(SecureAreaPage.getAlertText().contains(expectedResult_successMessage),
 //                "Check Alert Message");
 	}
+
+    @Test
+    public void testSuccessfulLogin2() throws IOException {
+        String filePath = "src/test/resources/TestData/CSVFile.csv";
+        String filePath2 = "src/test/resources/TestData/CSVFile2.csv";
+        //new CSVFileManager("src/test/resources/TestData/CSVFile.csv");
+//		String text = String.valueOf(excelFileTestDataReader.getCellData());
+//		CustomReporter.logConsole("text: " + text);
+        //readDataLineByLine("src/test/resources/TestData/CSVFile.csv");
+        //compareTwoCSVFiles(filePath, filePath2);
+        compareTwoCSVFiles2(filePath, filePath2);
+    }
 
 	private WebDriver driver;
 	private JSONFileManager jsonFileManager;

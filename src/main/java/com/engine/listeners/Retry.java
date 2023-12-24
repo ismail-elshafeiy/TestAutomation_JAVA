@@ -1,6 +1,5 @@
 package com.engine.listeners;
 
-import com.engine.dataDriven.PropertiesReader;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
 

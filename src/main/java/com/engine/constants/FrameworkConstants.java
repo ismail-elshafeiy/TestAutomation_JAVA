@@ -1,7 +1,7 @@
 package com.engine.constants;
 
 import com.engine.actions.FileActions;
-import com.engine.dataDriven.PropertiesReader;
+import com.engine.dataDriven.PropertiesManager;
 
 public final class FrameworkConstants {
 
@@ -9,28 +9,28 @@ public final class FrameworkConstants {
     }
 
     static {
-        PropertiesReader.loadAllFiles();
+        PropertiesManager.loadAllFiles();
     }
 
     public static final String PROJECT_PATH = FileActions.getDir();
     private static final String CONFIG_PROP = "config.properties";
-    public static final String EXECUTION_TYPE = PropertiesReader.getPropertyValue(CONFIG_PROP, "executionType");
-    public static final String BROWSER_TYPE = PropertiesReader.getPropertyValue(CONFIG_PROP, "browserType");
-    public static final String HOST = PropertiesReader.getPropertyValue(CONFIG_PROP, "host");
-    public static final String PORT = PropertiesReader.getPropertyValue(CONFIG_PROP, "port");
-    public static final String WIDTH = PropertiesReader.getPropertyValue(CONFIG_PROP, "width");
-    public static final String HEIGHT = PropertiesReader.getPropertyValue(CONFIG_PROP, "height");
-    public static final int TIMEOUT_EXPLICIT = Integer.parseInt(PropertiesReader.getPropertyValue(CONFIG_PROP, "timeoutImplicitDefault"));
-    public static final int TIMEOUT_IMPLICIT = Integer.parseInt(PropertiesReader.getPropertyValue(CONFIG_PROP, "timeoutImplicitDefault"));
-    public static final int POLLING = Integer.parseInt(PropertiesReader.getPropertyValue(CONFIG_PROP, "fluentWaitpolling"));
+    public static final String EXECUTION_TYPE = PropertiesManager.getPropertyValue(CONFIG_PROP, "executionType");
+    public static final String BROWSER_TYPE = PropertiesManager.getPropertyValue(CONFIG_PROP, "browserType");
+    public static final String HOST = PropertiesManager.getPropertyValue(CONFIG_PROP, "host");
+    public static final String PORT = PropertiesManager.getPropertyValue(CONFIG_PROP, "port");
+    public static final String WIDTH = PropertiesManager.getPropertyValue(CONFIG_PROP, "width");
+    public static final String HEIGHT = PropertiesManager.getPropertyValue(CONFIG_PROP, "height");
+    public static final int TIMEOUT_EXPLICIT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "timeoutImplicitDefault"));
+    public static final int TIMEOUT_IMPLICIT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "timeoutImplicitDefault"));
+    public static final int POLLING = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "fluentWaitpolling"));
 
-    public static final String PROJECT_NAME = PropertiesReader.getPropertyValue(CONFIG_PROP, "projectName");
-    public static final String REPORT_TITLE = PropertiesReader.getPropertyValue(CONFIG_PROP, "reportTitle");
-    public static final String EXTENT_REPORT_NAME = PropertiesReader.getPropertyValue(CONFIG_PROP, "reportName");
-    public static final int MAX_TRY = Integer.parseInt(PropertiesReader.getPropertyValue(CONFIG_PROP, "retryFailedTest"));
+    public static final String PROJECT_NAME = PropertiesManager.getPropertyValue(CONFIG_PROP, "projectName");
+    public static final String REPORT_TITLE = PropertiesManager.getPropertyValue(CONFIG_PROP, "reportTitle");
+    public static final String EXTENT_REPORT_NAME = PropertiesManager.getPropertyValue(CONFIG_PROP, "reportName");
+    public static final int MAX_TRY = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "retryFailedTest"));
     // public static final String BASE_URL = PropertiesReader.getPropertyValue("automationPractice.properties", "phptravels.baseuri");
-    public static final String BASE_URL = PropertiesReader.getPropertyValue(CONFIG_PROP, "rest.baseUrl");
-    public static final String HOME_URL_TAU = PropertiesReader.getPropertyValue("config.properties", "TAU.homeUrl");
+    public static final String BASE_URL = PropertiesManager.getPropertyValue(CONFIG_PROP, "rest.baseUrl");
+    public static final String HOME_URL_TAU = PropertiesManager.getPropertyValue("config.properties", "TAU.homeUrl");
 
 
     public static final String YES = "yes";

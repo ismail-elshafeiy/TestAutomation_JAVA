@@ -132,16 +132,21 @@ public class DriverHelper {
         }
     }
 
+    //    public static ChromeOptions getChromeOptions() {
+//        ChromeOptions chOptions = new ChromeOptions();
+//        chOptions.setHeadless(false);
+//        chOptions.addArguments("--window-size=1920,1080");
+//        chOptions.addArguments("--start-maximized");
+//        chOptions.setCapability("platform", Platform.LINUX);
+//        chOptions.addArguments("--headless");
+//        chOptions.addArguments("disable--infobars");
+//        chOptions.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
+//        chOptions.addArguments("--ignore-certificate-errors");
+//        return chOptions;
+//    }
     public static ChromeOptions getChromeOptions() {
         ChromeOptions chOptions = new ChromeOptions();
-        chOptions.setHeadless(false);
-        chOptions.addArguments("--window-size=1920,1080");
-        chOptions.addArguments("--start-maximized");
-        chOptions.setCapability("platform", Platform.LINUX);
-        chOptions.addArguments("--headless");
-        chOptions.addArguments("disable--infobars");
-        chOptions.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
-        chOptions.addArguments("--ignore-certificate-errors");
+        chOptions.addArguments("--disable-extensions");
         return chOptions;
     }
 

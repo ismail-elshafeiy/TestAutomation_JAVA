@@ -10,9 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class TextFileActions {
+public class TextFileManager {
 
-    public TextFileActions() {
+    public TextFileManager() {
         super();
     }
 
@@ -75,7 +75,7 @@ public class TextFileActions {
         String value;
         try {
             lines = Files.readAllLines(new File(filepath).toPath());
-            value = lines.get(line - 1);
+            value = lines.get(line);
             return value;
         } catch (IOException e) {
             throw new RuntimeException(e);

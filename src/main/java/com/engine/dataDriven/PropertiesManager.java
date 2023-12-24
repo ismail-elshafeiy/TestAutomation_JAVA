@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.LinkedList;
 import java.util.Properties;
 
-public class PropertiesReader {
+public class PropertiesManager {
 
 
     //    @Getter
