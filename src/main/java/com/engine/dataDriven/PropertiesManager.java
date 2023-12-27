@@ -38,7 +38,7 @@ public class PropertiesManager {
             CustomReporter.logInfoStep("Loaded all properties files.");
 			return properties;
 		} catch (IOException e) {
-			CustomReporter.logErrorMessage("Warning !! Can not Load All File.");
+            CustomReporter.logError("Warning !! Can not Load All File.");
 			return new Properties();
 		}
 	}
@@ -49,13 +49,13 @@ public class PropertiesManager {
 		try {
 			reader = new FileReader(propPath);
 		} catch ( FileNotFoundException e ) {
-			CustomReporter.logErrorMessage(e.getMessage() + " No file found in the given path: " + propPath);
+            CustomReporter.logError(e.getMessage() + " No file found in the given path: " + propPath);
 			e.printStackTrace();
 		}
 		try {
 			properties.load(reader);
 		} catch ( IOException e ) {
-			CustomReporter.logErrorMessage(e.getMessage() + " Couldn't find any properties with the given property name: " + propertyName);
+            CustomReporter.logError(e.getMessage() + " Couldn't find any properties with the given property name: " + propertyName);
 			e.printStackTrace();
 		}
         CustomReporter.logInfoStep("Property value for [ " + propertyName + " ] is: [" + properties.getProperty(propertyName) + "] from file: [ " + propertyFileName + " ]");
@@ -68,14 +68,14 @@ public class PropertiesManager {
 		try {
 			out = new FileOutputStream(propPath);
 		} catch (FileNotFoundException e) {
-			CustomReporter.logErrorMessage(e.getMessage() + " No file found in the given path: " + propPath);
+            CustomReporter.logError(e.getMessage() + " No file found in the given path: " + propPath);
 			e.printStackTrace();
 		}
 		try {
 			properties.setProperty(key, value);
 			properties.store(out, "Set value for key: " + key + " to: " + value);
 		} catch (Exception e) {
-			CustomReporter.logErrorMessage(e.getMessage() + " Couldn't find any properties with the given property name: " + key);
+            CustomReporter.logError(e.getMessage() + " Couldn't find any properties with the given property name: " + key);
 			e.printStackTrace();
 		}
 	}

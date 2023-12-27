@@ -56,7 +56,7 @@ public class ScreenshotManager {
                 // this happens when the gif fails to start, maybe the browser window was
                 // already closed
             } catch (IOException | NullPointerException | IllegalStateException e) {
-                CustomReporter.logErrorMessage(e.getMessage());
+                CustomReporter.logError(e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -107,7 +107,7 @@ public class ScreenshotManager {
                 // method
                 // or this happens when the window is already closed
             } catch (IOException | WebDriverException e) {
-                CustomReporter.logErrorMessage(e.getMessage());
+                CustomReporter.logError(e.getMessage());
             }
         }
     }
@@ -139,7 +139,7 @@ public class ScreenshotManager {
             // leave the gif intact and will attach it even after failing to append to it
         } catch (WebDriverException | IOException | IllegalStateException | IllegalArgumentException |
                  NullPointerException e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             e.printStackTrace();
         }
     }

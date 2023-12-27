@@ -1,6 +1,7 @@
 package com.engine.reports;
 
 import com.engine.Helper;
+import com.engine.actions.FileActions;
 import com.engine.constants.FrameworkConstants;
 import com.engine.dataDriven.PropertiesManager;
 import com.google.common.base.Throwables;
@@ -65,16 +66,25 @@ public class CustomReporter {
      * @param text logged by action that will be added as a step in the execution report (e.g. click on button)
      */
 
-    @Step("{text}")
+//    @Step("{text}")
     public static void logInfoStep(String text) {
         createLog(text, Level.INFO);
         ExtentReport.info(text);
+    }
+
+    public static void logInfoStep(String text, boolean addToAllureReport) {
+        createLog(text, Level.INFO);
+        ExtentReport.info(text);
+        if (addToAllureReport) {
+            Allure.step(text, getAllureStepStatus(text));
+        }
     }
 
 
     public static void logPassed(String text) {
         createLog(text, Level.INFO);
         ExtentReport.pass(text);
+        Allure.step(text, getAllureStepStatus(text));
     }
 
     public static void logWarning(String text) {
@@ -83,22 +93,15 @@ public class CustomReporter {
         ExtentReport.warning(text);
     }
 
-    public static void logError(String text) {
-        createLog(text, Level.ERROR);
-        ExtentReport.fail(text);
-    }
-
-
     /**
      * Log message that will be added as a message in the execution report
      *
      * @param message logged by exception / assertion message that will be added as a message in the execution report
      */
-    public static void logErrorMessage(String message) {
+    public static void logError(String message) {
         createLog(message, Level.ERROR);
         ExtentReport.fail(FrameworkConstants.ICON_SMILEY_FAIL + " " + message);
         Assert.fail(message);
-
     }
 
     public static void logConsole(String text, Level level) {
@@ -123,7 +126,7 @@ public class CustomReporter {
     }
 
 
-    public static void log(String logText, List<List<Object>> attachments) {
+    public static void logAttachments(String logText, List<List<Object>> attachments) {
         if (attachments != null && !attachments.isEmpty() && (attachments.size() > 1 || (attachments.get(0) != null && !attachments.get(0).isEmpty()))) {
             writeStepToReport(logText, attachments);
         } else {
@@ -153,7 +156,6 @@ public class CustomReporter {
     private static String addSpacing(String log) {
         StringBuilder augmentedText = new StringBuilder();
         StringBuilder lineByLine = new StringBuilder();
-
         augmentedText.append(System.lineSeparator());
         Arrays.stream(log.split("\n")).toList().forEach(line -> {
             var trailingSpacing = "";
@@ -170,44 +172,6 @@ public class CustomReporter {
         });
         return augmentedText.toString();
     }
-
-    public static void logThrowable(Throwable t) {
-        createLog(formatStackTraceToLogEntry(t), Level.ERROR);
-    }
-
-    public static void createLog(String logText, Level loglevel) {
-        String timestamp = (new SimpleDateFormat(TIMESTAMP_FORMAT)).format(new Date(System.currentTimeMillis()));
-        if (logText == null) {
-            logText = "null";
-        }
-        String log = logText.trim() + " @" + timestamp;
-        Reporter.log(log, false);
-        if (logger == null) {
-            initializeLogger();
-        }
-        logger.log(loglevel, logText.trim());
-    }
-
-    private static void createLog(String logText, boolean addToConsoleLog) {
-        String timestamp = (new SimpleDateFormat(TIMESTAMP_FORMAT)).format(new Date(System.currentTimeMillis()));
-        if (logText == null) {
-            logText = "null";
-        }
-        String log = logText.trim() + " @" + timestamp;
-        Reporter.log(log, false);
-        if (addToConsoleLog) {
-            if (logger == null) {
-                initializeLogger();
-            }
-            logger.log(Level.INFO, logText.trim());
-        }
-    }
-
-    private static void initializeLogger() {
-        Configurator.initialize(null, PropertiesManager.CUSTOM_PROPERTIES_FOLDER_PATH + "/log4j2.properties");
-        logger = LogManager.getLogger(CustomReporter.class.getName());
-    }
-
 
     public static String formatStackTraceToLogEntry(Throwable t) {
         return formatStackTraceToLogEntry(t, false);
@@ -246,7 +210,7 @@ public class CustomReporter {
                 "Exception Stacktrace", formatStackTraceToLogEntry(throwable));
         attachments.add(actualValueAttachment);
         if (failedFileManager != ElementActions.class)
-            CustomReporter.logErrorMessage(message + rootCause);
+            CustomReporter.logError(message + rootCause);
         Assert.fail(message + rootCause, throwable);
     }
 
@@ -256,7 +220,9 @@ public class CustomReporter {
         createLog(logText, false);
         if (attachments != null && !attachments.isEmpty()) {
             attachments.forEach(attachment -> {
-                if (attachment != null && !attachment.isEmpty() && attachment.get(2).getClass().toString().toLowerCase().contains("string")
+                if (attachment != null
+                        && !attachment.isEmpty()
+                        && attachment.get(2).getClass().toString().toLowerCase().contains("string")
                         && !attachment.get(2).getClass().toString().contains("StringInputStream")) {
                     if (!attachment.get(2).toString().isEmpty()) {
                         Attachments.attach(attachment.get(0).toString(), attachment.get(1).toString(), attachment.get(2).toString());
@@ -293,6 +259,102 @@ public class CustomReporter {
         }
     }
 
+    public static void passAction(String testData) {
+        String actionName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        reportActionResult(actionName, testData, null, true);
+    }
+
+    public static void passAction(String testData, String log) {
+        String actionName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        reportActionResult(actionName, testData, log, true);
+    }
+
+    public static void failAction(String testData, Exception... rootCauseException) {
+        String actionName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        failAction(actionName, testData, rootCauseException);
+
+    }
+
+    public static void failAction(Exception... rootCauseException) {
+        String actionName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        failAction(actionName, null, rootCauseException);
+    }
+
+    public static void failAction(String actionName, String testData, Exception... rootCauseException) {
+        String message = reportActionResult(actionName, testData, null, false, rootCauseException);
+        CustomReporter.failReporter(FileActions.class, message, rootCauseException[0]);
+    }
+
+
+    public static String reportActionResult(String actionName, String testData, String log, Boolean passFailStatus, Exception... rootCauseException) {
+        actionName = actionName.substring(0, 1).toUpperCase() + actionName.substring(1);
+        String message;
+        if (Boolean.TRUE.equals(passFailStatus)) {
+            message = "File Action \"" + actionName + "\" successfully performed.";
+        } else {
+            message = "File Action \"" + actionName + "\" failed.";
+        }
+        List<List<Object>> attachments = new ArrayList<>();
+        if (testData != null && testData.length() >= 500) {
+            List<Object> actualValueAttachment = Arrays.asList("File Action Test Data - " + actionName, "Actual Value", testData);
+            attachments.add(actualValueAttachment);
+        } else if (testData != null && !testData.isEmpty()) {
+            message = message + " With the following test data \"" + testData + "\".";
+        }
+        if (log != null && !log.trim().equals("")) {
+            attachments.add(Arrays.asList("File Action Actual Result", "Command Log", log));
+        }
+        if (rootCauseException != null && rootCauseException.length >= 1) {
+            List<Object> actualValueAttachment = Arrays.asList("File Action Exception - " + actionName, "Stacktrace", CustomReporter.formatStackTraceToLogEntry(rootCauseException[0]));
+            attachments.add(actualValueAttachment);
+        }
+        // Minimize File Action log steps and move them to discrete logs if called
+        // within SHAFT_Engine itself
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        StackTraceElement parentMethod = stackTrace[4];
+        if (parentMethod.getClassName().contains("engine")) {
+            CustomReporter.logInfoStep(message);
+        } else {
+            if (!attachments.equals(new ArrayList<>())) {
+                CustomReporter.logInfoStep(attachments.toString());
+            } else {
+                CustomReporter.logInfoStep(message);
+            }
+        }
+        return message;
+    }
+
+    public static void logThrowable(Throwable t) {
+        createLog(formatStackTraceToLogEntry(t), Level.ERROR);
+    }
+
+    public static void createLog(String logText, Level loglevel) {
+        String timestamp = (new SimpleDateFormat(TIMESTAMP_FORMAT)).format(new Date(System.currentTimeMillis()));
+        if (logText == null) {
+            logText = "null";
+        }
+        String log = logText.trim() + " @" + timestamp;
+        Reporter.log(log, false);
+        if (logger == null) {
+            initializeLogger();
+        }
+        logger.log(loglevel, logText.trim());
+    }
+
+    private static void createLog(String logText, boolean addToConsoleLog) {
+        String timestamp = (new SimpleDateFormat(TIMESTAMP_FORMAT)).format(new Date(System.currentTimeMillis()));
+        if (logText == null) {
+            logText = "null";
+        }
+        String log = logText.trim() + " @" + timestamp;
+        Reporter.log(log, false);
+        if (addToConsoleLog) {
+            if (logger == null) {
+                initializeLogger();
+            }
+            logger.log(Level.INFO, logText.trim());
+        }
+    }
 
     /**
      * Log console error, warming and info that will be added as a error in the execution report
@@ -325,7 +387,7 @@ public class CustomReporter {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logErrorMessage("Console logs not found: " + e.getMessage());
+            CustomReporter.logError("Console logs not found: " + e.getMessage());
         } finally {
             writer.close();
         }
@@ -354,6 +416,11 @@ public class CustomReporter {
 //			e.printStackTrace();
 //		}
 //	}
+
+    private static void initializeLogger() {
+        Configurator.initialize(null, PropertiesManager.CUSTOM_PROPERTIES_FOLDER_PATH + "/log4j2.properties");
+        logger = LogManager.getLogger(CustomReporter.class.getName());
+    }
 }
 
 

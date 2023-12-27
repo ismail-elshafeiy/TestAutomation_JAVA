@@ -56,12 +56,12 @@ public final class PropertyFileManager {
                         loadPropertiesFileIntoSystemProperties(properties, propertyFile);
                     }
                 } else {
-                    CustomReporter.logErrorMessage(
+                    CustomReporter.logError(
                             "The desired propertiesFolderPath directory doesn't exist. ["
                                     + propertiesFolderPath + "]");
                 }
             } catch (Exception e) {
-                CustomReporter.logErrorMessage(e.getMessage());
+                CustomReporter.logError(e.getMessage());
             }
         }
     }
@@ -75,7 +75,7 @@ public final class PropertyFileManager {
             System.getProperties().putAll(properties);
             // reset system properties
         } catch (IOException e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
         }
     }
 

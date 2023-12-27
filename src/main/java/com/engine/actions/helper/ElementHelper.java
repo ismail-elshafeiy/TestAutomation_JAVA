@@ -30,7 +30,7 @@ public class ElementHelper {
 				fail("The element [" + elementLocator + "] is not Displayed");
 			}
 		} catch (Exception toe) {
-			CustomReporter.logErrorMessage(toe.getMessage());
+            CustomReporter.logError(toe.getMessage());
 			fail(toe.getMessage());
 		}
 	}

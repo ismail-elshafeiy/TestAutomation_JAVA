@@ -4,7 +4,6 @@ import com.engine.Waits;
 import com.engine.actions.BrowserActions;
 import com.engine.reports.CustomReporter;
 import com.engine.validations.EyesManager;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
@@ -112,7 +111,7 @@ public class DriverHelper {
                 BrowserActions.setWindowSize(driver.get());
             }
         } catch (Exception e) {
-            CustomReporter.logErrorMessage("Error while set window size :" + e.getMessage());
+            CustomReporter.logError("Error while set window size :" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -127,7 +126,7 @@ public class DriverHelper {
                 Waits.implicitWait(driver.get(), Integer.parseInt(timeoutImplicit));
             }
         } catch (Exception e) {
-            CustomReporter.logErrorMessage("Error while set implicit wait :" + e.getMessage());
+            CustomReporter.logError("Error while set implicit wait :" + e.getMessage());
             e.printStackTrace();
         }
     }

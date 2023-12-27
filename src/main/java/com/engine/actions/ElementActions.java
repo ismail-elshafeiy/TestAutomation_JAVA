@@ -38,7 +38,7 @@ public class ElementActions {
         try {
             Waits.getExplicitWait(driver).until(ExpectedConditions.elementToBeClickable(elementLocator));
         } catch (Exception toe) {
-            CustomReporter.logErrorMessage(toe.getMessage());
+            CustomReporter.logError(toe.getMessage());
             fail(toe.getMessage());
         }
         try {
@@ -56,8 +56,8 @@ public class ElementActions {
                 ((JavascriptExecutor) driver).executeScript("arguments[arguments.length - 1].click();", driver.findElement(elementLocator));
             } catch (Exception rootCauseException) {
                 rootCauseException.initCause(exception);
-                CustomReporter.logErrorMessage(exception.getMessage());
-                CustomReporter.logErrorMessage(rootCauseException.getMessage());
+                CustomReporter.logError(exception.getMessage());
+                CustomReporter.logError(rootCauseException.getMessage());
                 // Force fails the test case if you couldn't perform the click
                 fail("Couldn't click on the element:" + elementLocator, rootCauseException);
             }
@@ -93,7 +93,7 @@ public class ElementActions {
                 }
             }
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             fail(e.getMessage());
         }
         // Make sure that the data is inserted correctly to the field
@@ -140,7 +140,7 @@ public class ElementActions {
                 }
             }
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             fail(e.getMessage());
         }
         // Make sure that the data is inserted correctly to the field
@@ -176,10 +176,10 @@ public class ElementActions {
                 case TEXT -> select.selectByVisibleText(option);
                 case VALUE -> select.selectByValue(option);
                 case INDEX -> select.selectByIndex(Integer.parseInt(option));
-                default -> CustomReporter.logErrorMessage("Unexpected value: " + selectBy);
+                default -> CustomReporter.logError("Unexpected value: " + selectBy);
             }
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -206,7 +206,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Double Click on element [" + elementLocator + "]");
             actions.doubleClick(driver.findElement(elementLocator)).perform();
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -223,7 +223,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Right Click on element [" + elementLocator + "]");
             actions.contextClick(driver.findElement(elementLocator)).perform();
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -241,7 +241,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Hover on [" + driver.findElement(elementLocator).getText() + "]");
             actions.moveToElement(driver.findElement(elementLocator)).perform();
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -258,7 +258,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Hover on [" + driver.findElement(elementLocator).getText() + "]");
             actions.moveToElement(driver.findElement(elementLocator)).click().perform();
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -278,7 +278,7 @@ public class ElementActions {
             driver.findElement(elementLocator).sendKeys(key);
             actions.sendKeys(key).perform();
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
         }
     }
 
@@ -295,7 +295,7 @@ public class ElementActions {
             actions.click(driver.findElement(elementLocator))
                     .sendKeys(text).build().perform();
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
         }
     }
 
@@ -314,7 +314,7 @@ public class ElementActions {
                     .build()
                     .perform();
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -335,7 +335,7 @@ public class ElementActions {
                     .build()
                     .perform();
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -352,7 +352,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Drag and Drop [" + driver.findElement(sourceLocator).getText() + "] to [" + driver.findElement(targetLocator).getText() + "]");
             actions.dragAndDrop(driver.findElement(sourceLocator), driver.findElement(targetLocator)).perform();
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -369,7 +369,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Drag and Drop [" + driver.findElement(sourceLocator).getText() + "] to [" + xOffset + "," + yOffset + "]");
             actions.dragAndDropBy(driver.findElement(sourceLocator), xOffset, yOffset).perform();
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -404,7 +404,7 @@ public class ElementActions {
             }
             return true;
         } catch (HeadlessException e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -418,7 +418,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Click on element [" + elementLocator + "] using JavaScript");
             ((JavascriptExecutor) driver).executeScript("arguments[arguments.length - 1].click();", driver.findElement(elementLocator));
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -434,7 +434,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Send Keys [" + text + "] to element [" + elementLocator + "] using JavaScript");
             ((JavascriptExecutor) driver).executeScript("arguments[arguments.length - 1].value='" + text + "';", driver.findElement(elementLocator));
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -450,7 +450,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Scroll to element [" + elementLocator + "]");
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(elementLocator));
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -465,7 +465,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Scroll to top of the page");
             ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -485,7 +485,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Check if element [" + elementLocator + "] is Displayed");
             return driver.findElement(elementLocator).isDisplayed();
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
         }
         return false;
     }
@@ -502,7 +502,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Check if element [" + elementLocator + "] is Enabled");
             return driver.findElement(elementLocator).isEnabled();
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
         }
         return false;
     }
@@ -519,7 +519,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Check if element [" + elementLocator + "] is Selected");
             return driver.findElement(elementLocator).isSelected();
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
         }
         return false;
     }
@@ -540,7 +540,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Get the Text of element [" + elementLocator + "]; The Text is [" + text + "]");
             return text;
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
         }
         return null;
     }
@@ -552,7 +552,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Get the Attribute [" + attributeName + "] Value of element [" + elementLocator + "]; The Value is [" + attributeValue + "]");
             return attributeValue;
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
         }
         return null;
     }
@@ -564,7 +564,7 @@ public class ElementActions {
             CustomReporter.logInfoStep("[Element Action] Get the CSS Value [" + cssValue + "] of element [" + elementLocator + "]; The Value is [" + cssValueOfElement + "]");
             return cssValueOfElement;
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
         }
         return null;
     }
@@ -592,7 +592,7 @@ public class ElementActions {
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(tableLocator));
         } catch (Exception throwable) {
-            CustomReporter.logErrorMessage(throwable.getMessage());
+            CustomReporter.logError(throwable.getMessage());
             return null;
         }
         WebElement table = driver.findElement(tableLocator);
@@ -601,7 +601,7 @@ public class ElementActions {
             //and you need to wait for rows to be loaded
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("tbody tr")));
         } catch (Exception e) {
-            CustomReporter.logErrorMessage(e.getMessage() + " Table\"" + tableLocator + "\" is empty");
+            CustomReporter.logError(e.getMessage() + " Table\"" + tableLocator + "\" is empty");
 
             //Will return empty list to be used in case you want to assert if the table is empty
             return new ArrayList<>();

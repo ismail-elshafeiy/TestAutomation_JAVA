@@ -1,16 +1,14 @@
 package com.engine.reports;
 
+import com.engine.actions.TerminalActions;
 import com.engine.constants.FrameworkConstants;
 import com.google.common.collect.ImmutableMap;
+import com.github.automatedowl.tools.AllureEnvironmentWriter;
 import com.google.common.io.Files;
 import io.qameta.allure.Allure;
-import org.openqa.selenium.remote.Browser;
-import com.github.automatedowl.tools.AllureEnvironmentWriter;
+import org.apache.commons.lang3.SystemUtils;
 
-import java.io.File;
 import java.io.IOException;
-
-import static com.github.automatedowl.tools.AllureEnvironmentWriter.allureEnvironmentWriter;
 
 public class AllureReport {
 //    public static void addAttachmentVideoAVI() {
@@ -44,7 +42,6 @@ public class AllureReport {
                         put("Page Load Timeout", "").
                         build());
         CustomReporter.logConsole("Allure Reports is installed.");
-
     }
 //    public static void addAttachmentVideoAVI() {
 //        if (FrameworkConstants.VIDEO_RECORD.toLowerCase().trim().equals(FrameworkConstants.YES)) {
@@ -64,4 +61,15 @@ public class AllureReport {
 //            }
 //        }
 //    }
+
+
+    public static void openAllureReportAfterExecution() {
+        String commandToOpenAllureReport;
+        if (SystemUtils.IS_OS_WINDOWS) {
+            commandToOpenAllureReport = ("generate_allure_report.bat");
+        } else {
+            commandToOpenAllureReport = ("sh generate_allure_report.sh");
+        }
+        TerminalActions.getInstance(true, true).performTerminalCommand(commandToOpenAllureReport);
+    }
 }

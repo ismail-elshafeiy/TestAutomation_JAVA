@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.engine.reports.AllureReport.openAllureReportAfterExecution;
+
 public class TestngListener implements ISuiteListener, ITestListener, IInvokedMethodListener {
 	private RecordVideo screenRecorder;
 	static int count_totalTCs;
@@ -28,7 +30,7 @@ public class TestngListener implements ISuiteListener, ITestListener, IInvokedMe
 		try {
 			screenRecorder = new RecordVideo();
 		} catch (IOException | AWTException e) {
-			CustomReporter.logErrorMessage(e.getMessage());
+            CustomReporter.logError(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -75,6 +77,7 @@ public class TestngListener implements ISuiteListener, ITestListener, IInvokedMe
 	@Override
 	public void onFinish (ITestContext context) {
 		CustomReporter.createImportantReportEntry(" Test: [ " + context.getName() + " ] Finished ");
+        openAllureReportAfterExecution();
 	}
 
 	@Override
@@ -96,7 +99,7 @@ public class TestngListener implements ISuiteListener, ITestListener, IInvokedMe
 //				ExtentReport.fail(Attachments.attachFullPageScreenShotToExtentReport((FirefoxDriver) driver));
 //				Logger.logConsoleLogs(driver, result);
 			} catch ( Throwable e ) {
-				CustomReporter.logErrorMessage("Error:  " + e.getMessage());
+                CustomReporter.logError("Error:  " + e.getMessage());
 			}
 		}
 		ExtentReport.fail(MarkupHelper.createLabel(result.getMethod().getMethodName() + " Failed!", ExtentColor.RED));

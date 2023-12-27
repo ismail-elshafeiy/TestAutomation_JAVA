@@ -60,7 +60,7 @@ public class DriverFactory {
                     e.printStackTrace();
                 }
             } else {
-                CustomReporter.logErrorMessage(browserTypeWarningMsg);
+                CustomReporter.logError(browserTypeWarningMsg);
                 fail(browserTypeWarningMsg);
 //		throw new NullPointerException(warningMsg);
             }
@@ -84,7 +84,7 @@ public class DriverFactory {
                 checkMaximizeOption();
                 setITestContext();
             } else {
-                CustomReporter.logErrorMessage(browserTypeWarningMsg);
+                CustomReporter.logError(browserTypeWarningMsg);
                 fail(browserTypeWarningMsg);
 //		throw new NullPointerException(warningMsg);
             }
@@ -104,12 +104,12 @@ public class DriverFactory {
                 driver.set(new EdgeDriver(getEdgeOptions()));
                 setITestContext();
             } else {
-                CustomReporter.logErrorMessage(browserTypeWarningMsg);
+                CustomReporter.logError(browserTypeWarningMsg);
                 fail(browserTypeWarningMsg);
             }
         } else {
             String warningMsg = "The driver is null! because the execution type [" + EXECUTION_TYPE + "] is not valid/supported; Please choose a valid execution type from the given choices in the properties file";
-            CustomReporter.logErrorMessage(warningMsg);
+            CustomReporter.logError(warningMsg);
             fail(warningMsg);
         }
         // start session
