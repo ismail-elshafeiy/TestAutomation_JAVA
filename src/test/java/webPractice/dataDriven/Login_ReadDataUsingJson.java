@@ -1,6 +1,5 @@
 package webPractice.dataDriven;
 
-import com.engine.dataDriven.CSVFileManager;
 import com.engine.reports.CustomReporter;
 import practice.gui.pages.homePage.HomePage;
 import practice.gui.pages.inputs.SecureAreaPage;
@@ -15,8 +14,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 
 import static com.engine.dataDriven.CSVFileManager.*;
 import static com.engine.dataDriven.TextFileManager.*;
@@ -70,7 +67,7 @@ public class Login_ReadDataUsingJson {
 //		CustomReporter.logConsole("text: " + text);
         //readDataLineByLine("src/test/resources/TestData/CSVFile.csv");
         //compareTwoCSVFiles(filePath, filePath2);
-        compareTwoCSVFiles2(filePath, filePath2);
+        compareTwoCSVFilesByValue(filePath, filePath2);
     }
 
 	private WebDriver driver;

@@ -1,105 +1,111 @@
 package com.engine.evidence;
 
-import org.monte.media.Format;
-import org.monte.media.Registry;
-import org.monte.media.math.Rational;
-import org.monte.screenrecorder.ScreenRecorder;
+import com.automation.remarks.video.RecorderFactory;
+import com.automation.remarks.video.recorder.IVideoRecorder;
+import com.automation.remarks.video.recorder.VideoRecorder;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import com.engine.Helper;
+import com.engine.constants.FrameworkConstants;
+import com.engine.dataDriven.PropertiesManager;
+import com.engine.reports.CustomReporter;
+import com.engine.reports.Attachments;
+
+import io.qameta.allure.Step;
+import org.apache.commons.io.FileUtils;
+import ws.schild.jave.Encoder;
+import ws.schild.jave.EncoderException;
+import ws.schild.jave.MultimediaObject;
+import ws.schild.jave.encode.AudioAttributes;
+import ws.schild.jave.encode.EncodingAttributes;
+import ws.schild.jave.encode.VideoAttributes;
+
+import java.io.*;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-import static org.monte.media.FormatKeys.*;
-import static org.monte.media.VideoFormatKeys.*;
+import static com.automation.remarks.video.RecordingUtils.doVideoProcessing;
+import static com.engine.constants.FrameworkConstants.RECORD_VIDEO;
 
-public class RecordVideo extends ScreenRecorder {
+public class RecordVideo {
 
-    private String fileName;
-    private File currentFile;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH-mm-ss");
-    private String videoFilePath = "video";
+    private static final ThreadLocal<IVideoRecorder> recorder = new ThreadLocal<>();
 
-    public RecordVideo() throws IOException, AWTException {
-        super(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration(),
-                new Rectangle(0, 0, Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height),
-                new Format(MediaTypeKey, MediaType.FILE, MimeTypeKey, MIME_AVI),
-                new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, CompressorNameKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, DepthKey, 24, FrameRateKey,
-                        Rational.valueOf(15), QualityKey, 1.0f, KeyFrameIntervalKey, 15 * 60),
-                new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, "black", FrameRateKey, Rational.valueOf(30)),
-                null,
-                new File("./video/"));
-    }
-
-    @Override
-    protected File createMovieFile(Format fileFormat) throws IOException {
-        if (!movieFolder.exists()) {
-            movieFolder.mkdirs();
-        } else if (!movieFolder.isDirectory()) {
-            throw new IOException("\"" + movieFolder + "\" is not a directory.");
-        }
-
-        currentFile = getFileWithUniqueName(movieFolder.getAbsolutePath() + File.separator + fileName + "_" + dateFormat.format(new Date()) + "." + Registry.getInstance().getExtension(fileFormat));
-        return currentFile;
-    }
-
-    private File getFileWithUniqueName(String fileName) {
-        String extension = "";
-        String name = "";
-
-        int idxOfDot = fileName.lastIndexOf('.'); // Get the last index of . to separate extension
-        extension = fileName.substring(idxOfDot + 1);
-        name = fileName.substring(0, idxOfDot);
-
-        Path path = Paths.get(fileName);
-        int counter = 1;
-        while (Files.exists(path)) {
-            fileName = name + "-" + counter + "." + extension;
-            path = Paths.get(fileName);
-            counter++;
-        }
-        return new File(fileName);
-    }
-
-    public void startRecording(String fileName) {
-        this.fileName = fileName;
-        try {
-            start();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public static void startVideoRecording() {
+        if (Boolean.TRUE.equals(RECORD_VIDEO) && recorder.get() == null && !Boolean.TRUE.equals(FrameworkConstants.HEADLESS_OPTION)) {
+            CustomReporter.logInfoStep("Started recording device screen");
+            recorder.set(RecorderFactory.getRecorder(VideoRecorder.conf().recorderType()));
+            recorder.get().start();
+        } else {
+            CustomReporter.logConsole("Video recording is disabled");
         }
     }
 
-    public void stopRecording(boolean keepFile) {
-        try {
-            stop();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        if (!keepFile) {
-            deleteRecording();
-        }
-    }
-
-    private void deleteRecording() {
-        boolean deleted = false;
-        try {
-            if (currentFile.exists()) {
-                deleted = currentFile.delete();
+    public static InputStream getVideoRecording() {
+        InputStream inputStream = null;
+        String pathToRecording = "";
+        String testMethodName = Helper.getTestMethodName();
+        if (Boolean.TRUE.equals(RECORD_VIDEO) && recorder.get() != null) {
+            pathToRecording = doVideoProcessing(Helper.isCurrentTestPassed(), recorder.get().stopAndSave(System.currentTimeMillis() + "_" + testMethodName));
+            try {
+                inputStream = new FileInputStream(encodeRecording(pathToRecording));
+            } catch (FileNotFoundException e) {
+                CustomReporter.logError(e.getMessage());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            recorder.remove();
         }
+        return inputStream;
+    }
 
-        if (deleted)
-            currentFile = null;
-        else
-            System.out.println("Could not delete the screen record!");
+    public static String getVideoRecordingFilePath() {
+        try {
+            String tempFilePath = "target/tempVideoFile/";
+            FileUtils.copyInputStreamToFile(getVideoRecording(), new File(tempFilePath));
+            return tempFilePath;
+        } catch (IOException e) {
+            CustomReporter.logError(e.getMessage());
+            return "";
+        }
+    }
+
+    public static void attachVideoRecording() {
+        if (RECORD_VIDEO) {
+            Attachments.attach("Video Recording", Helper.getTestMethodName(), getVideoRecording());
+        } else {
+            CustomReporter.logConsole("There is no video recording to attach");
+        }
+    }
+
+    public static void attachVideoRecording(Path pathToRecording) {
+        if (pathToRecording != null) {
+            String testMethodName = Helper.getTestMethodName();
+            try {
+                Attachments.attach("Video Recording", testMethodName, new FileInputStream(pathToRecording.toString()));
+            } catch (FileNotFoundException e) {
+                CustomReporter.logError(e.getMessage());
+            }
+        }
+    }
+
+    private static File encodeRecording(String pathToRecording) {
+        File source = new File(pathToRecording);
+        File target = new File(pathToRecording.replace("avi", "mp4"));
+        try {
+            AudioAttributes audio = new AudioAttributes();
+            audio.setCodec("libvorbis");
+            VideoAttributes video = new VideoAttributes();
+            EncodingAttributes attrs = new EncodingAttributes();
+            attrs.setOutputFormat("mp4");
+            attrs.setAudioAttributes(audio);
+            attrs.setVideoAttributes(video);
+            Encoder encoder = new Encoder();
+            encoder.encode(new MultimediaObject(source), target, attrs);
+        } catch (EncoderException e) {
+            CustomReporter.logError(e.getMessage());
+        }
+        return target;
     }
 
 
+    private RecordVideo() {
+        throw new IllegalStateException("Utility class");
+    }
 }

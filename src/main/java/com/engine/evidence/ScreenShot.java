@@ -1,6 +1,7 @@
 package com.engine.evidence;
 
 import com.engine.Helper;
+import com.engine.dataDriven.PropertiesManager;
 import com.engine.reports.CustomReporter;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
@@ -19,8 +20,9 @@ public class ScreenShot {
 	private static String gifRelativePathWithFileName = "";
     //private static final Boolean CREATE_GIF = Boolean.valueOf(System.getProperty("createAnimatedGif").trim());
     //private static final int GIF_FRAME_DELAY = Integer.parseInt(System.getProperty("animatedGif_frameDelay").trim());
+    public static final String screenShotPath = PropertiesManager.getPropertyValue("paths.properties", "screenshotPath");
 	private static ThreadLocal<ImageOutputStream> gifOutputStream = new ThreadLocal<>();
-	private static ThreadLocal<AnimatedGifManager> gifWriter = new ThreadLocal<>();
+    private static ThreadLocal<AnimatedGif> gifWriter = new ThreadLocal<>();
 
 	/**
 	 * Take the screen shot and save it in the ScreenShot folder
@@ -31,7 +33,7 @@ public class ScreenShot {
 		try {
             CustomReporter.logInfoStep("Screenshot taken for Test Case ..... [" + Helper.getTestMethodName() + "]");
 			File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(srcFile, new File("./ScreenShot/" + Helper.getTestMethodName() + ".png"));
+            FileUtils.copyFile(srcFile, new File("./" + screenShotPath + Helper.getTestMethodName() + ".png"));
 		} catch ( Exception e ) {
 			e.printStackTrace();
             CustomReporter.logError("Screenshot not taken: " + e.getMessage());
@@ -70,7 +72,7 @@ public class ScreenShot {
 		try {
             CustomReporter.logInfoStep("Screenshot taken for Element ..... [" + locatorName + "]");
 			File srcFile = driver.findElement(locator).getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(srcFile, new File("./ScreenShot/" + locatorName + ".png"));
+            FileUtils.copyFile(srcFile, new File("./" + screenShotPath + locatorName + ".png"));
 		} catch ( Exception e ) {
 			e.printStackTrace();
             CustomReporter.logError("Element Screenshot not taken: " + e.getMessage());
@@ -87,33 +89,29 @@ public class ScreenShot {
 	public static void takeFullPageScreenshot (WebDriver driver, String imageName) {
 		try {
 			File source = ((FirefoxDriver) driver).getFullPageScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(source, new File("./ScreenShot/" + imageName + "_FullPage.png"));
+            FileUtils.copyFile(source, new File("./" + screenShotPath + imageName + "_FullPage.png"));
 		} catch ( Exception e ) {
 			e.printStackTrace();
             CustomReporter.logError("Full Page Screenshot not taken: " + e.getMessage());
         }
     }
 
-    public static void takeFullScreenShoot(WebDriver driver, String filePath) {
-
+    public static void takeFullScreenShoot(WebDriver driver) {
         //take screenshot of the entire page
         Screenshot screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000)).takeScreenshot(driver);
         try {
-            ImageIO.write(screenshot.getImage(), "PNG", new File(filePath + Helper.getTestMethodName() + ".png"));
+            ImageIO.write(screenshot.getImage(), "PNG", new File("./" + screenShotPath + Helper.getTestMethodName() + ".png"));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 	}
 
-    public static BufferedImage takeFullScreenShoot2(WebDriver driver, String filePath) {
-
+    public static BufferedImage takeFullScreenShoot2(WebDriver driver) {
         //take screenshot of the entire page
         Screenshot screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000)).takeScreenshot(driver);
         try {
-            ImageIO.write(screenshot.getImage(), "PNG", new File(filePath + Helper.getTestMethodName() + ".png"));
+            ImageIO.write(screenshot.getImage(), "PNG", new File("./" + screenShotPath + Helper.getTestMethodName() + ".png"));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return screenshot.getImage();

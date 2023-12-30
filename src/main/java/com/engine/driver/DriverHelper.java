@@ -1,15 +1,18 @@
 package com.engine.driver;
 
-import com.engine.Waits;
-import com.engine.actions.BrowserActions;
+import com.engine.actions.FileActions;
 import com.engine.reports.CustomReporter;
 import com.engine.validations.EyesManager;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.testng.ITestContext;
+import org.testng.ITestResult;
+import org.testng.Reporter;
+
+import java.util.Objects;
 
 import static com.engine.constants.FrameworkConstants.*;
+
 
 public class DriverHelper {
     /**
@@ -18,25 +21,58 @@ public class DriverHelper {
      * hold the enum that will hold the browser types that we support in our framework (chrome, firefox, edge),
      * hold the enum that will hold the execution types that we support in our framework (local, remote, local headless) and will also be used to read the execution type from the properties file
      */
-    protected static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    protected static WebDriver driver;
     protected static EyesManager eyesManager;
-//    public static final String EXECUTION_TYPE = PropertiesReader.getPropertyValue("config.properties", "executionType");
-//    public static final String BROWSER_TYPE = PropertiesReader.getPropertyValue("config.properties", "browserType");
-//    public static final String HOST = PropertiesReader.getPropertyValue("config.properties", "host");
-//    public static final String PORT = PropertiesReader.getPropertyValue("config.properties", "port");
-//    public static String width = PropertiesReader.getPropertyValue("config.properties", "width");
-//    public static String height = PropertiesReader.getPropertyValue("config.properties", "height");
-//    public static final int TIMEOUT_EXPLICIT = Integer.parseInt(PropertiesReader.getPropertyValue("config.properties", "timeoutImplicitDefault"));
-//    public static final int POLLING = Integer.parseInt(PropertiesReader.getPropertyValue("config.properties", "fluentWaitpolling"));
+
+
+    public static void setITestContext() {
+        ITestResult result = Reporter.getCurrentTestResult();
+        ITestContext context = result.getTestContext();
+        context.setAttribute("driver", driver);
+    }
+
+    public static void checkDriverDownloadOption(String browserType) {
+        switch (browserType.toLowerCase()) {
+            case "chrome":
+                if (Objects.equals(AUTOMATIC_DOWNLOAD_DRIVER, Boolean.TRUE)) {
+                    CustomReporter.logConsole("Automatic download driver is enabled and the chrome driver will be downloaded automatically");
+                    WebDriverManager.chromedriver().setup();
+                } else {
+                    FileActions.getInstance().doesFileExist(CHROME_DRIVER_PATH);
+                    System.setProperty("webdriver.chrome.driver", CHROME_DRIVER_PATH);
+                }
+                break;
+            case "firefox":
+                if (Objects.equals(Boolean.TRUE, AUTOMATIC_DOWNLOAD_DRIVER)) {
+                    CustomReporter.logConsole("Automatic download driver is enabled and the gecko driver will be downloaded automatically");
+                    WebDriverManager.firefoxdriver().setup();
+                } else {
+                    FileActions.getInstance().doesFileExist(FIREFOX_DRIVER_PATH);
+                    System.setProperty("webdriver.gecko.driver", FIREFOX_DRIVER_PATH);
+                }
+                break;
+            case "edge":
+                if (Objects.equals(Boolean.TRUE, AUTOMATIC_DOWNLOAD_DRIVER)) {
+                    CustomReporter.logConsole("Automatic download driver is enabled and the edge driver will be downloaded automatically");
+                    WebDriverManager.edgedriver().setup();
+                } else {
+                    FileActions.getInstance().doesFileExist(EDGE_DRIVER_PATH);
+                    System.setProperty("webdriver.edge.driver", EDGE_DRIVER_PATH);
+                }
+                break;
+            default:
+                CustomReporter.logError("The driver is null! because the browser type [ " + browserType + " ] is not valid/supported; Please choose a valid browser type from the given choices in the properties file");
+        }
+    }
 
     /**
      * This enum will hold the browser types that we support in our framework (chrome, firefox, edge)
      */
     public enum BrowserType {
-        MOZILLA_FIREFOX("Mozilla Firefox"),
-        GOOGLE_CHROME("Google Chrome"),
-        MICROSOFT_EDGE("Edge"),
-        FROM_EXCEL(BROWSER_TYPE);
+        FIREFOX("Firefox"),
+        CHROME("Chrome"),
+        EDGE("Edge"),
+        FROM_CONFIG_FILE(BROWSER_TYPE);
         private final String value;
 
         BrowserType(String type) {
@@ -54,8 +90,7 @@ public class DriverHelper {
     public enum ExecutionType {
         LOCAL("Local"),
         REMOTE("Remote"),
-        LOCAL_HEADLESS("Local Headless"),
-        FROM_EXCEL(EXECUTION_TYPE);
+        FROM_CONFIG_FILE(EXECUTION_TYPE);
         private final String value;
 
         ExecutionType(String type) {
@@ -68,10 +103,10 @@ public class DriverHelper {
     }
 
     public enum Environment {
-        DEV("Local"),
-        STG("Remote"),
-        UAT("Local Headless"),
-        PROD("Local Headless");
+        DEV("dev"),
+        STG("stg"),
+        UAT("uat"),
+        PROD("prod");
         private final String value;
 
         Environment(String type) {
@@ -84,10 +119,10 @@ public class DriverHelper {
     }
 
     public enum TestDataAccount {
-        DEV("Local"),
-        STG("Remote"),
-        UAT("Local Headless"),
-        PROD("Local Headless");
+        DEV("dev"),
+        STG("stg"),
+        UAT("uat"),
+        PROD("prod");
         private final String value;
 
         TestDataAccount(String type) {
@@ -99,70 +134,20 @@ public class DriverHelper {
         }
     }
 
-    /**
-     * This method will check if the user wants to maximize the browser window or not and will maximize it if the
-     */
-    public static void checkMaximizeOption() {
-        try {
-            String IS_MAXIMIZE = "true";
-            if (IS_MAXIMIZE.equalsIgnoreCase("true")) {
-                BrowserActions.maximizeWindow(driver.get());
-            } else if (IS_MAXIMIZE.equalsIgnoreCase("false") || IS_MAXIMIZE.equalsIgnoreCase("")) {
-                BrowserActions.setWindowSize(driver.get());
-            }
-        } catch (Exception e) {
-            CustomReporter.logError("Error while set window size :" + e.getMessage());
-            e.printStackTrace();
+    public enum ArgumentsBrowserOptions {
+        HEADLESS("--headless"),
+        START_MAXIMIZED("--start-maximized"),
+        IN_PRIVATE("inprivate"),
+        DISABLE_NOTIFICATIONS("--disable-notifications");
+
+        private final String value;
+
+        ArgumentsBrowserOptions(String type) {
+            this.value = type;
+        }
+
+        String getValue() {
+            return value;
         }
     }
-
-    public static void checkTimeoutImplicitOption() {
-        try {
-            String timeoutImplicit = "";
-            if (timeoutImplicit.equalsIgnoreCase("") || TIMEOUT_EXPLICIT > 30) {
-                // String timeoutImplicitDefault = PropertiesReader.getPropertyValue("config.properties", "timeoutImplicitDefault");
-                Waits.implicitWait(driver.get(), TIMEOUT_EXPLICIT);
-            } else {
-                Waits.implicitWait(driver.get(), Integer.parseInt(timeoutImplicit));
-            }
-        } catch (Exception e) {
-            CustomReporter.logError("Error while set implicit wait :" + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    //    public static ChromeOptions getChromeOptions() {
-//        ChromeOptions chOptions = new ChromeOptions();
-//        chOptions.setHeadless(false);
-//        chOptions.addArguments("--window-size=1920,1080");
-//        chOptions.addArguments("--start-maximized");
-//        chOptions.setCapability("platform", Platform.LINUX);
-//        chOptions.addArguments("--headless");
-//        chOptions.addArguments("disable--infobars");
-//        chOptions.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
-//        chOptions.addArguments("--ignore-certificate-errors");
-//        return chOptions;
-//    }
-    public static ChromeOptions getChromeOptions() {
-        ChromeOptions chOptions = new ChromeOptions();
-        chOptions.addArguments("--disable-extensions");
-        return chOptions;
-    }
-
-    public static FirefoxOptions getFirefoxOptions() {
-        FirefoxOptions ffOptions = new FirefoxOptions();
-        ffOptions.setHeadless(false);
-        ffOptions.addArguments("--window-size=1920,1080");
-        return ffOptions;
-    }
-
-    public static EdgeOptions getEdgeOptions() {
-        EdgeOptions edgeOptions = new EdgeOptions();
-        edgeOptions.setHeadless(true);
-        edgeOptions.addArguments("--window-size=1920,1080");
-        edgeOptions.addArguments("inprivate");
-        return edgeOptions;
-    }
-
-
 }

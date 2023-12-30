@@ -22,9 +22,11 @@ public class JavaScriptExecutorBrowserActionsTest extends BaseTests {
 			- Refresh the page
 			""")
 	public void getTitlePageAndRefresh () {
-		BrowserActions.navigateToUrl(driver, " https://the-internet.herokuapp.com/");
+        BrowserActions.navigateToUrl(driver, "https://www.google.com/");
+        BrowserActions.navigateToUrl(driver, "https://the-internet.herokuapp.com/");
 		String titlePage = ((JavascriptExecutor) driver).executeScript("return document.title;").toString();
 		System.out.println(currentTime + " The Url title Page is --> " + titlePage);
+        BrowserActions.goBackUsingJavascript(driver);
 		((JavascriptExecutor) driver).executeScript("history.go(0)");
 	}
 

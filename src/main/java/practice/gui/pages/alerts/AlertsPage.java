@@ -1,5 +1,6 @@
 package practice.gui.pages.alerts;
 
+import com.engine.actions.FileActions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import com.engine.actions.ElementActions;
@@ -12,6 +13,10 @@ public class AlertsPage {
     // Constructor
     public AlertsPage(WebDriver driver) {
         this.driver = driver;
+    }
+
+    public static AlertsPage getInstance() {
+        return new AlertsPage(driver);
     }
 
     //////////////////////////// Elements Locators ////////////////////////////

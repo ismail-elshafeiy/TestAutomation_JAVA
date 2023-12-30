@@ -12,10 +12,9 @@ import com.opencsv.CSVReaderBuilder;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 
@@ -54,7 +53,6 @@ public class CSVFileManager {
         return csvReader.readAll().toArray(new String[0][]);
     }
 
-    // Java code to illustrate reading a
 // CSV file line by line
     public static void readDataLineByLine(String file) {
         try {
@@ -65,7 +63,6 @@ public class CSVFileManager {
             // file reader as a parameter
             CSVReader csvReader = new CSVReader(filereader);
             String[] nextRecord;
-
             // we are going to read data line by line
             while ((nextRecord = csvReader.readNext()) != null) {
                 for (String cell : nextRecord) {
@@ -78,7 +75,7 @@ public class CSVFileManager {
         }
     }
 
-    public static void compareTwoCSVFiles(String file1, String file2) throws IOException {
+    public static void compareTwoCSVFilesByLine(String file1, String file2) throws IOException {
         BufferedReader reader1 = new BufferedReader(new FileReader(file1));
         BufferedReader reader2 = new BufferedReader(new FileReader(file2));
         String line1 = reader1.readLine();
@@ -104,9 +101,9 @@ public class CSVFileManager {
         reader2.close();
     }
 
-    public static void compareTwoCSVFiles2(String expectedCSVFilePath, String actualCSVFilePath) throws IOException {
-        List<CSVRecord> expectedFile = readCsvFile(expectedCSVFilePath);
-        List<CSVRecord> actualFile = readCsvFile(actualCSVFilePath);
+    public static void compareTwoCSVFilesByValue(String expectedCSVFilePath, String actualCSVFilePath) throws IOException {
+        List<CSVRecord> expectedFile = readCSVFileAsList(expectedCSVFilePath);
+        List<CSVRecord> actualFile = readCSVFileAsList(actualCSVFilePath);
         SoftAssert softAssert = new SoftAssert();
         // Compare the size of both files
         Assert.assertEquals(expectedFile.size(), actualFile.size());
@@ -135,11 +132,7 @@ public class CSVFileManager {
         softAssert.assertAll("Data mismatch between the two files");
     }
 
-    private static List<CSVRecord> readCsvFile(String filePath) throws IOException {
-        Reader reader = new FileReader(filePath);
-        org.apache.commons.csv.CSVParser csvParser = CSVFormat.DEFAULT.parse(reader);
-        return csvParser.getRecords();
-    }
+
 
     // Java code to illustrate
 // Reading CSV File with different separator
@@ -149,12 +142,10 @@ public class CSVFileManager {
             FileReader fileReader = new FileReader(file);
             FileReader fileReader2 = new FileReader(file2);
 
-
             // create csvParser object with
             // custom separator semi-colon
             CSVParser parser = new CSVParserBuilder().withSeparator(',').build();
             CSVParser parser2 = new CSVParserBuilder().withSeparator(',').build();
-
 
             // create csvReader object with parameter
             // fileReader and parser
@@ -164,7 +155,6 @@ public class CSVFileManager {
             CSVReader csvReader2 = new CSVReaderBuilder(fileReader2)
                     .withCSVParser(parser2)
                     .build();
-
             // Read all data at once
             List<String[]> allData = csvReader.readAll();
             List<String[]> allData2 = csvReader2.readAll();
@@ -185,5 +175,26 @@ public class CSVFileManager {
         }
     }
 
+    public static List<CSVRecord> readCSVFileAsList(String filePath) {
+        try {
+            Reader reader = new FileReader(filePath);
+            org.apache.commons.csv.CSVParser csvParser = CSVFormat.DEFAULT.parse(reader);
+            return csvParser.getRecords();
+        } catch (IOException e) {
+            e.printStackTrace();
+            CustomReporter.logError("Error reading CSV file: " + filePath);
+            return null;
+        }
+    }
 
+    public static String readCSVFile(String filePath) {
+        try {
+            Path path = new File(filePath).toPath();
+            return new String(Files.readAllBytes(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+            CustomReporter.logError("Error reading CSV file: " + filePath);
+            return null;
+        }
+    }
 }

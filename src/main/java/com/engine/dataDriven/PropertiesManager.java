@@ -35,7 +35,7 @@ public class PropertiesManager {
 				properties.putAll(tempProp);
 			}
 			file.close();
-            CustomReporter.logInfoStep("Loaded all properties files.");
+            CustomReporter.logConsole("Loaded all properties files.");
 			return properties;
 		} catch (IOException e) {
             CustomReporter.logError("Warning !! Can not Load All File.");
@@ -58,7 +58,7 @@ public class PropertiesManager {
             CustomReporter.logError(e.getMessage() + " Couldn't find any properties with the given property name: " + propertyName);
 			e.printStackTrace();
 		}
-        CustomReporter.logInfoStep("Property value for [ " + propertyName + " ] is: [" + properties.getProperty(propertyName) + "] from file: [ " + propertyFileName + " ]");
+        CustomReporter.logConsole("Property value for [ " + propertyName + " ] is: [" + properties.getProperty(propertyName) + "] from file: [ " + propertyFileName + " ]");
 		return properties.getProperty(propertyName);
 	}
 

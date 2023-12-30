@@ -32,7 +32,7 @@
         <org.yaml.version>2.0</org.yaml.version>
         <!-- Reports frameworks -->
         <allure-testng.version>2.25.0</allure-testng.version>
-        <allure-maven.version>2.12.0</allure-maven.version>
+        <allure-maven.version>2.25.0</allure-maven.version>
         <allure-maven-report.version>2.10.0</allure-maven-report.version>
         <allure-environment-writer.version>1.0.0</allure-environment-writer.version>
         <allure.cmd.download.url>
@@ -710,8 +710,22 @@
             <artifactId>csv-comparator</artifactId>
             <version>${csv-compartor-version}</version>
         </dependency>
-    </dependencies>
 
+        <!-- https://mvnrepository.com/artifact/e-iceblue/spire.xls -->
+        <dependency>
+            <groupId>e-iceblue</groupId>
+            <artifactId>spire.xls</artifactId>
+            <version>13.11.0</version>
+        </dependency>
+
+    </dependencies>
+    <repositories>
+        <repository>
+            <id>com.e-iceblue</id>
+            <name>e-iceblue</name>
+            <url>https://repo.e-iceblue.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
 
     <build>
         <resources>
@@ -763,8 +777,7 @@
                             </property>
                             <property>
                                 <name>listener</name>
-                                <value>com.engine.listeners.TestngListener, com.engine.listeners.WebListener
-                                </value>
+                                <value>com.engine.listeners.TestNGListener, com.engine.listeners.WebListener</value>
                             </property>
                         </properties>
                     </configuration>

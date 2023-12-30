@@ -24,14 +24,12 @@ import java.util.Date;
 public class ScreenshotManager {
     private static final int GIF_SIZE = 1280;
     // TODO: parameterize the detailed gif value
-    private static final Boolean DETAILED_GIF = true;
-    private static final String DETAILED_GIF_REGEX = "(verify.*)|(assert.*)|(click.*)|(tap.*)|(key.*)|(navigate.*)";
     private static String gifRelativePathWithFileName = "";
     private static String testCaseName = "";
     @Getter(AccessLevel.PUBLIC)
     private static final org.openqa.selenium.Dimension TARGET_WINDOW_SIZE = new Dimension(1920, 1080);
     private static ThreadLocal<ImageOutputStream> gifOutputStream = new ThreadLocal<>();
-    private static ThreadLocal<AnimatedGifManager> gifWriter = new ThreadLocal<>();
+    private static ThreadLocal<AnimatedGif> gifWriter = new ThreadLocal<>();
     private static String gifOptions = System.getProperty("config.properties", "createAnimatedGif");
     private static String gifDelay = System.getProperty("config.properties", "animatedGif_frameDelay");
 
@@ -67,8 +65,7 @@ public class ScreenshotManager {
         if (Boolean.TRUE.equals(gifOptions) && screenshot != null) {
             try {
                 testCaseName = Helper.getTestMethodName();
-                String gifFileName = FileSystems.getDefault().getSeparator() + System.currentTimeMillis() + "_"
-                        + testCaseName + ".gif";
+                String gifFileName = FileSystems.getDefault().getSeparator() + System.currentTimeMillis() + "_" + testCaseName + ".gif";
                 gifRelativePathWithFileName = "allure-result/screenshots/" + new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date()) + gifFileName;
 
                 // get the width and height of the current window of the browser
@@ -87,7 +84,7 @@ public class ScreenshotManager {
 
                 // create a gif sequence with the type of the first image, 500 milliseconds
                 // between frames, which loops infinitely
-                gifWriter.set(new AnimatedGifManager(gifOutputStream.get(), firstImage.getType(), 500));
+                gifWriter.set(new AnimatedGif(gifOutputStream.get(), firstImage.getType(), 500));
 
                 // draw initial blank image to set the size of the GIF...
                 BufferedImage initialImage = new BufferedImage(width, height, firstImage.getType());
@@ -122,6 +119,7 @@ public class ScreenshotManager {
             }
         }
     }
+
 
     private static void appendToAnimatedGif(byte[] screenshot) {
         try {

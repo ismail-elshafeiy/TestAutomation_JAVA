@@ -13,7 +13,7 @@ public class BaseTests {
 
 	@BeforeMethod
 	public void setUp () {
-        driver = DriverFactory.getBrowser(DriverHelper.BrowserType.GOOGLE_CHROME, DriverHelper.ExecutionType.LOCAL);
+		driver = DriverFactory.getBrowser(DriverHelper.BrowserType.EDGE, DriverHelper.ExecutionType.LOCAL);
 	}
 
 	@AfterMethod

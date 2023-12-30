@@ -1,4 +1,4 @@
-<img src="src/test/resources/images/automation.png" alt="Me" width="250" height="200" style="display:block; margin-left:auto; margin-right:auto;"/>
+<img src="src/test/resources/TestData/images/automation.png" alt="Me" width="250" height="200" style="display:block; margin-left:auto; margin-right:auto;"/>
 
 # 🔧 Technologies
 

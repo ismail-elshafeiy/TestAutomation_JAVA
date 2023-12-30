@@ -30,6 +30,10 @@ public class ElementActions {
         this.driver = driver;
     }
 
+    public static ElementActions getInstance() {
+        return new ElementActions(driver);
+    }
+
 
     @Step("Click on element: [{elementLocator}]")
     public static void click(WebDriver driver, By elementLocator) {
@@ -408,6 +412,65 @@ public class ElementActions {
             e.printStackTrace();
             return false;
         }
+    }
+    //**************************************       drawing Actions         **********************************************//
+    //******************************************************************************************************************//
+
+    public static void drawCircle(WebDriver driver, By canvasElement) {
+        ElementHelper.locatingElementStrategy(driver, canvasElement);
+        try {
+            actions = new Actions(driver);
+            CustomReporter.logInfoStep("[Element Action] Drawing [" + driver.findElement(canvasElement).getText() + "] ");
+            actions.moveToElement(driver.findElement(canvasElement)).clickAndHold();
+            int numPoints = 10;
+            int radius = 50;
+            for (int i = 0; i < numPoints; i++) {
+                double theta = (2 * Math.PI * i) / numPoints;
+                int x = (int) (radius * Math.cos(theta));
+                int y = (int) (radius * Math.sin(theta));
+                actions.moveByOffset(x, y).perform();
+            }
+            actions.release(driver.findElement(canvasElement)).build().perform();
+        } catch (Exception e) {
+            CustomReporter.logError(e.getMessage());
+            fail(e.getMessage());
+        }
+    }
+
+    public static void drawUsingJavaScript(WebDriver driver, By canvasElement) {
+        int canvasWidth = driver.findElement(canvasElement).getSize().getWidth();
+        int canvasHeight = driver.findElement(canvasElement).getSize().getHeight();
+        // Calculate the offsets for drawing the signature
+        int startX = canvasWidth / 4;  // Adjust as needed
+        int startY = canvasHeight / 2; // Adjust as needed
+        // Use JavaScript to simulate mouse movements for drawing
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+        jsExecutor.executeScript("arguments[0].dispatchEvent(new MouseEvent('mousedown', {" +
+                "clientX: " + startX + ", clientY: " + startY + "}));", driver.findElement(canvasElement));
+        // Simulate drawing strokes (adjust offsets and add more points as needed)
+        jsExecutor.executeScript("arguments[0].dispatchEvent(new MouseEvent('mousemove', {" +
+                "clientX: " + (startX + 100) + ", clientY: " + (startY + 30) + "}));", driver.findElement(canvasElement));
+        jsExecutor.executeScript("arguments[0].dispatchEvent(new MouseEvent('mousemove', {" +
+                "clientX: " + (startX + 80) + ", clientY: " + (startY + 20) + "}));", driver.findElement(canvasElement));
+        jsExecutor.executeScript("arguments[0].dispatchEvent(new MouseEvent('mousemove', {" +
+                "clientX: " + (startX + 60) + ", clientY: " + (startY + -20) + "}));", driver.findElement(canvasElement));
+        jsExecutor.executeScript("arguments[0].dispatchEvent(new MouseEvent('mousemove', {" +
+                "clientX: " + (startX + 40) + ", clientY: " + (startY + -40) + "}));", driver.findElement(canvasElement));
+        jsExecutor.executeScript("arguments[0].dispatchEvent(new MouseEvent('mousemove', {" +
+                "clientX: " + (startX + 20) + ", clientY: " + (startY + -60) + "}));", driver.findElement(canvasElement));
+        jsExecutor.executeScript("arguments[0].dispatchEvent(new MouseEvent('mousemove', {" +
+                "clientX: " + (startX + 10) + ", clientY: " + (startY + -80) + "}));", driver.findElement(canvasElement));
+        jsExecutor.executeScript("arguments[0].dispatchEvent(new MouseEvent('mousemove', {" +
+                "clientX: " + (startX + 5) + ", clientY: " + (startY + -100) + "}));", driver.findElement(canvasElement));
+        // Simulate drawing strokes (adjust offsets and add more points as needed)
+        jsExecutor.executeScript("arguments[0].dispatchEvent(new MouseEvent('mousemove', {" +
+                "clientX: " + (startX + 70) + ", clientY: " + (startY + 10) + "}));", driver.findElement(canvasElement));
+        jsExecutor.executeScript("arguments[0].dispatchEvent(new MouseEvent('mousemove', {" +
+                "clientX: " + (startX + 30) + ", clientY: " + (startY + 30) + "}));", driver.findElement(canvasElement));
+        // Release the mouse button to complete the signature
+        jsExecutor.executeScript("arguments[0].dispatchEvent(new MouseEvent('mouseup', {" +
+                "clientX: " + (startX + 100) + ", clientY: " + (startY + 100) + "}));", driver.findElement(canvasElement));
+
     }
     //*******************************************    Java script actions    **********************************************************//
     //***********************************************************************************************************************************//

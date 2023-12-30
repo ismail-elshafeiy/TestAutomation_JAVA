@@ -9,6 +9,6 @@
 .project
 /.idea/
 /.github/workflows/
-/ScreenShot/
+/src/test/resources/downloads/ScreenShot/
 /.github/workflows/
 /video/

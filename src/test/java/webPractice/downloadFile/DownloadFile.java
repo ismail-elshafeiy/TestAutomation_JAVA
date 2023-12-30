@@ -5,6 +5,8 @@ import com.engine.actions.BrowserActions;
 import com.engine.actions.ElementActions;
 
 import com.engine.actions.FileActions;
+import com.engine.driver.DriverFactory;
+import com.engine.driver.DriverHelper;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 import org.jetbrains.annotations.NotNull;
@@ -12,21 +14,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.Wait;
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import practice.gui.pages.homePage.HomePage;
-import practice.gui.pages.uploadFilePage.FileUploadPage;
 
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.engine.constants.FrameworkConstants.TIMEOUT_EXPLICIT;
-import static com.engine.dataDriven.CSVFileManager.compareTwoCSVFiles2;
 
 
 public class DownloadFile {
@@ -48,18 +40,11 @@ public class DownloadFile {
 
     @Test
     public void test2() throws InterruptedException {
-        WebDriverManager.chromedriver().setup();
-        ChromeOptions options = new ChromeOptions();
-        Map<String, Object> prefs = getStringObjectMap(downloadFilepath);
-        options.setExperimentalOption("prefs", prefs);
-        options.addArguments("--headless");
-        options.addArguments("--start-maximized");
-        driver = new ChromeDriver(options);
-        Waits.implicitWait(driver, 30);
+        driver = DriverFactory.getBrowser(DriverHelper.BrowserType.CHROME);
         BrowserActions.navigateToUrl(driver, "https://the-internet.herokuapp.com/download");
-        ElementActions.click(driver, By.linkText("testfile2.txt"));
+        ElementActions.click(driver, By.linkText("sample.pdf"));
         Thread.sleep(10000);
-        FileActions.getInstance().doesFileExist(downloadFilepath + "testfile2.txt");
+        FileActions.getInstance().doesFileExist(downloadFilepath + "sample.pdf");
     }
     @Test
     public void test3() throws InterruptedException {
@@ -73,6 +58,11 @@ public class DownloadFile {
         BrowserActions.navigateToUrl(driver, "https://the-internet.herokuapp.com/download");
         ElementActions.click(driver, By.linkText("text.txt"));
         Thread.sleep(10000);
+    }
+
+    @Test
+    public void test4() throws InterruptedException {
+
     }
 
 //    @Test

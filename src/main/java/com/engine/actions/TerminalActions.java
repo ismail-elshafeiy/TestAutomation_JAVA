@@ -16,6 +16,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static com.engine.reports.CustomReporter.failAction;
+import static com.engine.reports.CustomReporter.passAction;
+
 @SuppressWarnings("unused")
 public class TerminalActions {
     private String sshHostName = "";
@@ -237,24 +240,6 @@ public class TerminalActions {
         return dockerUsername;
     }
 
-    private void passAction(String actionName, String testData, String log) {
-        reportActionResult(actionName, testData, log, true);
-    }
-
-    private void passAction(String testData, String log) {
-        String actionName = Thread.currentThread().getStackTrace()[2].getMethodName();
-        passAction(actionName, testData, log);
-    }
-
-    private void failAction(String actionName, String testData, Exception... rootCauseException) {
-        String message = reportActionResult(actionName, testData, null, false, rootCauseException);
-        CustomReporter.failReporter(TerminalActions.class, message, rootCauseException[0]);
-    }
-
-    private void failAction(String testData, Exception... rootCauseException) {
-        String actionName = Thread.currentThread().getStackTrace()[2].getMethodName();
-        failAction(actionName, testData, rootCauseException);
-    }
 
     private Session createSSHsession() {
         Session session = null;

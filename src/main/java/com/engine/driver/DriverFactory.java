@@ -1,6 +1,6 @@
 package com.engine.driver;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import com.engine.evidence.RecordVideo;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -8,15 +8,13 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import com.engine.reports.CustomReporter;
-import org.testng.ITestContext;
-import org.testng.ITestResult;
-import org.testng.Reporter;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import static com.engine.constants.FrameworkConstants.*;
 import static com.engine.driver.DriverHelper.*;
+import static com.engine.driver.DriverOptions.*;
 import static org.testng.Assert.fail;
 
 public class DriverFactory {
@@ -31,78 +29,54 @@ public class DriverFactory {
     @Step("Initializing a new Web GUI Browser!.....")
     public static synchronized WebDriver getBrowser(BrowserType browserType, ExecutionType executionType) {
         //eyesManager = new EyesManager(driver.get(), appName);
-        CustomReporter.logInfoStep("Initialize [" + browserType.getValue() + "] Browser and the Execution Type is [" + executionType.getValue() + "]");
-        boolean googleChrome = browserType == BrowserType.GOOGLE_CHROME || (browserType == BrowserType.FROM_EXCEL && BROWSER_TYPE.equalsIgnoreCase("google chrome"));
-        boolean mozillaFirefox = browserType == BrowserType.MOZILLA_FIREFOX || (browserType == BrowserType.FROM_EXCEL && BROWSER_TYPE.equalsIgnoreCase("mozilla firefox"));
-        boolean microsoftEdge = browserType == BrowserType.MICROSOFT_EDGE || (browserType == BrowserType.FROM_EXCEL && BROWSER_TYPE.equalsIgnoreCase("microsoft edge"));
+        CustomReporter.logInfoStep("Initialize [ " + browserType.getValue() + " ] Browser and the Execution Type is [ " + executionType.getValue() + " ] and Headless Mode is [ " + HEADLESS_OPTION + " ]");
+        boolean googleChrome = browserType == BrowserType.CHROME || (browserType == BrowserType.FROM_CONFIG_FILE && BROWSER_TYPE.equalsIgnoreCase("chrome"));
+        boolean mozillaFirefox = browserType == BrowserType.FIREFOX || (browserType == BrowserType.FROM_CONFIG_FILE && BROWSER_TYPE.equalsIgnoreCase("firefox"));
+        boolean microsoftEdge = browserType == BrowserType.EDGE || (browserType == BrowserType.FROM_CONFIG_FILE && BROWSER_TYPE.equalsIgnoreCase("edge"));
         String browserTypeWarningMsg = "The driver is null! because the browser type [" + BROWSER_TYPE + "] is not valid/supported; Please choose a valid browser type from the given choices in the properties file";
-        // Remote execution condition
-        if (executionType == ExecutionType.REMOTE || (executionType == ExecutionType.FROM_EXCEL && BROWSER_TYPE.equalsIgnoreCase("remote"))) {
-            if (googleChrome) {
-                try {
-                    driver.set(new RemoteWebDriver(new URL("http://" + HOST + ":" + PORT + "/wd/hub"), getChromeOptions()));
-                    setITestContext();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-            } else if (mozillaFirefox) {
-                try {
-                    driver.set(new RemoteWebDriver(new URL("http://" + HOST + ":" + PORT + "/wd/hub"), getFirefoxOptions()));
-                    setITestContext();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-            } else if (microsoftEdge) {
-                try {
-                    driver.set(new RemoteWebDriver(new URL("http://" + HOST + ":" + PORT + "/wd/hub"), getEdgeOptions()));
-                    setITestContext();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                CustomReporter.logError(browserTypeWarningMsg);
-                fail(browserTypeWarningMsg);
-//		throw new NullPointerException(warningMsg);
-            }
-        }
         // Local execution condition
-        else if (executionType == ExecutionType.LOCAL || (executionType == ExecutionType.FROM_EXCEL && EXECUTION_TYPE.equalsIgnoreCase("local"))) {
+        if (executionType == ExecutionType.LOCAL || (executionType == ExecutionType.FROM_CONFIG_FILE && EXECUTION_TYPE.equalsIgnoreCase("local"))) {
             if (googleChrome) {
-                WebDriverManager.chromedriver().setup();
-                driver.set(new ChromeDriver());
+                checkDriverDownloadOption(BrowserType.CHROME.getValue());
+                driver = new ChromeDriver(DriverOptions.getChromeOptions());
                 setITestContext();
-                checkMaximizeOption();
-                //RecordManager.startVideoRecording(driver.get());
             } else if (mozillaFirefox) {
-//				WebDriverManager.firefoxdriver().setup();
-                driver.set(new FirefoxDriver());
+                checkDriverDownloadOption(BrowserType.FIREFOX.getValue());
+                driver = new FirefoxDriver(DriverOptions.getFirefoxOptions());
                 setITestContext();
-                checkMaximizeOption();
             } else if (microsoftEdge) {
-//				WebDriverManager.edgedriver().setup();
-                driver.set(new EdgeDriver());
-                checkMaximizeOption();
+                checkDriverDownloadOption(BrowserType.EDGE.getValue());
+                driver = new EdgeDriver(DriverOptions.getEdgeOptions());
                 setITestContext();
             } else {
                 CustomReporter.logError(browserTypeWarningMsg);
                 fail(browserTypeWarningMsg);
-//		throw new NullPointerException(warningMsg);
             }
-        }
-        // Local Headless execution condition
-        else if (executionType == ExecutionType.LOCAL_HEADLESS || (executionType == ExecutionType.FROM_EXCEL && EXECUTION_TYPE.equalsIgnoreCase("local headless"))) {
+            // Start video recording
+            RecordVideo.startVideoRecording();
+            // Remote execution condition
+        } else if (executionType == ExecutionType.REMOTE || (executionType == ExecutionType.FROM_CONFIG_FILE && BROWSER_TYPE.equalsIgnoreCase("remote"))) {
             if (googleChrome) {
-                //WebDriverManager.chromedriver().setup();
-                driver.set(new ChromeDriver(getChromeOptions()));
-                setITestContext();
+                try {
+                    driver = new RemoteWebDriver(new URL("http://" + HOST + ":" + PORT + "/wd/hub"), getChromeOptions());
+                    setITestContext();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             } else if (mozillaFirefox) {
-                //	WebDriverManager.firefoxdriver().setup();
-                driver.set(new FirefoxDriver(getFirefoxOptions()));
-                setITestContext();
+                try {
+                    driver = new RemoteWebDriver(new URL("http://" + HOST + ":" + PORT + "/wd/hub"), getFirefoxOptions());
+                    setITestContext();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             } else if (microsoftEdge) {
-                //	WebDriverManager.edgedriver().setup();
-                driver.set(new EdgeDriver(getEdgeOptions()));
-                setITestContext();
+                try {
+                    driver = new RemoteWebDriver(new URL("http://" + HOST + ":" + PORT + "/wd/hub"), getEdgeOptions());
+                    setITestContext();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             } else {
                 CustomReporter.logError(browserTypeWarningMsg);
                 fail(browserTypeWarningMsg);
@@ -113,21 +87,16 @@ public class DriverFactory {
             fail(warningMsg);
         }
         // start session
-        return driver.get();
+        return driver;
+    }
+
+    public static WebDriver getBrowser(BrowserType browserType) {
+        return getBrowser(browserType, ExecutionType.FROM_CONFIG_FILE);
     }
 
     public static WebDriver getBrowser() {
-        return getBrowser(BrowserType.FROM_EXCEL, ExecutionType.FROM_EXCEL);
+        return getBrowser(BrowserType.FROM_CONFIG_FILE, ExecutionType.FROM_CONFIG_FILE);
     }
 
-    private static void setITestContext() {
-        ITestResult result = Reporter.getCurrentTestResult();
-        ITestContext context = result.getTestContext();
-        context.setAttribute("driver", driver.get());
-        try {
-            checkTimeoutImplicitOption();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 }

@@ -3,7 +3,10 @@ package com.engine.actions;
 import com.engine.Helper;
 import com.engine.Waits;
 import com.engine.constants.FrameworkConstants;
-import com.engine.reports.Attachments;
+import com.engine.dataDriven.PropertiesManager;
+import com.engine.evidence.RecordVideo;
+import com.engine.reports.AllureReport;
+import com.engine.reports.ExtentReport;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
@@ -11,12 +14,16 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.bidi.BiDiException;
 import org.openqa.selenium.chromium.ChromiumDriver;
 import org.openqa.selenium.devtools.DevToolsException;
+import org.openqa.selenium.print.PrintOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.ITestResult;
 import com.engine.reports.CustomReporter;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.*;
 
+import static com.engine.reports.CustomReporter.passAction;
 import static org.testng.Assert.fail;
 
 public class BrowserActions {
@@ -24,6 +31,10 @@ public class BrowserActions {
 
     public BrowserActions(WebDriver driver) {
         BrowserActions.driver = driver;
+    }
+
+    public static BrowserActions getInstance() {
+        return new BrowserActions(driver);
     }
 
     @Step("Navigate to URL: [{url}]")
@@ -148,8 +159,6 @@ public class BrowserActions {
         }
     }
 
-
-    //****** Switch Windows ******//
     public enum PageType {
         WINDOW("window"), TAB("tab");
         private final String windowType;
@@ -201,21 +210,18 @@ public class BrowserActions {
     @Step("Check the test result and Close All Opened Browser Windows.....")
     public static void closeAllOpenedBrowserWindows(WebDriver driver, ITestResult result) throws Throwable {
         if (ITestResult.FAILURE == result.getStatus()) {
-            Attachments.attachScreenshotToAllureReport(driver);
-            Attachments.attachScreenshotToExtentReport(driver);
+            AllureReport.attachScreenshotToAllureReport(driver);
+            ExtentReport.attachScreenshotToExtentReport(driver);
             CustomReporter.logConsoleLogs(driver, result);
-//            if (System.getProperty("videoParams_scope").trim().equals("DriverSession")) {
-//                RecordManager.attachVideoRecording();
-//            }
+            closeAllOpenedBrowserWindows(driver);
+            // eyesManager.abort();
         }
-//        RecordManager.attachVideoRecording();
-        closeAllOpenedBrowserWindows(driver);
-        // eyesManager.abort();
     }
 
     @Step("Close All Opened Browser Windows.....")
     public static void closeAllOpenedBrowserWindows(WebDriver driver) {
         CustomReporter.logInfoStep("[Browser Action] Close all Opened Browser Windows");
+        RecordVideo.attachVideoRecording();
         if (driver != null) {
             try {
                 driver.quit();
@@ -232,7 +238,10 @@ public class BrowserActions {
     //*********************************************************************************************//
 
     public enum AlertAction {
-        ACCEPT("accept"), DISMISS("dismiss"), SET_TEXT("Text"), GET_TEXT("Get Text");
+        ACCEPT("accept"),
+        DISMISS("dismiss"),
+        SET_TEXT("Text"),
+        GET_TEXT("Get Text");
         private final String alertType;
 
         AlertAction(String alertType) {
@@ -390,6 +399,21 @@ public class BrowserActions {
         return this;
     }
 
+    public static void goBackUsingJavascript(WebDriver driver) {
+        try {
+            CustomReporter.logInfoStep("[Browser Action] Navigate Back from [" + getCurrentUrl(driver) + "]");
+            ((JavascriptExecutor) driver).executeScript("window.history.go(-1)");
+        } catch (Exception e) {
+            CustomReporter.logInfoStep(e.getMessage());
+            fail(e.getMessage());
+        }
+    }
+
+    public BrowserActions goBackUsingJavascript() {
+        goBackUsingJavascript(driver);
+        return this;
+    }
+
     public static void goForward(WebDriver driver) {
         try {
             driver.navigate().forward();
@@ -404,6 +428,22 @@ public class BrowserActions {
         goForward(driver);
         return this;
     }
+
+    public static void goForwardUsingJavascript(WebDriver driver) {
+        try {
+            ((JavascriptExecutor) driver).executeScript("window.history.forward()");
+            CustomReporter.logInfoStep("[Browser Action] Navigate Forward [" + getCurrentUrl(driver) + "]");
+        } catch (Exception e) {
+            CustomReporter.logError(e.getMessage());
+            fail(e.getMessage());
+        }
+    }
+
+    public BrowserActions goForwardUsingJavascript() {
+        goForwardUsingJavascript(driver);
+        return this;
+    }
+
 
     public static void refreshPage(WebDriver driver) {
         try {
@@ -495,13 +535,16 @@ public class BrowserActions {
         return this;
     }
 
+    //**********************************************************************************************//
+    //**************************************  Others Methods **************************************//
+    //*********************************************************************************************//
     public BrowserActions capturePageSnapshot() {
         var serializedPageData = capturePageSnapshot(driver);
         passAction(driver, serializedPageData);
         return this;
     }
 
-    public static String capturePageSnapshot(WebDriver driver) {
+    private static String capturePageSnapshot(WebDriver driver) {
         CustomReporter.logConsole("Capturing page snapshot...");
         var serializedPageData = "";
         try {
@@ -526,53 +569,26 @@ public class BrowserActions {
         }
     }
 
-    public static void passAction(WebDriver driver, String testData) {
-        String actionName = Thread.currentThread().getStackTrace()[2].getMethodName();
-        passAction(driver, actionName, testData);
+    static String pdfPath = PropertiesManager.getPropertyValue("paths.properties", "pdfPath");
+
+    /**
+     * Print the page using the PrintOptions class and the PrintsPage interface of the WebDriver class
+     *
+     * @param driver    - WebDriver Instance of the Browser
+     * @param pageRange - Page Range to be printed
+     * @throws
+     */
+    public static void printPage(WebDriver driver, int pageRange) {
+        try {
+            CustomReporter.logInfoStep("Printing " + driver.getTitle() + " page....... ");
+            PrintsPage printer = ((PrintsPage) driver);
+            PrintOptions printOptions = new PrintOptions();
+            printOptions.setPageRanges(String.valueOf(pageRange));
+            Pdf pdf = printer.print(printOptions);
+            Files.write(new File(pdfPath + driver.getTitle() + Helper.getCurrentTime() + ".pdf").toPath(), OutputType.BYTES.convertFromBase64Png(pdf.getContent()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            CustomReporter.logError("Page not printed: " + e.getMessage());
+        }
     }
-
-    public static void passAction(WebDriver driver, String actionName, String testData) {
-        reportActionResult(driver, actionName, testData, true);
-    }
-
-    private static String reportActionResult(WebDriver driver, String actionName, String testData,
-                                             Boolean passFailStatus,
-                                             Exception... rootCauseException) {
-        actionName = Helper.convertToSentenceCase(actionName);
-        String message;
-        if (Boolean.TRUE.equals(passFailStatus)) {
-            message = "Browser Action: " + actionName;
-        } else {
-            message = "Browser Action: " + actionName + " failed";
-        }
-
-        List<List<Object>> attachments = new ArrayList<>();
-        if (testData != null && !testData.isEmpty()) {
-            if (testData.length() >= 500 || testData.contains("</iframe>") || testData.contains("</html>") || testData.startsWith("From: <Saved by Blink>")) {
-                List<Object> actualValueAttachment = Arrays.asList("Browser Action Test Data - " + actionName,
-                        "Actual Value", testData);
-                attachments.add(actualValueAttachment);
-            } else {
-                message = message + " \"" + testData.trim() + "\"";
-            }
-        }
-
-        if (rootCauseException != null && rootCauseException.length >= 1) {
-            List<Object> actualValueAttachment = Arrays.asList("Browser Action Exception - " + actionName,
-                    "Stacktrace", CustomReporter.formatStackTraceToLogEntry(rootCauseException[0]));
-            attachments.add(actualValueAttachment);
-        }
-
-        message = message + ".";
-
-        message = message.replace("Browser Action: ", "");
-        if (!attachments.equals(new ArrayList<>())) {
-            CustomReporter.logAttachments(message, attachments);
-        } else {
-            CustomReporter.logInfoStep(message);
-        }
-        return message;
-    }
-
-
 }

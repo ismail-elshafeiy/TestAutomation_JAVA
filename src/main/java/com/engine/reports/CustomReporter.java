@@ -33,6 +33,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.engine.reports.AllureReport.getAllureStepStatus;
+import static com.engine.reports.AllureReport.writeStepToReport;
 
 
 public class CustomReporter {
@@ -66,7 +70,7 @@ public class CustomReporter {
      * @param text logged by action that will be added as a step in the execution report (e.g. click on button)
      */
 
-//    @Step("{text}")
+    @Step("{text}")
     public static void logInfoStep(String text) {
         createLog(text, Level.INFO);
         ExtentReport.info(text);
@@ -132,6 +136,15 @@ public class CustomReporter {
         } else {
             writeStepToReport(logText);
         }
+    }
+
+    static synchronized void logAttachmentAction(String attachmentType, String attachmentName, ByteArrayOutputStream attachmentContent) {
+        CustomReporter.logInfoStep("Successfully created attachment \"" + attachmentType + " - " + attachmentName + "\"");
+        String timestamp = Helper.getCurrentTime();
+        String theString;
+        var br = new BufferedReader(
+                new InputStreamReader(new ByteArrayInputStream(attachmentContent.toByteArray()), StandardCharsets.UTF_8));
+        theString = br.lines().collect(Collectors.joining(System.lineSeparator()));
     }
 
     public static void createImportantReportEntry(String logText) {
@@ -214,51 +227,10 @@ public class CustomReporter {
         Assert.fail(message + rootCause, throwable);
     }
 
-
-    @Step("{logText}")
-    static void writeStepToReport(String logText, List<List<Object>> attachments) {
-        createLog(logText, false);
-        if (attachments != null && !attachments.isEmpty()) {
-            attachments.forEach(attachment -> {
-                if (attachment != null
-                        && !attachment.isEmpty()
-                        && attachment.get(2).getClass().toString().toLowerCase().contains("string")
-                        && !attachment.get(2).getClass().toString().contains("StringInputStream")) {
-                    if (!attachment.get(2).toString().isEmpty()) {
-                        Attachments.attach(attachment.get(0).toString(), attachment.get(1).toString(), attachment.get(2).toString());
-                    }
-                } else if (attachment != null && !attachment.isEmpty()) {
-                    if (attachment.get(2) instanceof byte[]) {
-                        Attachments.attach(attachment.get(0).toString(), attachment.get(1).toString(), new ByteArrayInputStream((byte[]) attachment.get(2)));
-                    } else {
-                        Attachments.attach(attachment.get(0).toString(), attachment.get(1).toString(), (InputStream) attachment.get(2));
-                    }
-                }
-            });
-        }
+    public static void passAction(WebDriver driver, String testData) {
+        String actionName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        passAction(driver, actionName, testData);
     }
-
-    public static void writeStepToReport(String logText) {
-        createLog(logText, true);
-        Allure.step(logText, getAllureStepStatus(logText));
-    }
-
-    private static Status getAllureStepStatus(String logText) {
-        if (logText != null && logText.toLowerCase().contains("failed")) {
-            return Status.FAILED;
-        }
-        if (Reporter.getCurrentTestResult() != null) {
-            var testNgStatus = Reporter.getCurrentTestResult().getStatus();
-            return switch (testNgStatus) {
-                case ITestResult.FAILURE -> Status.FAILED;
-                case ITestResult.SKIP -> Status.SKIPPED;
-                default -> Status.PASSED;
-            };
-        } else {
-            return Status.PASSED;
-        }
-    }
-
     public static void passAction(String testData) {
         String actionName = Thread.currentThread().getStackTrace()[2].getMethodName();
         reportActionResult(actionName, testData, null, true);
@@ -267,6 +239,10 @@ public class CustomReporter {
     public static void passAction(String testData, String log) {
         String actionName = Thread.currentThread().getStackTrace()[2].getMethodName();
         reportActionResult(actionName, testData, log, true);
+    }
+
+    public static void passAction(WebDriver driver, String actionName, String testData) {
+        reportActionResult(driver, actionName, testData, true);
     }
 
     public static void failAction(String testData, Exception... rootCauseException) {
@@ -282,7 +258,7 @@ public class CustomReporter {
 
     public static void failAction(String actionName, String testData, Exception... rootCauseException) {
         String message = reportActionResult(actionName, testData, null, false, rootCauseException);
-        CustomReporter.failReporter(FileActions.class, message, rootCauseException[0]);
+        failReporter(FileActions.class, message, rootCauseException[0]);
     }
 
 
@@ -309,7 +285,6 @@ public class CustomReporter {
             attachments.add(actualValueAttachment);
         }
         // Minimize File Action log steps and move them to discrete logs if called
-        // within SHAFT_Engine itself
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         StackTraceElement parentMethod = stackTrace[4];
         if (parentMethod.getClassName().contains("engine")) {
@@ -320,6 +295,37 @@ public class CustomReporter {
             } else {
                 CustomReporter.logInfoStep(message);
             }
+        }
+        return message;
+    }
+
+    public static String reportActionResult(WebDriver driver, String actionName, String testData, Boolean passFailStatus, Exception... rootCauseException) {
+        actionName = Helper.convertToSentenceCase(actionName);
+        String message;
+        if (Boolean.TRUE.equals(passFailStatus)) {
+            message = "Browser Action: " + actionName;
+        } else {
+            message = "Browser Action: " + actionName + " failed";
+        }
+        List<List<Object>> attachments = new ArrayList<>();
+        if (testData != null && !testData.isEmpty()) {
+            if (testData.length() >= 500 || testData.contains("</iframe>") || testData.contains("</html>") || testData.startsWith("From: <Saved by Blink>")) {
+                List<Object> actualValueAttachment = Arrays.asList("Browser Action Test Data - " + actionName, "Actual Value", testData);
+                attachments.add(actualValueAttachment);
+            } else {
+                message = message + " \"" + testData.trim() + "\"";
+            }
+        }
+        if (rootCauseException != null && rootCauseException.length >= 1) {
+            List<Object> actualValueAttachment = Arrays.asList("Browser Action Exception - " + actionName, "Stacktrace", CustomReporter.formatStackTraceToLogEntry(rootCauseException[0]));
+            attachments.add(actualValueAttachment);
+        }
+        message = message + ".";
+        message = message.replace("Browser Action: ", "");
+        if (!attachments.equals(new ArrayList<>())) {
+            CustomReporter.logAttachments(message, attachments);
+        } else {
+            CustomReporter.logInfoStep(message);
         }
         return message;
     }
@@ -341,7 +347,7 @@ public class CustomReporter {
         logger.log(loglevel, logText.trim());
     }
 
-    private static void createLog(String logText, boolean addToConsoleLog) {
+    public static void createLog(String logText, boolean addToConsoleLog) {
         String timestamp = (new SimpleDateFormat(TIMESTAMP_FORMAT)).format(new Date(System.currentTimeMillis()));
         if (logText == null) {
             logText = "null";

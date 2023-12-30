@@ -3,6 +3,8 @@ package com.engine.actions;
 import com.engine.Helper;
 import com.google.common.hash.Hashing;
 import com.engine.reports.CustomReporter;
+import com.spire.xls.Workbook;
+import com.spire.xls.Worksheet;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
@@ -62,21 +64,17 @@ public class FileActions {
             URL url = new URL(sourceFolderPath.replace("file:", "jar:file:"));
             JarURLConnection jarConnection = (JarURLConnection) url.openConnection();
             JarFile jarFile = jarConnection.getJarFile();
-
             /*
              * Iterate all entries in the jar file.
              */
             for (Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements(); ) {
-
                 JarEntry jarEntry = e.nextElement();
                 String jarEntryName = jarEntry.getName();
                 String jarConnectionEntryName = jarConnection.getEntryName();
-
                 /*
                  * Extract files only if they match the path.
                  */
                 if (jarEntryName.startsWith(jarConnectionEntryName)) {
-
                     String filename = jarEntryName.startsWith(jarConnectionEntryName) ? jarEntryName.substring(jarConnectionEntryName.length()) : jarEntryName;
                     File currentFile = new File(destinationFolderPath, filename);
                     if (!currentFile.toPath().normalize().startsWith(new File(destinationFolderPath).toPath())) {
@@ -505,19 +503,43 @@ public class FileActions {
         return filesList;
     }
 
+    public void convertFileToCSV(String excelFilePath, String csvFilePath) {
+        //Create an instance of Workbook class
+        Workbook workbook = new Workbook();
+        //Load an Excel file
+        workbook.loadFromFile(excelFilePath);
+        //Get the first worksheet
+        Worksheet sheet = workbook.getWorksheets().get(0);
+        //Save the worksheet as CSV
+        sheet.saveToFile(csvFilePath, ",");
+    }
+
+    public File getFileLastModified(String folderPath) {
+        File dir = new File(folderPath);
+        if (dir.isDirectory()) {
+            Optional<File> opFile = Arrays.stream(dir.listFiles(File::isFile)).max((f1, f2) -> Long.compare(f1.lastModified(), f2.lastModified()));
+            if (opFile.isPresent()) {
+                CustomReporter.logInfoStep("getFileLastModified: " + opFile.get().getPath());
+                return opFile.get();
+            } else {
+                CustomReporter.logInfoStep("getFileLastModified: " + opFile.get().getPath());
+                return null;
+            }
+        }
+        return null;
+    }
     public URL downloadFile(String targetFileURL, String destinationFilePath) {
         return downloadFile(targetFileURL, destinationFilePath, 0, 0);
     }
 
-    public URL downloadFile(String targetFileURL, String destinationFilePath, int connectionTimeout,
-                            int readTimeout) {
+    public URL downloadFile(String targetFileURL, String destinationFilePath, int connectionTimeout, int readTimeout) {
         if (targetFileURL != null && destinationFilePath != null) {
             try {
-                CustomReporter.logError("Downloading a file from this url \"" + targetFileURL + "\" to this directory \""
+                CustomReporter.logInfoStep("Downloading a file from this url \"" + targetFileURL + "\" to this directory \""
                         + destinationFilePath + "\", please wait as downloading may take some time...");
                 FileUtils.copyURLToFile(new URL(targetFileURL), new File(destinationFilePath), connectionTimeout,
                         readTimeout);
-                CustomReporter.logError("Downloading completed successfully.");
+                CustomReporter.logInfoStep("Downloading completed successfully.");
                 URL downloadedFile = new File(destinationFilePath).toURI().toURL();
                 passAction("Target File URL\"" + targetFileURL + "\" | Destination Folder: \"" + destinationFilePath
                         + "\" | Connection Timeout: \"" + connectionTimeout + "\" | Read Timeout: \"" + readTimeout
@@ -666,7 +688,6 @@ public class FileActions {
         }
         return filePath;
     }
-
 
 
     private File unpackArchive(File theFile, File targetDir) throws IOException {

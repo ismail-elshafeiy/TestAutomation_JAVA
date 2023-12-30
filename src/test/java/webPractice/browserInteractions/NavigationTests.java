@@ -1,7 +1,7 @@
 package webPractice.browserInteractions;
 
-import com.engine.reports.Attachments;
 import com.engine.evidence.ScreenShot;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.testng.annotations.Test;
@@ -14,15 +14,14 @@ public class NavigationTests extends BaseTests {
 
 	@Test
 	public void verifyNavigator () {
+		Allure.parameter("Test Type", "Functional");
 		new BrowserActions(driver)
 				.navigateToUrl("https://the-internet.herokuapp.com/")
 				.refreshPage()
 				.goForward()
 				.navigateToUrl("https://github.com/ismail-elshafeiy")
 				.goBack();
-		ScreenShot.takeFullScreenShoot(driver, "ScreenShot/");
-		Attachments.attachScreenshotToExtentReport2(driver);
-
-
+		BrowserActions.getInstance().capturePageSnapshot();
+		ScreenShot.takeFullScreenShoot(driver);
 	}
 }
