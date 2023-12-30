@@ -187,19 +187,22 @@ public class AllureReport {
         }
     }
 
+    // allure generate --single-file allure-results -o allure-report
     public static void writeAllureReport() {
         // add correct file extension based on target OS
-        // allure generate --single-file allure-results -o allure-report
-        String commandToCreateAllureReport = "allure generate --single-file allure-results -o allure-report";
-        allureBinaryPath = allureExtractionLocation + "allure-" + "/bin/allure";
+        String commandToCreateAllureReport;
+        allureBinaryPath = allureExtractionLocation + "allure-" + "2.25.0" + "/bin/allure";
 
-//        if (SystemUtils.IS_OS_WINDOWS) {
-//            commandToCreateAllureReport = allureBinaryPath + ".bat" + " generate --single-file --clean '"
-//                    + allureResultsFolderPath.substring(0, allureResultsFolderPath.length() - 1) + "' -o 'allure-report'";
-//        } else {
-//            commandToCreateAllureReport = allureBinaryPath + " generate --single-file --clean "
-//                    + allureResultsFolderPath.substring(0, allureResultsFolderPath.length() - 1) + " -o allure-report";
-//        }
-        TerminalActions.getInstance().performTerminalCommand(commandToCreateAllureReport);
+        if (SystemUtils.IS_OS_WINDOWS) {
+            commandToCreateAllureReport = allureBinaryPath + ".bat" + " generate --single-file --clean '"
+                    + allureResultsFolderPath.substring(0, allureResultsFolderPath.length() - 1)
+                    + "' -o 'allure-report'";
+        } else {
+            commandToCreateAllureReport = allureBinaryPath + " generate --single-file --clean "
+                    + allureResultsFolderPath.substring(0, allureResultsFolderPath.length() - 1)
+                    + " -o allure-report";
+        }
+
+        TerminalActions.getInstance(false, false).performTerminalCommand(commandToCreateAllureReport);
     }
 }

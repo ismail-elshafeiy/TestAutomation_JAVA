@@ -295,7 +295,7 @@ public class TerminalActions {
         String finalDirectory = directory;
         internalCommands.forEach(command -> {
             command = command.contains(".bat") && !command.contains(".\\") ? ".\\" + command : command;
-            CustomReporter.logError("Executing: \"" + command + "\" locally.");
+            CustomReporter.logConsole("Executing: \"" + command + "\" locally.");
             try {
                 ProcessBuilder pb = new ProcessBuilder();
                 pb.directory(new File(finalDirectory));

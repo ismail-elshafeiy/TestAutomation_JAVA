@@ -16,14 +16,13 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-22.04, windows-latest, macOS-12 ]
-    
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.0.1
         with:
           node-version: '16'
-
       - name: Set up Selenium Grid with one hub and four Chrome nodes
         if: runner.os == 'Linux'
         run: docker-compose -f src/main/resources/docker-compose.yml up --scale chrome=4 --remove-orphans -d
@@ -43,9 +42,9 @@ jobs:
         continue-on-error: true
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
-               mvn test -Dexecution.type="remote" -Dbrowser.type="Google Chrome" -Dtest="examples.gui.web.elementActions.**"
+               mvn test -Dtest="web.elementActions.**" -DexecutionType="Local" -DbrowserType="Chrome" -Dheadless="true"
           elif [ "$RUNNER_OS" == "macOS" ]; then
-               mvn test -Dexecution.type="Local Headless" -Dbrowser.type="Google Chrome" -Dtest="examples.gui.web.elementActions.**"
+               mvn test -Dtest="web.elementActions.**" -DexecutionType="Local" -DbrowserType="Chrome" -Dheadless="true"
           else
                echo "$RUNNER_OS not supported"
                exit 1
@@ -55,33 +54,21 @@ jobs:
         if: runner.os == 'Windows'
         continue-on-error: true
         run: |
-          mvn test -Dexecution.type="remote" -Dbrowser.type="Mozilla Firefox" -Dtest="examples.gui.web.elementActions.**"
+          mvn test -Dtest="web.elementActions.**" -Dexecution.type="Local" -Dbrowser.type="Edge" -Dheadless="true"
 
-      - name: Generate Allure report
-        run: mvn allure:report
-      - name: Copy patch file to allure-maven-plugin folder
-        run: cp src/main/resources/allow-file-access_open-report_chrome_windows.bat target/site/allure-maven-plugin
-      - name: Check files in the allure-maven-plugin folder
-        run: ls target/site/allure-maven-plugin
-      - name: Upload Allure Report
+      - name: Upload Allure Report as Pipeline Artifact
+        if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: Allure Report
-          path: "target/site/allure-maven-plugin"
+          name: ${{ runner.os }} - Desktop Browsers Tests Allure Report HTML
+          path: "allure-report/index.html"
 
       - name: Upload Extent Report as Pipeline Artifact
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ runner.os }} - Desktop Browsers Tests Extent Report
+          name: ${{ runner.os }} - Desktop Browsers Tests Extent Report HTML
           path: "ExtentReport/ExtentReports.html"
-
-      - name: Upload Console Logs as Pipeline Artifact
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ runner.os }} - Desktop Browsers Tests Extent Report
-          path: "ConsoleLogs"
 
 #    - name: Get Allure history
 #      uses: actions/checkout@v4

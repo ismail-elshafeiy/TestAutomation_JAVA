@@ -5,6 +5,7 @@ import com.engine.reports.CustomReporter;
 import com.engine.validations.EyesManager;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.manager.SeleniumManager;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.Reporter;

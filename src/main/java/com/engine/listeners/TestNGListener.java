@@ -37,8 +37,11 @@ public class TestNGListener implements IAlterSuiteListener, IAnnotationTransform
 
     @Override
     public void onExecutionFinish() {
-        CustomReporter.createImportantReportEntry("Finished execution by " + runBy);
         ExtentReport.flushReports();
+        AllureReport.writeAllureReport();
+        AllureReport.openAllureReportAfterExecution();
+        //EmailSendUtils.sendEmail(count_totalTCs, count_passedTCs, count_failedTCs, count_skippedTCs);
+        CustomReporter.createImportantReportEntry("Finished execution by " + runBy);
     }
 
     @Override
@@ -50,10 +53,6 @@ public class TestNGListener implements IAlterSuiteListener, IAnnotationTransform
 
     @Override
     public void onFinish(ISuite suite) {
-        ExtentReport.flushReports();
-        //AllureReport.writeAllureReport();
-        //openAllureReportAfterExecution();
-        //EmailSendUtils.sendEmail(count_totalTCs, count_passedTCs, count_failedTCs, count_skippedTCs);
     }
 
     @Override

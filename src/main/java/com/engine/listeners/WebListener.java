@@ -19,9 +19,6 @@ public class WebListener implements WebDriverListener {
 	public void beforeGetCurrentUrl (WebDriver driver) {
 	}
 
-	@Override
-	public void afterGetCurrentUrl (String result, WebDriver driver) {
-	}
 
 
 	@Override
