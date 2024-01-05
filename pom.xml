@@ -52,7 +52,7 @@
         <ashot.version>0.1.2</ashot.version>
         <jave-all-deps.version>3.3.1</jave-all-deps.version>
         <javax.mail.version>1.6.2</javax.mail.version>
-        <slf4j.version>2.0.9</slf4j.version>
+        <slf4j.version>2.0.10</slf4j.version>
         <!--      Data base -->
         <mssql-jdbc.version>9.4.1.jre16-preview</mssql-jdbc.version>
         <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
