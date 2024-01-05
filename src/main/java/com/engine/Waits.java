@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 import static com.engine.constants.FrameworkConstants.POLLING;
-import static com.engine.constants.FrameworkConstants.TIMEOUT_EXPLICIT;
+import static com.engine.constants.FrameworkConstants.EXPLICIT_TIMEOUT;
 
 public class Waits {
 
@@ -43,7 +43,7 @@ public class Waits {
      */
 
     public static WebDriverWait getExplicitWait(WebDriver driver) {
-        return new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT_EXPLICIT));
+        return new WebDriverWait(driver, Duration.ofSeconds(EXPLICIT_TIMEOUT));
     }
 
     public static WebDriverWait getExplicitWait(WebDriver driver, int timeout) {
@@ -57,11 +57,11 @@ public class Waits {
      * @return FluentWait<WebDriver> - FluentWait instance
      */
     public static FluentWait<WebDriver> getFluentWait(WebDriver driver) {
-        return new FluentWait<>(driver).withTimeout(Duration.ofSeconds(TIMEOUT_EXPLICIT)).pollingEvery(Duration.ofSeconds(POLLING)).ignoring(Exception.class);
+        return new FluentWait<>(driver).withTimeout(Duration.ofSeconds(EXPLICIT_TIMEOUT)).pollingEvery(Duration.ofSeconds(POLLING)).ignoring(Exception.class);
     }
 
     public static FluentWait<WebDriver> getFluentWait(WebDriver driver, int polling) {
-        return new FluentWait<>(driver).withTimeout(Duration.ofSeconds(TIMEOUT_EXPLICIT)).pollingEvery(Duration.ofSeconds(polling)).ignoring(Exception.class);
+        return new FluentWait<>(driver).withTimeout(Duration.ofSeconds(EXPLICIT_TIMEOUT)).pollingEvery(Duration.ofSeconds(polling)).ignoring(Exception.class);
     }
 
     public static Boolean waitForElementToBeDisplayed(WebDriver driver, By elementLocator, int timeout) {

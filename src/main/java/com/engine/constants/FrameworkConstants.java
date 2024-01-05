@@ -31,10 +31,15 @@ public final class FrameworkConstants {
     public static final String PORT = PropertiesManager.getPropertyValue(CONFIG_PROP, "port");
     public static final String WIDTH = PropertiesManager.getPropertyValue(CONFIG_PROP, "width");
     public static final String HEIGHT = PropertiesManager.getPropertyValue(CONFIG_PROP, "height");
-    public static final int TIMEOUT_EXPLICIT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "timeoutImplicitDefault"));
-    public static final int TIMEOUT_IMPLICIT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "timeoutImplicitDefault"));
+    public static final int ELEMENT_IDENTIFICATION_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "elementIdentificationTimeout"));
+    public static final int EXPLICIT_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "timeoutExplicitDefault"));
+
+    public static final int IMPLICIT_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "timeoutImplicitDefault"));
     public static final int POLLING = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "fluentWaitpolling"));
 
+    public static final Boolean attemptClearBeforeTyping = Boolean.valueOf(PropertiesManager.getPropertyValue(CONFIG_PROP, "attemptClearBeforeTyping"));
+
+    public static final Boolean attemptClearBeforeTypingUsingBackspace = Boolean.valueOf(PropertiesManager.getPropertyValue(CONFIG_PROP, "attemptClearBeforeTypingUsingBackspace"));
     public static final String PROJECT_NAME = PropertiesManager.getPropertyValue(CONFIG_PROP, "projectName");
     public static final String REPORT_TITLE = PropertiesManager.getPropertyValue(CONFIG_PROP, "reportTitle");
     public static final String EXTENT_REPORT_NAME = PropertiesManager.getPropertyValue(CONFIG_PROP, "reportName");

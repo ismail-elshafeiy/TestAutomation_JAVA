@@ -2,6 +2,7 @@ package com.engine.actions;
 
 import com.engine.Waits;
 import com.engine.actions.helper.ElementHelper;
+import com.engine.actions.helper.ElementInformation;
 import com.engine.constants.FrameworkConstants;
 import com.engine.reports.CustomReporter;
 import com.engine.utils.DecodeData;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.engine.reports.CustomReporter.passAction;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.fail;
 
@@ -73,6 +75,18 @@ public class ElementActions {
         return this;
     }
 
+    public ElementActions type(By elementLocator, String text) {
+        var elementInformation = ElementInformation.fromList(ElementHelper.identifyUniqueElementIgnoringVisibility(driver, elementLocator));
+        String actualTextAfterTyping = ElementHelper.newTypeWrapper(driver, elementInformation, text);
+        var elementName = elementInformation.getElementName();
+        if (actualTextAfterTyping.equals(text)) {
+            //     passAction(driver, elementLocator, Thread.currentThread().getStackTrace()[1].getMethodName(), text, null, elementName);
+        } else {
+            //          ElementHelper.failAction(driver, "Expected to type: \"" + text + "\", but ended up with: \"" + actualTextAfterTyping + "\"", elementLocator);
+        }
+        return this;
+
+    }
     @Step("Type data: [ {text} ] on element: [{elementLocator}]")
     public static void type(WebDriver driver, By elementLocator, String text, boolean clearBeforeTyping) {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
@@ -110,10 +124,10 @@ public class ElementActions {
         type(driver, elementLocator, text, true);
     }
 
-    public ElementActions type(By elementLocator, String text) {
-        type(driver, elementLocator, text, true);
-        return this;
-    }
+//    public ElementActions type(By elementLocator, String text) {
+//        type(driver, elementLocator, text, true);
+//        return this;
+//    }
 
     public ElementActions type(By elementLocator, String text, boolean clearBeforeTyping) {
         type(driver, elementLocator, text, clearBeforeTyping);

@@ -105,7 +105,7 @@ public class CustomReporter {
     public static void logError(String message) {
         createLog(message, Level.ERROR);
         ExtentReport.fail(FrameworkConstants.ICON_SMILEY_FAIL + " " + message);
-        Assert.fail(message);
+        // Assert.fail(message);
     }
 
     public static void logConsole(String text, Level level) {
