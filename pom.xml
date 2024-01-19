@@ -104,7 +104,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-handler</artifactId>
-            <version>4.1.93.Final</version>
+            <version>4.1.105.Final</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.github.qsy7.java.modules.browser.modules/ashot -->
         <dependency>
