@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutionException;
 
 import static com.engine.actions.BrowserActions.AlertAction.GET_TEXT;
 import static com.engine.reports.CustomReporter.failAction;
-import static org.sikuli.hotkey.Keys.BACKSPACE;
+
 import static org.testng.Assert.fail;
 
 public class ElementHelper {

@@ -21,16 +21,13 @@ public class SynchronizedArrayListExample {
         Runnable task = () -> {
             incrementArrayList(safeArrayList);
         };
-
         // Submit the task to the executor service 100 times.
         // All the tasks will modify the ArrayList concurrently
         for (int i = 0; i < 100; i++) {
             executorService.submit(task);
         }
-
         executorService.shutdown();
         executorService.awaitTermination(60, TimeUnit.SECONDS);
-
         System.out.println(safeArrayList);
     }
 

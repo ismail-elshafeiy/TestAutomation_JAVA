@@ -424,9 +424,20 @@ public class FileActions {
         } catch (IllegalArgumentException rootCauseException) {
             failAction("Failed to list files in this directory: \"" + targetDirectory + "\"", rootCauseException);
         }
-
         CustomReporter.logConsole("Target Directory: \"" + targetDirectory + "\"" + files.toString().trim());
         return files.toString().trim();
+    }
+
+    public StringBuilder listFilesInDirectoryAsList(String targetDirectory) {
+        StringBuilder files = new StringBuilder();
+        try {
+            Collection<File> filesList = FileUtils.listFiles(new File(targetDirectory), TrueFileFilter.TRUE, TrueFileFilter.TRUE);
+            filesList.forEach(file -> files.append(file.getName()).append(System.lineSeparator()));
+        } catch (IllegalArgumentException rootCauseException) {
+            failAction("Failed to list files in this directory: \"" + targetDirectory + "\"", rootCauseException);
+        }
+        CustomReporter.logConsole("Target Directory: \"" + targetDirectory + "\"" + files.toString().trim());
+        return files;
     }
 
     public String listFilesInDirectory(String targetDirectory, TrueFileFilter recursively) {
@@ -440,6 +451,7 @@ public class FileActions {
         passAction("Target Directory: \"" + targetDirectory + "\"", files.toString().trim());
         return files.toString().trim();
     }
+
 
     public void renameFile(String sourceFilePath, String destinationFilePath) {
         File sourceFile = new File(sourceFilePath);
@@ -518,6 +530,21 @@ public class FileActions {
         File dir = new File(folderPath);
         if (dir.isDirectory()) {
             Optional<File> opFile = Arrays.stream(dir.listFiles(File::isFile)).max((f1, f2) -> Long.compare(f1.lastModified(), f2.lastModified()));
+            if (opFile.isPresent()) {
+                CustomReporter.logInfoStep("getFileLastModified: " + opFile.get().getPath());
+                return opFile.get();
+            } else {
+                CustomReporter.logInfoStep("getFileLastModified: " + opFile.get().getPath());
+                return null;
+            }
+        }
+        return null;
+    }
+
+    public File getFileLastModified2(String folderPath) {
+        File dir = new File(folderPath);
+        if (dir.isDirectory()) {
+            Optional<File> opFile = Arrays.stream(Objects.requireNonNull(dir.listFiles(File::isFile))).max(Comparator.comparingLong(File::lastModified));
             if (opFile.isPresent()) {
                 CustomReporter.logInfoStep("getFileLastModified: " + opFile.get().getPath());
                 return opFile.get();

@@ -3,6 +3,8 @@ package web.elementActions.interactions;
 import com.engine.constants.FrameworkConstants;
 import com.engine.dataDriven.FakerData;
 import com.engine.reports.ExtentReport;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import practice.gui.pages.homePage.HomePage;
 import practice.gui.pages.keys.KeyPressesPage;
 import com.engine.actions.BrowserActions;
@@ -10,8 +12,7 @@ import com.engine.actions.ElementActions;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import jdk.jfr.Description;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import web.BaseTests;

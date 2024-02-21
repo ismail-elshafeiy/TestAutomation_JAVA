@@ -13,7 +13,7 @@ public class BaseTests {
 
 	@BeforeMethod
 	public void setUp () {
-		driver = DriverFactory.getBrowser(DriverHelper.BrowserType.CHROME);
+		driver = DriverFactory.getBrowser(DriverHelper.BrowserType.FIREFOX);
 	}
 
 	@AfterMethod

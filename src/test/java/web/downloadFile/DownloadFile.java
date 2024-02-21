@@ -7,9 +7,7 @@ import com.engine.actions.ElementActions;
 import com.engine.actions.FileActions;
 import com.engine.driver.DriverFactory;
 import com.engine.driver.DriverHelper;
-import io.github.bonigarcia.wdm.WebDriverManager;
 
-import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -48,7 +46,7 @@ public class DownloadFile {
     }
     @Test
     public void test3() throws InterruptedException {
-        WebDriverManager.chromedriver().setup();
+//        WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         Map<String, Object> prefs = getStringObjectMap(downloadFilepath2);
         options.setExperimentalOption("prefs", prefs);
@@ -77,7 +75,7 @@ public class DownloadFile {
 //        compareTwoCSVFiles2(imagePath, imagePath);
 //    }
 
-    @NotNull
+
     private static Map<String, Object> getStringObjectMap(String downloadFilepath) {
         Map<String, Object> prefs = new HashMap<>();
         prefs.put("download.default_directory", downloadFilepath);

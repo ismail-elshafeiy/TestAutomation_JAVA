@@ -12,24 +12,19 @@ public class UnsafeArrayListExample {
         unsafeArrayList.add(1);
         unsafeArrayList.add(2);
         unsafeArrayList.add(3);
-
         // Create a thread pool of size 10
         ExecutorService executorService = Executors.newFixedThreadPool(10);
-
         // Create a Runnable task that increments each element of the ArrayList by one
         Runnable task = () -> {
             incrementArrayList(unsafeArrayList);
         };
-
         // Submit the task to the executor service 100 times.
         // All the tasks will modify the ArrayList concurrently
         for (int i = 0; i < 100; i++) {
             executorService.submit(task);
         }
-
         executorService.shutdown();
         executorService.awaitTermination(60, TimeUnit.SECONDS);
-
         System.out.println(unsafeArrayList);
     }
 

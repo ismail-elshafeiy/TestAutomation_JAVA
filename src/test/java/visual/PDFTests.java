@@ -17,35 +17,28 @@ public class PDFTests extends BaseTests {
         driver.get(System.getProperty("sites.invoices.url"));
 
         String invoiceNumber = "INV12345";
-
         InvoiceGeneratorPage generatorPage = new InvoiceGeneratorPage(driver);
         generatorPage.setInvoiceTitle("Invoice from your Personal Stylist");
         generatorPage.setLogo(new File("resources/logo.png"));
         generatorPage.selectColor(4);
-
         generatorPage.setFromName("Marie Combs");
         generatorPage.setFromEmail("mcombs@example.com");
         generatorPage.setFromAddress("123 Main Street");
         generatorPage.setFromCityState("New York, NY");
         generatorPage.setFromZipCode("12345");
         generatorPage.setFromPhone("(555) 555 5555");
-
         generatorPage.setToName("John Brown");
         generatorPage.setToEmail("john@example.com");
         generatorPage.setToAddress("456 Main Street");
-
         generatorPage.setInvoiceNumber(invoiceNumber);
-
         generatorPage.setItemDescription(1, "Dress");
         generatorPage.setItemPrice(1, "54.99");
         generatorPage.setItemAdditionalDetails(1, "Floral print maxi dress");
         generatorPage.clickToAddNewItem();
-
         generatorPage.setItemDescription(2, "Leggings");
         generatorPage.setItemPrice(2, "14.99");
         generatorPage.setItemAdditionalDetails(2, "pink sheer leggings");
         generatorPage.clickToAddNewItem();
-
         generatorPage.setItemDescription(3, "Shoes");
         generatorPage.setItemPrice(3, "29.99");
         generatorPage.setItemAdditionalDetails(3, "yellow mary jane heels");
