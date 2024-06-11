@@ -9,21 +9,18 @@ import java.util.Scanner;
  */
 public class Grades {
 
-    private static int grades[];
-    private static Scanner scanner = new Scanner(System.in);
+    private static int[] grades;
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-
         System.out.println("How many grades would you like to enter?");
         grades = new int[scanner.nextInt()];
         //now we have the value.
-
         getArraysGrades();
 
         System.out.println("Average: " + String.format("%.2f", calculateAverage()));
         System.out.println("Highest: " + getHighest());
         System.out.println("Lowest: " + getLowest());
-
     }
 
     public static void getArraysGrades() {
@@ -36,13 +33,18 @@ public class Grades {
     public static int calculateSum() {
         int sum = 0;
         for (int grade : grades) {
+            System.out.println("grade: " + grade);
+            System.out.println("sum: " + sum);
+            System.out.println("sum + grade: " + (sum + grade));
             sum = sum + grade;
         }
+        System.out.println("sum: " + sum);
+        System.out.println("grades.length: " + grades.length);
         return sum;
     }
 
     public static double calculateAverage() {
-        return calculateSum() / grades.length;
+        return (double) calculateSum() / grades.length;
     }
 
     public static int getHighest() {

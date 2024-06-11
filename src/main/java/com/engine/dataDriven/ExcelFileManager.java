@@ -136,6 +136,7 @@ public class ExcelFileManager {
         }
     }
 
+
     /**
      * This method will return the data from the excel sheet as array
      *
@@ -215,6 +216,44 @@ public class ExcelFileManager {
         return data;
     }
 
+    public Object[][] getDataHashTable2(String excelPath, String sheetName, int startRow, int endRow) {
+        CustomReporter.logConsole("Reading data from Excel file: [ " + excelPath + " ] | Sheet: [ " + sheetName + " ]");
+        Object[][] data = null;
+        try {
+            File file = new File(excelPath);
+            if (!file.exists()) {
+                try {
+                    CustomReporter.logError("File not found in the path: [ " + excelPath + " ] , please check the path and try again.");
+                    Assert.fail("File not found in the path: [ " + excelPath + " ] , please check the path and try again.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            fis = new FileInputStream(excelPath);
+            workbook = new XSSFWorkbook(fis);
+            sheet = workbook.getSheet(sheetName);
+            int rows = getLastRowNumber();
+            int columns = getLastColumnNumber();
+            CustomReporter.logConsole("Total Rows: [ " + rows + " ] | Total Columns: [ " + columns + " ]");
+            CustomReporter.logConsole("Start Row: [ " + startRow + " ] | End Row: [ " + endRow + " ]");
+
+            data = new Object[(endRow - startRow) + 1][1];
+            Hashtable<String, String> table = null;
+            for (int rowNums = startRow; rowNums <= endRow; rowNums++) {
+                table = new Hashtable<>();
+                for (int colNum = 0; colNum < columns; colNum++) {
+                    table.put(getCellData(0, colNum), getCellData(rowNums, colNum));
+                }
+                data[rowNums - startRow][0] = table;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            CustomReporter.logConsole("There is no file exist in the path: [ " + excelPath + " ] , please check the path and try again." + EXCEPTION_ERROR_MESSAGE + e.getMessage());
+            Assert.fail("There is no file exist in the path: [ " + excelPath + " ] , please check the path and try again." + EXCEPTION_ERROR_MESSAGE + e.getMessage());
+        }
+        System.out.println("hashtable Data: " + data);
+        return data;
+    }
     /**
      * Reads cell data from a specific sheet name inside the Excel file Reads cell
      * data using row name (1st column) and column name
@@ -705,12 +744,13 @@ public class ExcelFileManager {
         return sheet.getFirstRowNum();
     }
 
-    public int getLastRowNumber() {
-        return sheet.getLastRowNum();
-    }
 
     public int getFirstColumnNumber() {
         return sheet.getRow(0).getFirstCellNum();
+    }
+
+    public int getLastRowNumber() {
+        return sheet.getLastRowNum();
     }
 
     public int getLastColumnNumber() {

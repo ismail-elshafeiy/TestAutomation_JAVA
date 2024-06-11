@@ -66,8 +66,7 @@ public class Login_ReadDataUsingExcel extends DataProvider {
                 .setUsername(userName)
                 .setPassword(password)
                 .clickLoginButton();
-        assertTrue(SecureAreaPage.getAlertText()
-                        .contains(expectedResult_successMessage),
+        assertTrue(SecureAreaPage.getAlertText().contains(expectedResult_successMessage),
                 "Check Alert Message");
     }
 
