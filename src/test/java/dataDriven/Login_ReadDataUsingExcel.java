@@ -1,4 +1,4 @@
-package web.dataDriven;
+package dataDriven;
 
 import com.engine.dataDriven.DataProvider;
 import com.engine.dataDriven.ExcelFileManager;
@@ -16,8 +16,13 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertTrue;
 
-public class Login_ReadDataUsingExcel extends DataProvider {
+public class Login_ReadDataUsingExcel {
     String epicName = "Login";
+
+    private WebDriver driver;
+    String filePath = "src/test/resources/TestData/LoginData.xlsx";
+    //private ExcelFileManager1 excelFileTestDataReader1;
+    private ExcelFileManager excelFileTestDataReader;
 
     @Test(groups = "approach1")
     public void login_readDataFromExcelFile() {
@@ -59,21 +64,6 @@ public class Login_ReadDataUsingExcel extends DataProvider {
                 "Check Alert Message");
     }
 
-    @Test(dataProvider = "getExcelData")
-    public void login_readDataFromExcelFile_approach3(String userName, String password, String expectedResult_successMessage) {
-        new HomePage(driver).navigateToHomePage()
-                .clickFormAuthentication()
-                .setUsername(userName)
-                .setPassword(password)
-                .clickLoginButton();
-        assertTrue(SecureAreaPage.getAlertText().contains(expectedResult_successMessage),
-                "Check Alert Message");
-    }
-
-    private WebDriver driver;
-    String filePath = "src/test/resources/TestData/LoginData.xlsx";
-    //private ExcelFileManager1 excelFileTestDataReader1;
-    private ExcelFileManager excelFileTestDataReader;
 
     @BeforeClass
     public void setTestEnvironment() {

@@ -1,4 +1,4 @@
-package web.dataDriven;
+package dataDriven;
 
 import com.engine.reports.CustomReporter;
 import practice.gui.pages.homePage.HomePage;

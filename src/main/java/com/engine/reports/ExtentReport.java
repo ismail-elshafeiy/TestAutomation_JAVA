@@ -205,8 +205,7 @@ public class ExtentReport {
     }
 
     public static void fail(Markup m) {
-        extentTest
-                .fail(m);
+        extentTest.fail(m);
     }
 
     public static void fail(String message, Media media) {

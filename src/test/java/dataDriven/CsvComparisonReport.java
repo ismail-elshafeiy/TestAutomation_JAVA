@@ -1,4 +1,4 @@
-package web.dataDriven;
+package dataDriven;
 
 import com.github.ngoanh2n.Resources;
 import com.github.ngoanh2n.csv.CsvComparator;

@@ -187,6 +187,7 @@ public class ExcelFileManager {
         return new String[0][0];
     }
 
+
     public Object[][] getDataHashTable(String filePath, String sheetName, int startRow, int endRow) throws IOException {
         CustomReporter.logConsole("Reading data from Excel file: [ " + filePath + " ] | Sheet: [ " + sheetName + " ]");
         Object[][] data = null;
@@ -348,6 +349,7 @@ public class ExcelFileManager {
      */
     public static String getCellData(int rowNumber, int columnNumber) {
         try {
+            CustomReporter.logConsole("Reading data from row [" + rowNumber + "] and column [" + columnNumber + "] in the Test Data Sheet [" + sheet + "], under the following path [" + excelFilePath + "].");
             row = sheet.getRow(rowNumber - 1);
             cell = row.getCell(columnNumber - 1);
             return getCellData();
