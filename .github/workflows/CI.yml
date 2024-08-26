@@ -20,7 +20,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
       - name: Setup Node.js environment
-        uses: actions/setup-node@v4.0.1
+        uses: actions/setup-node@v4.0.3
         with:
           node-version: '16'
       - name: Set up Selenium Grid with one hub and four Chrome nodes
