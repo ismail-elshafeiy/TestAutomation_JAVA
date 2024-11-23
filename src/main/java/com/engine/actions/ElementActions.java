@@ -29,7 +29,7 @@ public class ElementActions {
     private static WebDriver driver = null;
 
     public ElementActions(WebDriver driver) {
-        this.driver = driver;
+        ElementActions.driver = driver;
     }
 
     public static ElementActions getInstance() {

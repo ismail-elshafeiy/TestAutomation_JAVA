@@ -13,7 +13,7 @@ public class EmailAttachmentsSender {
 
     public static void sendEmailWithAttachments(String host, String port, final String userName, final String password,
                                                 String[] toAddress, String subject, String message, String... attachFiles)
-            throws AddressException, MessagingException {
+            throws MessagingException {
         // sets SMTP server properties
 
         Properties properties = new Properties();
@@ -58,7 +58,7 @@ public class EmailAttachmentsSender {
         multipart.addBodyPart(messageBodyPart);
 
         // adds attachments
-        if (attachFiles != null && attachFiles.length > 0) {
+        if (attachFiles != null) {
             for (String filePath : attachFiles) {
                 MimeBodyPart attachPart = new MimeBodyPart();
 

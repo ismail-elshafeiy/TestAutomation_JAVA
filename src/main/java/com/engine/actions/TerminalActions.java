@@ -27,7 +27,7 @@ public class TerminalActions {
     private String sshKeyFileName;
     private int sshPortNumber = 22;
 
-    private String dockerName = "";
+    private final String dockerName = "";
     private String dockerUsername;
 
     private boolean asynchronous = false;

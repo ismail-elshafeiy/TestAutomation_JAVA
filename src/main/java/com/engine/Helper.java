@@ -5,6 +5,7 @@ import com.engine.reports.CustomReporter;
 import org.testng.Reporter;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class Helper {
     public static String getDate() {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = new Date();
-        String todayDate = dateFormat.format(date).toString();
+        String todayDate = dateFormat.format(date);
         return todayDate;
     }
 
@@ -145,7 +146,7 @@ public class Helper {
     public static String getAlphaNumericString(int length) {
         byte[] array = new byte[256];
         new Random().nextBytes(array);
-        String randomString = new String(array, Charset.forName("UTF-8"));
+        String randomString = new String(array, StandardCharsets.UTF_8);
         StringBuffer r = new StringBuffer();
         for (int k = 0; k < randomString.length(); k++) {
             char ch = randomString.charAt(k);
@@ -185,7 +186,7 @@ public class Helper {
     public static String removeSpecialCharacters(String text) {
         StringBuilder cleanString = new StringBuilder();
         if (text != null) {
-            for (int i = 0; i < text.toCharArray().length; i++) {
+            for (int i = 0; i < text.length(); i++) {
                 var character = String.valueOf(text.toCharArray()[i]);
                 if (Pattern.compile("[^a-z0-9]", Pattern.CASE_INSENSITIVE).matcher(character).find()) {
                     cleanString.append("_");

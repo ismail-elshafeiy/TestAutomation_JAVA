@@ -30,21 +30,21 @@ public class RestApiActions {
     private RequestSpecification request;
     private Response response;
     private QueryableRequestSpecification queryableRequestSpecs;
-    private SessionFilter sessionFilter;
-    private CookieFilter cookieFilter;
-    private String baseUrl;
+    private final SessionFilter sessionFilter;
+    private final CookieFilter cookieFilter;
+    private final String baseUrl;
 
     // HTTP Request Methods
     public enum RequestType {
         POST("POST"), GET("GET"), PUT("PUT"), DELETE("DELETE"), PATCH("PATCH");
 
-        private String value;
+        private final String value;
 
         RequestType(String type) {
             this.value = type;
         }
 
-        protected String getValue() {
+        private String getValue() {
             return value;
         }
     }
@@ -59,10 +59,10 @@ public class RestApiActions {
     }
 
     // Log the request and response
-    private RequestSpecification requestSpec = new RequestSpecBuilder()
+    private final RequestSpecification requestSpec = new RequestSpecBuilder()
 //	    .setBaseUri(baseURI)
             .log(LogDetail.ALL).build();
-    private ResponseSpecification responseSpec = new ResponseSpecBuilder()
+    private final ResponseSpecification responseSpec = new ResponseSpecBuilder()
 //	    .expectStatusCode(200)
             .log(LogDetail.BODY).build();
 
@@ -155,11 +155,7 @@ public class RestApiActions {
             CustomReporter.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
-        if (value != null) {
-            return value;
-        } else {
-            return null;
-        }
+        return value;
     }
 
     public static List<Object> getResponseJsonValueAsList(Response response, String jsonPath) {
@@ -170,11 +166,7 @@ public class RestApiActions {
             CustomReporter.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
-        if (listValue != null) {
-            return listValue;
-        } else {
-            return null;
-        }
+        return listValue;
     }
 
     public static String getResponseBody(Response response) {

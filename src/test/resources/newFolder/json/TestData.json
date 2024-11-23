@@ -1,0 +1,13 @@
+{
+  "user": {
+    "email": "tomsmith",
+    "password": "SuperSecretPassword!"
+  },
+  "password": "SuperSecretPassword!",
+  "email": "tomsmith",
+  "expectedResult_successMessage": "You logged into a secure area!"
+}
+
+
+
+

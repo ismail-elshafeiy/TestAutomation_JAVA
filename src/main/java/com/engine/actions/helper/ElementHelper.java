@@ -108,7 +108,7 @@ public class ElementHelper {
             switch (Integer.parseInt(matchingElementsInformation.get(0).toString())) {
                 case 0 -> {
                     if (matchingElementsInformation.size() > 2 && matchingElementsInformation.get(2) instanceof Throwable) {
-                        CustomReporter.logError("Failed to identify unique element using this locator \"" + formatLocatorToString(elementLocator) + "\"" + (Throwable) matchingElementsInformation.get(2));
+                        CustomReporter.logError("Failed to identify unique element using this locator \"" + formatLocatorToString(elementLocator) + "\"" + matchingElementsInformation.get(2));
                     }
                     CustomReporter.logError("Failed to identify unique element using this locator \"" + formatLocatorToString(elementLocator) + "\"");
                 }
@@ -152,7 +152,7 @@ public class ElementHelper {
         try {
 //            JavaScriptWaitManager.waitForLazyLoading(driver);
             return new FluentWait<>(driver)
-                    .withTimeout(Duration.ofMillis((long) (FrameworkConstants.ELEMENT_IDENTIFICATION_TIMEOUT * 1000L * numberOfAttempts)))
+                    .withTimeout(Duration.ofMillis(FrameworkConstants.ELEMENT_IDENTIFICATION_TIMEOUT * 1000L * numberOfAttempts))
                     .pollingEvery(Duration.ofMillis(100))
                     .ignoreAll(getExpectedExceptions(isValidToCheckForVisibility))
                     .until(nestedDriver -> {

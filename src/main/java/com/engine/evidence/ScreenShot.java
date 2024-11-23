@@ -17,12 +17,12 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 
 public class ScreenShot {
-	private static String gifRelativePathWithFileName = "";
+	private static final String gifRelativePathWithFileName = "";
     //private static final Boolean CREATE_GIF = Boolean.valueOf(System.getProperty("createAnimatedGif").trim());
     //private static final int GIF_FRAME_DELAY = Integer.parseInt(System.getProperty("animatedGif_frameDelay").trim());
     public static final String screenShotPath = PropertiesManager.getPropertyValue("paths.properties", "screenshotPath");
-	private static ThreadLocal<ImageOutputStream> gifOutputStream = new ThreadLocal<>();
-    private static ThreadLocal<AnimatedGif> gifWriter = new ThreadLocal<>();
+	private static final ThreadLocal<ImageOutputStream> gifOutputStream = new ThreadLocal<>();
+    private static final ThreadLocal<AnimatedGif> gifWriter = new ThreadLocal<>();
 
 	/**
 	 * Take the screen shot and save it in the ScreenShot folder

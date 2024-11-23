@@ -43,7 +43,7 @@ public class CustomReporter {
 
     private static final String TIMESTAMP_FORMAT = "dd-MM-yyyy HH:mm:ss.SSSS aaa";
     private static final boolean debugMode = false;
-    private static String currentTime = Helper.getCurrentTime("dd-MM-yyyy HH:mm:ss");
+    private static final String currentTime = Helper.getCurrentTime("dd-MM-yyyy HH:mm:ss");
     static PrintWriter writer;
     private static Logger logger;
     static LogEntries logEntries;
