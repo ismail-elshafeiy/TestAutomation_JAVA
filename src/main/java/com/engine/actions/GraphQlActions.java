@@ -10,8 +10,8 @@ import org.json.simple.JSONObject;
 public class GraphQlActions {
 
     // Variables
-    private static JSONObject jsonObject = new JSONObject();
-    private static RequestSpecification requestSpec = RestAssured.given();
+    private static final JSONObject jsonObject = new JSONObject();
+    private static final RequestSpecification requestSpec = RestAssured.given();
     public static final String BASE_URI = "https://api.spacex.land/graphql/";
 
 
@@ -70,13 +70,13 @@ public class GraphQlActions {
     /////////////////////   Methods for Request  /////////////////////////
     public enum StatusCode {
         SUCCESS(200), SUCCESS_DELETE(201);
-        private int code;
+        private final int code;
 
         StatusCode(int code) {
             this.code = code;
         }
 
-        protected int getCode() {
+        private int getCode() {
             return code;
         }
     }

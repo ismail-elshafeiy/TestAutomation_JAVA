@@ -85,7 +85,7 @@ public class JSONFileManager {
 
 
     private void initializeReader() {
-        this.reader = null;
+        reader = null;
         try {
             reader = new FileReader(getAbsolutePath(this.jsonFilePath));
         } catch (FileNotFoundException var2) {
@@ -108,7 +108,7 @@ public class JSONFileManager {
     public enum DataType {
         STRING;
 
-        private DataType() {
+        DataType() {
         }
     }
 }

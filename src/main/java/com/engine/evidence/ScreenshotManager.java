@@ -30,8 +30,8 @@ public class ScreenshotManager {
     private static final org.openqa.selenium.Dimension TARGET_WINDOW_SIZE = new Dimension(1920, 1080);
     private static ThreadLocal<ImageOutputStream> gifOutputStream = new ThreadLocal<>();
     private static ThreadLocal<AnimatedGif> gifWriter = new ThreadLocal<>();
-    private static String gifOptions = System.getProperty("config.properties", "createAnimatedGif");
-    private static String gifDelay = System.getProperty("config.properties", "animatedGif_frameDelay");
+    private static final String gifOptions = System.getProperty("config.properties", "createAnimatedGif");
+    private static final String gifDelay = System.getProperty("config.properties", "animatedGif_frameDelay");
 
     public static String attachAnimatedGif() {
         // stop and attach

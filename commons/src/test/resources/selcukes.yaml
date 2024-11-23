@@ -1,0 +1,49 @@
+# Selcukes Environment Properties
+---
+projectName: Selcukes
+env: Dev
+proxy: false
+baseUrl:
+excel:
+  runner: fase
+  suiteFile: ""
+  dataFile: ""
+  suiteName: "Smoke"
+cucumber:
+  module: google
+  features: src/test/resources/features/${module}
+  glue: io.github.selcukes.testng.tests
+  tags:
+  plugin:
+web:
+  remote: false
+  cloud:
+  browser: CHROME
+  headLess: true
+  serviceUrl: "http://127.0.0.1:4444"
+windows:
+  serviceUrl: "http://127.0.0.1:4723"
+  app: "C:\\Windows\\System32\\notepad.exe"
+mobile:
+  remote: false
+  cloud: BROWSER_STACK
+  platform: Android
+  browser: CHROME
+  headLess: true
+  serviceUrl: "http://127.0.0.1:4723"
+  app: "src/test/resources/android-app.apk"
+reports:
+  emailReport: true
+  htmlReport: true
+  path:
+video:
+  recording: false
+  type: FFMPEG
+  ffmpegPath:
+  watermark: false
+notifier:
+  notification: false
+  type: Teams
+  webhookToken: WEBHOOKXXXX
+  apiToken: APIXXXX
+  channel: selcukes

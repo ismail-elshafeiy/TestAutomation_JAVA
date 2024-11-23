@@ -9,7 +9,11 @@
     <name>Practice_TestAutomation_SeleniumWebDriver</name>
     <description>Selenium Automation Framework for Testing</description>
     <url>https://github.com/ismail-elshafeiy</url>
-    <packaging>jar</packaging>
+    <modules>
+        <module>collections</module>
+        <module>commons</module>
+    </modules>
+    <packaging>pom</packaging>
 
     <developers>
         <developer>
@@ -791,7 +795,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.4.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <classesDirectory>target/classes</classesDirectory>
                     <archive>
@@ -818,9 +829,6 @@
                     <failOnError>false</failOnError>
                     <show>public</show>
                     <nohelp>true</nohelp>
-                    <header>SHAFT_Engine, ${project.version}</header>
-                    <footer>SHAFT_Engine, ${project.version}</footer>
-                    <doctitle>SHAFT_Engine, ${project.version}</doctitle>
                 </configuration>
                 <executions>
                     <execution>
@@ -830,21 +838,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-scm-publish-plugin</artifactId>
-                <version>3.2.1</version>
-                <configuration>
-                    <checkoutDirectory>${project.basedir}/../SHAFT_ENGINE_apidocs</checkoutDirectory>
-                    <tryUpdate>true</tryUpdate>
-                    <siteOutputEncoding>UTF-8</siteOutputEncoding>
-                    <checkinComment>Publishing javadoc for ${project.artifactId}:${project.version}</checkinComment>
-                    <content>${project.reporting.outputDirectory}</content>
-                    <skipDeletedFiles>true</skipDeletedFiles>
-                    <pubScmUrl>${project.scm.connection}</pubScmUrl>
-                    <scmBranch>gh-pages</scmBranch> <!-- branch with static site -->
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

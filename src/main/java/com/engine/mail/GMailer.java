@@ -88,7 +88,8 @@ public class GMailer {
     }
 
     public static void main(String[] args) throws Exception {
-        new GMailer().sendMail("A new message", """
+        new GMailer();
+        sendMail("A new message", """
                 Dear reader,
                                 
                 Hello world.

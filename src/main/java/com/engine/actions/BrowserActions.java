@@ -350,7 +350,7 @@ public class BrowserActions {
      **/
     public static void switchToFrame(WebDriver driver, String nameOrId) {
         try {
-            CustomReporter.logInfoStep("[Browser Action] Switch to Frame by name Or id: " + nameOrId.toString());
+            CustomReporter.logInfoStep("[Browser Action] Switch to Frame by name Or id: " + nameOrId);
             driver.switchTo().frame(nameOrId);
         } catch (Exception e) {
             CustomReporter.logError(e.getMessage());

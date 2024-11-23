@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class EyesManager {
 
@@ -17,8 +18,8 @@ public class EyesManager {
 	private static WebDriver driver;
 
 	public EyesManager (WebDriver driver, String appName) {
-		this.driver = driver;
-		this.appName = appName;
+		EyesManager.driver = driver;
+		EyesManager.appName = appName;
 		eyes = new Eyes();
 		eyes.setApiKey(System.getProperty("applitools.api.key"));
 	}
@@ -65,13 +66,9 @@ public class EyesManager {
 
 		Process process = Runtime.getRuntime().exec(command);
 		process.waitFor();
-		String stream = IOUtils.toString(process.getInputStream(), "UTF-8");
+		String stream = IOUtils.toString(process.getInputStream(), StandardCharsets.UTF_8);
 		System.out.println(stream);
 
-		if (stream != null && stream.contains("Mismatch")) {
-			return false;
-		}
-
-		return true;
-	}
+        return stream == null || !stream.contains("Mismatch");
+    }
 }

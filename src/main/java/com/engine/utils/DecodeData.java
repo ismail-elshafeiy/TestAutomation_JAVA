@@ -22,7 +22,7 @@ public final class DecodeData {
     private static final String key1 = "AES";
     private static final String key2 = "AES/ECB/PKCS5Padding";
 
-    private static String encryptionKeyString = "autotestselenium";
+    private static final String encryptionKeyString = "autotestselenium";
     private static final byte[] encryptionKeyBytes = encryptionKeyString.getBytes();
 
     private static SecretKey generateKey() {

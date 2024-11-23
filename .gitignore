@@ -12,3 +12,7 @@
 /src/test/resources/downloads/ScreenShot/
 /.github/workflows/
 /video/
+/collections/allure-results/
+/collections/target/
+/exportToHTML
+/src/test/resources/downloads
