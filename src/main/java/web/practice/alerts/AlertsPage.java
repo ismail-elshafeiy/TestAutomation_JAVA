@@ -1,9 +1,8 @@
-package practice.gui.pages.alerts;
+package web.practice.alerts;
 
-import com.engine.actions.FileActions;
+import com.engine.actions.ElementActions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import com.engine.actions.ElementActions;
 
 public class AlertsPage {
 

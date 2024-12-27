@@ -1,11 +1,10 @@
 package visual;
 
-import practice.gui.pages.visualPage.SearchPage;
 import junit.framework.Assert;
 import org.openqa.selenium.By;
-
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import web.practice.visualPage.SearchPage;
 
 public class SearchTests extends BaseTests {
 

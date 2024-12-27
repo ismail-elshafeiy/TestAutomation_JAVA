@@ -1,4 +1,4 @@
-package web.log4j;
+package web.practice.log4j;
 
 import com.engine.actions.ElementActions;
 import org.apache.logging.log4j.LogManager;

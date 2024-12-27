@@ -1,4 +1,4 @@
-package web.capabilities;
+package web.practice.capabilities;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;

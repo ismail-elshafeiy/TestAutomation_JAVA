@@ -1,8 +1,9 @@
-package web.elementActions.locators;
+package web.practice.elementActions.locators;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import web.BaseTests;
+import web.practice.base.BaseTests;
+
 
 @Epic("ElementActions")
 @Feature("Locators")

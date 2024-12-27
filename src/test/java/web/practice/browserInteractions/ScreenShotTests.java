@@ -1,5 +1,4 @@
-package web.browserInteractions;
-
+package web.practice.browserInteractions;
 import com.engine.driver.DriverHelper;
 import com.engine.actions.BrowserActions;
 import com.engine.driver.DriverFactory;

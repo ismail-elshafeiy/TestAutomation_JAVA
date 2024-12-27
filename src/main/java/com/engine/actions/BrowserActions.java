@@ -1,7 +1,7 @@
 package com.engine.actions;
 
 import com.engine.Helper;
-import com.engine.Waits;
+import com.engine.WaitsManager;
 import com.engine.constants.FrameworkConstants;
 import com.engine.dataDriven.PropertiesManager;
 import com.engine.evidence.RecordVideo;
@@ -251,7 +251,7 @@ public class BrowserActions {
 
     @Step("Confirm the Alert")
     public static void alertAction(WebDriver driver, AlertAction confirmAlertType) {
-        Waits.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
+        WaitsManager.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
         Alert alert = driver.switchTo().alert();
         try {
             switch (confirmAlertType) {
@@ -276,7 +276,7 @@ public class BrowserActions {
 
     @Step("Confirm the Alert")
     public static void alertAction(WebDriver driver, String text) {
-        Waits.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
+        WaitsManager.getExplicitWait(driver).until(ExpectedConditions.alertIsPresent());
         try {
             CustomReporter.logInfoStep("[Browser Action] Send Keys the Alert");
             driver.switchTo().alert().sendKeys(text);
@@ -569,7 +569,7 @@ public class BrowserActions {
         }
     }
 
-    static String pdfPath = PropertiesManager.getPropertyValue("paths.properties", "pdfPath");
+    static String pdfPath = PropertiesManager.getPropertyValue("paths", "pdfPath");
 
     /**
      * Print the page using the PrintOptions class and the PrintsPage interface of the WebDriver class

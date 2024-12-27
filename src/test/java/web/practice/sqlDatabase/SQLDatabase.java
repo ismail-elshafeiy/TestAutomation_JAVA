@@ -1,4 +1,4 @@
-package web.sqlDatabase;
+package web.practice.sqlDatabase;
 
 import java.sql.*;
 

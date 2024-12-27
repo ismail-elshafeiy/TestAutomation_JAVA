@@ -31,11 +31,11 @@ public interface Configurations extends Config {
     @DefaultValue("768")
     int height();
 
-    @Key("timeoutImplicitDefault")
+    @Key("implicitWaitTimeout")
     @DefaultValue("60")
     int timeoutImplicitDefault();
 
-    @Key("timeoutExplicitDefault")
+    @Key("explicitWaitTimeout")
     @DefaultValue("60")
     int timeoutExplicitDefault();
 
@@ -63,11 +63,11 @@ public interface Configurations extends Config {
             return this;
         }
         public SetProperty timeoutImplicitDefault(int value) {
-            setProperty("timeoutImplicitDefault", String.valueOf(value));
+            setProperty("implicitWaitTimeout", String.valueOf(value));
             return this;
         }
         public SetProperty timeoutExplicitDefault(int value) {
-            setProperty("timeoutExplicitDefault", String.valueOf(value));
+            setProperty("explicitWaitTimeout", String.valueOf(value));
             return this;
         }
     }

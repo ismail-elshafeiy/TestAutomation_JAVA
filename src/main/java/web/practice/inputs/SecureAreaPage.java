@@ -1,4 +1,4 @@
-package practice.gui.pages.inputs;
+package web.practice.inputs;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

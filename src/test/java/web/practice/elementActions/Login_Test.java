@@ -1,16 +1,15 @@
-package web.elementActions;
+package web.practice.elementActions;
 
-import practice.gui.pages.homePage.HomePage;
-import practice.gui.pages.inputs.SecureAreaPage;
+import com.engine.actions.BrowserActions;
 import com.engine.dataDriven.ExcelFileManager;
+import com.engine.driver.DriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import com.engine.actions.BrowserActions;
-import com.engine.driver.DriverFactory;
+import web.practice.homePage.HomePage;
+import web.practice.inputs.SecureAreaPage;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class Login_Test {

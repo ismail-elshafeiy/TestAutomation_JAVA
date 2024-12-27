@@ -1,14 +1,9 @@
 package com.engine.actions.helper;
 
-import com.engine.Waits;
-import com.engine.actions.ElementActions;
+import com.engine.WaitsManager;
 import com.engine.constants.FrameworkConstants;
 import com.engine.reports.CustomReporter;
-import io.appium.java_client.AppiumDriver;
 import lombok.Getter;
-import lombok.Setter;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.locators.RelativeLocator;
@@ -23,9 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static com.engine.actions.BrowserActions.AlertAction.GET_TEXT;
 import static com.engine.reports.CustomReporter.failAction;
-
 import static org.testng.Assert.fail;
 
 public class ElementHelper {
@@ -36,8 +29,8 @@ public class ElementHelper {
     public static void locatingElementStrategy(WebDriver driver, By elementLocator) {
         try {
             // Wait for the element to be visible
-            Waits.getExplicitWait(driver).until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
-            Waits.getFluentWait(driver).until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
+            WaitsManager.getExplicitWait(driver).until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
+            WaitsManager.getFluentWait(driver).until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
             // Scroll the element into view to handle some browsers cases
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(false);", driver.findElement(elementLocator));
             // Check if the element is displayed

@@ -1,11 +1,9 @@
 package visual;
 
-
-import practice.gui.pages.visualPage.InvoiceGeneratorPage;
-import practice.gui.pages.visualPage.InvoicePreviewPage;
 import junit.framework.Assert;
-
 import org.testng.annotations.Test;
+import web.practice.visualPage.InvoiceGeneratorPage;
+import web.practice.visualPage.InvoicePreviewPage;
 
 import java.io.File;
 import java.io.IOException;

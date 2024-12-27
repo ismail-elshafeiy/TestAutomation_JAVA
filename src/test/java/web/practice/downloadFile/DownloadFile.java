@@ -1,6 +1,6 @@
-package web.downloadFile;
+package web.practice.downloadFile;
 
-import com.engine.Waits;
+import com.engine.WaitsManager;
 import com.engine.actions.BrowserActions;
 import com.engine.actions.ElementActions;
 
@@ -52,7 +52,7 @@ public class DownloadFile {
         options.setExperimentalOption("prefs", prefs);
         options.addArguments("--start-maximized");
         driver = new ChromeDriver(options);
-        Waits.implicitWait(driver, 30);
+        WaitsManager.implicitWait(driver, 30);
         BrowserActions.navigateToUrl(driver, "https://the-internet.herokuapp.com/download");
         ElementActions.click(driver, By.linkText("text.txt"));
         Thread.sleep(10000);

@@ -1,4 +1,4 @@
-package practice.gui.pages.select;
+package web.practice.select;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

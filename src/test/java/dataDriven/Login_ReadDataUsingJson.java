@@ -1,21 +1,22 @@
 package dataDriven;
 
-import com.engine.reports.CustomReporter;
-import practice.gui.pages.homePage.HomePage;
-import practice.gui.pages.inputs.SecureAreaPage;
 import com.engine.actions.BrowserActions;
-import com.engine.driver.DriverFactory;
 import com.engine.dataDriven.ExcelFileManager;
 import com.engine.dataDriven.JSONFileManager;
+import com.engine.driver.DriverFactory;
+import com.engine.reports.CustomReporter;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import web.practice.homePage.HomePage;
+import web.practice.inputs.SecureAreaPage;
 
 import java.io.IOException;
 
-import static com.engine.dataDriven.CSVFileManager.*;
+import static com.engine.dataDriven.CSVFileManager.compareTwoCSVFilesByValue;
+import static com.engine.dataDriven.CSVFileManager.readDataLineByLine;
 import static com.engine.dataDriven.TextFileManager.*;
 import static org.testng.Assert.assertTrue;
 

@@ -1,4 +1,4 @@
-package practice.gui.pages.select;
+package web.practice.select;
 
 import com.engine.actions.helper.ElementHelper;
 import org.openqa.selenium.By;

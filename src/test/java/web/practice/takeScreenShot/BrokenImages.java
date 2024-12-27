@@ -1,4 +1,4 @@
-package web.takeScreenShot;
+package web.practice.takeScreenShot;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

@@ -1,8 +1,8 @@
-package web;
+package web.practice.base;
 
 import com.engine.actions.BrowserActions;
-import com.engine.driver.DriverHelper;
 import com.engine.driver.DriverFactory;
+import com.engine.driver.DriverHelper;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;

@@ -9,12 +9,12 @@ public final class FrameworkConstants {
     }
 
     static {
-        PropertiesManager.loadAllFiles();
+//        PropertiesManager.loadAllFiles();
     }
 
     public static final String PROJECT_PATH = FileActions.getDir();
-    private static final String CONFIG_PROP = "config.properties";
-    private static final String PATH_PROP = "paths.properties";
+    private static final String CONFIG_PROP = "config";
+    private static final String PATH_PROP = "paths";
     public static final Boolean AUTOMATIC_DOWNLOAD_DRIVER = Boolean.valueOf(PropertiesManager.getPropertyValue(CONFIG_PROP, "automaticallyInstallDriver"));
     public static final String CHROME_DRIVER_PATH = PropertiesManager.getPropertyValue(CONFIG_PROP, "chromeDriverPath");
     public static final String FIREFOX_DRIVER_PATH = PropertiesManager.getPropertyValue(CONFIG_PROP, "firefoxDriverPath");
@@ -32,10 +32,10 @@ public final class FrameworkConstants {
     public static final String WIDTH = PropertiesManager.getPropertyValue(CONFIG_PROP, "width");
     public static final String HEIGHT = PropertiesManager.getPropertyValue(CONFIG_PROP, "height");
     public static final int ELEMENT_IDENTIFICATION_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "elementIdentificationTimeout"));
-    public static final int EXPLICIT_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "timeoutExplicitDefault"));
+    public static final int EXPLICIT_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "explicitWaitTimeout"));
 
-    public static final int IMPLICIT_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "timeoutImplicitDefault"));
-    public static final int POLLING = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "fluentWaitpolling"));
+    public static final int IMPLICIT_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "implicitWaitTimeout"));
+    public static final int POLLING = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "FluentWaitPolling"));
 
     public static final Boolean attemptClearBeforeTyping = Boolean.valueOf(PropertiesManager.getPropertyValue(CONFIG_PROP, "attemptClearBeforeTyping"));
 
@@ -45,7 +45,7 @@ public final class FrameworkConstants {
     public static final String EXTENT_REPORT_NAME = PropertiesManager.getPropertyValue(CONFIG_PROP, "reportName");
     public static final int MAX_TRY = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "retryFailedTest"));
     public static final String BASE_URL = PropertiesManager.getPropertyValue(CONFIG_PROP, "rest.baseUrl");
-    public static final String HOME_URL_TAU = PropertiesManager.getPropertyValue("paths.properties", "TAU.homeUrl");
+    public static final String HOME_URL_TAU = PropertiesManager.getPropertyValue("paths", "TAU.homeUrl");
 
     public static final String YES = "yes";
     public static final String NO = "no";

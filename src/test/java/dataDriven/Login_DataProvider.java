@@ -7,8 +7,8 @@ import com.engine.reports.ExtentReport;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import practice.gui.pages.homePage.HomePage;
-import practice.gui.pages.inputs.SecureAreaPage;
+import web.practice.homePage.HomePage;
+import web.practice.inputs.SecureAreaPage;
 
 import java.util.Hashtable;
 

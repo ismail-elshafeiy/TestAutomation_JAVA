@@ -1,11 +1,11 @@
-package web.elementActions.locators;
+package web.practice.elementActions.locators;
 
-import practice.gui.pages.homePage.HomePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.Test;
-import web.BaseTests;
+import web.practice.base.BaseTests;
+import web.practice.homePage.HomePage;
 
 import java.util.List;
 

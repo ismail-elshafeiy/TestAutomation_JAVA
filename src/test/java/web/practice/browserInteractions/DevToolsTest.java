@@ -1,4 +1,4 @@
-package web.browserInteractions;
+package web.practice.browserInteractions;
 
 import com.engine.actions.BrowserActions;
 import com.engine.actions.ElementActions;

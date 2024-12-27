@@ -1,16 +1,16 @@
-package practice.gui.pages.homePage;
+package web.practice.homePage;
 
+import com.engine.actions.BrowserActions;
+import com.engine.actions.ElementActions;
 import com.engine.constants.FrameworkConstants;
-import practice.gui.pages.inputs.ForgotPasswordPage;
-import practice.gui.pages.inputs.LoginPage;
-import practice.gui.pages.select.DropdownPage;
-import practice.gui.pages.select.CheckBoxPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import com.engine.actions.BrowserActions;
-import com.engine.actions.ElementActions;
+import web.practice.inputs.ForgotPasswordPage;
+import web.practice.inputs.LoginPage;
+import web.practice.select.CheckBoxPage;
+import web.practice.select.DropdownPage;
 
 import java.util.List;
 

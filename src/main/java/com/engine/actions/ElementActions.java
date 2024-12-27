@@ -1,6 +1,6 @@
 package com.engine.actions;
 
-import com.engine.Waits;
+import com.engine.WaitsManager;
 import com.engine.actions.helper.ElementHelper;
 import com.engine.actions.helper.ElementInformation;
 import com.engine.constants.FrameworkConstants;
@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.engine.reports.CustomReporter.passAction;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.fail;
 
@@ -42,7 +41,7 @@ public class ElementActions {
         // Mouse hover on the element before clicking
         hover(driver, elementLocator);
         try {
-            Waits.getExplicitWait(driver).until(ExpectedConditions.elementToBeClickable(elementLocator));
+            WaitsManager.getExplicitWait(driver).until(ExpectedConditions.elementToBeClickable(elementLocator));
         } catch (Exception toe) {
             CustomReporter.logError(toe.getMessage());
             fail(toe.getMessage());
@@ -708,7 +707,7 @@ public class ElementActions {
     @Step("Verify element NOT visible {0}")
     public static boolean verifyElementNotVisible(By elementLocator, int timeout) {
         try {
-            Waits.getExplicitWait(driver, timeout).until(ExpectedConditions.invisibilityOfElementLocated(elementLocator));
+            WaitsManager.getExplicitWait(driver, timeout).until(ExpectedConditions.invisibilityOfElementLocated(elementLocator));
             return true;
         } catch (Exception e) {
             CustomReporter.logWarning("Element is still visible after [" + timeout + "] seconds of waiting element [" + elementLocator + "] : " + e.getMessage());

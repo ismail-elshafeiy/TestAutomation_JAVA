@@ -1,4 +1,4 @@
-package web.elementActions.locators;
+package web.practice.elementActions.locators;
 
 import com.engine.actions.BrowserActions;
 import com.engine.actions.ElementActions;
@@ -10,7 +10,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import web.BaseTests;
+import web.practice.base.BaseTests;
 
 import java.util.List;
 

@@ -1,4 +1,5 @@
-package web.video;
+package web.practice.video;
+
 import com.automation.remarks.video.annotations.Video;
 
 import org.testng.annotations.Test;

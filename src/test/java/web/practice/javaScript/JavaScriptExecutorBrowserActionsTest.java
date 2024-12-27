@@ -1,4 +1,4 @@
-package web.javaScript;
+package web.practice.javaScript;
 
 import com.engine.Helper;
 import io.qameta.allure.*;
@@ -6,7 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.testng.annotations.Test;
 import com.engine.actions.BrowserActions;
-import web.BaseTests;
+import web.practice.base.BaseTests;
 
 import static org.testng.AssertJUnit.assertEquals;
 

@@ -9,7 +9,7 @@
     <name>Practice_TestAutomation_SeleniumWebDriver</name>
     <description>Selenium Automation Framework for Testing</description>
     <url>https://github.com/ismail-elshafeiy</url>
-    <packaging>pom</packaging>
+
 
     <developers>
         <developer>
@@ -50,15 +50,6 @@
             </exclusions>
         </dependency>
 
-        <!-- JUNIT5 DEPENDENCIES -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-launcher</artifactId>
-        </dependency>
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
@@ -940,37 +931,6 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
-            <plugin>
-                <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-gpg-plugin -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                        <configuration>
-                            <interactive>false</interactive>
-                            <keyname>${gpg.keyname}</keyname>
-                            <passphrase>${gpg.passphrase}</passphrase>
-                            <!-- Prevent gpg from using pinentry programs -->
-                            <gpgArguments>
-                                <arg>--pinentry-mode</arg>
-                                <arg>loopback</arg>
-                            </gpgArguments>
-                            <!-- Follow these steps: https://www.git-tower.com/blog/setting-up-gpg-windows/ -->
-                            <!-- In case you get `gpg: skipped "xxxxxx": No secret key` error
-                            navigate to where gpg is installed, usually here `C:\Program Files (x86)\GnuPG\bin`
-                            then copy/paste/rename `gpg.exe` to `gpg2.exe`
-                            run `git config {DASH_DASH}global gpg.program "C:\Program Files (x86)\GnuPG\bin\gpg2.exe"`
-                            then try again -->
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
@@ -1010,7 +970,7 @@
                             <trimStackTrace>false</trimStackTrace>
                             <useFile>false</useFile>
                             <argLine>
-                                @{argLine} ${surefireArgLine}
+                                @{argLine}
                                 -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.21/aspectjweaver-1.9.21.jar"
                             </argLine>
                             <properties>
@@ -1064,7 +1024,7 @@
                             <trimStackTrace>false</trimStackTrace>
                             <useFile>false</useFile>
                             <argLine>
-                                @{argLine} ${surefireArgLine}
+                                @{argLine}
                                 -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.21/aspectjweaver-1.9.21.jar"
                             </argLine>
                             <properties>

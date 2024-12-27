@@ -1,4 +1,4 @@
-package practice.gui.pages.visualPage;
+package web.practice.visualPage;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

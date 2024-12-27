@@ -1,4 +1,4 @@
-package web.elementActions.interactions;
+package web.practice.elementActions.interactions;
 
 import com.engine.actions.BrowserActions;
 import org.openqa.selenium.By;
@@ -6,7 +6,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
-import web.BaseTests;
+import web.practice.base.BaseTests;
+
 
 public class SelectCalendarByJSTest extends BaseTests {
 

@@ -1,4 +1,4 @@
-package web.capabilities;
+package web.practice.capabilities;
 
 import io.qameta.allure.*;
 import org.openqa.selenium.WebDriver;

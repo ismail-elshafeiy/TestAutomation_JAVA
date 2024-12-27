@@ -1,4 +1,4 @@
-package web.browserInteractions;
+package web.practice.browserInteractions;
 
 import com.engine.actions.BrowserActions;
 import io.qameta.allure.Description;
@@ -8,7 +8,8 @@ import io.qameta.allure.Story;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import web.BaseTests;
+import web.practice.base.BaseTests;
+
 
 @Epic("Browser Interactions")
 @Feature("Windows")

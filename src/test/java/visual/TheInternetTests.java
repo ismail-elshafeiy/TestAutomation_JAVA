@@ -1,9 +1,9 @@
 package visual;
 
 
-import practice.gui.pages.visualPage.SortableDataTablesPage;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import web.practice.visualPage.SortableDataTablesPage;
 
 public class TheInternetTests extends BaseTests {
 

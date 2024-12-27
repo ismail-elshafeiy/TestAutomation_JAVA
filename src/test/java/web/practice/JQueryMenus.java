@@ -1,4 +1,4 @@
-package web;
+package web.practice;
 
 
 import io.qameta.allure.*;

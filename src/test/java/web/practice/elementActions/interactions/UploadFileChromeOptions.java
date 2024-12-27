@@ -1,10 +1,10 @@
-package web.elementActions.interactions;
+package web.practice.elementActions.interactions;
 
 import com.engine.actions.BrowserActions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.Test;
-import web.BaseTests;
+import web.practice.base.BaseTests;
 
 import java.util.HashMap;
 

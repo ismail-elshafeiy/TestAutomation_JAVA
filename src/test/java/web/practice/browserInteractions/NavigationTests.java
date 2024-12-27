@@ -1,12 +1,13 @@
-package web.browserInteractions;
+package web.practice.browserInteractions;
 
+import com.engine.actions.BrowserActions;
 import com.engine.evidence.ScreenShot;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import org.testng.annotations.Test;
-import com.engine.actions.BrowserActions;
-import web.BaseTests;
+import web.practice.base.BaseTests;
+
 
 @Epic("Browser Interactions")
 @Feature("Navigation")

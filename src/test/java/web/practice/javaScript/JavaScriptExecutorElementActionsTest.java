@@ -1,15 +1,19 @@
-package web.javaScript;
+package web.practice.javaScript;
 
-import com.engine.Waits;
-import io.qameta.allure.*;
-import org.openqa.selenium.*;
+import com.engine.WaitsManager;
+import com.engine.actions.BrowserActions;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import com.engine.actions.BrowserActions;
-import web.BaseTests;
+import web.practice.base.BaseTests;
 
-import static org.testng.AssertJUnit.assertEquals;
 
 /**
  * <a href="https://www.softwaretestingmaterial.com/javascriptexecutor-selenium-webdriver/">...</a>
@@ -79,7 +83,7 @@ public class JavaScriptExecutorElementActionsTest extends BaseTests {
 		BrowserActions.navigateToUrl(driver, "https://www.amazon.com/");
 		WebElement element = driver.findElement(amazonLogoFooter);
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-		Waits.getExplicitWait(driver).until(ExpectedConditions.visibilityOf(element));
+		WaitsManager.getExplicitWait(driver).until(ExpectedConditions.visibilityOf(element));
 		Assert.assertTrue(driver.findElement(amazonLogoFooter).isDisplayed());
 	}
 

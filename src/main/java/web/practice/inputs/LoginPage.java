@@ -1,8 +1,8 @@
-package practice.gui.pages.inputs;
+package web.practice.inputs;
 
+import com.engine.actions.ElementActions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import com.engine.actions.ElementActions;
 
 public class LoginPage {
 

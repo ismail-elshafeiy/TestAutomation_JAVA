@@ -1,4 +1,4 @@
-package practice.gui.pages.uploadFilePage;
+package web.practice.uploadFilePage;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

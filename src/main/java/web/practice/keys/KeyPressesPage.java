@@ -1,4 +1,4 @@
-package practice.gui.pages.keys;
+package web.practice.keys;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;

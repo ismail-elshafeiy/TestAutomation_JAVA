@@ -1,15 +1,16 @@
-package web.elementActions.interactions;
+package web.practice.elementActions.interactions;
 
-import practice.gui.pages.homePage.HomePage;
-import practice.gui.pages.uploadFilePage.FileUploadPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import web.BaseTests;
+import web.practice.base.BaseTests;
+import web.practice.homePage.HomePage;
+import web.practice.uploadFilePage.FileUploadPage;
 
 import java.awt.*;
 
-import static practice.gui.pages.uploadFilePage.FileUploadPage.fileUploader_dragDrop;
-import static practice.gui.pages.uploadFilePage.FileUploadPage.uploadedFiles_text;
+import static web.practice.uploadFilePage.FileUploadPage.fileUploader_dragDrop;
+import static web.practice.uploadFilePage.FileUploadPage.uploadedFiles_text;
+
 
 public class UploadFilesTest extends BaseTests {
 
@@ -19,9 +20,7 @@ public class UploadFilesTest extends BaseTests {
         String imageName = "uploadPic.jpg";
         String imagePath = System.getProperty("user.dir") + "/src/test/resources/Uploads/" + imageName;
         new HomePage(driver).navigateToHomePage("https://the-internet.herokuapp.com/upload");
-        new FileUploadPage(driver)
-                .uploadFileBy_inputFile(imagePath)
-                .clickUploadButton();
+        new FileUploadPage(driver).uploadFileBy_inputFile(imagePath).clickUploadButton();
         Assert.assertEquals(imageName, FileUploadPage.getUploadedFiles_text(), "The Validation Message is incorrect");
         Assert.assertTrue(FileUploadPage.getUploadedFiles_text().contains(imageName));
         Assert.assertTrue((driver.findElement(uploadedFiles_text).isDisplayed()));
@@ -33,13 +32,11 @@ public class UploadFilesTest extends BaseTests {
         String imageName = "uploadPic.jpg";
         String imagePath = "C:\\Users\\ismail\\Automation Projects\\Projects - Ismail_Elshafeiy\\Practice_TestAutomation_SeleniumWebDriver\\src\\test\\resources\\Uploads\\" + imageName;
         new HomePage(driver).navigateToHomePage("https://the-internet.herokuapp.com/upload");
-        new FileUploadPage(driver).clickUpload_dragDropArea()
-                .uploadFileBy_robot(imagePath);
+        new FileUploadPage(driver).clickUpload_dragDropArea().uploadFileBy_robot(imagePath);
 
         Assert.assertTrue(driver.findElement(fileUploader_dragDrop).getText().contains(imageName));
         Assert.assertTrue((driver.findElement(fileUploader_dragDrop).isDisplayed()));
     }
-
 
 
 }

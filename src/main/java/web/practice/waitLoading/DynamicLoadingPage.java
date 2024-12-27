@@ -1,4 +1,4 @@
-package practice.gui.pages.waitLoading;
+package web.practice.waitLoading;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;

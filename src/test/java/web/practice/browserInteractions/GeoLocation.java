@@ -1,4 +1,4 @@
-package web.browserInteractions;
+package web.practice.browserInteractions;
 
 
 import org.openqa.selenium.chrome.ChromeDriver;

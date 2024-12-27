@@ -2,10 +2,9 @@ package com.engine.reports;
 
 import com.engine.actions.FileActions;
 import com.engine.actions.TerminalActions;
-import com.engine.constants.FrameworkConstants;
 import com.engine.dataDriven.PropertiesManager;
-import com.google.common.collect.ImmutableMap;
 import com.github.automatedowl.tools.AllureEnvironmentWriter;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Files;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
@@ -31,7 +30,7 @@ public class AllureReport {
     private static final String allureExtractionLocation = System.getProperty("user.home") + File.separator + ".m2" + File.separator + "repository" + File.separator + "allure" + File.separator;
     static String allureBinaryPath = "";
     static String allureResultsFolderPath = "allure-results/";
-    public static String videoRecordedPath = PropertiesManager.getPropertyValue("paths.properties", "videoRecordedPath");
+    public static String videoRecordedPath = PropertiesManager.getPropertyValue("paths", "videoRecordedPath");
 
     private AllureReport() {
     }
