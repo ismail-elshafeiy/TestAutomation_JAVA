@@ -9,10 +9,6 @@
     <name>Practice_TestAutomation_SeleniumWebDriver</name>
     <description>Selenium Automation Framework for Testing</description>
     <url>https://github.com/ismail-elshafeiy</url>
-    <modules>
-        <module>collections</module>
-        <module>commons</module>
-    </modules>
     <packaging>pom</packaging>
 
     <developers>
