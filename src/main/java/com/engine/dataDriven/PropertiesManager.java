@@ -1,7 +1,7 @@
 package com.engine.dataDriven;
 
 import com.engine.actions.FileActions;
-import com.engine.reports.CustomReporter;
+import com.engine.reports.Logger;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.MutableCapabilities;
 
@@ -30,9 +30,9 @@ public class PropertiesManager {
                     properties.putAll(tempProp);
                 }
             }
-            CustomReporter.logConsole("Loaded all properties files.");
+            Logger.logConsole("Loaded all properties files.");
         } catch (IOException e) {
-            CustomReporter.logError("Warning !! Can not Load All File.");
+            Logger.logError("Warning !! Can not Load All File.");
             e.printStackTrace();
         }
         return properties;
@@ -52,18 +52,18 @@ public class PropertiesManager {
             Collection<File> propertiesFilesList = FileUtils.listFiles(new File(CUSTOM_PROPERTIES_FOLDER_PATH), new String[]{"properties"}, true);
             for (File propertyFile : propertiesFilesList) {
                 try (FileInputStream fileInput = new FileInputStream(propertyFile)) {
-                    CustomReporter.logInfoStep("Loading properties file: [ " + propertyFile.getName() + " ]");
+                    Logger.logInfoStep("Loading properties file: [ " + propertyFile.getName() + " ]");
                     properties.load(fileInput);
                 } catch (IOException ioe) {
-                    CustomReporter.logWarning("Error loading properties file: [ " + propertyFile.getName() + " ]");
-                    CustomReporter.logError(ioe.getMessage());
+                    Logger.logWarning("Error loading properties file: [ " + propertyFile.getName() + " ]");
+                    Logger.logError(ioe.getMessage());
                 }
             }
             properties.putAll(System.getProperties());
             System.getProperties().putAll(properties);
-            CustomReporter.logConsole("Loaded all properties files.");
+            Logger.logConsole("Loaded all properties files.");
         } catch (Exception e) {
-            CustomReporter.logError("Warning !! Can not Load All File.");
+            Logger.logError("Warning !! Can not Load All File.");
             e.printStackTrace();
         }
         return properties;
@@ -82,9 +82,9 @@ public class PropertiesManager {
         try (FileInputStream input = new FileInputStream(propPath)) {
             properties.load(input); // Load properties file
             properties.forEach((key, value) -> map.put(key.toString(), value.toString())); // Convert to Map
-            CustomReporter.logConsole("Successfully retrieved properties as Map from file: [ " + propPath + " ]");
+            Logger.logConsole("Successfully retrieved properties as Map from file: [ " + propPath + " ]");
         } catch (IOException e) {
-            CustomReporter.logError("Failed to retrieve properties as Map from file: [ " + propPath + " ]");
+            Logger.logError("Failed to retrieve properties as Map from file: [ " + propPath + " ]");
             e.printStackTrace();
         }
         return map;
@@ -102,9 +102,9 @@ public class PropertiesManager {
                 }
             });
             properties.store(output, null); // Save updated properties
-            CustomReporter.logInfoStep("Successfully added new properties from Map in file: [ " + propPath + " ]");
+            Logger.logInfoStep("Successfully added new properties from Map in file: [ " + propPath + " ]");
         } catch (IOException e) {
-            CustomReporter.logError("Failed to add new properties from Map in file: [ " + propPath + " ]");
+            Logger.logError("Failed to add new properties from Map in file: [ " + propPath + " ]");
             e.printStackTrace();
         }
     }
@@ -116,16 +116,16 @@ public class PropertiesManager {
              FileOutputStream output = new FileOutputStream(propPath)) {
             properties.load(input); // Load existing properties
             updates.forEach((key, value) -> {
-                CustomReporter.logConsole("Key: [ " + key + " ] , Value: [ " + value + " ]");
+                Logger.logConsole("Key: [ " + key + " ] , Value: [ " + value + " ]");
                 if (properties.containsKey(key)) {
-                    CustomReporter.logConsole("Updating key: [ " + key + " ] with value: [ " + value + " ]");
+                    Logger.logConsole("Updating key: [ " + key + " ] with value: [ " + value + " ]");
                     properties.setProperty(key, value); // Update only if the key exists
                 }
             });
             properties.store(output, null); // Save updated properties
-            CustomReporter.logInfoStep("Successfully updated properties from Map in file: [ " + propPath + " ]");
+            Logger.logInfoStep("Successfully updated properties from Map in file: [ " + propPath + " ]");
         } catch (IOException e) {
-            CustomReporter.logError("Failed to update properties from Map in file: [ " + propPath + " ]");
+            Logger.logError("Failed to update properties from Map in file: [ " + propPath + " ]");
             e.printStackTrace();
         }
     }
@@ -143,10 +143,10 @@ public class PropertiesManager {
         String propPath = getPropertyFilePath(propertyFileName);
         try (FileReader reader = new FileReader(propPath)) {
             properties.load(reader);
-            CustomReporter.logConsole("Property value for [ " + key + " ] is: [" + properties.getProperty(key) + "] from file: [ " + propertyFileName + " ]");
+            Logger.logConsole("Property value for [ " + key + " ] is: [" + properties.getProperty(key) + "] from file: [ " + propertyFileName + " ]");
             return properties.getProperty(key);
         } catch (IOException e) {
-            CustomReporter.logError(e.getMessage() + " Error accessing file: " + propPath);
+            Logger.logError(e.getMessage() + " Error accessing file: " + propPath);
             e.printStackTrace();
         }
         return null;
@@ -172,7 +172,7 @@ public class PropertiesManager {
             properties.setProperty(key, value); // Set the new value for the key
             properties.store(output, null); // Save updated properties
         } catch (IOException e) {
-            CustomReporter.logError(e.getMessage() + " Error accessing file: " + propPath);
+            Logger.logError(e.getMessage() + " Error accessing file: " + propPath);
             e.printStackTrace();
         }
     }
@@ -186,13 +186,13 @@ public class PropertiesManager {
             if (properties.containsKey(key)) {
                 properties.remove(key);
                 // properties.store(output, null);
-                CustomReporter.logInfoStep("Successfully removed key: [ " + key + " ] from properties file: [ " + propPath + " ]");
+                Logger.logInfoStep("Successfully removed key: [ " + key + " ] from properties file: [ " + propPath + " ]");
             } else {
-                CustomReporter.logWarning("Key not found in properties file: [ " + key + " ]");
+                Logger.logWarning("Key not found in properties file: [ " + key + " ]");
             }
 
         } catch (IOException e) {
-            CustomReporter.logError("Failed to remove key from properties file: [ " + propPath + " ]");
+            Logger.logError("Failed to remove key from properties file: [ " + propPath + " ]");
             e.printStackTrace();
         }
     }
@@ -203,10 +203,10 @@ public class PropertiesManager {
         try (FileInputStream input = new FileInputStream(propPath)) {
             properties.load(input);
             boolean exists = properties.containsKey(key);
-            CustomReporter.logInfoStep("Key exists [ " + exists + " ] in properties file: [ " + key + " ]");
+            Logger.logInfoStep("Key exists [ " + exists + " ] in properties file: [ " + key + " ]");
             return exists;
         } catch (IOException e) {
-            CustomReporter.logError("Failed to check if key exists in properties file: [ " + propPath + " ]");
+            Logger.logError("Failed to check if key exists in properties file: [ " + propPath + " ]");
             e.printStackTrace();
         }
         return false;
@@ -225,7 +225,7 @@ public class PropertiesManager {
 
     private static String getPropertyFilePath(String fileName) {
         String filePath = CUSTOM_PROPERTIES_FOLDER_PATH + "/" + fileName + ".properties";
-        CustomReporter.logConsole("Property file path: [ " + filePath + " ]");
+        Logger.logConsole("Property file path: [ " + filePath + " ]");
         return filePath;
     }
 

@@ -1,7 +1,7 @@
 package com.engine.config;
 
 import com.engine.actions.FileActions;
-import com.engine.reports.CustomReporter;
+import com.engine.reports.Logger;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.MutableCapabilities;
@@ -35,7 +35,7 @@ public final class PropertyFileManager {
 
     private static void readPropertyFiles(String propertiesFolderPath) {
         if (propertiesFolderPath != null) {
-            CustomReporter.logInfoStep("Reading properties directory: " + propertiesFolderPath);
+            Logger.logInfoStep("Reading properties directory: " + propertiesFolderPath);
             try {
                 java.util.Properties properties = new java.util.Properties();
                 if (propertiesFolderPath.contains(".jar")) {
@@ -52,16 +52,16 @@ public final class PropertyFileManager {
                     File propertyFile;
                     for (int i = 0; i < propertiesFilesList.size(); i++) {
                         propertyFile = (File) (propertiesFilesList.toArray())[i];
-                        CustomReporter.logInfoStep("Loading properties file: " + propertyFile);
+                        Logger.logInfoStep("Loading properties file: " + propertyFile);
                         loadPropertiesFileIntoSystemProperties(properties, propertyFile);
                     }
                 } else {
-                    CustomReporter.logError(
+                    Logger.logError(
                             "The desired propertiesFolderPath directory doesn't exist. ["
                                     + propertiesFolderPath + "]");
                 }
             } catch (Exception e) {
-                CustomReporter.logError(e.getMessage());
+                Logger.logError(e.getMessage());
             }
         }
     }
@@ -75,7 +75,7 @@ public final class PropertyFileManager {
             System.getProperties().putAll(properties);
             // reset system properties
         } catch (IOException e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
         }
     }
 

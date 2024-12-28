@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import static com.engine.reports.CustomReporter.createLog;
-
 
 public class AllureReport {
     private static final String allureExtractionLocation = System.getProperty("user.home") + File.separator + ".m2" + File.separator + "repository" + File.separator + "allure" + File.separator;
@@ -43,7 +41,7 @@ public class AllureReport {
                         put("Global Timeout", "").
                         put("Page Load Timeout", "").
                         build());
-        CustomReporter.logConsole("Allure Reports is installed.");
+        Logger.logConsole("Allure Reports is installed.");
     }
 
     public static void addAttachmentVideoAVI() {
@@ -53,12 +51,12 @@ public class AllureReport {
             if (video != null) {
                 Allure.addAttachment("Video record AVI", "video/avi", Files.asByteSource(video).openStream(), ".avi");
             } else {
-                CustomReporter.logWarning("Video record not found.");
-                CustomReporter.logWarning("Can not attachment Video in Allure report");
+                Logger.logWarning("Video record not found.");
+                Logger.logWarning("Can not attachment Video in Allure report");
             }
 
         } catch (IOException e) {
-            CustomReporter.logError("Can not attachment Video in Allure report");
+            Logger.logError("Can not attachment Video in Allure report");
             e.printStackTrace();
         }
     }
@@ -70,12 +68,12 @@ public class AllureReport {
             if (video != null) {
                 Allure.addAttachment("Failed test Video record MP4", "video/mp4", Files.asByteSource(video).openStream(), ".mp4");
             } else {
-                CustomReporter.logWarning("Video record not found.");
-                CustomReporter.logWarning("Can not attachment Video in Allure report");
+                Logger.logWarning("Video record not found.");
+                Logger.logWarning("Can not attachment Video in Allure report");
             }
 
         } catch (IOException e) {
-            CustomReporter.logError("Can not attachment Video in Allure report");
+            Logger.logError("Can not attachment Video in Allure report");
             e.printStackTrace();
         }
     }
@@ -124,7 +122,7 @@ public class AllureReport {
 
     @Step("{logText}")
     static void writeStepToReport(String logText, List<List<Object>> attachments) {
-        createLog(logText, false);
+        Logger.logInfoStep(logText);
         if (attachments != null && !attachments.isEmpty()) {
             attachments.forEach(attachment -> {
                 if (attachment != null
@@ -146,7 +144,8 @@ public class AllureReport {
     }
 
     public static void writeStepToReport(String logText) {
-        createLog(logText, true);
+      Logger.logInfoStep(logText);
+        Logger.logInfoStep(logText);
         Allure.step(logText, getAllureStepStatus(logText));
     }
 
@@ -182,7 +181,7 @@ public class AllureReport {
             FileActions.getInstance().deleteFile("allure-report/");
             FileActions.getInstance().deleteFolder(allureResultsFolderPath.substring(0, allureResultsFolderPath.length() - 1));
         } catch (Exception t) {
-            CustomReporter.logError("Failed to delete allure-results as it is currently open. Kindly restart your device to unlock the directory.");
+            Logger.logError("Failed to delete allure-results as it is currently open. Kindly restart your device to unlock the directory.");
         }
     }
 

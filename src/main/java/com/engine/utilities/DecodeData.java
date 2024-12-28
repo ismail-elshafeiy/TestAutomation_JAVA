@@ -3,7 +3,7 @@
  * Automation Framework Selenium
  */
 
-package com.engine.utils;
+package com.engine.utilities;
 
 import org.apache.commons.codec.binary.Base64;
 

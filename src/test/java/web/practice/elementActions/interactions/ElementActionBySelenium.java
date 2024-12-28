@@ -2,7 +2,7 @@ package web.practice.elementActions.interactions;
 
 import com.engine.actions.BrowserActions;
 import com.engine.actions.ElementActions;
-import com.engine.constants.FrameworkConstants;
+
 import com.engine.dataDriven.FakerData;
 import com.engine.reports.ExtentReport;
 import io.qameta.allure.Epic;
@@ -18,6 +18,7 @@ import web.practice.keys.KeyPressesPage;
 
 import java.util.ArrayList;
 
+import static com.engine.utilities.IconUtils.*;
 import static org.testng.Assert.assertEquals;
 
 @Epic("ElementActions")
@@ -56,12 +57,12 @@ public class ElementActionBySelenium extends BaseTests {
         ExtentReport.logJsonCodeBlock("Right Click on Menu Button and then click on Edit" + ElementActions.class);
         ExtentReport.logTable(data);
         ExtentReport.logOrderList(data2);
-        ExtentReport.info(FrameworkConstants.ICON_Navigate_Right + "Test Navigate Right");
-        ExtentReport.info(FrameworkConstants.ICON_BUG + "Test Bug");
-        ExtentReport.info(FrameworkConstants.ICON_SMILEY_PASS + "Test Pass");
-        ExtentReport.info(FrameworkConstants.ICON_SMILEY_FAIL + "Test Fail");
-        ExtentReport.info(FrameworkConstants.ICON_SMILEY_SKIP + "Test Skip");
-        ExtentReport.addSystemInfo("OS", FrameworkConstants.ICON_OS_WINDOWS + " Test OS");
+        ExtentReport.info(ICON_Navigate_Right + "Test Navigate Right");
+        ExtentReport.info(ICON_BUG + "Test Bug");
+        ExtentReport.info(ICON_SMILEY_PASS + "Test Pass");
+        ExtentReport.info(ICON_SMILEY_FAIL + "Test Fail");
+        ExtentReport.info(ICON_SMILEY_SKIP + "Test Skip");
+        ExtentReport.addSystemInfo("OS", ICON_OS_WINDOWS + " Test OS");
         //ExtentReport.addTestRunnerOutput(FakerData.getStringLimit(5000));
         ArrayList<String> list = new ArrayList<>();
         list.add(FakerData.getFirstName());

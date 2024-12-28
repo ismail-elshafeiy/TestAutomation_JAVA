@@ -1,74 +1,45 @@
 package com.engine.reports;
 
 import com.engine.Helper;
+import com.engine.actions.ElementActions;
 import com.engine.actions.FileActions;
-import com.engine.constants.FrameworkConstants;
 import com.engine.dataDriven.PropertiesManager;
 import com.google.common.base.Throwables;
-import com.engine.actions.ElementActions;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
-
-import io.qameta.allure.model.Status;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
-
-import org.openqa.selenium.*;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.Logs;
-
 import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.engine.reports.AllureReport.getAllureStepStatus;
 import static com.engine.reports.AllureReport.writeStepToReport;
+import static com.engine.utilities.IconUtils.ICON_SMILEY_FAIL;
 
 
-public class CustomReporter {
-
+public class Logger {
+    private static org.apache.logging.log4j.Logger logger;
     private static final String TIMESTAMP_FORMAT = "dd-MM-yyyy HH:mm:ss.SSSS aaa";
     private static final boolean debugMode = false;
-    private static final String currentTime = Helper.getCurrentTime("dd-MM-yyyy HH:mm:ss");
-    static PrintWriter writer;
-    private static Logger logger;
-    static LogEntries logEntries;
-    static Logs logs;
-    private static WebDriver driver;
+    private static PrintWriter writer;
+    private static LogEntries logEntries;
+    private static Logs logs;
 
-    private static final String BOUNDARY_SPACES = "                                                                                                                  ";
-
-    private CustomReporter() {
-        throw new IllegalStateException("Utility class");
-    }
-
-    static void print(String data) {
-        System.out.println(data);
-    }
-
-    public static void lineSeparator() {
-        print(BOUNDARY_SPACES);
-    }
-
-    /**
-     * Log step that will be added as a step in the execution report
-     *
-     * @param text logged by action that will be added as a step in the execution report (e.g. click on button)
-     */
 
     @Step("{text}")
     public static void logInfoStep(String text) {
@@ -84,7 +55,6 @@ public class CustomReporter {
         }
     }
 
-
     public static void logPassed(String text) {
         createLog(text, Level.INFO);
         ExtentReport.pass(text);
@@ -92,20 +62,23 @@ public class CustomReporter {
     }
 
     public static void logWarning(String text) {
-        CustomReporter.logConsole("Kindly check the warning message below: ", Level.WARN, "33");
+        Logger.logConsole("Kindly check the warning message below: ", Level.WARN, "33");
         createLog(text, Level.WARN);
         ExtentReport.warning(text);
     }
 
-    /**
-     * Log message that will be added as a message in the execution report
-     *
-     * @param message logged by exception / assertion message that will be added as a message in the execution report
-     */
     public static void logError(String message) {
         createLog(message, Level.ERROR);
-        ExtentReport.fail(FrameworkConstants.ICON_SMILEY_FAIL + " " + message);
-        // Assert.fail(message);
+        ExtentReport.fail(ICON_SMILEY_FAIL + " " + message);
+    }
+
+    public static void logException(Exception e) {
+        initializeLogger();
+        logger.error("Exception occurred: ", e);
+    }
+
+    public static void logThrowable(Throwable t) {
+        createLog(formatStackTraceToLogEntry(t), Level.ERROR);
     }
 
     public static void logConsole(String text, Level level) {
@@ -139,7 +112,7 @@ public class CustomReporter {
     }
 
     static synchronized void logAttachmentAction(String attachmentType, String attachmentName, ByteArrayOutputStream attachmentContent) {
-        CustomReporter.logInfoStep("Successfully created attachment \"" + attachmentType + " - " + attachmentName + "\"");
+        Logger.logInfoStep("Successfully created attachment \"" + attachmentType + " - " + attachmentName + "\"");
         String timestamp = Helper.getCurrentTime();
         String theString;
         var br = new BufferedReader(
@@ -162,48 +135,9 @@ public class CustomReporter {
         logger.log(Level.INFO, log);
     }
 
-    private static String createSeparator(@SuppressWarnings("SameParameterValue") char ch) {
-        return String.valueOf(ch).repeat(144);
-    }
-
-    private static String addSpacing(String log) {
-        StringBuilder augmentedText = new StringBuilder();
-        StringBuilder lineByLine = new StringBuilder();
-        augmentedText.append(System.lineSeparator());
-        Arrays.stream(log.split("\n")).toList().forEach(line -> {
-            var trailingSpacing = "";
-            var spaces = Math.round((float) (144 - line.trim().length()) / 2);
-            if (spaces > 0) {
-                lineByLine.append(" ".repeat(spaces));
-                trailingSpacing = lineByLine.toString();
-            }
-            lineByLine.append(line.trim());
-            lineByLine.append(trailingSpacing);
-            augmentedText.append(lineByLine);
-            augmentedText.append(System.lineSeparator());
-            lineByLine.delete(0, lineByLine.length());
-        });
-        return augmentedText.toString();
-    }
 
     public static String formatStackTraceToLogEntry(Throwable t) {
         return formatStackTraceToLogEntry(t, false);
-    }
-
-    private static String formatStackTraceToLogEntry(Throwable t, boolean isCause) {
-        var logBuilder = new StringBuilder();
-        if (t != null) {
-            StackTraceElement[] trace = t.getStackTrace();
-            if (isCause) {
-                logBuilder.append(System.lineSeparator()).append("Caused by: ");
-            }
-            logBuilder.append(t.getClass().getName()).append(":").append(" ").append(t.getMessage()).append(System.lineSeparator());
-            for (StackTraceElement stackTraceElement : trace) {
-                logBuilder.append(" ").append(stackTraceElement.toString()).append(System.lineSeparator());
-            }
-            logBuilder.append(formatStackTraceToLogEntry(t.getCause(), true));
-        }
-        return logBuilder.toString();
     }
 
     public static void failReporter(Class<?> failedFileManager, String message, Throwable throwable) {
@@ -223,7 +157,7 @@ public class CustomReporter {
                 "Exception Stacktrace", formatStackTraceToLogEntry(throwable));
         attachments.add(actualValueAttachment);
         if (failedFileManager != ElementActions.class)
-            CustomReporter.logError(message + rootCause);
+            Logger.logError(message + rootCause);
         Assert.fail(message + rootCause, throwable);
     }
 
@@ -231,6 +165,7 @@ public class CustomReporter {
         String actionName = Thread.currentThread().getStackTrace()[2].getMethodName();
         passAction(driver, actionName, testData);
     }
+
     public static void passAction(String testData) {
         String actionName = Thread.currentThread().getStackTrace()[2].getMethodName();
         reportActionResult(actionName, testData, null, true);
@@ -281,19 +216,19 @@ public class CustomReporter {
             attachments.add(Arrays.asList("File Action Actual Result", "Command Log", log));
         }
         if (rootCauseException != null && rootCauseException.length >= 1) {
-            List<Object> actualValueAttachment = Arrays.asList("File Action Exception - " + actionName, "Stacktrace", CustomReporter.formatStackTraceToLogEntry(rootCauseException[0]));
+            List<Object> actualValueAttachment = Arrays.asList("File Action Exception - " + actionName, "Stacktrace", Logger.formatStackTraceToLogEntry(rootCauseException[0]));
             attachments.add(actualValueAttachment);
         }
         // Minimize File Action log steps and move them to discrete logs if called
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         StackTraceElement parentMethod = stackTrace[4];
         if (parentMethod.getClassName().contains("engine")) {
-            CustomReporter.logInfoStep(message);
+            Logger.logInfoStep(message);
         } else {
             if (!attachments.equals(new ArrayList<>())) {
-                CustomReporter.logInfoStep(attachments.toString());
+                Logger.logInfoStep(attachments.toString());
             } else {
-                CustomReporter.logInfoStep(message);
+                Logger.logInfoStep(message);
             }
         }
         return message;
@@ -317,25 +252,22 @@ public class CustomReporter {
             }
         }
         if (rootCauseException != null && rootCauseException.length >= 1) {
-            List<Object> actualValueAttachment = Arrays.asList("Browser Action Exception - " + actionName, "Stacktrace", CustomReporter.formatStackTraceToLogEntry(rootCauseException[0]));
+            List<Object> actualValueAttachment = Arrays.asList("Browser Action Exception - " + actionName, "Stacktrace", Logger.formatStackTraceToLogEntry(rootCauseException[0]));
             attachments.add(actualValueAttachment);
         }
         message = message + ".";
         message = message.replace("Browser Action: ", "");
         if (!attachments.equals(new ArrayList<>())) {
-            CustomReporter.logAttachments(message, attachments);
+            Logger.logAttachments(message, attachments);
         } else {
-            CustomReporter.logInfoStep(message);
+            Logger.logInfoStep(message);
         }
         return message;
     }
 
-    public static void logThrowable(Throwable t) {
-        createLog(formatStackTraceToLogEntry(t), Level.ERROR);
-    }
 
-    public static void createLog(String logText, Level loglevel) {
-        String timestamp = (new SimpleDateFormat(TIMESTAMP_FORMAT)).format(new Date(System.currentTimeMillis()));
+    private static void createLog(String logText, Level loglevel) {
+        String timestamp = Helper.getCurrentTime(TIMESTAMP_FORMAT);
         if (logText == null) {
             logText = "null";
         }
@@ -345,21 +277,6 @@ public class CustomReporter {
             initializeLogger();
         }
         logger.log(loglevel, logText.trim());
-    }
-
-    public static void createLog(String logText, boolean addToConsoleLog) {
-        String timestamp = (new SimpleDateFormat(TIMESTAMP_FORMAT)).format(new Date(System.currentTimeMillis()));
-        if (logText == null) {
-            logText = "null";
-        }
-        String log = logText.trim() + " @" + timestamp;
-        Reporter.log(log, false);
-        if (addToConsoleLog) {
-            if (logger == null) {
-                initializeLogger();
-            }
-            logger.log(Level.INFO, logText.trim());
-        }
     }
 
     /**
@@ -375,25 +292,25 @@ public class CustomReporter {
         logEntries = logs.get(LogType.BROWSER);
         String filePath = System.getProperty("user.dir") + "/ConsoleLogs/" + result.getMethod().getMethodName() + ".txt";
         writer = new PrintWriter(filePath, StandardCharsets.UTF_8);
-        CustomReporter.logInfoStep("Console logs for Test Case: [" + result.getMethod().getMethodName() + "] are saved in [ " + filePath + " ]");
+        Logger.logInfoStep("Console logs for Test Case: [" + result.getMethod().getMethodName() + "] are saved in [ " + filePath + " ]");
         try {
             for (LogEntry logEntry : logEntries) {
                 writer.println("Console log found in Test- " + result.getName());
                 writer.println("__________________________________________________________");
                 if (logEntry.getMessage().toLowerCase().contains("error")) {
-                    writer.println(currentTime + "Error Message in Console: [" + logEntry.getMessage() + "]");
-                    CustomReporter.logInfoStep(currentTime + "Error Message in Console: [" + logEntry.getMessage() + "]");
+                    writer.println(Helper.getCurrentTime() + "Error Message in Console: [" + logEntry.getMessage() + "]");
+                    Logger.logInfoStep(Helper.getCurrentTime() + "Error Message in Console: [" + logEntry.getMessage() + "]");
                 } else if (logEntry.getMessage().toLowerCase().contains("warning")) {
-                    writer.println(currentTime + "Warning Message in Console: [" + logEntry.getMessage() + "]");
-                    CustomReporter.logInfoStep(currentTime + "Warning Message in Console: [" + logEntry.getMessage() + "]");
+                    writer.println(Helper.getCurrentTime() + "Warning Message in Console: [" + logEntry.getMessage() + "]");
+                    Logger.logInfoStep(Helper.getCurrentTime() + "Warning Message in Console: [" + logEntry.getMessage() + "]");
                 } else {
-                    writer.println(currentTime + "Information Message in Console: [" + logEntry.getMessage() + "]");
-                    CustomReporter.logInfoStep(currentTime + "Information Message in Console: [" + logEntry.getMessage() + "]");
+                    writer.println(Helper.getCurrentTime() + "Information Message in Console: [" + logEntry.getMessage() + "]");
+                    Logger.logInfoStep(Helper.getCurrentTime() + "Information Message in Console: [" + logEntry.getMessage() + "]");
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logError("Console logs not found: " + e.getMessage());
+            Logger.logError("Console logs not found: " + e.getMessage());
         } finally {
             writer.close();
         }
@@ -425,7 +342,51 @@ public class CustomReporter {
 
     private static void initializeLogger() {
         Configurator.initialize(null, PropertiesManager.CUSTOM_PROPERTIES_FOLDER_PATH + "/log4j2.properties");
-        logger = LogManager.getLogger(CustomReporter.class.getName());
+        logger = LogManager.getLogger(Logger.class.getName());
+    }
+
+    private static String createSeparator(@SuppressWarnings("SameParameterValue") char ch) {
+        return String.valueOf(ch).repeat(144);
+    }
+
+    private static String addSpacing(String log) {
+        StringBuilder augmentedText = new StringBuilder();
+        StringBuilder lineByLine = new StringBuilder();
+        augmentedText.append(System.lineSeparator());
+        Arrays.stream(log.split("\n")).toList().forEach(line -> {
+            var trailingSpacing = "";
+            var spaces = Math.round((float) (144 - line.trim().length()) / 2);
+            if (spaces > 0) {
+                lineByLine.append(" ".repeat(spaces));
+                trailingSpacing = lineByLine.toString();
+            }
+            lineByLine.append(line.trim());
+            lineByLine.append(trailingSpacing);
+            augmentedText.append(lineByLine);
+            augmentedText.append(System.lineSeparator());
+            lineByLine.delete(0, lineByLine.length());
+        });
+        return augmentedText.toString();
+    }
+
+    private static String formatStackTraceToLogEntry(Throwable t, boolean isCause) {
+        var logBuilder = new StringBuilder();
+        if (t != null) {
+            StackTraceElement[] trace = t.getStackTrace();
+            if (isCause) {
+                logBuilder.append(System.lineSeparator()).append("Caused by: ");
+            }
+            logBuilder.append(t.getClass().getName()).append(":").append(" ").append(t.getMessage()).append(System.lineSeparator());
+            for (StackTraceElement stackTraceElement : trace) {
+                logBuilder.append(" ").append(stackTraceElement.toString()).append(System.lineSeparator());
+            }
+            logBuilder.append(formatStackTraceToLogEntry(t.getCause(), true));
+        }
+        return logBuilder.toString();
+    }
+
+    private Logger() {
+        throw new IllegalStateException("Utility class");
     }
 }
 

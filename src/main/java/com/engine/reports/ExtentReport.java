@@ -14,15 +14,12 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.aventstack.extentreports.reporter.configuration.ViewName;
 import com.engine.Helper;
 import com.engine.constants.FrameworkConstants;
-import com.engine.evidence.ScreenShot;
-import com.engine.utils.IconUtils;
+import com.engine.utilities.IconUtils;
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-
-import java.awt.image.BufferedImage;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,21 +31,9 @@ public class ExtentReport {
     private static ExtentTest extentTest;
     private static ExtentReports extentReports;
 
-    static String currentTime = Helper.getCurrentTime("yyyy-MM-dd_HH-mm");
-
     public static void initializeExtentReport() {
         extentReports = new ExtentReports();
-        ExtentSparkReporter extentSparkReporter = new ExtentSparkReporter("ExtentReport/ExtentReports.html")
-                .viewConfigurer()
-                .viewOrder()
-                .as(new ViewName[]{
-                        ViewName.DASHBOARD,
-                        ViewName.TEST,
-                        ViewName.EXCEPTION,
-                        ViewName.CATEGORY,
-                        ViewName.AUTHOR,
-                        ViewName.DEVICE})
-                .apply();
+        ExtentSparkReporter extentSparkReporter = new ExtentSparkReporter("ExtentReport/ExtentReports.html").viewConfigurer().viewOrder().as(new ViewName[]{ViewName.DASHBOARD, ViewName.TEST, ViewName.EXCEPTION, ViewName.CATEGORY, ViewName.AUTHOR, ViewName.DEVICE}).apply();
         extentReports.attachReporter(extentSparkReporter);
         extentSparkReporter.config().setTheme(Theme.STANDARD);
         extentSparkReporter.config().setEncoding("utf-8");
@@ -63,8 +48,12 @@ public class ExtentReport {
         extentReports.setSystemInfo("Browser", IconUtils.getBrowserIcon() + " " + FrameworkConstants.BROWSER_TYPE);
         extentReports.setSystemInfo("Java", "v " + System.getProperty("java.version") + " - " + System.getProperty("java.home"));
         extentReports.setSystemInfo("Java vendor", System.getProperty("java.vendor") + " - " + System.getProperty("java.vendor.url"));
-        extentReports.setSystemInfo("User", System.getProperty("user.name") + " - " + System.getProperty("user.dir"));
-        extentReports.setSystemInfo("User Settings", "TZ: " + System.getProperty("user.timezone") + ", Country: " + System.getProperty("user.country") + ", Language: " + System.getProperty("user.language"));
+        extentReports.setSystemInfo("User name", System.getProperty("user.name"));
+        extentReports.setSystemInfo("User Home", System.getProperty("user.home"));
+        extentReports.setSystemInfo("User dir", System.getProperty("user.dir"));
+        extentReports.setSystemInfo("User Time Zone", System.getProperty("user.timezone"));
+        extentReports.setSystemInfo("User Country", System.getProperty("user.country"));
+        extentReports.setSystemInfo("User Language", System.getProperty("user.language"));
     }
 
     public static void addTestRunnerOutput(String data) {
@@ -85,33 +74,27 @@ public class ExtentReport {
     }
 
     public static void createTestAndDescription(String testCaseName, String description) {
-        extentTest
-                = extentReports.createTest(testCaseName, description);
+        extentTest = extentReports.createTest(testCaseName, description);
     }
 
     public static void createTest(String testCaseName, String author) {
-        extentTest
-                = extentReports.createTest(testCaseName).assignAuthor(author);
+        extentTest = extentReports.createTest(testCaseName).assignAuthor(author);
     }
 
     public static void createTest(String testCaseName, String author, String category) {
-        extentTest
-                = extentReports.createTest(testCaseName).assignAuthor(author).assignCategory(category);
+        extentTest = extentReports.createTest(testCaseName).assignAuthor(author).assignCategory(category);
     }
 
     public static void createTest(String testCaseName, String author, String category, String device) {
-        extentTest
-                = extentReports.createTest(testCaseName).assignAuthor(author).assignCategory(category).assignDevice(device);
+        extentTest = extentReports.createTest(testCaseName).assignAuthor(author).assignCategory(category).assignDevice(device);
     }
 
     public static void createTestNode(String testCaseName, String nodeName) {
-        extentTest
-                = extentReports.createTest(testCaseName).createNode(nodeName);
+        extentTest = extentReports.createTest(testCaseName).createNode(nodeName);
     }
 
     public static void createTestNode(String testCaseName, String nodeName, String nodeDescription) {
-        extentTest
-                = extentReports.createTest(testCaseName).createNode(nodeName, nodeDescription);
+        extentTest = extentReports.createTest(testCaseName).createNode(nodeName, nodeDescription);
     }
 
     public static void removeTest(String testCaseName) {
@@ -125,83 +108,67 @@ public class ExtentReport {
 
     //************* info methods *************//
     public static void info(String message) {
-        if (extentTest
-                != null) {
-            extentTest
-                    .info(message);
+        if (extentTest != null) {
+            extentTest.info(message);
         }
     }
 
     public static void info(Throwable t) {
-        extentTest
-                .info(t);
+        extentTest.info(t);
     }
 
     public static void info(Media m) {
-        extentTest
-                .info(m);
+        extentTest.info(m);
     }
 
     public static void info(Markup m) {
-        extentTest
-                .info(m);
+        extentTest.info(m);
     }
 
     public static void info(String message, Media media) {
-        extentTest
-                .info(message, media);
+        extentTest.info(message, media);
     }
 
     public static void info(Throwable t, Media media) {
-        extentTest
-                .info(t, media);
+        extentTest.info(t, media);
     }
 
     //************* pass methods *************//
     public static void pass(String message) {
-        extentTest
-                .pass(message);
+        extentTest.pass(message);
     }
 
     public static void pass(Throwable t) {
-        extentTest
-                .pass(t);
+        extentTest.pass(t);
     }
 
     public static void pass(Media media) {
-        extentTest
-                .pass(media);
+        extentTest.pass(media);
     }
 
     public static void pass(Markup m) {
-        extentTest
-                .pass(m);
+        extentTest.pass(m);
     }
 
     public static void pass(String message, Media media) {
-        extentTest
-                .pass(message, media);
+        extentTest.pass(message, media);
     }
 
     public static void pass(Throwable t, Media media) {
-        extentTest
-                .pass(t, media);
+        extentTest.pass(t, media);
     }
 
     //************* fail methods *************//
     public static void fail(String message) {
-        extentTest
-                .fail(message);
+        extentTest.fail(message);
     }
 
     public static void fail(Throwable t) {
-        extentTest
-                .fail(t);
+        extentTest.fail(t);
     }
 
     public static void fail(Media media) {
-        extentTest
-                .fail(media);
+        extentTest.fail(media);
     }
 
     public static void fail(Markup m) {
@@ -209,86 +176,70 @@ public class ExtentReport {
     }
 
     public static void fail(String message, Media media) {
-        extentTest
-                .fail(message, media);
+        extentTest.fail(message, media);
     }
 
     public static void fail(Throwable t, Media media) {
-        extentTest
-                .fail(t, media);
+        extentTest.fail(t, media);
     }
 
     //************* waring methods *************//
     public static void warning(String message) {
-        extentTest
-                .warning(message);
+        extentTest.warning(message);
     }
 
     public static void warning(Throwable t) {
-        extentTest
-                .warning(t);
+        extentTest.warning(t);
     }
 
     public static void warning(Media media) {
-        extentTest
-                .warning(media);
+        extentTest.warning(media);
     }
 
     public static void warning(Markup m) {
-        extentTest
-                .warning(m);
+        extentTest.warning(m);
     }
 
     public static void warning(String message, Media media) {
-        extentTest
-                .warning(message, media);
+        extentTest.warning(message, media);
     }
 
     public static void warning(Throwable t, Media media) {
-        extentTest
-                .warning(t, media);
+        extentTest.warning(t, media);
     }
     //************* skip methods *************//
 
     public static void skip(String message) {
-        extentTest
-                .skip(message);
+        extentTest.skip(message);
     }
 
     public static void skip(Throwable t) {
-        extentTest
-                .skip(t);
+        extentTest.skip(t);
     }
 
     public static void skip(Media media) {
-        extentTest
-                .skip(media);
+        extentTest.skip(media);
     }
 
     public static void skip(Markup m) {
-        extentTest
-                .skip(m);
+        extentTest.skip(m);
     }
 
     public static void skip(String message, Media media) {
-        extentTest
-                .skip(message, media);
+        extentTest.skip(message, media);
     }
 
     public static void skip(Throwable t, Media media) {
-        extentTest
-                .skip(t, media);
+        extentTest.skip(t, media);
     }
 
     //************* helper ****************/
     public static void logCodeBlock(String codeBlock) {
-        extentTest
-                .log(Status.INFO, MarkupHelper.createCodeBlock(codeBlock));
+        extentTest.log(Status.INFO, MarkupHelper.createCodeBlock(codeBlock));
     }
 
     public static void logTable(String[][] data) {
-        extentTest
-                .log(Status.INFO, MarkupHelper.createTable(data));
+        extentTest.log(Status.INFO, MarkupHelper.createTable(data));
     }
 
     public static void logOrderList(Object data) {
@@ -296,8 +247,7 @@ public class ExtentReport {
     }
 
     public static void logJsonCodeBlock(Object data) {
-        extentTest
-                .log(Status.INFO, MarkupHelper.createJsonCodeBlock(data));
+        extentTest.log(Status.INFO, MarkupHelper.createJsonCodeBlock(data));
     }
 
     /**
@@ -307,19 +257,11 @@ public class ExtentReport {
      * @return Media - Media Entity Builder Instance of the Screenshot
      */
     public static Media attachScreenshotToExtentReport(WebDriver driver) {
-        return MediaEntityBuilder
-                .createScreenCaptureFromBase64String(((TakesScreenshot) driver)
-                        .getScreenshotAs(OutputType.BASE64), Helper.getTestMethodName() + currentTime + "_Screenshot").build();
+        return MediaEntityBuilder.createScreenCaptureFromBase64String(((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64), Helper.getTestMethodName() + Helper.getCurrentTime() + "_Screenshot").build();
     }
 
-//    public static BufferedImage attachScreenshotToExtentReport2(WebDriver driver) {
-//        return ScreenShot.takeFullScreenShoot2(driver, Helper.getTestMethodName() + currentTime + "_Screenshot");
-//    }
-
     public static Media attachFullPageScreenShotToExtentReport(FirefoxDriver driver) {
-        return MediaEntityBuilder
-                .createScreenCaptureFromBase64String(String.valueOf((driver)
-                        .getFullPageScreenshotAs(OutputType.FILE)), Helper.getTestMethodName() + currentTime + "_fullPage").build();
+        return MediaEntityBuilder.createScreenCaptureFromBase64String(String.valueOf((driver).getFullPageScreenshotAs(OutputType.FILE)), Helper.getTestMethodName() + Helper.getCurrentTime() + "_fullPage").build();
     }
 
     public static void attachImageToExtentReport(String attachmentType, InputStream attachmentContent) {
@@ -332,7 +274,7 @@ public class ExtentReport {
                     extentTest.info(MediaEntityBuilder.createScreenCaptureFromBase64String(image).build());
                 }
             } catch (IOException e) {
-                CustomReporter.logError("Failed to attach screenshot to extentReport.");
+                Logger.logError("Failed to attach screenshot to extentReport.");
             }
         }
     }
@@ -347,7 +289,7 @@ public class ExtentReport {
                     default -> extentTest.info(MarkupHelper.createCodeBlock(codeBlock));
                 }
             } catch (IOException e) {
-                CustomReporter.logError("Failed to attach code block to extentReport.");
+                Logger.logError("Failed to attach code block to extentReport.");
             }
         }
     }

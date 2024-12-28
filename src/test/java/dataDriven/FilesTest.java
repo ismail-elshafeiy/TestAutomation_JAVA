@@ -2,12 +2,10 @@ package dataDriven;
 
 import com.engine.actions.FileActions;
 import com.engine.reports.Attachments;
-import com.engine.reports.CustomReporter;
+import com.engine.reports.Logger;
 import org.testng.annotations.Test;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 
 import static com.engine.dataDriven.CSVFileManager.compareTwoCSVFilesByValue;
@@ -53,12 +51,12 @@ public class FilesTest {
         String folderPath = FileActions.getInstance().listFilesInDirectory("src/test/resources/TestData/csv/");
         StringBuilder folderPath2 = FileActions.getInstance().listFilesInDirectoryAsList("src/test/resources/TestData/csv/");
         String firstFileName = folderPath2.substring(1);
-        CustomReporter.logInfoStep("firstFileName: " + firstFileName);
-        CustomReporter.logInfoStep("listOfFiles: " + folderPath);
+        Logger.logInfoStep("firstFileName: " + firstFileName);
+        Logger.logInfoStep("listOfFiles: " + folderPath);
         String fileNameLastModified = String.valueOf(FileActions.getInstance().getFileLastModified(folderPath));
-        CustomReporter.logConsole("fileNameLastModified: " + fileNameLastModified);
+        Logger.logConsole("fileNameLastModified: " + fileNameLastModified);
         String fileNameLastModified2 = String.valueOf(FileActions.getInstance().getFileLastModified2(folderPath));
-        CustomReporter.logConsole("fileNameLastModified2: " + fileNameLastModified2);
+        Logger.logConsole("fileNameLastModified2: " + fileNameLastModified2);
         String destFile = "src/test/resources/data/TestDataRenamed.csv";
         FileActions.getInstance().renameFile("src/test/resources/csv/" + fileNameLastModified, destFile);
     }

@@ -4,8 +4,8 @@ import com.engine.WaitsManager;
 import com.engine.actions.helper.ElementHelper;
 import com.engine.actions.helper.ElementInformation;
 import com.engine.constants.FrameworkConstants;
-import com.engine.reports.CustomReporter;
-import com.engine.utils.DecodeData;
+import com.engine.reports.Logger;
+import com.engine.utilities.DecodeData;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -43,15 +43,15 @@ public class ElementActions {
         try {
             WaitsManager.getExplicitWait(driver).until(ExpectedConditions.elementToBeClickable(elementLocator));
         } catch (Exception toe) {
-            CustomReporter.logError(toe.getMessage());
+            Logger.logError(toe.getMessage());
             fail(toe.getMessage());
         }
         try {
             // Log element text if not empty. Else, log clicking
             if (!driver.findElement(elementLocator).getText().isBlank()) {
-                CustomReporter.logInfoStep("[Element Action] Click on [" + driver.findElement(elementLocator).getText() + "] Button");
+                Logger.logInfoStep("[Element Action] Click on [" + driver.findElement(elementLocator).getText() + "] Button");
             } else {
-                CustomReporter.logInfoStep("[Element Action] Click on element [" + elementLocator + "]");
+                Logger.logInfoStep("[Element Action] Click on element [" + elementLocator + "]");
             }
             driver.findElement(elementLocator).click();
         } catch (Exception exception) {
@@ -61,8 +61,8 @@ public class ElementActions {
                 ((JavascriptExecutor) driver).executeScript("arguments[arguments.length - 1].click();", driver.findElement(elementLocator));
             } catch (Exception rootCauseException) {
                 rootCauseException.initCause(exception);
-                CustomReporter.logError(exception.getMessage());
-                CustomReporter.logError(rootCauseException.getMessage());
+                Logger.logError(exception.getMessage());
+                Logger.logError(rootCauseException.getMessage());
                 // Force fails the test case if you couldn't perform the click
                 fail("Couldn't click on the element:" + elementLocator, rootCauseException);
             }
@@ -92,7 +92,7 @@ public class ElementActions {
         try {
             // Clear before typing condition
             if (!driver.findElement(elementLocator).getAttribute("value").isBlank() && clearBeforeTyping) {
-                CustomReporter.logInfoStep("[Element Action] Clear and Type [" + text + "] on element [" + elementLocator + "]");
+                Logger.logInfoStep("[Element Action] Clear and Type [" + text + "] on element [" + elementLocator + "]");
                 driver.findElement(elementLocator).clear();
                 driver.findElement(elementLocator).sendKeys(text);
                 // Type using JavascriptExecutor in case of the data is not typed successfully
@@ -100,7 +100,7 @@ public class ElementActions {
                     ((JavascriptExecutor) driver).executeScript("arguments[0].setAttribute('value', '" + text + "')", driver.findElement(elementLocator));
                 }
             } else {
-                CustomReporter.logInfoStep("[Element Action] Type [" + text + "] on element [" + elementLocator + "]");
+                Logger.logInfoStep("[Element Action] Type [" + text + "] on element [" + elementLocator + "]");
                 driver.findElement(elementLocator).sendKeys(text);
                 // Type using JavascriptExecutor in case of the data is not typed successfully
                 if (!driver.findElement(elementLocator).getAttribute("value").contains(text)) {
@@ -110,7 +110,7 @@ public class ElementActions {
                 }
             }
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
         // Make sure that the data is inserted correctly to the field
@@ -139,7 +139,7 @@ public class ElementActions {
         try {
             // Clear before typing condition
             if (!driver.findElement(elementLocator).getAttribute("value").isBlank() && clearBeforeTyping) {
-                CustomReporter.logInfoStep("[Element Action] Clear and Type [" + DecodeData.encrypt(text) + "] on element [" + elementLocator + "]");
+                Logger.logInfoStep("[Element Action] Clear and Type [" + DecodeData.encrypt(text) + "] on element [" + elementLocator + "]");
                 driver.findElement(elementLocator).clear();
                 driver.findElement(elementLocator).sendKeys(text);
                 // Type using JavascriptExecutor in case of the data is not typed successfully
@@ -147,7 +147,7 @@ public class ElementActions {
                     ((JavascriptExecutor) driver).executeScript("arguments[0].setAttribute('value', '" + text + "')", driver.findElement(elementLocator));
                 }
             } else {
-                CustomReporter.logInfoStep("[Element Action] Type [" + DecodeData.encrypt(text) + "] on element [" + elementLocator + "]");
+                Logger.logInfoStep("[Element Action] Type [" + DecodeData.encrypt(text) + "] on element [" + elementLocator + "]");
                 driver.findElement(elementLocator).sendKeys(text);
                 // Type using JavascriptExecutor in case of the data is not typed successfully
                 if (!driver.findElement(elementLocator).getAttribute("value").contains(text)) {
@@ -157,7 +157,7 @@ public class ElementActions {
                 }
             }
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
         // Make sure that the data is inserted correctly to the field
@@ -187,16 +187,16 @@ public class ElementActions {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
             Select select = new Select(driver.findElement(elementLocator));
-            CustomReporter.logInfoStep("[Element Action] Select [" + option + "] on element [" + elementLocator + "]");
+            Logger.logInfoStep("[Element Action] Select [" + option + "] on element [" + elementLocator + "]");
             assertFalse(select.isMultiple());
             switch (selectBy) {
                 case TEXT -> select.selectByVisibleText(option);
                 case VALUE -> select.selectByValue(option);
                 case INDEX -> select.selectByIndex(Integer.parseInt(option));
-                default -> CustomReporter.logError("Unexpected value: " + selectBy);
+                default -> Logger.logError("Unexpected value: " + selectBy);
             }
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -220,10 +220,10 @@ public class ElementActions {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
             actions = new Actions(driver);
-            CustomReporter.logInfoStep("[Element Action] Double Click on element [" + elementLocator + "]");
+            Logger.logInfoStep("[Element Action] Double Click on element [" + elementLocator + "]");
             actions.doubleClick(driver.findElement(elementLocator)).perform();
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -237,10 +237,10 @@ public class ElementActions {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
             actions = new Actions(driver);
-            CustomReporter.logInfoStep("[Element Action] Right Click on element [" + elementLocator + "]");
+            Logger.logInfoStep("[Element Action] Right Click on element [" + elementLocator + "]");
             actions.contextClick(driver.findElement(elementLocator)).perform();
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -255,10 +255,10 @@ public class ElementActions {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
             actions = new Actions(driver);
-            CustomReporter.logInfoStep("[Element Action] Hover on [" + driver.findElement(elementLocator).getText() + "]");
+            Logger.logInfoStep("[Element Action] Hover on [" + driver.findElement(elementLocator).getText() + "]");
             actions.moveToElement(driver.findElement(elementLocator)).perform();
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -272,10 +272,10 @@ public class ElementActions {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
             actions = new Actions(driver);
-            CustomReporter.logInfoStep("[Element Action] Hover on [" + driver.findElement(elementLocator).getText() + "]");
+            Logger.logInfoStep("[Element Action] Hover on [" + driver.findElement(elementLocator).getText() + "]");
             actions.moveToElement(driver.findElement(elementLocator)).click().perform();
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -290,12 +290,12 @@ public class ElementActions {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
             actions = new Actions(driver);
-            CustomReporter.logInfoStep("[Element Action] Click a Keyboard key [" + key.name() + "] on element [" + elementLocator + "]");
+            Logger.logInfoStep("[Element Action] Click a Keyboard key [" + key.name() + "] on element [" + elementLocator + "]");
             // We click ENTER here! :D
             driver.findElement(elementLocator).sendKeys(key);
             actions.sendKeys(key).perform();
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
         }
     }
 
@@ -308,11 +308,11 @@ public class ElementActions {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
             actions = new Actions(driver);
-            CustomReporter.logInfoStep("[Element Action] Sending Keys [" + text + "] to element [" + elementLocator + "]");
+            Logger.logInfoStep("[Element Action] Sending Keys [" + text + "] to element [" + elementLocator + "]");
             actions.click(driver.findElement(elementLocator))
                     .sendKeys(text).build().perform();
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
         }
     }
 
@@ -325,13 +325,13 @@ public class ElementActions {
         ElementHelper.locatingElementStrategy(driver, fromLocator);
         try {
             actions = new Actions(driver);
-            CustomReporter.logInfoStep("[Element Action] Click and hold on [" + driver.findElement(fromLocator).getText() + "]");
+            Logger.logInfoStep("[Element Action] Click and hold on [" + driver.findElement(fromLocator).getText() + "]");
             actions.clickAndHold(driver.findElement(fromLocator))
                     .moveToElement(driver.findElement(toLocator))
                     .build()
                     .perform();
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -345,14 +345,14 @@ public class ElementActions {
         ElementHelper.locatingElementStrategy(driver, fromLocator);
         try {
             actions = new Actions(driver);
-            CustomReporter.logInfoStep("[Element Action] Click and hold on [" + driver.findElement(fromLocator).getText() + "] to [" + xOffset + "," + yOffset + "]");
+            Logger.logInfoStep("[Element Action] Click and hold on [" + driver.findElement(fromLocator).getText() + "] to [" + xOffset + "," + yOffset + "]");
             actions.clickAndHold(driver.findElement(fromLocator))
                     .moveByOffset(xOffset, yOffset)
                     .release()
                     .build()
                     .perform();
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -366,10 +366,10 @@ public class ElementActions {
         ElementHelper.locatingElementStrategy(driver, sourceLocator);
         try {
             actions = new Actions(driver);
-            CustomReporter.logInfoStep("[Element Action] Drag and Drop [" + driver.findElement(sourceLocator).getText() + "] to [" + driver.findElement(targetLocator).getText() + "]");
+            Logger.logInfoStep("[Element Action] Drag and Drop [" + driver.findElement(sourceLocator).getText() + "] to [" + driver.findElement(targetLocator).getText() + "]");
             actions.dragAndDrop(driver.findElement(sourceLocator), driver.findElement(targetLocator)).perform();
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -383,10 +383,10 @@ public class ElementActions {
         ElementHelper.locatingElementStrategy(driver, sourceLocator);
         try {
             actions = new Actions(driver);
-            CustomReporter.logInfoStep("[Element Action] Drag and Drop [" + driver.findElement(sourceLocator).getText() + "] to [" + xOffset + "," + yOffset + "]");
+            Logger.logInfoStep("[Element Action] Drag and Drop [" + driver.findElement(sourceLocator).getText() + "] to [" + xOffset + "," + yOffset + "]");
             actions.dragAndDropBy(driver.findElement(sourceLocator), xOffset, yOffset).perform();
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -421,7 +421,7 @@ public class ElementActions {
             }
             return true;
         } catch (HeadlessException e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -433,7 +433,7 @@ public class ElementActions {
         ElementHelper.locatingElementStrategy(driver, canvasElement);
         try {
             actions = new Actions(driver);
-            CustomReporter.logInfoStep("[Element Action] Drawing [" + driver.findElement(canvasElement).getText() + "] ");
+            Logger.logInfoStep("[Element Action] Drawing [" + driver.findElement(canvasElement).getText() + "] ");
             actions.moveToElement(driver.findElement(canvasElement)).clickAndHold();
             int numPoints = 10;
             int radius = 50;
@@ -445,7 +445,7 @@ public class ElementActions {
             }
             actions.release(driver.findElement(canvasElement)).build().perform();
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -491,10 +491,10 @@ public class ElementActions {
     public static void clickUsingJavaScript(WebDriver driver, By elementLocator) {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
-            CustomReporter.logInfoStep("[Element Action] Click on element [" + elementLocator + "] using JavaScript");
+            Logger.logInfoStep("[Element Action] Click on element [" + elementLocator + "] using JavaScript");
             ((JavascriptExecutor) driver).executeScript("arguments[arguments.length - 1].click();", driver.findElement(elementLocator));
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -507,10 +507,10 @@ public class ElementActions {
     public static void sendKeysUsingJavaScript(WebDriver driver, By elementLocator, String text) {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
-            CustomReporter.logInfoStep("[Element Action] Send Keys [" + text + "] to element [" + elementLocator + "] using JavaScript");
+            Logger.logInfoStep("[Element Action] Send Keys [" + text + "] to element [" + elementLocator + "] using JavaScript");
             ((JavascriptExecutor) driver).executeScript("arguments[arguments.length - 1].value='" + text + "';", driver.findElement(elementLocator));
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -523,10 +523,10 @@ public class ElementActions {
     public static void scrollToElement(WebDriver driver, By elementLocator) {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
-            CustomReporter.logInfoStep("[Element Action] Scroll to element [" + elementLocator + "]");
+            Logger.logInfoStep("[Element Action] Scroll to element [" + elementLocator + "]");
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(elementLocator));
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -538,10 +538,10 @@ public class ElementActions {
 
     public static void scrollToTop(WebDriver driver) {
         try {
-            CustomReporter.logInfoStep("[Element Action] Scroll to top of the page");
+            Logger.logInfoStep("[Element Action] Scroll to top of the page");
             ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
@@ -558,10 +558,10 @@ public class ElementActions {
     public static boolean isDisplayed(WebDriver driver, By elementLocator) {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
-            CustomReporter.logInfoStep("[Element Action] Check if element [" + elementLocator + "] is Displayed");
+            Logger.logInfoStep("[Element Action] Check if element [" + elementLocator + "] is Displayed");
             return driver.findElement(elementLocator).isDisplayed();
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
         }
         return false;
     }
@@ -575,10 +575,10 @@ public class ElementActions {
     public static boolean isEnabled(WebDriver driver, By elementLocator) {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
-            CustomReporter.logInfoStep("[Element Action] Check if element [" + elementLocator + "] is Enabled");
+            Logger.logInfoStep("[Element Action] Check if element [" + elementLocator + "] is Enabled");
             return driver.findElement(elementLocator).isEnabled();
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
         }
         return false;
     }
@@ -592,10 +592,10 @@ public class ElementActions {
     public static boolean isSelected(WebDriver driver, By elementLocator) {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
-            CustomReporter.logInfoStep("[Element Action] Check if element [" + elementLocator + "] is Selected");
+            Logger.logInfoStep("[Element Action] Check if element [" + elementLocator + "] is Selected");
             return driver.findElement(elementLocator).isSelected();
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
         }
         return false;
     }
@@ -613,10 +613,10 @@ public class ElementActions {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
             String text = driver.findElement(elementLocator).getText();
-            CustomReporter.logInfoStep("[Element Action] Get the Text of element [" + elementLocator + "]; The Text is [" + text + "]");
+            Logger.logInfoStep("[Element Action] Get the Text of element [" + elementLocator + "]; The Text is [" + text + "]");
             return text;
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
         }
         return null;
     }
@@ -625,10 +625,10 @@ public class ElementActions {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
             String attributeValue = driver.findElement(elementLocator).getAttribute(attributeName);
-            CustomReporter.logInfoStep("[Element Action] Get the Attribute [" + attributeName + "] Value of element [" + elementLocator + "]; The Value is [" + attributeValue + "]");
+            Logger.logInfoStep("[Element Action] Get the Attribute [" + attributeName + "] Value of element [" + elementLocator + "]; The Value is [" + attributeValue + "]");
             return attributeValue;
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
         }
         return null;
     }
@@ -637,10 +637,10 @@ public class ElementActions {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         try {
             String cssValueOfElement = driver.findElement(elementLocator).getCssValue(cssValue);
-            CustomReporter.logInfoStep("[Element Action] Get the CSS Value [" + cssValue + "] of element [" + elementLocator + "]; The Value is [" + cssValueOfElement + "]");
+            Logger.logInfoStep("[Element Action] Get the CSS Value [" + cssValue + "] of element [" + elementLocator + "]; The Value is [" + cssValueOfElement + "]");
             return cssValueOfElement;
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage());
+            Logger.logError(e.getMessage());
         }
         return null;
     }
@@ -648,7 +648,7 @@ public class ElementActions {
     public static int getElementsCount(WebDriver driver, By elementLocator) {
         ElementHelper.locatingElementStrategy(driver, elementLocator);
         int elementsCount = driver.findElements(elementLocator).size();
-        CustomReporter.logInfoStep("[Element Action] Get the Elements Count of element [" + elementLocator + "]; The Count is [" + elementsCount + "]");
+        Logger.logInfoStep("[Element Action] Get the Elements Count of element [" + elementLocator + "]; The Count is [" + elementsCount + "]");
         return elementsCount;
     }
 
@@ -668,7 +668,7 @@ public class ElementActions {
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(tableLocator));
         } catch (Exception throwable) {
-            CustomReporter.logError(throwable.getMessage());
+            Logger.logError(throwable.getMessage());
             return null;
         }
         WebElement table = driver.findElement(tableLocator);
@@ -677,7 +677,7 @@ public class ElementActions {
             //and you need to wait for rows to be loaded
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("tbody tr")));
         } catch (Exception e) {
-            CustomReporter.logError(e.getMessage() + " Table\"" + tableLocator + "\" is empty");
+            Logger.logError(e.getMessage() + " Table\"" + tableLocator + "\" is empty");
 
             //Will return empty list to be used in case you want to assert if the table is empty
             return new ArrayList<>();
@@ -710,7 +710,7 @@ public class ElementActions {
             WaitsManager.getExplicitWait(driver, timeout).until(ExpectedConditions.invisibilityOfElementLocated(elementLocator));
             return true;
         } catch (Exception e) {
-            CustomReporter.logWarning("Element is still visible after [" + timeout + "] seconds of waiting element [" + elementLocator + "] : " + e.getMessage());
+            Logger.logWarning("Element is still visible after [" + timeout + "] seconds of waiting element [" + elementLocator + "] : " + e.getMessage());
             return false;
         }
     }

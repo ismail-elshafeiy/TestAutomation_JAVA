@@ -2,7 +2,7 @@ package com.engine.actions.helper;
 
 import com.engine.WaitsManager;
 import com.engine.constants.FrameworkConstants;
-import com.engine.reports.CustomReporter;
+import com.engine.reports.Logger;
 import lombok.Getter;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static com.engine.reports.CustomReporter.failAction;
+import static com.engine.reports.Logger.failAction;
 import static org.testng.Assert.fail;
 
 public class ElementHelper {
@@ -35,11 +35,11 @@ public class ElementHelper {
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(false);", driver.findElement(elementLocator));
             // Check if the element is displayed
             if (!driver.findElement(elementLocator).isDisplayed()) {
-                CustomReporter.logInfoStep("The element [" + elementLocator.toString() + "] is not Displayed");
+                Logger.logInfoStep("The element [" + elementLocator.toString() + "] is not Displayed");
                 fail("The element [" + elementLocator + "] is not Displayed");
             }
         } catch (Exception toe) {
-            CustomReporter.logError(toe.getMessage());
+            Logger.logError(toe.getMessage());
             fail(toe.getMessage());
         }
     }
@@ -101,15 +101,15 @@ public class ElementHelper {
             switch (Integer.parseInt(matchingElementsInformation.get(0).toString())) {
                 case 0 -> {
                     if (matchingElementsInformation.size() > 2 && matchingElementsInformation.get(2) instanceof Throwable) {
-                        CustomReporter.logError("Failed to identify unique element using this locator \"" + formatLocatorToString(elementLocator) + "\"" + matchingElementsInformation.get(2));
+                        Logger.logError("Failed to identify unique element using this locator \"" + formatLocatorToString(elementLocator) + "\"" + matchingElementsInformation.get(2));
                     }
-                    CustomReporter.logError("Failed to identify unique element using this locator \"" + formatLocatorToString(elementLocator) + "\"");
+                    Logger.logError("Failed to identify unique element using this locator \"" + formatLocatorToString(elementLocator) + "\"");
                 }
                 case 1 -> {
                     return matchingElementsInformation;
                 }
                 default -> {
-                    CustomReporter.logWarning("Failed to identify unique element, Multiple elements found matching this locator \"" + formatLocatorToString(elementLocator) + "\"");
+                    Logger.logWarning("Failed to identify unique element, Multiple elements found matching this locator \"" + formatLocatorToString(elementLocator) + "\"");
                     return matchingElementsInformation;
                 }
             }
@@ -217,7 +217,7 @@ public class ElementHelper {
             // In case the element was not found / not visible and the timeout expired
             var causeMessage = timeoutException.getCause().getMessage();
             causeMessage = !causeMessage.isBlank() && causeMessage.contains("\n") ? timeoutException.getMessage() + " || " + causeMessage.substring(0, causeMessage.indexOf("\n")) : timeoutException.getMessage();
-            CustomReporter.logError(causeMessage);
+            Logger.logError(causeMessage);
             var elementInformation = new ArrayList<>();
             elementInformation.add(0);
             elementInformation.add(null);
@@ -225,7 +225,7 @@ public class ElementHelper {
             return elementInformation;
         } catch (org.openqa.selenium.InvalidSelectorException invalidSelectorException) {
             // In case the selector is not valid
-            CustomReporter.logError(invalidSelectorException.getMessage());
+            Logger.logError(invalidSelectorException.getMessage());
             var elementInformation = new ArrayList<>();
             elementInformation.add(0);
             elementInformation.add(null);
@@ -284,7 +284,7 @@ public class ElementHelper {
                 //move to element
                 try {
                     (new Actions(driver)).moveToElement(elementInformation.getFirstElement()).perform();
-                    CustomReporter.logConsole("Moved the mouse to the middle of the element.");
+                    Logger.logConsole("Moved the mouse to the middle of the element.");
                 } catch (Throwable throwable) {
                     //ignored
                 }
@@ -362,7 +362,7 @@ public class ElementHelper {
         }
         var currentTextAfterClearingUsingBackSpace = readElementText(driver, elementInformation);
         if (currentTextAfterClearingUsingBackSpace.isBlank()) {
-            CustomReporter.logConsole("text cleared Using BackSpace");
+            Logger.logConsole("text cleared Using BackSpace");
         } else {
             failAction("Expected to clear existing text, but ended up with: \"" + currentTextAfterClearingUsingBackSpace + "\"" + elementInformation.getLocator());
         }
@@ -377,7 +377,7 @@ public class ElementHelper {
         }
         var currentTextAfterClearingUsingNativeClear = readElementText(driver, elementInformation);
         if (currentTextAfterClearingUsingNativeClear.isBlank()) {
-            CustomReporter.logConsole("text cleared Using Native Clear");
+            Logger.logConsole("text cleared Using Native Clear");
         } else {
             failAction("Expected to clear existing text, but ended up with: \"" + currentTextAfterClearingUsingNativeClear + "\"" + elementInformation.getLocator());
         }

@@ -1,4 +1,4 @@
-package com.engine.utils;
+package com.engine.utilities;
 
 public class BrowserInfoUtils {
     private BrowserInfoUtils() {

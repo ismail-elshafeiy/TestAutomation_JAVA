@@ -1,6 +1,6 @@
 package com.engine.dataDriven;
 
-import com.engine.reports.CustomReporter;
+import com.engine.reports.Logger;
 import io.restassured.path.json.JsonPath;
 import io.restassured.path.json.exception.JsonPathException;
 import org.json.simple.JSONObject;
@@ -72,12 +72,12 @@ public class JSONFileManager {
                     break;
             }
         } catch (ClassCastException var5) {
-            CustomReporter.logError(String.valueOf(var5));
-            CustomReporter.logError("Incorrect jsonPath. [" + jsonPath + "].");
+            Logger.logError(String.valueOf(var5));
+            Logger.logError("Incorrect jsonPath. [" + jsonPath + "].");
             Assert.fail("Incorrect jsonPath. [" + jsonPath + "].");
         } catch (IllegalArgumentException | JsonPathException var6) {
-            CustomReporter.logError(String.valueOf(var6));
-            CustomReporter.logError("Couldn't read the file. [" + this.jsonFilePath + "].");
+            Logger.logError(String.valueOf(var6));
+            Logger.logError("Couldn't read the file. [" + this.jsonFilePath + "].");
             Assert.fail("Couldn't read the  file. [" + this.jsonFilePath + "].");
         }
         return testData;
@@ -89,8 +89,8 @@ public class JSONFileManager {
         try {
             reader = new FileReader(getAbsolutePath(this.jsonFilePath));
         } catch (FileNotFoundException var2) {
-            CustomReporter.logError(String.valueOf(var2));
-            CustomReporter.logError("Couldn't read the file. [" + this.jsonFilePath + "].");
+            Logger.logError(String.valueOf(var2));
+            Logger.logError("Couldn't read the file. [" + this.jsonFilePath + "].");
             Assert.fail("Couldn't find the file. [" + this.jsonFilePath + "]. + \n" + var2.getMessage());
         }
     }
@@ -100,7 +100,7 @@ public class JSONFileManager {
         try {
             filePath = (new File(relativePath)).getAbsolutePath();
         } catch (Exception var3) {
-            CustomReporter.logError(String.valueOf(var3));
+            Logger.logError(String.valueOf(var3));
         }
         return filePath;
     }

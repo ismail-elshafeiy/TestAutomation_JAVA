@@ -1,6 +1,6 @@
 package com.engine.dataDriven;
 
-import com.engine.reports.CustomReporter;
+import com.engine.reports.Logger;
 import org.apache.poi.EmptyFileException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
@@ -11,7 +11,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static java.util.Calendar.DATE;
 import static org.testng.Assert.fail;
 
 public class ExcelFileManager {
@@ -54,7 +53,7 @@ public class ExcelFileManager {
             fis = new FileInputStream(excelFilePath);
             workbook = new XSSFWorkbook(fis);
             fis.close();
-            CustomReporter.logConsole("Reading test data from the following file [" + excelFilePath + "].");
+            Logger.logConsole("Reading test data from the following file [" + excelFilePath + "].");
         } catch (IOException | OutOfMemoryError e) {
             Assert.fail("Couldn't find the desired file. [" + excelFilePath + "].", e);
         } catch (EmptyFileException e) {
@@ -79,7 +78,7 @@ public class ExcelFileManager {
             workbook = new XSSFWorkbook(fis);
             switchToSheet(sheetName);
             fis.close();
-            CustomReporter.logConsole("Reading test data from the following file [" + excelFilePath + "],and sheet [" + sheetName + "].");
+            Logger.logConsole("Reading test data from the following file [" + excelFilePath + "],and sheet [" + sheetName + "].");
         } catch (IOException | OutOfMemoryError e) {
             Assert.fail("Couldn't find the desired file. [" + excelFilePath + "]. " + EXCEPTION_ERROR_MESSAGE + e.getMessage(), e);
         } catch (EmptyFileException e) {
@@ -103,19 +102,19 @@ public class ExcelFileManager {
             return fis;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            CustomReporter.logError("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again." + EXCEPTION_ERROR_MESSAGE + e.getMessage());
+            Logger.logError("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again." + EXCEPTION_ERROR_MESSAGE + e.getMessage());
             Assert.fail("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + EXCEPTION_ERROR_MESSAGE + e.getMessage());
         }
         return fis;
     }
 
     public static void closeFile() {
-        CustomReporter.logConsole("Closing the Excel file: [ " + excelFilePath + " ]");
+        Logger.logConsole("Closing the Excel file: [ " + excelFilePath + " ]");
         try {
             fos.close();
         } catch (IOException e) {
             e.printStackTrace();
-            CustomReporter.logError("There is no file exist in the path: [ " + excelFilePath + " ] , please check the path and try again." + EXCEPTION_ERROR_MESSAGE + e.getMessage());
+            Logger.logError("There is no file exist in the path: [ " + excelFilePath + " ] , please check the path and try again." + EXCEPTION_ERROR_MESSAGE + e.getMessage());
             Assert.fail("There is no file exist in the path: [ " + excelFilePath + " ] , please check the path and try again. " + EXCEPTION_ERROR_MESSAGE + e.getMessage());
         }
     }
@@ -128,10 +127,10 @@ public class ExcelFileManager {
     public static void switchToSheet(String sheetName) {
         try {
             sheet = workbook.getSheet(sheetName);
-            CustomReporter.logConsole("Switched to sheet: [ " + sheetName + " ] from file: [ " + excelFilePath + " ].");
+            Logger.logConsole("Switched to sheet: [ " + sheetName + " ] from file: [ " + excelFilePath + " ].");
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logError("Couldn't find the desired sheet. [ " + sheetName + " ]." + EXCEPTION_ERROR_MESSAGE + e.getMessage());
+            Logger.logError("Couldn't find the desired sheet. [ " + sheetName + " ]." + EXCEPTION_ERROR_MESSAGE + e.getMessage());
             Assert.fail("Couldn't find the desired sheet. [ " + sheetName + " ]." + EXCEPTION_ERROR_MESSAGE + e.getMessage());
         }
     }
@@ -146,7 +145,7 @@ public class ExcelFileManager {
      * @throws FileNotFoundException if the file is not found
      */
     public String[][] getDataAsArray(String filePath, String sheetName) {
-        CustomReporter.logConsole("Reading data from Excel file: [ " + filePath + " ] | Sheet: [ " + sheetName + " ]");
+        Logger.logConsole("Reading data from Excel file: [ " + filePath + " ] | Sheet: [ " + sheetName + " ]");
         fis = getFileInputStream(filePath);
         try {
             workbook = new XSSFWorkbook(fis);
@@ -169,7 +168,7 @@ public class ExcelFileManager {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                CustomReporter.logError("Can't read data from File Path [ " + filePath + " ], Sheet: [ " + sheetName + " ]," + " Row: [" + rowNumber + "], Column: [ " + columnNumber + " ]" + Arrays.toString(arrayExcelData) + EXCEPTION_ERROR_MESSAGE + e.getMessage() + " ]");
+                Logger.logError("Can't read data from File Path [ " + filePath + " ], Sheet: [ " + sheetName + " ]," + " Row: [" + rowNumber + "], Column: [ " + columnNumber + " ]" + Arrays.toString(arrayExcelData) + EXCEPTION_ERROR_MESSAGE + e.getMessage() + " ]");
                 Assert.fail("Can't read data from File Path [ " + filePath + " ], Sheet: [ " + sheetName + " ]," + " Row: [" + rowNumber + "], Column: [ " + columnNumber + " ]" + Arrays.toString(arrayExcelData) + EXCEPTION_ERROR_MESSAGE + e.getMessage() + " ]");
             }
             workbook.close();
@@ -178,18 +177,18 @@ public class ExcelFileManager {
             return arrayExcelData;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            CustomReporter.logError("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + e.getMessage());
+            Logger.logError("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + e.getMessage());
             Assert.fail("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logError("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + e.getMessage());
+            Logger.logError("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + e.getMessage());
         }
         return new String[0][0];
     }
 
 
     public Object[][] getDataHashTable(String filePath, String sheetName, int startRow, int endRow) throws IOException {
-        CustomReporter.logConsole("Reading data from Excel file: [ " + filePath + " ] | Sheet: [ " + sheetName + " ]");
+        Logger.logConsole("Reading data from Excel file: [ " + filePath + " ] | Sheet: [ " + sheetName + " ]");
         Object[][] data = null;
         Hashtable<String, String> table;
         fis = getFileInputStream(filePath);
@@ -208,23 +207,23 @@ public class ExcelFileManager {
             }
             workbook.close();
             fis.close();
-            CustomReporter.logConsole("Data from Excel file: [ " + filePath + " ] | Sheet: [ " + sheetName + " ] is read successfully.");
+            Logger.logConsole("Data from Excel file: [ " + filePath + " ] | Sheet: [ " + sheetName + " ] is read successfully.");
 
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logError("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + e.getMessage());
+            Logger.logError("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + e.getMessage());
         }
         return data;
     }
 
     public Object[][] getDataHashTable2(String excelPath, String sheetName, int startRow, int endRow) {
-        CustomReporter.logConsole("Reading data from Excel file: [ " + excelPath + " ] | Sheet: [ " + sheetName + " ]");
+        Logger.logConsole("Reading data from Excel file: [ " + excelPath + " ] | Sheet: [ " + sheetName + " ]");
         Object[][] data = null;
         try {
             File file = new File(excelPath);
             if (!file.exists()) {
                 try {
-                    CustomReporter.logError("File not found in the path: [ " + excelPath + " ] , please check the path and try again.");
+                    Logger.logError("File not found in the path: [ " + excelPath + " ] , please check the path and try again.");
                     Assert.fail("File not found in the path: [ " + excelPath + " ] , please check the path and try again.");
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -235,8 +234,8 @@ public class ExcelFileManager {
             sheet = workbook.getSheet(sheetName);
             int rows = getLastRowNumber();
             int columns = getLastColumnNumber();
-            CustomReporter.logConsole("Total Rows: [ " + rows + " ] | Total Columns: [ " + columns + " ]");
-            CustomReporter.logConsole("Start Row: [ " + startRow + " ] | End Row: [ " + endRow + " ]");
+            Logger.logConsole("Total Rows: [ " + rows + " ] | Total Columns: [ " + columns + " ]");
+            Logger.logConsole("Start Row: [ " + startRow + " ] | End Row: [ " + endRow + " ]");
 
             data = new Object[(endRow - startRow) + 1][1];
             Hashtable<String, String> table = null;
@@ -249,7 +248,7 @@ public class ExcelFileManager {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            CustomReporter.logConsole("There is no file exist in the path: [ " + excelPath + " ] , please check the path and try again." + EXCEPTION_ERROR_MESSAGE + e.getMessage());
+            Logger.logConsole("There is no file exist in the path: [ " + excelPath + " ] , please check the path and try again." + EXCEPTION_ERROR_MESSAGE + e.getMessage());
             Assert.fail("There is no file exist in the path: [ " + excelPath + " ] , please check the path and try again." + EXCEPTION_ERROR_MESSAGE + e.getMessage());
         }
         System.out.println("hashtable Data: " + data);
@@ -274,12 +273,12 @@ public class ExcelFileManager {
             // get the desired cell
             cell = row.getCell(colNum);
             // return cell value given the different cell types
-            CustomReporter.logConsole("Reading data [ " + getCellData() + " ] from row [ " + rowName + " ] and column [ " + columnName + " ]");
+            Logger.logConsole("Reading data [ " + getCellData() + " ] from row [ " + rowName + " ] and column [ " + columnName + " ]");
             return getCellData();
 
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logWarning("Failed to read data from row [" + rowName + "] and column [" + columnName
+            Logger.logWarning("Failed to read data from row [" + rowName + "] and column [" + columnName
                     + "] in the Test Data Sheet [" + sheet + "], under the following path [" + excelFilePath
                     + "]. " + e.getMessage());
 
@@ -319,7 +318,7 @@ public class ExcelFileManager {
             return getCellData();
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logError("Failed to read data from row [" + rowNumber + "] and column [" + columnName
+            Logger.logError("Failed to read data from row [" + rowNumber + "] and column [" + columnName
                     + "] in the Test Data Sheet [" + sheet + "], under the following path [" + excelFilePath
                     + "]." + e.getMessage());
 
@@ -349,7 +348,7 @@ public class ExcelFileManager {
      */
     public static String getCellData(int rowNumber, int columnNumber) {
         try {
-            CustomReporter.logConsole("Reading data from row [" + rowNumber + "] and column [" + columnNumber + "] in the Test Data Sheet [" + sheet + "], under the following path [" + excelFilePath + "].");
+            Logger.logConsole("Reading data from row [" + rowNumber + "] and column [" + columnNumber + "] in the Test Data Sheet [" + sheet + "], under the following path [" + excelFilePath + "].");
             row = sheet.getRow(rowNumber - 1);
             cell = row.getCell(columnNumber - 1);
             return getCellData();
@@ -388,7 +387,7 @@ public class ExcelFileManager {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logConsole("Failed to get the cell data from the Test Data Sheet [" + sheet + "], under the following path [" + excelFilePath + "]." + e.getMessage());
+            Logger.logConsole("Failed to get the cell data from the Test Data Sheet [" + sheet + "], under the following path [" + excelFilePath + "]." + e.getMessage());
             return "";
         }
     }
@@ -426,11 +425,11 @@ public class ExcelFileManager {
             }
             // in case you provided valid data type, no exceptions were thrown, and yet the
             // rowName you mentioned was not present in this sheet
-            CustomReporter.logError("Failed to get row Name [" + rowName + "] in the Test Data Sheet, under the following path [" + excelFilePath + "].");
+            Logger.logError("Failed to get row Name [" + rowName + "] in the Test Data Sheet, under the following path [" + excelFilePath + "].");
             return -1; // in case of failure this line is unreachable
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logError("Failed to get the row number that corresponds to Row Name [" + rowName + "] , in the Test Data Sheet ["
+            Logger.logError("Failed to get the row number that corresponds to Row Name [" + rowName + "] , in the Test Data Sheet ["
                     + sheet + "], under the following path [" + excelFilePath + "]." + e.getMessage());
 
             return -1; // in case of failure this line is unreachable
@@ -457,13 +456,13 @@ public class ExcelFileManager {
             }
             // in case you provided valid data type, no exceptions were thrown, and yet the
             // columnName you mentioned was not present in this sheet
-            CustomReporter.logError("Failed to get the column number that corresponds to columnName [" + columnName
+            Logger.logError("Failed to get the column number that corresponds to columnName [" + columnName
                     + "] in the Test Data Sheet [" + sheet + "], under the following path [" + excelFilePath
                     + "].");
             return -1; // in case of failure this line is unreachable
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logError("Failed to get the column number that corresponds to columnName [" + columnName
+            Logger.logError("Failed to get the column number that corresponds to columnName [" + columnName
                     + "] in the Test Data Sheet [" + sheet + "], under the following path [" + excelFilePath
                     + "]." + e.getMessage());
 
@@ -489,11 +488,11 @@ public class ExcelFileManager {
             }
             // in case you provided valid data type, no exceptions were thrown, and yet the
             // rowName you mentioned was not present in this sheet
-            CustomReporter.logError("Failed to get row Name [" + rowName + "] in the Test Data Sheet, under the following path [" + excelFilePath + "].");
+            Logger.logError("Failed to get row Name [" + rowName + "] in the Test Data Sheet, under the following path [" + excelFilePath + "].");
             return -1; // in case of failure this line is unreachable
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logError("Failed to get the row number that corresponds to Row Name [" + rowName + "] , in the Test Data Sheet ["
+            Logger.logError("Failed to get the row number that corresponds to Row Name [" + rowName + "] , in the Test Data Sheet ["
                     + sheet + "], under the following path [" + excelFilePath + "]." + e.getMessage());
 
             return -1; // in case of failure this line is unreachable
@@ -517,7 +516,7 @@ public class ExcelFileManager {
 
     public static void setCellData(String filePath, String sheetName, int rowNumber, int columnNumber, String data) {
         initializeVariables();
-        CustomReporter.logConsole("Writing data in Excel file: [ " + filePath + " ] | Sheet: [ " + sheetName + " ] | Row: [ " + rowNumber + " ] | Column: [ " + columnNumber + " ] | Data: [ " + data + " ]");
+        Logger.logConsole("Writing data in Excel file: [ " + filePath + " ] | Sheet: [ " + sheetName + " ] | Row: [ " + rowNumber + " ] | Column: [ " + columnNumber + " ] | Data: [ " + data + " ]");
         fis = getFileInputStream(filePath);
         try {
             workbook = new XSSFWorkbook(fis);
@@ -534,13 +533,13 @@ public class ExcelFileManager {
                 workbook.write(fos);
             } catch (Exception e) {
                 e.printStackTrace();
-                CustomReporter.logError("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + e.getMessage());
+                Logger.logError("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + e.getMessage());
             }
             fos.close();
             //  workbook.close();
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logWarning("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + e.getMessage());
+            Logger.logWarning("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + e.getMessage());
 
         }
     }
@@ -548,7 +547,7 @@ public class ExcelFileManager {
     // TODO : this method needs to be customized to write data in specific cell
     public static void setCellData(String filePath, String sheetName, String cellData0, String cellData2, String cellData3, String cellData4, String cellData5, String cellData6) {
         initializeVariables();
-        CustomReporter.logConsole("Writing data in Excel file: [ " + filePath + " ] | Sheet: [ " + sheetName + " ] ");
+        Logger.logConsole("Writing data in Excel file: [ " + filePath + " ] | Sheet: [ " + sheetName + " ] ");
         fis = getFileInputStream(filePath);
         try {
             workbook = new XSSFWorkbook(fis);
@@ -573,7 +572,7 @@ public class ExcelFileManager {
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logError("There is no file exist in the file Path: [ " + filePath + " ] , please check the file Path and try again. Exception Error :->" + e.getMessage());
+            Logger.logError("There is no file exist in the file Path: [ " + filePath + " ] , please check the file Path and try again. Exception Error :->" + e.getMessage());
         }
     }
 
@@ -594,7 +593,7 @@ public class ExcelFileManager {
      * @param data         Enter the data you want to set in the cell
      */
     public static void setCellData(int rowNumber, int columnNumber, String data) {
-        CustomReporter.logConsole("Writing data in Excel file: [ " + excelFilePath + " ] | Sheet: [ " + sheet + " ] | Row: [ " + rowNumber + " ] | Column: [ " + columnNumber + " ] | Data: [ " + data + " ]");
+        Logger.logConsole("Writing data in Excel file: [ " + excelFilePath + " ] | Sheet: [ " + sheet + " ] | Row: [ " + rowNumber + " ] | Column: [ " + columnNumber + " ] | Data: [ " + data + " ]");
         try {
             row = sheet.getRow(rowNumber);
             if (row == null)
@@ -608,14 +607,14 @@ public class ExcelFileManager {
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logWarning("There is no file exist in the path: [ " + excelFilePath + " ] , please check the path and try again. " + e.getMessage());
+            Logger.logWarning("There is no file exist in the path: [ " + excelFilePath + " ] , please check the path and try again. " + e.getMessage());
         }
     }
 
     // TODO : this method needs enhancement to write data in specific cell by name also instead of index only
     public static void setCellData(String filePath, String sheetName, int rowNumber, int columnNumber, String data, String updatedAt, String updatedBy) {
         initializeVariables();
-        CustomReporter.logConsole("Writing data in Excel file: [ " + filePath + " ] | Sheet: [ " + sheetName + " ] | Row: [ " + rowNumber + " ] | Column: [ " + columnNumber + " ] | Data: [ " + data + " ]");
+        Logger.logConsole("Writing data in Excel file: [ " + filePath + " ] | Sheet: [ " + sheetName + " ] | Row: [ " + rowNumber + " ] | Column: [ " + columnNumber + " ] | Data: [ " + data + " ]");
         fis = getFileInputStream(filePath);
         try {
             workbook = new XSSFWorkbook(fis);
@@ -636,12 +635,12 @@ public class ExcelFileManager {
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logError("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + e.getMessage());
+            Logger.logError("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + e.getMessage());
         }
     }
 
     public static void setCellData(String filePath, String sheetName, int rowNumber, int columnNumber, String data, String updatedAt, int updateAtColumnNumber, String updatedBy, int updatedByColumnNumber) {
-        CustomReporter.logConsole("Writing data in Excel file: [ " + filePath + " ] | Sheet: [ " + sheetName + " ] | Row: [ " + rowNumber + " ] | Column: [ " + columnNumber + " ] | Data: [ " + data + " ]");
+        Logger.logConsole("Writing data in Excel file: [ " + filePath + " ] | Sheet: [ " + sheetName + " ] | Row: [ " + rowNumber + " ] | Column: [ " + columnNumber + " ] | Data: [ " + data + " ]");
         initializeVariables();
         fis = getFileInputStream(filePath);
         try {
@@ -663,7 +662,7 @@ public class ExcelFileManager {
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logError("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + e.getMessage());
+            Logger.logError("There is no file exist in the path: [ " + filePath + " ] , please check the path and try again. " + e.getMessage());
 
         }
     }
@@ -721,9 +720,9 @@ public class ExcelFileManager {
             //get cell count in a row
             int cellCount = sheet.getRow(i).getLastCellNum();
             //iterate over each cell to print its value
-            CustomReporter.logInfoStep("Row " + i + " data is :");
+            Logger.logInfoStep("Row " + i + " data is :");
             for (int j = 0; j < cellCount; j++) {
-                CustomReporter.logInfoStep(sheet.getRow(i).getCell(j).getStringCellValue() + ",");
+                Logger.logInfoStep(sheet.getRow(i).getCell(j).getStringCellValue() + ",");
             }
             System.out.println();
         }
@@ -733,10 +732,10 @@ public class ExcelFileManager {
         int rowCount = 0;
         try {
             rowCount = getLastRowNumber() - getFirstRowNumber();
-            CustomReporter.logInfoStep("Row count from the sheet [" + sheet.getSheetName() + "] is [ " + rowCount + " ]");
+            Logger.logInfoStep("Row count from the sheet [" + sheet.getSheetName() + "] is [ " + rowCount + " ]");
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logError("Can't find the row count from the sheet [" + sheet.getSheetName() + "]  " + EXCEPTION_ERROR_MESSAGE + e.getMessage());
+            Logger.logError("Can't find the row count from the sheet [" + sheet.getSheetName() + "]  " + EXCEPTION_ERROR_MESSAGE + e.getMessage());
             fail("Can't find the row count from the sheet [" + sheet.getSheetName() + "]  " + EXCEPTION_ERROR_MESSAGE + e.getMessage());
         }
         return rowCount;

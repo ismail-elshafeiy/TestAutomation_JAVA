@@ -2,7 +2,7 @@ package com.engine.evidence;
 
 import com.engine.Helper;
 import com.engine.dataDriven.PropertiesManager;
-import com.engine.reports.CustomReporter;
+import com.engine.reports.Logger;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -31,12 +31,12 @@ public class ScreenShot {
 	 */
 	public static void takeScreenShotToFile (WebDriver driver) {
 		try {
-            CustomReporter.logInfoStep("Screenshot taken for Test Case ..... [" + Helper.getTestMethodName() + "]");
+            Logger.logInfoStep("Screenshot taken for Test Case ..... [" + Helper.getTestMethodName() + "]");
 			File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(srcFile, new File("./" + screenShotPath + Helper.getTestMethodName() + ".png"));
 		} catch ( Exception e ) {
 			e.printStackTrace();
-            CustomReporter.logError("Screenshot not taken: " + e.getMessage());
+            Logger.logError("Screenshot not taken: " + e.getMessage());
 		}
 	}
 
@@ -51,12 +51,12 @@ public class ScreenShot {
 	public static void takeScreenShotToFile (WebDriver driver, ITestResult result) {
 		try {
 			if ( ITestResult.FAILURE == result.getStatus() ) {
-                CustomReporter.logInfoStep("Screenshot taken for Test Case Failed ..... [" + result.getName() + "]");
+                Logger.logInfoStep("Screenshot taken for Test Case Failed ..... [" + result.getName() + "]");
 				takeScreenShotToFile(driver);
 			}
 		} catch ( Exception e ) {
 			e.printStackTrace();
-            CustomReporter.logError("Screenshot not taken: " + e.getMessage());
+            Logger.logError("Screenshot not taken: " + e.getMessage());
 		}
 	}
 
@@ -70,12 +70,12 @@ public class ScreenShot {
 	public static void takeElementScreenShot (WebDriver driver, By locator) {
 		String locatorName = driver.findElement(locator).getText();
 		try {
-            CustomReporter.logInfoStep("Screenshot taken for Element ..... [" + locatorName + "]");
+            Logger.logInfoStep("Screenshot taken for Element ..... [" + locatorName + "]");
 			File srcFile = driver.findElement(locator).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(srcFile, new File("./" + screenShotPath + locatorName + ".png"));
 		} catch ( Exception e ) {
 			e.printStackTrace();
-            CustomReporter.logError("Element Screenshot not taken: " + e.getMessage());
+            Logger.logError("Element Screenshot not taken: " + e.getMessage());
 		}
 	}
 
@@ -92,7 +92,7 @@ public class ScreenShot {
             FileUtils.copyFile(source, new File("./" + screenShotPath + imageName + "_FullPage.png"));
 		} catch ( Exception e ) {
 			e.printStackTrace();
-            CustomReporter.logError("Full Page Screenshot not taken: " + e.getMessage());
+            Logger.logError("Full Page Screenshot not taken: " + e.getMessage());
         }
     }
 

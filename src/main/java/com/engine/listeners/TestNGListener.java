@@ -3,10 +3,9 @@ package com.engine.listeners;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.engine.reports.AllureReport;
-import com.engine.reports.CustomReporter;
+import com.engine.reports.Logger;
 import com.engine.reports.ExtentReport;
 import io.qameta.allure.Allure;
-import io.qameta.allure.listener.TestLifecycleListener;
 import org.openqa.selenium.WebDriver;
 import org.testng.*;
 import org.testng.annotations.ITestAnnotation;
@@ -29,7 +28,7 @@ public class TestNGListener implements IAlterSuiteListener, IAnnotationTransform
     //////////////////////////////////////////////////
     @Override
     public void onExecutionStart() {
-        CustomReporter.createImportantReportEntry("Start execution by " + runBy);
+        Logger.createImportantReportEntry("Start execution by " + runBy);
         Allure.getLifecycle();
         ExtentReport.initializeExtentReport();
         AllureReport.cleanAllureResultsDirectory();
@@ -41,7 +40,7 @@ public class TestNGListener implements IAlterSuiteListener, IAnnotationTransform
         AllureReport.writeAllureReport();
         AllureReport.openAllureReportAfterExecution();
         //EmailSendUtils.sendEmail(count_totalTCs, count_passedTCs, count_failedTCs, count_skippedTCs);
-        CustomReporter.createImportantReportEntry("Finished execution by " + runBy);
+        Logger.createImportantReportEntry("Finished execution by " + runBy);
     }
 
     @Override
@@ -57,12 +56,12 @@ public class TestNGListener implements IAlterSuiteListener, IAnnotationTransform
 
     @Override
     public void onStart(ITestContext context) {
-        CustomReporter.createImportantReportEntry(" Test: [ " + context.getName() + " ] Started ");
+        Logger.createImportantReportEntry(" Test: [ " + context.getName() + " ] Started ");
     }
 
     @Override
     public void onFinish(ITestContext context) {
-        CustomReporter.createImportantReportEntry(" Test: [ " + context.getName() + " ] Finished ");
+        Logger.createImportantReportEntry(" Test: [ " + context.getName() + " ] Finished ");
     }
 
 
@@ -78,23 +77,23 @@ public class TestNGListener implements IAlterSuiteListener, IAnnotationTransform
             ExtentReport.createTest(testResult.getName());
         }
         if (method.isConfigurationMethod()) {
-            CustomReporter.createImportantReportEntry("Starting Configuration Method (Setup or TearDown): [" + testResult.getName() + "]");
+            Logger.createImportantReportEntry("Starting Configuration Method (Setup or TearDown): [" + testResult.getName() + "]");
             if (testMethod.getDescription() != null && !testMethod.getDescription().equals("")) {
                 ExtentReport.removeTest(testMethod.getDescription());
             } else {
                 ExtentReport.removeTest(testResult.getName());
             }
         } else {
-            CustomReporter.createImportantReportEntry("Starting Test Case: [ " + testResult.getName() + " ]");
+            Logger.createImportantReportEntry("Starting Test Case: [ " + testResult.getName() + " ]");
         }
     }
 
     @Override
     public void afterInvocation(IInvokedMethod method, ITestResult testResult) {
         if (method.isConfigurationMethod()) {
-            CustomReporter.createImportantReportEntry("Finished Configuration Method (Setup or TearDown): [" + testResult.getName() + "]");
+            Logger.createImportantReportEntry("Finished Configuration Method (Setup or TearDown): [" + testResult.getName() + "]");
         } else {
-            CustomReporter.createImportantReportEntry("Finished Test Case: [ " + testResult.getName() + " ]");
+            Logger.createImportantReportEntry("Finished Test Case: [ " + testResult.getName() + " ]");
         }
     }
 
@@ -123,7 +122,7 @@ public class TestNGListener implements IAlterSuiteListener, IAnnotationTransform
                 AllureReport.attachScreenshotToAllureReport(driver);
                 ExtentReport.fail(ExtentReport.attachScreenshotToExtentReport(driver));
             } catch (Throwable e) {
-                CustomReporter.logError("Error:  " + e.getMessage());
+                Logger.logError("Error:  " + e.getMessage());
             }
         }
         ExtentReport.fail(MarkupHelper.createLabel(result.getMethod().getMethodName() + " Failed!", ExtentColor.RED));

@@ -4,7 +4,7 @@ import com.engine.actions.BrowserActions;
 import com.engine.dataDriven.ExcelFileManager;
 import com.engine.dataDriven.JSONFileManager;
 import com.engine.driver.DriverFactory;
-import com.engine.reports.CustomReporter;
+import com.engine.reports.Logger;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -47,9 +47,9 @@ public class Login_ReadDataUsingJson {
 //        String expectedResult_successMessage = jsonFileManager.getTestData("expectedResult_successMessage");
 		setTextFile("src/test/resources/TestData/TestData.txt", email + "\n" + password + "\n");
 		String line1 = getTextFile("src/test/resources/TestData/TestData.txt", 0);
-		CustomReporter.logConsole("line1: " + line1);
+		Logger.logConsole("line1: " + line1);
 		String textFile = getAllTextFile("src/test/resources/TestData/TestData.txt");
-		CustomReporter.logConsole("textFile: " + textFile);
+		Logger.logConsole("textFile: " + textFile);
 		new HomePage(driver)
 				.navigateToHomePage()
 				.clickFormAuthentication()

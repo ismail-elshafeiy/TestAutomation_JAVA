@@ -2,7 +2,6 @@ package com.engine.actions;
 
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.engine.reports.AllureReport;
-import com.engine.reports.Attachments;
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -18,7 +17,7 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import io.restassured.specification.SpecificationQuerier;
 import com.engine.reports.ExtentReport;
-import com.engine.reports.CustomReporter;
+import com.engine.reports.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -90,7 +89,7 @@ public class RestApiActions {
         String requestUrl = baseUrl + serviceName;
         request = RestAssured.given().spec(requestSpec);
         queryableRequestSpecs = SpecificationQuerier.query(request);
-        CustomReporter.logInfoStep("Request URL: [" + requestUrl + "] | Request Method: [" + requestType.getValue() + "] | Expected Status Code: [" + expectedStatusCode + "]");
+        Logger.logInfoStep("Request URL: [" + requestUrl + "] | Request Method: [" + requestType.getValue() + "] | Expected Status Code: [" + expectedStatusCode + "]");
         try {
             if (headers != null) {
                 request.headers(headers);
@@ -139,7 +138,7 @@ public class RestApiActions {
             }
             response.then().spec(responseSpec).statusCode(expectedStatusCode);
         } catch (Exception e) {
-            CustomReporter.logInfoStep(e.getMessage());
+            Logger.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
         AllureReport.attachApiResponseToAllureReport(response.asByteArray());
@@ -152,7 +151,7 @@ public class RestApiActions {
         try {
             value = response.jsonPath().getString(jsonPath);
         } catch (ClassCastException | JsonPathException | IllegalArgumentException e) {
-            CustomReporter.logInfoStep(e.getMessage());
+            Logger.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
         return value;
@@ -163,7 +162,7 @@ public class RestApiActions {
         try {
             listValue = response.jsonPath().getList(jsonPath);
         } catch (ClassCastException | JsonPathException | IllegalArgumentException e) {
-            CustomReporter.logInfoStep(e.getMessage());
+            Logger.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
         return listValue;

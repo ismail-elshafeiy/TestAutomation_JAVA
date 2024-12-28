@@ -9,7 +9,7 @@ import org.testng.Reporter;
 import java.io.*;
 import java.nio.file.Files;
 
-import static com.engine.reports.CustomReporter.logAttachmentAction;
+import static com.engine.reports.Logger.logAttachmentAction;
 import static com.engine.reports.ExtentReport.attachCodeBlockToExtentReport;
 import static com.engine.reports.ExtentReport.attachImageToExtentReport;
 
@@ -29,7 +29,7 @@ public class Attachments {
      */
     public static void printPage(WebDriver driver, int pageRange) {
         try {
-            CustomReporter.logInfoStep("Printing" + driver.getTitle() + "page....... ");
+            Logger.logInfoStep("Printing" + driver.getTitle() + "page....... ");
             PrintsPage printer = ((PrintsPage) driver);
             PrintOptions printOptions = new PrintOptions();
             printOptions.setPageRanges(String.valueOf(pageRange));
@@ -37,7 +37,7 @@ public class Attachments {
             Files.write(new File("Pdf/" + driver.getTitle() + currentTime + ".pdf").toPath(), OutputType.BYTES.convertFromBase64Png(pdf.getContent()));
         } catch (Exception e) {
             e.printStackTrace();
-            CustomReporter.logError("Page not printed: " + e.getMessage());
+            Logger.logError("Page not printed: " + e.getMessage());
         }
     }
 
@@ -87,7 +87,7 @@ public class Attachments {
     @SuppressWarnings("SpellCheckingInspection")
     private static void attachBasedOnFileType(String attachmentType, String attachmentName, ByteArrayOutputStream attachmentContent, String attachmentDescription) {
         var content = new ByteArrayInputStream(attachmentContent.toByteArray());
-        CustomReporter.logConsole("Start attaching " + attachmentType + " to the report");
+        Logger.logConsole("Start attaching " + attachmentType + " to the report");
         if (attachmentType.toLowerCase().contains("screenshot")) {
             Allure.addAttachment(attachmentDescription, "image/png", content, ".png");
             attachImageToExtentReport("image/png", new ByteArrayInputStream(attachmentContent.toByteArray()));

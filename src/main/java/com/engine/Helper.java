@@ -1,10 +1,9 @@
 package com.engine;
 
 import com.engine.actions.FileActions;
-import com.engine.reports.CustomReporter;
+import com.engine.reports.Logger;
 import org.testng.Reporter;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -61,7 +60,7 @@ public class Helper {
         try {
             currentTime = new SimpleDateFormat(dateFormat).format(new Date());
         } catch (IllegalArgumentException e) {
-            CustomReporter.logInfoStep(e.getMessage());
+            Logger.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
         return currentTime;
