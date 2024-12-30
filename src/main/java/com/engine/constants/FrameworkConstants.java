@@ -3,6 +3,8 @@ package com.engine.constants;
 import com.engine.actions.FileActions;
 import com.engine.dataDriven.PropertiesManager;
 
+import java.util.Objects;
+
 public final class FrameworkConstants {
 
     private FrameworkConstants() {
@@ -21,8 +23,8 @@ public final class FrameworkConstants {
     public static final String EDGE_DRIVER_PATH = PropertiesManager.getPropertyValue(CONFIG_PROP, "edgeDriverPath");
     public static final String EXECUTION_TYPE = PropertiesManager.getPropertyValue(CONFIG_PROP, "executionType");
     public static final String BROWSER_TYPE = PropertiesManager.getPropertyValue(CONFIG_PROP, "browserType");
-    public static final int SCRIPT_EXECUTION_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "scriptExecutionTimeout"));
-    public static final int PAGE_LOAD_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "pageLoadTimeout"));
+    public static final int SCRIPT_EXECUTION_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue("timeout", "scriptExecutionTimeout"));
+    public static final int PAGE_LOAD_TIMEOUT = Integer.parseInt(Objects.requireNonNull(PropertiesManager.getPropertyValue("timeout", "pageLoadTimeout")));
     public static final String BROWSER_DOWNLOAD_DIR = PropertiesManager.getPropertyValue(PATH_PROP, "downloadBrowserPath");
     public static final Boolean MAXIMIZE_OPTION = Boolean.valueOf(PropertiesManager.getPropertyValue(CONFIG_PROP, "startMaximize"));
     public static final Boolean HEADLESS_OPTION = Boolean.valueOf(PropertiesManager.getPropertyValue(CONFIG_PROP, "headless"));
@@ -31,11 +33,11 @@ public final class FrameworkConstants {
     public static final String PORT = PropertiesManager.getPropertyValue(CONFIG_PROP, "port");
     public static final String WIDTH = PropertiesManager.getPropertyValue(CONFIG_PROP, "width");
     public static final String HEIGHT = PropertiesManager.getPropertyValue(CONFIG_PROP, "height");
-    public static final int ELEMENT_IDENTIFICATION_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "elementIdentificationTimeout"));
-    public static final int EXPLICIT_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "explicitWaitTimeout"));
+    public static final int ELEMENT_IDENTIFICATION_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue("timeout", "elementIdentificationTimeout"));
+    public static final int EXPLICIT_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue("timeout", "explicitWaitTimeout"));
 
-    public static final int IMPLICIT_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "implicitWaitTimeout"));
-    public static final int POLLING = Integer.parseInt(PropertiesManager.getPropertyValue(CONFIG_PROP, "FluentWaitPolling"));
+    public static final int IMPLICIT_TIMEOUT = Integer.parseInt(PropertiesManager.getPropertyValue("timeout", "implicitWaitTimeout"));
+    public static final int POLLING = Integer.parseInt(PropertiesManager.getPropertyValue("timeout", "FluentWaitPolling"));
 
     public static final Boolean attemptClearBeforeTyping = Boolean.valueOf(PropertiesManager.getPropertyValue(CONFIG_PROP, "attemptClearBeforeTyping"));
 

@@ -47,6 +47,8 @@ public class IconUtils {
             browser = ICON_BROWSER_EDGE;
         } else if (FrameworkConstants.BROWSER_TYPE.contains("Mozila Firefox")) {
             browser = ICON_BROWSER_FIREFOX;
+        } else {
+            browser = "";
         }
         return browser;
     }

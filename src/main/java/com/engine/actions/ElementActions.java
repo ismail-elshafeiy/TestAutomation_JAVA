@@ -35,159 +35,196 @@ public class ElementActions {
         return new ElementActions(driver);
     }
 
-
-    @Step("Click on element: [{elementLocator}]")
-    public static void click(WebDriver driver, By elementLocator) {
-        // Mouse hover on the element before clicking
-        hover(driver, elementLocator);
+    @Step("Type data: [ {text} ] on element: [ {locator} ]")
+    public static void type(WebDriver driver, By locator, String text, boolean clearBeforeTyping) {
+        ElementHelper.locatingElementStrategy(driver, locator);
         try {
-            WaitsManager.getExplicitWait(driver).until(ExpectedConditions.elementToBeClickable(elementLocator));
+            if (!driver.findElement(locator).getAttribute("value").isBlank() && clearBeforeTyping) {
+                Logger.logInfoStep("Clear and Type [" + text + "] on element [" + locator + "]");
+                driver.findElement(locator).clear();
+            } else {
+                Logger.logInfoStep("Type [" + text + "] on element [" + locator + "]");
+            }
+            driver.findElement(locator).sendKeys(text);
+
+            if (!driver.findElement(locator).getAttribute("value").equals(text)) {
+                Logger.logInfoStep("Type [" + text + "] on element [" + locator + "] using JavascriptExecutor");
+                ((JavascriptExecutor) driver).executeScript("arguments[0].setAttribute('value', '" + text + "')", driver.findElement(locator));
+            }
+        } catch (Exception e) {
+            Logger.logError(e.getMessage());
+            fail(e.getMessage());
+        }
+        // Make sure that the data is inserted correctly to the field
+        Assert.assertTrue(driver.findElement(locator).getAttribute("value").contains(text),
+                "The data is not inserted successfully to the field, the inserted data should be: [" + text + "]; But the current field value is: ["
+                        + driver.findElement(locator).getAttribute("value") + "]");
+    }
+
+    public ElementActions type(By locator
+            , String text) {
+        var elementInformation = ElementInformation.fromList(ElementHelper.identifyUniqueElementIgnoringVisibility(driver, locator
+        ));
+        String actualTextAfterTyping = ElementHelper.newTypeWrapper(driver, elementInformation, text);
+        var elementName = elementInformation.getElementName();
+        if (actualTextAfterTyping.equals(text)) {
+            //     passAction(driver, locator
+            //     , Thread.currentThread().getStackTrace()[1].getMethodName(), text, null, elementName);
+        } else {
+            //          ElementHelper.failAction(driver, "Expected to type: \"" + text + "\", but ended up with: \"" + actualTextAfterTyping + "\"", locator
+            //          );
+        }
+        return this;
+
+    }
+
+
+    public static void type(WebDriver driver, By locator
+            , String text) {
+        type(driver, locator
+                , text, true);
+    }
+
+//    public ElementActions type(By locator
+//    , String text) {
+//        type(driver, locator
+//        , text, true);
+//        return this;
+//    }
+
+    public ElementActions type(By locator
+            , String text, boolean clearBeforeTyping) {
+        type(driver, locator
+                , text, clearBeforeTyping);
+        return this;
+    }
+
+    @Step("Type data: [ {text} ] on element: [ {locator" +
+            "} ]")
+    public static void typeEncrypt(WebDriver driver, By locator
+            , String text, boolean clearBeforeTyping) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
+        try {
+            // Clear before typing condition
+            if (!driver.findElement(locator
+            ).getAttribute("value").isBlank() && clearBeforeTyping) {
+                Logger.logInfoStep("[Element Action] Clear and Type [" + DecodeData.encrypt(text) + "] on element [" + locator
+                        + "]");
+                driver.findElement(locator
+                ).clear();
+                driver.findElement(locator
+                ).sendKeys(text);
+                // Type using JavascriptExecutor in case of the data is not typed successfully
+                if (!driver.findElement(locator
+                ).getAttribute("value").equals(text)) {
+                    ((JavascriptExecutor) driver).executeScript("arguments[0].setAttribute('value', '" + text + "')", driver.findElement(locator
+                    ));
+                }
+            } else {
+                Logger.logInfoStep("[Element Action] Type [" + DecodeData.encrypt(text) + "] on element [" + locator
+                        + "]");
+                driver.findElement(locator
+                ).sendKeys(text);
+                // Type using JavascriptExecutor in case of the data is not typed successfully
+                if (!driver.findElement(locator
+                ).getAttribute("value").contains(text)) {
+                    String currentValue = driver.findElement(locator
+                    ).getAttribute("value");
+                    ((JavascriptExecutor) driver)
+                            .executeScript("arguments[0].setAttribute('value', '" + currentValue + text + "')", driver.findElement(locator
+                            ));
+                }
+            }
+        } catch (Exception e) {
+            Logger.logError(e.getMessage());
+            fail(e.getMessage());
+        }
+        // Make sure that the data is inserted correctly to the field
+        Assert.assertTrue(driver.findElement(locator
+                ).getAttribute("value").contains(text),
+                "The data is not inserted successfully to the field, the inserted data should be: [" + text + "]; But the current field value is: ["
+                        + driver.findElement(locator
+                ).getAttribute("value") + "]");
+    }
+
+    public static void typeEncrypt(WebDriver driver, By locator
+            , String text) {
+        typeEncrypt(driver, locator
+                , text, true);
+    }
+
+    public ElementActions typeEncrypt(By locator
+            , String text) {
+        typeEncrypt(driver, locator
+                , text, true);
+        return this;
+    }
+
+    public ElementActions typeEncrypt(By locator
+            , String text, boolean clearBeforeTyping) {
+        typeEncrypt(driver, locator
+                , text, clearBeforeTyping);
+        return this;
+    }
+
+    @Step("Click on element: [{locator" +
+            "}]")
+    public static void click(WebDriver driver, By locator
+    ) {
+        hover(driver, locator
+        );
+        try {
+            WaitsManager.getExplicitWait(driver).until(ExpectedConditions.elementToBeClickable(locator
+            ));
         } catch (Exception toe) {
             Logger.logError(toe.getMessage());
             fail(toe.getMessage());
         }
         try {
-            // Log element text if not empty. Else, log clicking
-            if (!driver.findElement(elementLocator).getText().isBlank()) {
-                Logger.logInfoStep("[Element Action] Click on [" + driver.findElement(elementLocator).getText() + "] Button");
+            if (!driver.findElement(locator
+            ).getText().isBlank()) {
+                Logger.logInfoStep("[Element Action] Click on [" + driver.findElement(locator
+                ).getText() + "] Button");
             } else {
-                Logger.logInfoStep("[Element Action] Click on element [" + elementLocator + "]");
+                Logger.logInfoStep("[Element Action] Click on element [" + locator
+                        + "]");
             }
-            driver.findElement(elementLocator).click();
+            driver.findElement(locator
+            ).click();
         } catch (Exception exception) {
-            // Click using JavascriptExecutor in case of the click is not performed
-            // successfully and got an exception using the Selenium click method
             try {
-                ((JavascriptExecutor) driver).executeScript("arguments[arguments.length - 1].click();", driver.findElement(elementLocator));
+                ((JavascriptExecutor) driver).executeScript("arguments[arguments.length - 1].click();", driver.findElement(locator
+                ));
             } catch (Exception rootCauseException) {
                 rootCauseException.initCause(exception);
                 Logger.logError(exception.getMessage());
                 Logger.logError(rootCauseException.getMessage());
-                // Force fails the test case if you couldn't perform the click
-                fail("Couldn't click on the element:" + elementLocator, rootCauseException);
+                fail("Couldn't click on the element:" + locator
+                        , rootCauseException);
             }
         }
     }
 
-    public ElementActions click(By elementLocator) {
-        click(driver, elementLocator);
-        return this;
-    }
-
-    public ElementActions type(By elementLocator, String text) {
-        var elementInformation = ElementInformation.fromList(ElementHelper.identifyUniqueElementIgnoringVisibility(driver, elementLocator));
-        String actualTextAfterTyping = ElementHelper.newTypeWrapper(driver, elementInformation, text);
-        var elementName = elementInformation.getElementName();
-        if (actualTextAfterTyping.equals(text)) {
-            //     passAction(driver, elementLocator, Thread.currentThread().getStackTrace()[1].getMethodName(), text, null, elementName);
-        } else {
-            //          ElementHelper.failAction(driver, "Expected to type: \"" + text + "\", but ended up with: \"" + actualTextAfterTyping + "\"", elementLocator);
-        }
-        return this;
-
-    }
-    @Step("Type data: [ {text} ] on element: [{elementLocator}]")
-    public static void type(WebDriver driver, By elementLocator, String text, boolean clearBeforeTyping) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
-        try {
-            // Clear before typing condition
-            if (!driver.findElement(elementLocator).getAttribute("value").isBlank() && clearBeforeTyping) {
-                Logger.logInfoStep("[Element Action] Clear and Type [" + text + "] on element [" + elementLocator + "]");
-                driver.findElement(elementLocator).clear();
-                driver.findElement(elementLocator).sendKeys(text);
-                // Type using JavascriptExecutor in case of the data is not typed successfully
-                if (!driver.findElement(elementLocator).getAttribute("value").equals(text)) {
-                    ((JavascriptExecutor) driver).executeScript("arguments[0].setAttribute('value', '" + text + "')", driver.findElement(elementLocator));
-                }
-            } else {
-                Logger.logInfoStep("[Element Action] Type [" + text + "] on element [" + elementLocator + "]");
-                driver.findElement(elementLocator).sendKeys(text);
-                // Type using JavascriptExecutor in case of the data is not typed successfully
-                if (!driver.findElement(elementLocator).getAttribute("value").contains(text)) {
-                    String currentValue = driver.findElement(elementLocator).getAttribute("value");
-                    ((JavascriptExecutor) driver)
-                            .executeScript("arguments[0].setAttribute('value', '" + currentValue + text + "')", driver.findElement(elementLocator));
-                }
-            }
-        } catch (Exception e) {
-            Logger.logError(e.getMessage());
-            fail(e.getMessage());
-        }
-        // Make sure that the data is inserted correctly to the field
-        Assert.assertTrue(driver.findElement(elementLocator).getAttribute("value").contains(text),
-                "The data is not inserted successfully to the field, the inserted data should be: [" + text + "]; But the current field value is: ["
-                        + driver.findElement(elementLocator).getAttribute("value") + "]");
-    }
-
-    public static void type(WebDriver driver, By elementLocator, String text) {
-        type(driver, elementLocator, text, true);
-    }
-
-//    public ElementActions type(By elementLocator, String text) {
-//        type(driver, elementLocator, text, true);
-//        return this;
-//    }
-
-    public ElementActions type(By elementLocator, String text, boolean clearBeforeTyping) {
-        type(driver, elementLocator, text, clearBeforeTyping);
-        return this;
-    }
-
-    @Step("Type data: [{text}] on element: [{elementLocator}]")
-    public static void typeEncrypt(WebDriver driver, By elementLocator, String text, boolean clearBeforeTyping) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
-        try {
-            // Clear before typing condition
-            if (!driver.findElement(elementLocator).getAttribute("value").isBlank() && clearBeforeTyping) {
-                Logger.logInfoStep("[Element Action] Clear and Type [" + DecodeData.encrypt(text) + "] on element [" + elementLocator + "]");
-                driver.findElement(elementLocator).clear();
-                driver.findElement(elementLocator).sendKeys(text);
-                // Type using JavascriptExecutor in case of the data is not typed successfully
-                if (!driver.findElement(elementLocator).getAttribute("value").equals(text)) {
-                    ((JavascriptExecutor) driver).executeScript("arguments[0].setAttribute('value', '" + text + "')", driver.findElement(elementLocator));
-                }
-            } else {
-                Logger.logInfoStep("[Element Action] Type [" + DecodeData.encrypt(text) + "] on element [" + elementLocator + "]");
-                driver.findElement(elementLocator).sendKeys(text);
-                // Type using JavascriptExecutor in case of the data is not typed successfully
-                if (!driver.findElement(elementLocator).getAttribute("value").contains(text)) {
-                    String currentValue = driver.findElement(elementLocator).getAttribute("value");
-                    ((JavascriptExecutor) driver)
-                            .executeScript("arguments[0].setAttribute('value', '" + currentValue + text + "')", driver.findElement(elementLocator));
-                }
-            }
-        } catch (Exception e) {
-            Logger.logError(e.getMessage());
-            fail(e.getMessage());
-        }
-        // Make sure that the data is inserted correctly to the field
-        Assert.assertTrue(driver.findElement(elementLocator).getAttribute("value").contains(text),
-                "The data is not inserted successfully to the field, the inserted data should be: [" + text + "]; But the current field value is: ["
-                        + driver.findElement(elementLocator).getAttribute("value") + "]");
-    }
-
-    public static void typeEncrypt(WebDriver driver, By elementLocator, String text) {
-        typeEncrypt(driver, elementLocator, text, true);
-    }
-
-    public ElementActions typeEncrypt(By elementLocator, String text) {
-        typeEncrypt(driver, elementLocator, text, true);
-        return this;
-    }
-
-    public ElementActions typeEncrypt(By elementLocator, String text, boolean clearBeforeTyping) {
-        typeEncrypt(driver, elementLocator, text, clearBeforeTyping);
+    public ElementActions click(By locator
+    ) {
+        click(driver, locator
+        );
         return this;
     }
 
 
     //**************************************      Select Actions         **********************************************//
     //******************************************************************************************************************//
-    public static void select(WebDriver driver, By elementLocator, ElementHelper.SelectBy selectBy, String option) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    public static void select(WebDriver driver, By locator
+            , ElementHelper.SelectBy selectBy, String option) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
         try {
-            Select select = new Select(driver.findElement(elementLocator));
-            Logger.logInfoStep("[Element Action] Select [" + option + "] on element [" + elementLocator + "]");
+            Select select = new Select(driver.findElement(locator
+            ));
+            Logger.logInfoStep("[Element Action] Select [" + option + "] on element [" + locator
+                    + "]");
             assertFalse(select.isMultiple());
             switch (selectBy) {
                 case TEXT -> select.selectByVisibleText(option);
@@ -201,13 +238,17 @@ public class ElementActions {
         }
     }
 
-    public ElementActions select(By elementLocator, ElementHelper.SelectBy selectBy, String option) {
-        select(driver, elementLocator, selectBy, option);
+    public ElementActions select(By locator
+            , ElementHelper.SelectBy selectBy, String option) {
+        select(driver, locator
+                , selectBy, option);
         return this;
     }
 
-    public ElementActions select(By elementLocator, ElementHelper.SelectBy selectBy, int option) {
-        select(driver, elementLocator, selectBy, String.valueOf(option));
+    public ElementActions select(By locator
+            , ElementHelper.SelectBy selectBy, int option) {
+        select(driver, locator
+                , selectBy, String.valueOf(option));
         return this;
     }
 
@@ -216,108 +257,145 @@ public class ElementActions {
     //******************************************************************************************************************//
     static Actions actions;
 
-    public static void doubleClick(WebDriver driver, By elementLocator) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    public static void doubleClick(WebDriver driver, By locator
+    ) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
         try {
             actions = new Actions(driver);
-            Logger.logInfoStep("[Element Action] Double Click on element [" + elementLocator + "]");
-            actions.doubleClick(driver.findElement(elementLocator)).perform();
+            Logger.logInfoStep("[Element Action] Double Click on element [" + locator
+                    + "]");
+            actions.doubleClick(driver.findElement(locator
+            )).perform();
         } catch (Exception e) {
             Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
 
-    public ElementActions doubleClick(By elementLocator) {
-        doubleClick(driver, elementLocator);
+    public ElementActions doubleClick(By locator
+    ) {
+        doubleClick(driver, locator
+        );
         return this;
     }
 
-    public static void rightClick(WebDriver driver, By elementLocator) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    public static void rightClick(WebDriver driver, By locator
+    ) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
         try {
             actions = new Actions(driver);
-            Logger.logInfoStep("[Element Action] Right Click on element [" + elementLocator + "]");
-            actions.contextClick(driver.findElement(elementLocator)).perform();
+            Logger.logInfoStep("[Element Action] Right Click on element [" + locator
+                    + "]");
+            actions.contextClick(driver.findElement(locator
+            )).perform();
         } catch (Exception e) {
             Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
 
-    public ElementActions rightClick(By elementLocator) {
-        rightClick(driver, elementLocator);
+    public ElementActions rightClick(By locator
+    ) {
+        rightClick(driver, locator
+        );
         return this;
     }
 
 
-    public static void hover(WebDriver driver, By elementLocator) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    public static void hover(WebDriver driver, By locator
+    ) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
         try {
             actions = new Actions(driver);
-            Logger.logInfoStep("[Element Action] Hover on [" + driver.findElement(elementLocator).getText() + "]");
-            actions.moveToElement(driver.findElement(elementLocator)).perform();
+            Logger.logInfoStep("[Element Action] Hover on [" + driver.findElement(locator
+            ).getText() + "]");
+            actions.moveToElement(driver.findElement(locator
+            )).perform();
         } catch (Exception e) {
             Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
 
-    public ElementActions hover(By elementLocator) {
-        hover(driver, elementLocator);
+    public ElementActions hover(By locator
+    ) {
+        hover(driver, locator
+        );
         return this;
     }
 
-    public static void hoverAndClick(WebDriver driver, By elementLocator) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    public static void hoverAndClick(WebDriver driver, By locator
+    ) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
         try {
             actions = new Actions(driver);
-            Logger.logInfoStep("[Element Action] Hover on [" + driver.findElement(elementLocator).getText() + "]");
-            actions.moveToElement(driver.findElement(elementLocator)).click().perform();
+            Logger.logInfoStep("[Element Action] Hover on [" + driver.findElement(locator
+            ).getText() + "]");
+            actions.moveToElement(driver.findElement(locator
+            )).click().perform();
         } catch (Exception e) {
             Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
 
-    public ElementActions hoverAndClick(By elementLocator) {
-        hoverAndClick(driver, elementLocator);
+    public ElementActions hoverAndClick(By locator
+    ) {
+        hoverAndClick(driver, locator
+        );
         return this;
     }
 
-    @Step("Click a Keyboard Key on element: [{elementLocator}]")
-    public static void keyPress(WebDriver driver, By elementLocator, Keys key) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    @Step("Click a Keyboard Key on element: [{locator" +
+            "}]")
+    public static void keyPress(WebDriver driver, By locator
+            , Keys key) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
         try {
             actions = new Actions(driver);
-            Logger.logInfoStep("[Element Action] Click a Keyboard key [" + key.name() + "] on element [" + elementLocator + "]");
+            Logger.logInfoStep("[Element Action] Click a Keyboard key [" + key.name() + "] on element [" + locator
+                    + "]");
             // We click ENTER here! :D
-            driver.findElement(elementLocator).sendKeys(key);
+            driver.findElement(locator
+            ).sendKeys(key);
             actions.sendKeys(key).perform();
         } catch (Exception e) {
             Logger.logError(e.getMessage());
         }
     }
 
-    public ElementActions keyPress(By elementLocator, Keys key) {
-        keyPress(driver, elementLocator, key);
+    public ElementActions keyPress(By locator
+            , Keys key) {
+        keyPress(driver, locator
+                , key);
         return this;
     }
 
-    public static void clickAndSendKeys(WebDriver driver, By elementLocator, String text) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    public static void clickAndSendKeys(WebDriver driver, By locator
+            , String text) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
         try {
             actions = new Actions(driver);
-            Logger.logInfoStep("[Element Action] Sending Keys [" + text + "] to element [" + elementLocator + "]");
-            actions.click(driver.findElement(elementLocator))
+            Logger.logInfoStep("[Element Action] Sending Keys [" + text + "] to element [" + locator
+                    + "]");
+            actions.click(driver.findElement(locator
+                    ))
                     .sendKeys(text).build().perform();
         } catch (Exception e) {
             Logger.logError(e.getMessage());
         }
     }
 
-    public ElementActions clickAndSendKeys(By elementLocator, String text) {
-        clickAndSendKeys(driver, elementLocator, text);
+    public ElementActions clickAndSendKeys(By locator
+            , String text) {
+        clickAndSendKeys(driver, locator
+                , text);
         return this;
     }
 
@@ -488,57 +566,74 @@ public class ElementActions {
     //*******************************************    Java script actions    **********************************************************//
     //***********************************************************************************************************************************//
 
-    public static void clickUsingJavaScript(WebDriver driver, By elementLocator) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    public static void clickUsingJavaScript(WebDriver driver, By locator
+    ) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
         try {
-            Logger.logInfoStep("[Element Action] Click on element [" + elementLocator + "] using JavaScript");
-            ((JavascriptExecutor) driver).executeScript("arguments[arguments.length - 1].click();", driver.findElement(elementLocator));
+            Logger.logInfoStep("[Element Action] Click on element [" + locator
+                    + "] using JavaScript");
+            ((JavascriptExecutor) driver).executeScript("arguments[arguments.length - 1].click();", driver.findElement(locator
+            ));
         } catch (Exception e) {
             Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
 
-    public ElementActions clickUsingJavaScript(By elementLocator) {
-        clickUsingJavaScript(driver, elementLocator);
+    public ElementActions clickUsingJavaScript(By locator
+    ) {
+        clickUsingJavaScript(driver, locator
+        );
         return this;
     }
 
-    public static void sendKeysUsingJavaScript(WebDriver driver, By elementLocator, String text) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    public static void sendKeysUsingJavaScript(WebDriver driver, By locator
+            , String text) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
         try {
-            Logger.logInfoStep("[Element Action] Send Keys [" + text + "] to element [" + elementLocator + "] using JavaScript");
-            ((JavascriptExecutor) driver).executeScript("arguments[arguments.length - 1].value='" + text + "';", driver.findElement(elementLocator));
+            Logger.logInfoStep("[Element Action] Send Keys [" + text + "] to element [" + locator
+                    + "] using JavaScript");
+            ((JavascriptExecutor) driver).executeScript("arguments[arguments.length - 1].value='" + text + "';", driver.findElement(locator
+            ));
         } catch (Exception e) {
             Logger.logError(e.getMessage());
             fail(e.getMessage());
         }
     }
 
-    public ElementActions sendKeysUsingJavaScript(By elementLocator, String text) {
-        sendKeysUsingJavaScript(driver, elementLocator, text);
+    public ElementActions sendKeysUsingJavaScript(By locator
+            , String text) {
+        sendKeysUsingJavaScript(driver, locator
+                , text);
         return this;
     }
 
-    public static void scrollToElement(WebDriver driver, By elementLocator) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    public static void scrollToElement(WebDriver driver, By locator
+    ) {
         try {
-            Logger.logInfoStep("[Element Action] Scroll to element [" + elementLocator + "]");
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(elementLocator));
+            Logger.logInfoStep("Scroll to element [" + locator
+                    + "]");
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", driver.findElement(locator
+            ));
         } catch (Exception e) {
-            Logger.logError(e.getMessage());
-            fail(e.getMessage());
+            Logger.logError("Failed to scroll to element [" + locator
+                    + "]");
+            e.printStackTrace();
         }
     }
 
-    public ElementActions scrollToElement(By elementLocator) {
-        scrollToElement(driver, elementLocator);
+    public ElementActions scrollToElement(By locator
+    ) {
+        scrollToElement(driver, locator
+        );
         return this;
     }
 
     public static void scrollToTop(WebDriver driver) {
         try {
-            Logger.logInfoStep("[Element Action] Scroll to top of the page");
+            Logger.logInfoStep("Scroll to top of the page");
             ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0);");
         } catch (Exception e) {
             Logger.logError(e.getMessage());
@@ -554,66 +649,92 @@ public class ElementActions {
 
     //*******************************************    Element helper Methods    **********************************************************//
     //***********************************************************************************************************************************//
-    @Step("Check if element: [{elementLocator}] is Displayed")
-    public static boolean isDisplayed(WebDriver driver, By elementLocator) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    @Step("Check if element: [{locator" +
+            "}] is Displayed")
+    public static boolean isDisplayed(WebDriver driver, By locator
+    ) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
         try {
-            Logger.logInfoStep("[Element Action] Check if element [" + elementLocator + "] is Displayed");
-            return driver.findElement(elementLocator).isDisplayed();
+            Logger.logInfoStep("[Element Action] Check if element [" + locator
+                    + "] is Displayed");
+            return driver.findElement(locator
+            ).isDisplayed();
         } catch (Exception e) {
             Logger.logError(e.getMessage());
         }
         return false;
     }
 
-    public ElementActions isDisplayed(By elementLocator) {
-        isDisplayed(driver, elementLocator);
+    public ElementActions isDisplayed(By locator
+    ) {
+        isDisplayed(driver, locator
+        );
         return this;
     }
 
-    @Step("Check if element: [{elementLocator}] is Enabled")
-    public static boolean isEnabled(WebDriver driver, By elementLocator) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    @Step("Check if element: [{locator" +
+            "}] is Enabled")
+    public static boolean isEnabled(WebDriver driver, By locator
+    ) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
         try {
-            Logger.logInfoStep("[Element Action] Check if element [" + elementLocator + "] is Enabled");
-            return driver.findElement(elementLocator).isEnabled();
+            Logger.logInfoStep("[Element Action] Check if element [" + locator
+                    + "] is Enabled");
+            return driver.findElement(locator
+            ).isEnabled();
         } catch (Exception e) {
             Logger.logError(e.getMessage());
         }
         return false;
     }
 
-    public ElementActions isEnabled(By elementLocator) {
-        isEnabled(driver, elementLocator);
+    public ElementActions isEnabled(By locator
+    ) {
+        isEnabled(driver, locator
+        );
         return this;
     }
 
-    @Step("Check if element: [{elementLocator}] is Selected")
-    public static boolean isSelected(WebDriver driver, By elementLocator) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    @Step("Check if element: [{locator" +
+            "}] is Selected")
+    public static boolean isSelected(WebDriver driver, By locator
+    ) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
         try {
-            Logger.logInfoStep("[Element Action] Check if element [" + elementLocator + "] is Selected");
-            return driver.findElement(elementLocator).isSelected();
+            Logger.logInfoStep("[Element Action] Check if element [" + locator
+                    + "] is Selected");
+            return driver.findElement(locator
+            ).isSelected();
         } catch (Exception e) {
             Logger.logError(e.getMessage());
         }
         return false;
     }
 
-    public ElementActions isSelected(By elementLocator) {
-        isSelected(driver, elementLocator);
+    public ElementActions isSelected(By locator
+    ) {
+        isSelected(driver, locator
+        );
         return this;
     }
 
 //**********************************************     Getter Methods    **************************************************************//
 //***********************************************************************************************************************************//
 
-    @Step("Get the Text of element: [{elementLocator}]")
-    public static String getText(WebDriver driver, By elementLocator) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    @Step("Get the Text of element: [{locator" +
+            "}]")
+    public static String getText(WebDriver driver, By locator
+    ) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
         try {
-            String text = driver.findElement(elementLocator).getText();
-            Logger.logInfoStep("[Element Action] Get the Text of element [" + elementLocator + "]; The Text is [" + text + "]");
+            String text = driver.findElement(locator
+            ).getText();
+            Logger.logInfoStep("[Element Action] Get the Text of element [" + locator
+                    + "]; The Text is [" + text + "]");
             return text;
         } catch (Exception e) {
             Logger.logError(e.getMessage());
@@ -621,11 +742,15 @@ public class ElementActions {
         return null;
     }
 
-    public static String getAttributeValue(WebDriver driver, By elementLocator, String attributeName) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    public static String getAttributeValue(WebDriver driver, By locator
+            , String attributeName) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
         try {
-            String attributeValue = driver.findElement(elementLocator).getAttribute(attributeName);
-            Logger.logInfoStep("[Element Action] Get the Attribute [" + attributeName + "] Value of element [" + elementLocator + "]; The Value is [" + attributeValue + "]");
+            String attributeValue = driver.findElement(locator
+            ).getAttribute(attributeName);
+            Logger.logInfoStep("[Element Action] Get the Attribute [" + attributeName + "] Value of element [" + locator
+                    + "]; The Value is [" + attributeValue + "]");
             return attributeValue;
         } catch (Exception e) {
             Logger.logError(e.getMessage());
@@ -633,11 +758,15 @@ public class ElementActions {
         return null;
     }
 
-    public static String getCssValue(WebDriver driver, By elementLocator, String cssValue) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
+    public static String getCssValue(WebDriver driver, By locator
+            , String cssValue) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
         try {
-            String cssValueOfElement = driver.findElement(elementLocator).getCssValue(cssValue);
-            Logger.logInfoStep("[Element Action] Get the CSS Value [" + cssValue + "] of element [" + elementLocator + "]; The Value is [" + cssValueOfElement + "]");
+            String cssValueOfElement = driver.findElement(locator
+            ).getCssValue(cssValue);
+            Logger.logInfoStep("[Element Action] Get the CSS Value [" + cssValue + "] of element [" + locator
+                    + "]; The Value is [" + cssValueOfElement + "]");
             return cssValueOfElement;
         } catch (Exception e) {
             Logger.logError(e.getMessage());
@@ -645,10 +774,14 @@ public class ElementActions {
         return null;
     }
 
-    public static int getElementsCount(WebDriver driver, By elementLocator) {
-        ElementHelper.locatingElementStrategy(driver, elementLocator);
-        int elementsCount = driver.findElements(elementLocator).size();
-        Logger.logInfoStep("[Element Action] Get the Elements Count of element [" + elementLocator + "]; The Count is [" + elementsCount + "]");
+    public static int getElementsCount(WebDriver driver, By locator
+    ) {
+        ElementHelper.locatingElementStrategy(driver, locator
+        );
+        int elementsCount = driver.findElements(locator
+        ).size();
+        Logger.logInfoStep("[Element Action] Get the Elements Count of element [" + locator
+                + "]; The Count is [" + elementsCount + "]");
         return elementsCount;
     }
 
@@ -705,12 +838,15 @@ public class ElementActions {
     //**********************************************     Verify element Methods    **************************************************************//
 //***********************************************************************************************************************************//
     @Step("Verify element NOT visible {0}")
-    public static boolean verifyElementNotVisible(By elementLocator, int timeout) {
+    public static boolean verifyElementNotVisible(By locator
+            , int timeout) {
         try {
-            WaitsManager.getExplicitWait(driver, timeout).until(ExpectedConditions.invisibilityOfElementLocated(elementLocator));
+            WaitsManager.getExplicitWait(driver, timeout).until(ExpectedConditions.invisibilityOfElementLocated(locator
+            ));
             return true;
         } catch (Exception e) {
-            Logger.logWarning("Element is still visible after [" + timeout + "] seconds of waiting element [" + elementLocator + "] : " + e.getMessage());
+            Logger.logWarning("Element is still visible after [" + timeout + "] seconds of waiting element [" + locator
+                    + "] : " + e.getMessage());
             return false;
         }
     }

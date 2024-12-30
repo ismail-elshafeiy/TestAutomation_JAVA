@@ -1,8 +1,10 @@
 package com.engine.actions.helper;
 
 import com.engine.WaitsManager;
+import com.engine.actions.ElementActions;
 import com.engine.constants.FrameworkConstants;
 import com.engine.reports.Logger;
+import io.appium.java_client.AppiumDriver;
 import lombok.Getter;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -26,21 +28,66 @@ public class ElementHelper {
         TEXT, VALUE, INDEX
     }
 
-    public static void locatingElementStrategy(WebDriver driver, By elementLocator) {
+    public static void locatingElementStrategy(WebDriver driver, By locator) {
+        presenceOfElementLocated(driver, locator);
+        visibilityOfElementLocated(driver, locator);
+        isElementDisplayed(driver, locator);
+        isElementEnabled(driver, locator);
+    }
+
+    public static void presenceOfElementLocated(WebDriver driver, By locator) {
+        try { //Wait for the element to be Present on DOM
+            WaitsManager.getFluentWait(driver).until(ExpectedConditions.presenceOfElementLocated(locator));
+        } catch (Exception e) {
+            Logger.logError("Failed to Locate the element by Locator [" + locator + "]" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void visibilityOfElementLocated(WebDriver driver, By locator) {
         try {
-            // Wait for the element to be visible
-            WaitsManager.getExplicitWait(driver).until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
-            WaitsManager.getFluentWait(driver).until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
-            // Scroll the element into view to handle some browsers cases
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(false);", driver.findElement(elementLocator));
-            // Check if the element is displayed
-            if (!driver.findElement(elementLocator).isDisplayed()) {
-                Logger.logInfoStep("The element [" + elementLocator.toString() + "] is not Displayed");
-                fail("The element [" + elementLocator + "] is not Displayed");
+            WaitsManager.getFluentWait(driver).until(ExpectedConditions.visibilityOfElementLocated(locator));
+        } catch (Exception e) {
+            Logger.logError("Failed to Locate the element by Locator [" + locator + "]" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void isElementDisplayed(WebDriver driver, By locator) {
+        ElementActions.scrollToElement(driver, locator);
+        try {
+            WaitsManager.getFluentWait(driver).until(
+                    f -> driver.findElement(locator).isDisplayed());
+            if (!driver.findElement(locator).isDisplayed()) {
+                Logger.logInfoStep("The element [" + locator.toString() + "] is not Displayed");
+                fail("The element [" + locator + "] is not Displayed");
             }
-        } catch (Exception toe) {
-            Logger.logError(toe.getMessage());
-            fail(toe.getMessage());
+        } catch (TimeoutException e) {
+            Logger.logError("The Element located by [" + locator.toString() + "] is not Displayed" + e.getMessage());
+            e.getStackTrace();
+        }
+    }
+
+    public static void isElementEnabled(WebDriver driver, By locator) {
+        try {
+            WaitsManager.getFluentWait(driver).until(f -> driver.findElement(locator).isEnabled());
+        } catch (TimeoutException e) {
+            Logger.logError("The Element [" + locator + "] is not Enabled" + e.getMessage());
+            e.getStackTrace();
+        }
+    }
+
+    public static String getElementName(WebDriver driver, By locator) {
+        String elementName;
+        if (driver instanceof AppiumDriver appiumDriver) {
+            elementName = appiumDriver.findElement(locator).getText();
+        } else {
+            elementName = driver.findElement(locator).getAccessibleName();
+        }
+        if ((elementName != null && !elementName.isEmpty())) {
+            return elementName;
+        } else {
+            return locator.toString();
         }
     }
 
@@ -62,11 +109,12 @@ public class ElementHelper {
         }
     }
 
-    public static void getLinks(WebElement elementLocator) {
-        List<WebElement> links = elementLocator.findElements(By.tagName("a"));
-        System.out.println("The Number of The links is : " + links.size());
+    public static void getLinks(WebElement locator) {
+        //   locatingElementStrategy(locator);
+        List<WebElement> links = locator.findElements(By.tagName("a"));
+        Logger.logInfoStep("The Number of The links is : " + links.size());
         for (WebElement Link : links) {
-            System.out.println(Link.getAttribute("href"));
+            Logger.logInfoStep("The text of hyper link: " + Link.getAttribute("href"));
         }
     }
 
@@ -75,10 +123,8 @@ public class ElementHelper {
         for (WebElement row : rows) {
             List<WebElement> cols = row.findElements(tagName);
             for (WebElement cell : cols) {
-                System.out.println(cell.getText() + "\t");
+                Logger.logInfoStep(cell.getText() + "\t");
             }
-            // To Print Empty line between each row
-            System.out.println();
         }
     }
 
@@ -90,26 +136,26 @@ public class ElementHelper {
         }
     }
 
-    public static List<Object> identifyUniqueElementIgnoringVisibility(WebDriver driver, By elementLocator) {
-        return identifyUniqueElement(driver, elementLocator, false);
+    public static List<Object> identifyUniqueElementIgnoringVisibility(WebDriver driver, By locator) {
+        return identifyUniqueElement(driver, locator, false);
     }
 
-    private static List<Object> identifyUniqueElement(WebDriver driver, By elementLocator, boolean checkForVisibility, Object... action) {
-        var matchingElementsInformation = getMatchingElementsInformation(driver, elementLocator, 1, checkForVisibility, action);
-        if (elementLocator != null) {
+    private static List<Object> identifyUniqueElement(WebDriver driver, By locator, boolean checkForVisibility, Object... action) {
+        var matchingElementsInformation = getMatchingElementsInformation(driver, locator, 1, checkForVisibility, action);
+        if (locator != null) {
             // in case of regular locator
             switch (Integer.parseInt(matchingElementsInformation.get(0).toString())) {
                 case 0 -> {
                     if (matchingElementsInformation.size() > 2 && matchingElementsInformation.get(2) instanceof Throwable) {
-                        Logger.logError("Failed to identify unique element using this locator \"" + formatLocatorToString(elementLocator) + "\"" + matchingElementsInformation.get(2));
+                        Logger.logError("Failed to identify unique element using this locator \"" + formatLocatorToString(locator) + "\"" + matchingElementsInformation.get(2));
                     }
-                    Logger.logError("Failed to identify unique element using this locator \"" + formatLocatorToString(elementLocator) + "\"");
+                    Logger.logError("Failed to identify unique element using this locator \"" + formatLocatorToString(locator) + "\"");
                 }
                 case 1 -> {
                     return matchingElementsInformation;
                 }
                 default -> {
-                    Logger.logWarning("Failed to identify unique element, Multiple elements found matching this locator \"" + formatLocatorToString(elementLocator) + "\"");
+                    Logger.logWarning("Failed to identify unique element, Multiple elements found matching this locator \"" + formatLocatorToString(locator) + "\"");
                     return matchingElementsInformation;
                 }
             }
@@ -121,15 +167,15 @@ public class ElementHelper {
         return matchingElementsInformation;
     }
 
-    public static List<Object> getMatchingElementsInformation(WebDriver driver, By elementLocator, int numberOfAttempts, boolean checkForVisibility, Object... action) {
-        if (elementLocator == null) {
+    public static List<Object> getMatchingElementsInformation(WebDriver driver, By locator, int numberOfAttempts, boolean checkForVisibility, Object... action) {
+        if (locator == null) {
             var elementInformation = new ArrayList<>();
             elementInformation.add(0);
             elementInformation.add(null);
             return elementInformation;
         }
-        if (!elementLocator.equals(By.tagName("html"))) {
-            return waitForElementPresence(driver, elementLocator, numberOfAttempts, checkForVisibility, action);
+        if (!locator.equals(By.tagName("html"))) {
+            return waitForElementPresence(driver, locator, numberOfAttempts, checkForVisibility, action);
         } else {
             //if locator is just tag-name html
             var elementInformation = new ArrayList<>();
@@ -139,8 +185,8 @@ public class ElementHelper {
         }
     }
 
-    public static List<Object> waitForElementPresence(WebDriver driver, By elementLocator, int numberOfAttempts, boolean checkForVisibility, Object... action) {
-        boolean isValidToCheckForVisibility = isValidToCheckForVisibility(elementLocator, checkForVisibility);
+    public static List<Object> waitForElementPresence(WebDriver driver, By locator, int numberOfAttempts, boolean checkForVisibility, Object... action) {
+        boolean isValidToCheckForVisibility = isValidToCheckForVisibility(locator, checkForVisibility);
 
         try {
 //            JavaScriptWaitManager.waitForLazyLoading(driver);
@@ -152,16 +198,16 @@ public class ElementHelper {
                         WebElement targetElement;
                         ElementInformation elementInformation = new ElementInformation();
                         // BLOCK #1 :: GETTING THE ELEMENT
-                        if (ShadowLocatorBuilder.shadowDomLocator != null && ShadowLocatorBuilder.cssSelector == elementLocator) {
+                        if (ShadowLocatorBuilder.shadowDomLocator != null && ShadowLocatorBuilder.cssSelector == locator) {
                             targetElement = driver.findElement(ShadowLocatorBuilder.shadowDomLocator).getShadowRoot().findElement(ShadowLocatorBuilder.cssSelector);
                         } else if (LocatorBuilder.getIFrameLocator() != null) {
                             try {
-                                targetElement = driver.switchTo().frame(driver.findElement(LocatorBuilder.getIFrameLocator())).findElement(elementLocator);
+                                targetElement = driver.switchTo().frame(driver.findElement(LocatorBuilder.getIFrameLocator())).findElement(locator);
                             } catch (NoSuchElementException exception) {
-                                targetElement = driver.findElement(elementLocator);
+                                targetElement = driver.findElement(locator);
                             }
                         } else {
-                            targetElement = driver.findElement(elementLocator);
+                            targetElement = driver.findElement(locator);
                         }
                         // BLOCK #2 :: GETTING THE ELEMENT LOCATION (RECT)
                         try {
@@ -175,13 +221,13 @@ public class ElementHelper {
                             targetElement.isDisplayed();
                         }
                         // BLOCK #4 :: GETTING THE NUMBER OF FOUND ELEMENTS
-                        if (ShadowLocatorBuilder.shadowDomLocator != null && ShadowLocatorBuilder.cssSelector == elementLocator) {
+                        if (ShadowLocatorBuilder.shadowDomLocator != null && ShadowLocatorBuilder.cssSelector == locator) {
                             elementInformation.setNumberOfFoundElements(driver.findElement(ShadowLocatorBuilder.shadowDomLocator).getShadowRoot().findElements(ShadowLocatorBuilder.cssSelector).size());
                         } else {
-                            elementInformation.setNumberOfFoundElements(driver.findElements(elementLocator).size());
+                            elementInformation.setNumberOfFoundElements(driver.findElements(locator).size());
                         }
 
-                        var elementName = formatLocatorToString(elementLocator);
+                        var elementName = formatLocatorToString(locator);
                         try {
                             var accessibleName = targetElement.getAccessibleName();
                             if (accessibleName != null && !accessibleName.isBlank()) {
@@ -194,7 +240,7 @@ public class ElementHelper {
                         }
                         elementInformation.setElementName(elementName);
                         elementInformation.setFirstElement(targetElement);
-                        elementInformation.setLocator(elementLocator);
+                        elementInformation.setLocator(locator);
 
                         // BLOCK #6 :: PERFORMING ACTION  (WITH OPTIONAL ARGS)
                         // attempt to perform action inside the loop to guarantee higher odds of success and reduced WebDriver calls
