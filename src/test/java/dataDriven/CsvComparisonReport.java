@@ -14,7 +14,6 @@ public class CsvComparisonReport {
     void hasDiff() {
         File exp = Resources.getPath("CSVFile.csv").toFile();
         File act = Resources.getFile("CSVFile1.csv");
-
         CsvComparisonOptions options = CsvComparisonOptions
                 .builder()
                 .selectColumnId(1)

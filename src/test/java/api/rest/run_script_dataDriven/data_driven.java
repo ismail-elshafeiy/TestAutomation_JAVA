@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 
 public class data_driven {
     ExcelFileManager excelFileManager;
+
     // dataProvider = Function Name
     @Test(dataProvider = "test_data")
     public void dataDriven_testcase(String customer_id,
@@ -34,8 +35,7 @@ public class data_driven {
         String p_num = xmlpath.getString("address.phoneNumber");
         String s_sn = xmlpath.getString("address.ssn");
         String zip = xmlpath.getString("address.zipCode");
-        Assert.assertEquals(cus_id,customer_id);
-
+        Assert.assertEquals(cus_id, customer_id);
     }
 
 /*    @DataProvider

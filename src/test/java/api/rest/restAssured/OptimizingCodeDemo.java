@@ -21,10 +21,10 @@ public class OptimizingCodeDemo {
     public static void createSpecifications() {
 
         requestSpec = new RequestSpecBuilder()
-        	.setBaseUri("http://api.zippopotam.us")
-        	.log(LogDetail.ALL)
-        	.build();
-        
+                .setBaseUri("http://api.zippopotam.us")
+                .log(LogDetail.ALL)
+                .build();
+
         responseSpec = new ResponseSpecBuilder().
                 expectStatusCode(200).
                 expectContentType(ContentType.JSON).log(LogDetail.BODY).
@@ -33,31 +33,27 @@ public class OptimizingCodeDemo {
 
     @Test
     public void requestUsZipCode90210_checkPlaceNameInResponseBody_expectBeverlyHills_withResponseSpec() {
-
         given().
-            spec(requestSpec).
-        when().
-            get("us/90210").
-        then().
-            spec(responseSpec).
-        and().
-            assertThat().
-            body("places[0].'place name'", equalTo("Beverly Hills"));
+                spec(requestSpec).
+                when().
+                get("us/90210").
+                then().
+                spec(responseSpec).
+                and().
+                assertThat().
+                body("places[0].'place name'", equalTo("Beverly Hills"));
     }
 
     @Test
     public void requestUsZipCode90210_extractPlaceNameFromResponseBody_assertEqualToBeverlyHills() {
-
         String placeName =
-
-        given().
-            spec(requestSpec).
-        when().
-            get("us/90210").
-        then().
-            extract().
-            path("places[0].'place name'");
-
+                given().
+                        spec(requestSpec).
+                        when().
+                        get("us/90210").
+                        then().
+                        extract().
+                        path("places[0].'place name'");
         Assert.assertEquals("Beverly Hills", placeName);
     }
 }

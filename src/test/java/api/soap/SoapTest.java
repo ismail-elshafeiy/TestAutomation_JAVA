@@ -33,12 +33,10 @@ public class SoapTest {
                 .then()
                 .statusCode(200) // Verify the response status code
                 .extract().response();
-
         System.out.println("Response: " + response.asString());
         XmlPath xmlPath = new XmlPath(response.asString());
         // Extract the value of m:IsValidISBN13Result from the response
         String isValidISBN13Result = xmlPath.getString("soap:Envelope.soap:Body");
-
         // Print the extracted value
         System.out.println("IsValidISBN13Result: " + isValidISBN13Result);
         Assert.assertEquals(isValidISBN13Result, "true");
@@ -69,13 +67,10 @@ public class SoapTest {
         System.out.println("Response: " + response.asString());
         // Convert the response body to XML Path to parse and extract values
         XmlPath xmlPath = new XmlPath(response.asString());
-
         // Extract specific tag value (ListOfLanguagesByName) from the response
         String tagValue = xmlPath.getString("soap:Envelope.soap:Body.ListOfLanguagesByName");
-
         // Print the extracted tag value
         System.out.println("Extracted Value: " + tagValue);
-
         // Validate the value (example: checking if the value is not null or empty)
         if (tagValue != null && !tagValue.isEmpty()) {
             System.out.println("Tag value is valid!");
