@@ -3,8 +3,10 @@ package com.engine.driver;
 import com.engine.actions.FileActions;
 import com.engine.reports.Logger;
 import com.engine.validations.EyesManager;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.Reporter;
@@ -36,7 +38,8 @@ public class DriverHelper {
             case "chrome":
                 if (Objects.equals(AUTOMATIC_DOWNLOAD_DRIVER, Boolean.TRUE)) {
                     Logger.logConsole("Automatic download driver is enabled and the chrome driver will be downloaded automatically");
-                    WebDriverManager.chromedriver().setup();
+                    driver = new ChromeDriver(DriverOptions.getChromeOptions());
+                    //WebDriverManager.chromedriver().setup();
                 } else {
                     FileActions.getInstance().doesFileExist(CHROME_DRIVER_PATH);
                     System.setProperty("webdriver.chrome.driver", CHROME_DRIVER_PATH);
@@ -45,7 +48,8 @@ public class DriverHelper {
             case "firefox":
                 if (Objects.equals(Boolean.TRUE, AUTOMATIC_DOWNLOAD_DRIVER)) {
                     Logger.logConsole("Automatic download driver is enabled and the gecko driver will be downloaded automatically");
-                    WebDriverManager.firefoxdriver().setup();
+                    driver = new FirefoxDriver(DriverOptions.getFirefoxOptions());
+                    //  WebDriverManager.firefoxdriver().setup();
                 } else {
                     FileActions.getInstance().doesFileExist(FIREFOX_DRIVER_PATH);
                     System.setProperty("webdriver.gecko.driver", FIREFOX_DRIVER_PATH);
@@ -54,7 +58,8 @@ public class DriverHelper {
             case "edge":
                 if (Objects.equals(Boolean.TRUE, AUTOMATIC_DOWNLOAD_DRIVER)) {
                     Logger.logConsole("Automatic download driver is enabled and the edge driver will be downloaded automatically");
-                    WebDriverManager.edgedriver().setup();
+                    driver = new EdgeDriver(DriverOptions.getEdgeOptions());
+                    // WebDriverManager.edgedriver().setup();
                 } else {
                     FileActions.getInstance().doesFileExist(EDGE_DRIVER_PATH);
                     System.setProperty("webdriver.edge.driver", EDGE_DRIVER_PATH);

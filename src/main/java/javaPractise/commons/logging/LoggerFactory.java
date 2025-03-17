@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.commons.logging;
+package javaPractise.commons.logging;
 
 
 import java.util.Set;

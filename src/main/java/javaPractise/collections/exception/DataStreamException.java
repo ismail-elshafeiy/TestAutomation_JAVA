@@ -1,5 +1,5 @@
 
-package com.collections.exception;
+package javaPractise.collections.exception;
 
 public class DataStreamException extends RuntimeException {
 

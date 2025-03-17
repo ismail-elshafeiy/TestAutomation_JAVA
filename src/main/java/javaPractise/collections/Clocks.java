@@ -1,4 +1,4 @@
-package com.collections;
+package javaPractise.collections;
 
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;

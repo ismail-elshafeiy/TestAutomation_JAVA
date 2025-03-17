@@ -1,8 +1,9 @@
 
 
-package com.collections;
+package javaPractise.collections;
 
-import com.collections.exception.DataStreamException;
+
+import javaPractise.collections.exception.DataStreamException;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;

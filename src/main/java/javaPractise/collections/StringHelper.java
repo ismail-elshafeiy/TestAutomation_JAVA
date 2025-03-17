@@ -1,8 +1,7 @@
 
 
-package com.collections;
+package javaPractise.collections;
 
-import dev.failsafe.internal.util.Lists;
 import lombok.experimental.UtilityClass;
 
 import java.util.Arrays;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.commons.logging;
+package javaPractise.commons.logging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 public final class LogRecordListener {
     private final ThreadLocal<List<LogRecord>> logRecords = ThreadLocal.withInitial(ArrayList::new);
 
-    void logRecordSubmitted(LogRecord logRecord) {
+    public void logRecordSubmitted(LogRecord logRecord) {
         this.logRecords.get().add(logRecord);
     }
 

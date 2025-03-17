@@ -1,6 +1,7 @@
+package javaPractice;
 
 
-import com.collections.Clocks;
+import javaPractise.collections.Clocks;
 import org.testng.annotations.Test;
 
 import java.time.LocalDate;

@@ -1,5 +1,5 @@
 
-package com.commons.config;
+package javaPractise.commons.config;
 
 
 import com.commons.annotation.DataFile;

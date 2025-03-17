@@ -1,5 +1,5 @@
 
-package com.collections;
+package javaPractise.collections;
 
 import lombok.NoArgsConstructor;
 import lombok.NonNull;

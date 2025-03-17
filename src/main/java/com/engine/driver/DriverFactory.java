@@ -38,15 +38,12 @@ public class DriverFactory {
         if (executionType == ExecutionType.LOCAL || (executionType == ExecutionType.FROM_CONFIG_FILE && EXECUTION_TYPE.equalsIgnoreCase("local"))) {
             if (googleChrome) {
                 checkDriverDownloadOption(BrowserType.CHROME.getValue());
-                driver = new ChromeDriver(DriverOptions.getChromeOptions());
                 setITestContext();
             } else if (mozillaFirefox) {
                 checkDriverDownloadOption(BrowserType.FIREFOX.getValue());
-                driver = new FirefoxDriver(DriverOptions.getFirefoxOptions());
                 setITestContext();
             } else if (microsoftEdge) {
                 checkDriverDownloadOption(BrowserType.EDGE.getValue());
-                driver = new EdgeDriver(DriverOptions.getEdgeOptions());
                 setITestContext();
             } else {
                 Logger.logError(browserTypeWarningMsg);
