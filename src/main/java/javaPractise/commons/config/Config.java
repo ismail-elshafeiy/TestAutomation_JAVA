@@ -2,7 +2,7 @@
 package javaPractise.commons.config;
 
 
-import com.commons.annotation.DataFile;
+import javaPractise.commons.annotation.DataFile;
 import lombok.Data;
 
 import java.util.Map;

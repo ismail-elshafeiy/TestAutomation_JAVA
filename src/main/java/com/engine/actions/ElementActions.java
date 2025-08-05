@@ -168,12 +168,9 @@ public class ElementActions {
         return this;
     }
 
-    @Step("Click on element: [{locator" +
-            "}]")
-    public static void click(WebDriver driver, By locator
-    ) {
-        hover(driver, locator
-        );
+    @Step("Click on element: [{locator}]")
+    public static void click(WebDriver driver, By locator) {
+        hover(driver, locator);
         try {
             WaitsManager.getExplicitWait(driver).until(ExpectedConditions.elementToBeClickable(locator
             ));
@@ -376,10 +373,8 @@ public class ElementActions {
         return this;
     }
 
-    public static void clickAndSendKeys(WebDriver driver, By locator
-            , String text) {
-        ElementHelper.locatingElementStrategy(driver, locator
-        );
+    public static void clickAndSendKeys(WebDriver driver, By locator, String text) {
+        ElementHelper.locatingElementStrategy(driver, locator);
         try {
             actions = new Actions(driver);
             Logger.logInfoStep("[Element Action] Sending Keys [" + text + "] to element [" + locator
@@ -392,10 +387,8 @@ public class ElementActions {
         }
     }
 
-    public ElementActions clickAndSendKeys(By locator
-            , String text) {
-        clickAndSendKeys(driver, locator
-                , text);
+    public ElementActions clickAndSendKeys(By locator, String text) {
+        clickAndSendKeys(driver, locator, text);
         return this;
     }
 
