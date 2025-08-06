@@ -1,4 +1,4 @@
-package javaPractise.basics.general;
+package javaPractise.basics;
 
 public class Comments {
     /**

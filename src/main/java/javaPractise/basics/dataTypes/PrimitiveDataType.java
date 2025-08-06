@@ -1,4 +1,4 @@
-package javaPractise.basics.general.dataTypes;
+package javaPractise.basics.dataTypes;
 
 public class PrimitiveDataType {
     /**
@@ -11,6 +11,7 @@ public class PrimitiveDataType {
      * - Returning : This is where you return a variable from a method or function.
      * - Casting / Conversion : This is where you convert a variable from one type to another, such as from an integer to a double.
      * ----------------------------------------------------------------------------------------------------------------------------
+     * <p>
      * Data types in Java are divided into two categories:
      * 1. Primitive Data Types: Java has 8 primitive data types grouped by type (integer, floating point, character, and boolean):
      * integer to store numbers.

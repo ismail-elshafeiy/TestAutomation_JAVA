@@ -1,4 +1,4 @@
-package javaPractise.basics.general.dataTypes;
+package javaPractise.basics.dataTypes;
 
 public class ArithmeticOperations {
     /**
