@@ -2,7 +2,7 @@ package com.engine.actions;
 
 import com.engine.Helper;
 import com.google.common.hash.Hashing;
-import com.engine.reports.Logger;
+import com.engine.reports.CustomReporter;
 import com.spire.xls.Workbook;
 import com.spire.xls.Worksheet;
 import org.apache.commons.io.FileUtils;
@@ -21,8 +21,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-import static com.engine.reports.Logger.failAction;
-import static com.engine.reports.Logger.passAction;
+import static com.engine.reports.CustomReporter.failAction;
+import static com.engine.reports.CustomReporter.passAction;
 import static org.testng.FileAssert.fail;
 
 public class FileActions {
@@ -83,7 +83,7 @@ public class FileActions {
                     if (jarEntry.isDirectory()) {
                         boolean success = currentFile.mkdirs();
                         if (success) {
-                            Logger.logError("Directory Created successfully...");
+                            CustomReporter.logError("Directory Created successfully...");
                         }
                     } else {
                         InputStream is = jarFile.getInputStream(jarEntry);
@@ -175,14 +175,14 @@ public class FileActions {
             try {
                 doesFileExit = (new File(fileFolderName + fileName)).getAbsoluteFile().exists();
             } catch (Exception rootCauseException) {
-                Logger.logError(rootCauseException.getMessage());
+                CustomReporter.logError(rootCauseException.getMessage());
             }
 
             if (Boolean.FALSE.equals(doesFileExit)) {
                 try {
                     Thread.sleep(500);
                 } catch (Exception rootCauseException) {
-                    Logger.logThrowable(rootCauseException);
+                    CustomReporter.logThrowable(rootCauseException);
                 }
             }
             i++;
@@ -399,7 +399,7 @@ public class FileActions {
                     if (jarEntry.isDirectory()) {
                         boolean success = currentFile.mkdirs();
                         if (success) {
-                            Logger.logError("Directory Created successfully...");
+                            CustomReporter.logError("Directory Created successfully...");
                         }
                     } else {
                         InputStream is = jarFile.getInputStream(jarEntry);
@@ -424,7 +424,7 @@ public class FileActions {
         } catch (IllegalArgumentException rootCauseException) {
             failAction("Failed to list files in this directory: \"" + targetDirectory + "\"", rootCauseException);
         }
-        Logger.logConsole("Target Directory: \"" + targetDirectory + "\"" + files.toString().trim());
+        CustomReporter.logConsole("Target Directory: \"" + targetDirectory + "\"" + files.toString().trim());
         return files.toString().trim();
     }
 
@@ -436,7 +436,7 @@ public class FileActions {
         } catch (IllegalArgumentException rootCauseException) {
             failAction("Failed to list files in this directory: \"" + targetDirectory + "\"", rootCauseException);
         }
-        Logger.logConsole("Target Directory: \"" + targetDirectory + "\"" + files.toString().trim());
+        CustomReporter.logConsole("Target Directory: \"" + targetDirectory + "\"" + files.toString().trim());
         return files;
     }
 
@@ -531,10 +531,10 @@ public class FileActions {
         if (dir.isDirectory()) {
             Optional<File> opFile = Arrays.stream(dir.listFiles(File::isFile)).max((f1, f2) -> Long.compare(f1.lastModified(), f2.lastModified()));
             if (opFile.isPresent()) {
-                Logger.logInfoStep("getFileLastModified: " + opFile.get().getPath());
+                CustomReporter.logInfoStep("getFileLastModified: " + opFile.get().getPath());
                 return opFile.get();
             } else {
-                Logger.logInfoStep("getFileLastModified: " + opFile.get().getPath());
+                CustomReporter.logInfoStep("getFileLastModified: " + opFile.get().getPath());
                 return null;
             }
         }
@@ -546,10 +546,10 @@ public class FileActions {
         if (dir.isDirectory()) {
             Optional<File> opFile = Arrays.stream(Objects.requireNonNull(dir.listFiles(File::isFile))).max(Comparator.comparingLong(File::lastModified));
             if (opFile.isPresent()) {
-                Logger.logInfoStep("getFileLastModified: " + opFile.get().getPath());
+                CustomReporter.logInfoStep("getFileLastModified: " + opFile.get().getPath());
                 return opFile.get();
             } else {
-                Logger.logInfoStep("getFileLastModified: " + opFile.get().getPath());
+                CustomReporter.logInfoStep("getFileLastModified: " + opFile.get().getPath());
                 return null;
             }
         }
@@ -562,11 +562,11 @@ public class FileActions {
     public URL downloadFile(String targetFileURL, String destinationFilePath, int connectionTimeout, int readTimeout) {
         if (targetFileURL != null && destinationFilePath != null) {
             try {
-                Logger.logInfoStep("Downloading a file from this url \"" + targetFileURL + "\" to this directory \""
+                CustomReporter.logInfoStep("Downloading a file from this url \"" + targetFileURL + "\" to this directory \""
                         + destinationFilePath + "\", please wait as downloading may take some time...");
                 FileUtils.copyURLToFile(new URL(targetFileURL), new File(destinationFilePath), connectionTimeout,
                         readTimeout);
-                Logger.logInfoStep("Downloading completed successfully.");
+                CustomReporter.logInfoStep("Downloading completed successfully.");
                 URL downloadedFile = new File(destinationFilePath).toURI().toURL();
                 passAction("Target File URL\"" + targetFileURL + "\" | Destination Folder: \"" + destinationFilePath
                         + "\" | Connection Timeout: \"" + connectionTimeout + "\" | Read Timeout: \"" + readTimeout
@@ -633,7 +633,7 @@ public class FileActions {
     public boolean zipFiles(String srcFolder, String destZipFile) {
         boolean result = false;
         try (var fileWalker = Files.walk(Paths.get(srcFolder))) {
-            Logger.logError("Archiving the following files:\n");
+            CustomReporter.logError("Archiving the following files:\n");
             zipFolder(srcFolder, destZipFile);
             result = true;
             passAction("Target Folder: \"" + srcFolder + "\" | Destination Archive: \"" + destZipFile + "\"");

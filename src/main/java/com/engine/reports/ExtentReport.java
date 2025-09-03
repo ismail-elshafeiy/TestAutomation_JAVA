@@ -274,7 +274,7 @@ public class ExtentReport {
                     extentTest.info(MediaEntityBuilder.createScreenCaptureFromBase64String(image).build());
                 }
             } catch (IOException e) {
-                Logger.logError("Failed to attach screenshot to extentReport.");
+                CustomReporter.logError("Failed to attach screenshot to extentReport.");
             }
         }
     }
@@ -289,7 +289,7 @@ public class ExtentReport {
                     default -> extentTest.info(MarkupHelper.createCodeBlock(codeBlock));
                 }
             } catch (IOException e) {
-                Logger.logError("Failed to attach code block to extentReport.");
+                CustomReporter.logError("Failed to attach code block to extentReport.");
             }
         }
     }

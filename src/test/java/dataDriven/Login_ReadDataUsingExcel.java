@@ -27,7 +27,7 @@ public class Login_ReadDataUsingExcel {
         ExcelFileManager.switchToSheet("Login Data2");
         new HomePage(driver).navigateToHomePage()
                 .clickFormAuthentication()
-                .setUsername(ExcelFileManager.getCellData("email1", "email"))
+                .setUsername(new ExcelFileManager.getCellData("email1", "email"))
                 .setPassword(ExcelFileManager.getCellData("email1", "password"))
                 .clickLoginButton();
         assertTrue(SecureAreaPage.getAlertText()

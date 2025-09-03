@@ -1,7 +1,7 @@
 package com.engine.driver;
 
 import com.engine.actions.FileActions;
-import com.engine.reports.Logger;
+import com.engine.reports.CustomReporter;
 import com.engine.validations.EyesManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -37,7 +37,7 @@ public class DriverHelper {
         switch (browserType.toLowerCase()) {
             case "chrome":
                 if (Objects.equals(AUTOMATIC_DOWNLOAD_DRIVER, Boolean.TRUE)) {
-                    Logger.logConsole("Automatic download driver is enabled and the chrome driver will be downloaded automatically");
+                    CustomReporter.logConsole("Automatic download driver is enabled and the chrome driver will be downloaded automatically");
                     driver = new ChromeDriver(DriverOptions.getChromeOptions());
                     //WebDriverManager.chromedriver().setup();
                 } else {
@@ -47,7 +47,7 @@ public class DriverHelper {
                 break;
             case "firefox":
                 if (Objects.equals(Boolean.TRUE, AUTOMATIC_DOWNLOAD_DRIVER)) {
-                    Logger.logConsole("Automatic download driver is enabled and the gecko driver will be downloaded automatically");
+                    CustomReporter.logConsole("Automatic download driver is enabled and the gecko driver will be downloaded automatically");
                     driver = new FirefoxDriver(DriverOptions.getFirefoxOptions());
                     //  WebDriverManager.firefoxdriver().setup();
                 } else {
@@ -57,7 +57,7 @@ public class DriverHelper {
                 break;
             case "edge":
                 if (Objects.equals(Boolean.TRUE, AUTOMATIC_DOWNLOAD_DRIVER)) {
-                    Logger.logConsole("Automatic download driver is enabled and the edge driver will be downloaded automatically");
+                    CustomReporter.logConsole("Automatic download driver is enabled and the edge driver will be downloaded automatically");
                     driver = new EdgeDriver(DriverOptions.getEdgeOptions());
                     // WebDriverManager.edgedriver().setup();
                 } else {
@@ -66,7 +66,7 @@ public class DriverHelper {
                 }
                 break;
             default:
-                Logger.logError("The driver is null! because the browser type [ " + browserType + " ] is not valid/supported; Please choose a valid browser type from the given choices in the properties file");
+                CustomReporter.logError("The driver is null! because the browser type [ " + browserType + " ] is not valid/supported; Please choose a valid browser type from the given choices in the properties file");
         }
     }
 

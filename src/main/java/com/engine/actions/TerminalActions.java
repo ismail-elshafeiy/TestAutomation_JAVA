@@ -4,7 +4,7 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import com.engine.reports.Logger;
+import com.engine.reports.CustomReporter;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.io.BufferedReader;
@@ -16,8 +16,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static com.engine.reports.Logger.failAction;
-import static com.engine.reports.Logger.passAction;
+import static com.engine.reports.CustomReporter.failAction;
+import static com.engine.reports.CustomReporter.passAction;
 
 @SuppressWarnings("unused")
 public class TerminalActions {
@@ -145,14 +145,14 @@ public class TerminalActions {
 
         if (rootCauseException != null && rootCauseException.length >= 1) {
             List<Object> actualValueAttachment = Arrays.asList("Terminal Action Exception - " + actionName,
-                    "Stacktrace", Logger.formatStackTraceToLogEntry(rootCauseException[0]));
+                    "Stacktrace", CustomReporter.formatStackTraceToLogEntry(rootCauseException[0]));
             attachments.add(actualValueAttachment);
         }
 
         if (!attachments.equals(new ArrayList<>())) {
-            Logger.logError(message);
+            CustomReporter.logError(message);
         } else {
-            Logger.logError(message);
+            CustomReporter.logError(message);
         }
         return message;
     }
@@ -255,7 +255,7 @@ public class TerminalActions {
             session = jsch.getSession(sshUsername, sshHostName, sshPortNumber);
             session.setConfig(config);
             session.connect();
-            Logger.logError("Successfully created SSH Session.");
+            CustomReporter.logError("Successfully created SSH Session.");
         } catch (JSchException rootCauseException) {
             failAction(testData, rootCauseException);
         }
@@ -295,7 +295,7 @@ public class TerminalActions {
         String finalDirectory = directory;
         internalCommands.forEach(command -> {
             command = command.contains(".bat") && !command.contains(".\\") ? ".\\" + command : command;
-            Logger.logConsole("Executing: \"" + command + "\" locally.");
+            CustomReporter.logConsole("Executing: \"" + command + "\" locally.");
             try {
                 ProcessBuilder pb = new ProcessBuilder();
                 pb.directory(new File(finalDirectory));
@@ -319,7 +319,7 @@ public class TerminalActions {
                     BufferedReader rdr = new BufferedReader(isr);
                     while ((line = rdr.readLine()) != null) {
                         if (Boolean.TRUE.equals(verbose)) {
-                            Logger.logError(line);
+                            CustomReporter.logError(line);
                         }
                         logs.append(line);
                         logs.append("\n");
@@ -328,7 +328,7 @@ public class TerminalActions {
                     rdr = new BufferedReader(isr);
                     while ((line = rdr.readLine()) != null) {
                         if (Boolean.TRUE.equals(verbose)) {
-                            Logger.logError(line);
+                            CustomReporter.logError(line);
                         }
                         logs.append("\n");
                         logs.append(line);
@@ -364,7 +364,7 @@ public class TerminalActions {
         StringBuilder exitStatuses = new StringBuilder();
         int sessionTimeout = Integer.parseInt(String.valueOf(60 * 1000));
         // remote execution
-        Logger.logError(
+        CustomReporter.logError(
                 "Attempting to perform the following command remotely. Command: \"" + longCommand + "\"");
         Session remoteSession = createSSHsession();
         if (remoteSession != null) {

@@ -1,6 +1,6 @@
 package com.engine.dataDriven;
 
-import com.engine.reports.Logger;
+import com.engine.reports.CustomReporter;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -49,16 +49,16 @@ public class TextFileManager {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                Logger.logConsole("Text File Reader: " + line);
+                CustomReporter.logConsole("Text File Reader: " + line);
             }
             fileReader.close();
             bufferedReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            Logger.logError("File not found: [ " + filepath + " ] " + e.getMessage());
+            CustomReporter.logError("File not found: [ " + filepath + " ] " + e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.logError("IO Exception: [ " + filepath + " ] " + e.getMessage());
+            CustomReporter.logError("IO Exception: [ " + filepath + " ] " + e.getMessage());
         }
     }
 
@@ -111,10 +111,10 @@ public class TextFileManager {
         if (dir.isDirectory()) {
             Optional<File> opFile = Arrays.stream(dir.listFiles(File::isFile)).max((f1, f2) -> Long.compare(f1.lastModified(), f2.lastModified()));
             if (opFile.isPresent()) {
-                Logger.logConsole("getFileLastModified: " + opFile.get().getPath());
+                CustomReporter.logConsole("getFileLastModified: " + opFile.get().getPath());
                 return opFile.get();
             } else {
-                Logger.logConsole("getFileLastModified: " + opFile.get().getPath());
+                CustomReporter.logConsole("getFileLastModified: " + opFile.get().getPath());
                 return null;
             }
         }

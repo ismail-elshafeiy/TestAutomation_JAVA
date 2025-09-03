@@ -1,6 +1,6 @@
 package com.engine.config;
 
-import com.engine.reports.Logger;
+import com.engine.reports.CustomReporter;
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.ConfigFactory;
 
@@ -34,7 +34,7 @@ public interface Paths extends EngineProperties {
         Properties.paths = ConfigFactory.create(Paths.class, updatedProps);
         // temporarily set the system property to support hybrid read/write mode
         System.setProperty(key, value);
-        Logger.logInfoStep("Setting \"" + key + "\" property with \"" + value + "\".");
+        CustomReporter.logInfoStep("Setting \"" + key + "\" property with \"" + value + "\".");
     }
 
     default SetProperty set() {

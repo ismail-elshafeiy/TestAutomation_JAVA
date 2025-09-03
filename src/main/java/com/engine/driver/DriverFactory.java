@@ -3,11 +3,8 @@ package com.engine.driver;
 import com.engine.evidence.RecordVideo;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import com.engine.reports.Logger;
+import com.engine.reports.CustomReporter;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -29,7 +26,7 @@ public class DriverFactory {
     @Step("Initializing a new Web GUI Browser!.....")
     public static synchronized WebDriver getBrowser(BrowserType browserType, ExecutionType executionType) {
         //eyesManager = new EyesManager(driver.get(), appName);
-        Logger.logInfoStep("Initialize [ " + browserType.getValue() + " ] Browser and the Execution Type is [ " + executionType.getValue() + " ] and Headless Mode is [ " + HEADLESS_OPTION + " ]");
+        CustomReporter.logInfoStep("Initialize [ " + browserType.getValue() + " ] Browser and the Execution Type is [ " + executionType.getValue() + " ] and Headless Mode is [ " + HEADLESS_OPTION + " ]");
         boolean googleChrome = browserType == BrowserType.CHROME || (browserType == BrowserType.FROM_CONFIG_FILE && BROWSER_TYPE.equalsIgnoreCase("chrome"));
         boolean mozillaFirefox = browserType == BrowserType.FIREFOX || (browserType == BrowserType.FROM_CONFIG_FILE && BROWSER_TYPE.equalsIgnoreCase("firefox"));
         boolean microsoftEdge = browserType == BrowserType.EDGE || (browserType == BrowserType.FROM_CONFIG_FILE && BROWSER_TYPE.equalsIgnoreCase("edge"));
@@ -46,7 +43,7 @@ public class DriverFactory {
                 checkDriverDownloadOption(BrowserType.EDGE.getValue());
                 setITestContext();
             } else {
-                Logger.logError(browserTypeWarningMsg);
+                CustomReporter.logError(browserTypeWarningMsg);
                 fail(browserTypeWarningMsg);
             }
             // Start video recording
@@ -75,12 +72,12 @@ public class DriverFactory {
                     e.printStackTrace();
                 }
             } else {
-                Logger.logError(browserTypeWarningMsg);
+                CustomReporter.logError(browserTypeWarningMsg);
                 fail(browserTypeWarningMsg);
             }
         } else {
             String warningMsg = "The driver is null! because the execution type [" + EXECUTION_TYPE + "] is not valid/supported; Please choose a valid execution type from the given choices in the properties file";
-            Logger.logError(warningMsg);
+            CustomReporter.logError(warningMsg);
             fail(warningMsg);
         }
         // start session

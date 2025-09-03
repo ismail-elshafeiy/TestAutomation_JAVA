@@ -1,6 +1,6 @@
 package com.engine;
 
-import com.engine.reports.Logger;
+import com.engine.reports.CustomReporter;
 import io.appium.java_client.AppiumFluentWait;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
@@ -19,7 +19,7 @@ public class WaitsManager {
 
 
     public static void implicitWait(WebDriver driver, int timeout) {
-        Logger.logInfoStep("Implicit wait for [ " + timeout + " ] seconds");
+        CustomReporter.logInfoStep("Implicit wait for [ " + timeout + " ] seconds");
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
     }
 
@@ -28,7 +28,7 @@ public class WaitsManager {
     }
 
     public static Wait<WebDriver> getExplicitWait(WebDriver driver, int timeout) {
-        Logger.logInfoStep("Explicit wait for [ " + timeout + " ] seconds");
+        CustomReporter.logInfoStep("Explicit wait for [ " + timeout + " ] seconds");
         return new WebDriverWait(driver, Duration.ofSeconds(timeout));
     }
 

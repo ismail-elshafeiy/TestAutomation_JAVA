@@ -41,7 +41,7 @@ public class AllureReport {
                         put("Global Timeout", "").
                         put("Page Load Timeout", "").
                         build());
-        Logger.logConsole("Allure Reports is installed.");
+        CustomReporter.logConsole("Allure Reports is installed.");
     }
 
     public static void addAttachmentVideoAVI() {
@@ -51,12 +51,12 @@ public class AllureReport {
             if (video != null) {
                 Allure.addAttachment("Video record AVI", "video/avi", Files.asByteSource(video).openStream(), ".avi");
             } else {
-                Logger.logWarning("Video record not found.");
-                Logger.logWarning("Can not attachment Video in Allure report");
+                CustomReporter.logWarning("Video record not found.");
+                CustomReporter.logWarning("Can not attachment Video in Allure report");
             }
 
         } catch (IOException e) {
-            Logger.logError("Can not attachment Video in Allure report");
+            CustomReporter.logError("Can not attachment Video in Allure report");
             e.printStackTrace();
         }
     }
@@ -68,12 +68,12 @@ public class AllureReport {
             if (video != null) {
                 Allure.addAttachment("Failed test Video record MP4", "video/mp4", Files.asByteSource(video).openStream(), ".mp4");
             } else {
-                Logger.logWarning("Video record not found.");
-                Logger.logWarning("Can not attachment Video in Allure report");
+                CustomReporter.logWarning("Video record not found.");
+                CustomReporter.logWarning("Can not attachment Video in Allure report");
             }
 
         } catch (IOException e) {
-            Logger.logError("Can not attachment Video in Allure report");
+            CustomReporter.logError("Can not attachment Video in Allure report");
             e.printStackTrace();
         }
     }
@@ -122,7 +122,7 @@ public class AllureReport {
 
     @Step("{logText}")
     static void writeStepToReport(String logText, List<List<Object>> attachments) {
-        Logger.logInfoStep(logText);
+        CustomReporter.logInfoStep(logText);
         if (attachments != null && !attachments.isEmpty()) {
             attachments.forEach(attachment -> {
                 if (attachment != null
@@ -144,8 +144,8 @@ public class AllureReport {
     }
 
     public static void writeStepToReport(String logText) {
-      Logger.logInfoStep(logText);
-        Logger.logInfoStep(logText);
+      CustomReporter.logInfoStep(logText);
+        CustomReporter.logInfoStep(logText);
         Allure.step(logText, getAllureStepStatus(logText));
     }
 
@@ -181,7 +181,7 @@ public class AllureReport {
             FileActions.getInstance().deleteFile("allure-report/");
             FileActions.getInstance().deleteFolder(allureResultsFolderPath.substring(0, allureResultsFolderPath.length() - 1));
         } catch (Exception t) {
-            Logger.logError("Failed to delete allure-results as it is currently open. Kindly restart your device to unlock the directory.");
+            CustomReporter.logError("Failed to delete allure-results as it is currently open. Kindly restart your device to unlock the directory.");
         }
     }
 

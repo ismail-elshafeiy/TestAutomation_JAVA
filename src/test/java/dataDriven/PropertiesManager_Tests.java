@@ -2,7 +2,7 @@ package dataDriven;
 
 import com.engine.dataDriven.FakerData;
 import com.engine.dataDriven.PropertiesManager;
-import com.engine.reports.Logger;
+import com.engine.reports.CustomReporter;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -18,25 +18,25 @@ public class PropertiesManager_Tests {
         propertiesFiles.add("src/main/resources/properties/config.properties");
         propertiesFiles.add("src/main/resources/properties/paths.properties");
         Properties properties = PropertiesManager.loadAllFiles(propertiesFiles);
-        Logger.logInfoStep("From [ config ] Key: projectName, Value: [ " + properties.getProperty("projectName") + " ]");
-        Logger.logInfoStep("From [ allure ] Key: username, Value: [ " + properties.getProperty("allure.link.issue.pattern") + " ]");
-        Logger.logInfoStep("From [ paths ] Key: password, Value: [ " + properties.getProperty("TAU.homeUrl") + " ]");
+        CustomReporter.logInfoStep("From [ config ] Key: projectName, Value: [ " + properties.getProperty("projectName") + " ]");
+        CustomReporter.logInfoStep("From [ allure ] Key: username, Value: [ " + properties.getProperty("allure.link.issue.pattern") + " ]");
+        CustomReporter.logInfoStep("From [ paths ] Key: password, Value: [ " + properties.getProperty("TAU.homeUrl") + " ]");
     }
 
     @Test(description = "Load all properties from the properties folder path end with the .properties ")
     public void loadAllProperties() {
         Properties properties = PropertiesManager.loadAllProperties();
-        Logger.logInfoStep("From [ config ] Key: projectName, Value: [ " + properties.getProperty("projectName") + " ]");
-        Logger.logInfoStep("From [ allure ] Key: username, Value: [ " + properties.getProperty("allure.link.issue.pattern") + " ]");
-        Logger.logInfoStep("From [ paths ] Key: password, Value: [ " + properties.getProperty("TAU.homeUrl") + " ]");
+        CustomReporter.logInfoStep("From [ config ] Key: projectName, Value: [ " + properties.getProperty("projectName") + " ]");
+        CustomReporter.logInfoStep("From [ allure ] Key: username, Value: [ " + properties.getProperty("allure.link.issue.pattern") + " ]");
+        CustomReporter.logInfoStep("From [ paths ] Key: password, Value: [ " + properties.getProperty("TAU.homeUrl") + " ]");
     }
 
     @Test(description = "Get all properties as a map")
     public void getPropertiesAsMap() {
         Map<String, String> properties = PropertiesManager.getPropertiesAsMap("config");
-        Logger.logInfoStep("From [ config ] Key: projectName, Value: [ " + properties.get("projectName") + " ]");
+        CustomReporter.logInfoStep("From [ config ] Key: projectName, Value: [ " + properties.get("projectName") + " ]");
         for (Map.Entry<String, String> entry : properties.entrySet()) {
-            Logger.logInfoStep("Key: [ " + entry.getKey() + "] , Value: [ " + entry.getValue() + " ]");
+            CustomReporter.logInfoStep("Key: [ " + entry.getKey() + "] , Value: [ " + entry.getValue() + " ]");
         }
     }
 
@@ -48,7 +48,7 @@ public class PropertiesManager_Tests {
                 "projectDescription", "Test Description"
         );
         PropertiesManager.addNewPropertiesFromMap("testProperties", properties);
-        Logger.logInfoStep(PropertiesManager.getPropertyValue("testProperties", "projectName"));
+        CustomReporter.logInfoStep(PropertiesManager.getPropertyValue("testProperties", "projectName"));
     }
     @Test(description = "Update multiple properties at once")
     public void updateMultipleProperties() {
@@ -58,25 +58,25 @@ public class PropertiesManager_Tests {
                 "newProperty", "New Property"
         );
         PropertiesManager.updatePropertiesFromMap("testProperties", properties);
-        Logger.logInfoStep(PropertiesManager.getPropertyValue("testProperties", "projectName"));
+        CustomReporter.logInfoStep(PropertiesManager.getPropertyValue("testProperties", "projectName"));
     }
 
     @Test(description = "Get the value of a property")
     public void getPropertyValue() {
-        Logger.logInfoStep(PropertiesManager.getPropertyValue("config", "projectName"));
+        CustomReporter.logInfoStep(PropertiesManager.getPropertyValue("config", "projectName"));
     }
 
     @Test(description = "Add new property key and value")
     public void addNewPropertyKeyAndValue() {
         String newKey = FakerData.getFirstName();
         PropertiesManager.setPropertyValue("testProperties", newKey, "Test New key & value");
-        Logger.logInfoStep(PropertiesManager.getPropertyValue("testProperties", newKey));
+        CustomReporter.logInfoStep(PropertiesManager.getPropertyValue("testProperties", newKey));
     }
 
     @Test(description = "Update the value of a property")
     public void updatePropertyValue() {
         PropertiesManager.setPropertyValue("testProperties", "projectName", "Test New key & value 3");
-        Logger.logInfoStep(PropertiesManager.getPropertyValue("testProperties", "projectName"));
+        CustomReporter.logInfoStep(PropertiesManager.getPropertyValue("testProperties", "projectName"));
     }
     @Test(description = "Remove a property")
     public void removeProperty() {

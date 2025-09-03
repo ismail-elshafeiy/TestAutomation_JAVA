@@ -17,7 +17,7 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import io.restassured.specification.SpecificationQuerier;
 import com.engine.reports.ExtentReport;
-import com.engine.reports.Logger;
+import com.engine.reports.CustomReporter;
 
 import java.util.List;
 import java.util.Map;
@@ -89,7 +89,7 @@ public class RestApiActions {
         String requestUrl = baseUrl + serviceName;
         request = RestAssured.given().spec(requestSpec);
         queryableRequestSpecs = SpecificationQuerier.query(request);
-        Logger.logInfoStep("Request URL: [" + requestUrl + "] | Request Method: [" + requestType.getValue() + "] | Expected Status Code: [" + expectedStatusCode + "]");
+        CustomReporter.logInfoStep("Request URL: [" + requestUrl + "] | Request Method: [" + requestType.getValue() + "] | Expected Status Code: [" + expectedStatusCode + "]");
         try {
             if (headers != null) {
                 request.headers(headers);
@@ -138,7 +138,7 @@ public class RestApiActions {
             }
             response.then().spec(responseSpec).statusCode(expectedStatusCode);
         } catch (Exception e) {
-            Logger.logInfoStep(e.getMessage());
+            CustomReporter.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
         AllureReport.attachApiResponseToAllureReport(response.asByteArray());
@@ -151,7 +151,7 @@ public class RestApiActions {
         try {
             value = response.jsonPath().getString(jsonPath);
         } catch (ClassCastException | JsonPathException | IllegalArgumentException e) {
-            Logger.logInfoStep(e.getMessage());
+            CustomReporter.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
         return value;
@@ -162,7 +162,7 @@ public class RestApiActions {
         try {
             listValue = response.jsonPath().getList(jsonPath);
         } catch (ClassCastException | JsonPathException | IllegalArgumentException e) {
-            Logger.logInfoStep(e.getMessage());
+            CustomReporter.logInfoStep(e.getMessage());
             fail(e.getMessage());
         }
         return listValue;

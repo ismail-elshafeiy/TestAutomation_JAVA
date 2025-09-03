@@ -6,7 +6,7 @@ import com.automation.remarks.video.recorder.VideoRecorder;
 
 import com.engine.Helper;
 import com.engine.constants.FrameworkConstants;
-import com.engine.reports.Logger;
+import com.engine.reports.CustomReporter;
 import com.engine.reports.Attachments;
 
 import org.apache.commons.io.FileUtils;
@@ -29,11 +29,11 @@ public class RecordVideo {
 
     public static void startVideoRecording() {
         if (Boolean.TRUE.equals(RECORD_VIDEO) && recorder.get() == null && !Boolean.TRUE.equals(FrameworkConstants.HEADLESS_OPTION)) {
-            Logger.logInfoStep("Started recording device screen");
+            CustomReporter.logInfoStep("Started recording device screen");
             recorder.set(RecorderFactory.getRecorder(VideoRecorder.conf().recorderType()));
             recorder.get().start();
         } else {
-            Logger.logConsole("Video recording is disabled");
+            CustomReporter.logConsole("Video recording is disabled");
         }
     }
 
@@ -46,7 +46,7 @@ public class RecordVideo {
             try {
                 inputStream = new FileInputStream(encodeRecording(pathToRecording));
             } catch (FileNotFoundException e) {
-                Logger.logError(e.getMessage());
+                CustomReporter.logError(e.getMessage());
             }
             recorder.remove();
         }
@@ -59,7 +59,7 @@ public class RecordVideo {
             FileUtils.copyInputStreamToFile(getVideoRecording(), new File(tempFilePath));
             return tempFilePath;
         } catch (IOException e) {
-            Logger.logError(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             return "";
         }
     }
@@ -68,7 +68,7 @@ public class RecordVideo {
         if (RECORD_VIDEO) {
             Attachments.attach("Video Recording", Helper.getTestMethodName(), getVideoRecording());
         } else {
-            Logger.logConsole("There is no video recording to attach");
+            CustomReporter.logConsole("There is no video recording to attach");
         }
     }
 
@@ -78,7 +78,7 @@ public class RecordVideo {
             try {
                 Attachments.attach("Video Recording", testMethodName, new FileInputStream(pathToRecording.toString()));
             } catch (FileNotFoundException e) {
-                Logger.logError(e.getMessage());
+                CustomReporter.logError(e.getMessage());
             }
         }
     }
@@ -97,7 +97,7 @@ public class RecordVideo {
             Encoder encoder = new Encoder();
             encoder.encode(new MultimediaObject(source), target, attrs);
         } catch (EncoderException e) {
-            Logger.logError(e.getMessage());
+            CustomReporter.logError(e.getMessage());
         }
         return target;
     }

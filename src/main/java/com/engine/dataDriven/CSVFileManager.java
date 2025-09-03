@@ -1,7 +1,7 @@
 package com.engine.dataDriven;
 
 
-import com.engine.reports.Logger;
+import com.engine.reports.CustomReporter;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
@@ -79,20 +79,20 @@ public class CSVFileManager {
         BufferedReader reader1 = new BufferedReader(new FileReader(file1));
         BufferedReader reader2 = new BufferedReader(new FileReader(file2));
         String line1 = reader1.readLine();
-        Logger.logConsole("line 1: [ " + line1 + " ]");
+        CustomReporter.logConsole("line 1: [ " + line1 + " ]");
         String line2 = reader2.readLine();
-        Logger.logConsole("line 2: [ " + line2 + " ]");
+        CustomReporter.logConsole("line 2: [ " + line2 + " ]");
         SoftAssert softAssert = new SoftAssert();
         int lineNum = 1;
         while (line1 != null || line2 != null) {
             line1 = reader1.readLine();
-            Logger.logConsole("line " + lineNum + ": [ " + line1 + " ]");
+            CustomReporter.logConsole("line " + lineNum + ": [ " + line1 + " ]");
             line2 = reader2.readLine();
-            Logger.logConsole("line " + lineNum + ": [ " + line2 + " ]");
+            CustomReporter.logConsole("line " + lineNum + ": [ " + line2 + " ]");
             if (line1.equalsIgnoreCase(line2)) {
-                Logger.logPassed("line " + lineNum + ": [ " + line1 + " ] is equal to line " + lineNum + ": [ " + line2 + " ]");
+                CustomReporter.logPassed("line " + lineNum + ": [ " + line1 + " ] is equal to line " + lineNum + ": [ " + line2 + " ]");
             } else {
-                Logger.logError("line " + lineNum + ": [ " + line1 + " ] is not equal to line " + lineNum + ": [ " + line2 + " ]");
+                CustomReporter.logError("line " + lineNum + ": [ " + line1 + " ] is not equal to line " + lineNum + ": [ " + line2 + " ]");
             }
             softAssert.assertEquals(line1, line2);
             lineNum++;
@@ -109,7 +109,7 @@ public class CSVFileManager {
         Assert.assertEquals(expectedFile.size(), actualFile.size());
         // Compare each row and column
         for (int row = 1; row < expectedFile.size(); row++) {
-            Logger.logConsole("Row [ " + (row + 1) + " ] ############################################################################################");
+            CustomReporter.logConsole("Row [ " + (row + 1) + " ] ############################################################################################");
             CSVRecord record1 = expectedFile.get(row);
             CSVRecord record2 = actualFile.get(row);
             // Assuming the number of columns is the same in both files
@@ -122,9 +122,9 @@ public class CSVFileManager {
                 int rowNumber = row + 1;
                 int columnNumber = column + 1;
                 if (expectedValue.equalsIgnoreCase(actualValueAfterReplacement) && !expectedValue.isEmpty() && !expectedValue.equals("") && !expectedValue.equals("null")) {
-                    Logger.logPassed("Row [" + rowNumber + "], Column [" + columnNumber + "] - Expected value: [ " + expectedValue + " ] is equal to actual value: [ " + actualValueAfterReplacement + " ]");
+                    CustomReporter.logPassed("Row [" + rowNumber + "], Column [" + columnNumber + "] - Expected value: [ " + expectedValue + " ] is equal to actual value: [ " + actualValueAfterReplacement + " ]");
                 } else {
-                    Logger.logError("Row [" + rowNumber + "], Column [" + columnNumber + "] -  Expected value: [ " + expectedValue + " ] is not equal to actual value: [ " + actualValueAfterReplacement + " ]");
+                    CustomReporter.logError("Row [" + rowNumber + "], Column [" + columnNumber + "] -  Expected value: [ " + expectedValue + " ] is not equal to actual value: [ " + actualValueAfterReplacement + " ]");
                 }
                 softAssert.assertEquals(expectedValue, actualValueAfterReplacement, "Data mismatch in row " + rowNumber + ", column " + columnNumber);
             }
@@ -163,11 +163,11 @@ public class CSVFileManager {
             // Print Data.
             for (String[] row : allData) {
                 row1 = row;
-                Logger.logConsole("Row from file 1:[ " + row1.toString() + " ]");
+                CustomReporter.logConsole("Row from file 1:[ " + row1.toString() + " ]");
             }
             for (String[] row : allData2) {
                 row2 = row;
-                Logger.logConsole("Row from file 2 :[ " + row2.toString() + " ]");
+                CustomReporter.logConsole("Row from file 2 :[ " + row2.toString() + " ]");
             }
 
         } catch (Exception e) {
@@ -182,7 +182,7 @@ public class CSVFileManager {
             return csvParser.getRecords();
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.logError("Error reading CSV file: " + filePath);
+            CustomReporter.logError("Error reading CSV file: " + filePath);
             return null;
         }
     }
@@ -193,7 +193,7 @@ public class CSVFileManager {
             return new String(Files.readAllBytes(path));
         } catch (IOException e) {
             e.printStackTrace();
-            Logger.logError("Error reading CSV file: " + filePath);
+            CustomReporter.logError("Error reading CSV file: " + filePath);
             return null;
         }
     }

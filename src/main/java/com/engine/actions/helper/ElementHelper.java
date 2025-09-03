@@ -3,7 +3,7 @@ package com.engine.actions.helper;
 import com.engine.WaitsManager;
 import com.engine.actions.ElementActions;
 import com.engine.constants.FrameworkConstants;
-import com.engine.reports.Logger;
+import com.engine.reports.CustomReporter;
 import io.appium.java_client.AppiumDriver;
 import lombok.Getter;
 import org.openqa.selenium.*;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static com.engine.reports.Logger.failAction;
+import static com.engine.reports.CustomReporter.failAction;
 import static org.testng.Assert.fail;
 
 public class ElementHelper {
@@ -39,7 +39,7 @@ public class ElementHelper {
         try { //Wait for the element to be Present on DOM
             WaitsManager.getFluentWait(driver).until(ExpectedConditions.presenceOfElementLocated(locator));
         } catch (Exception e) {
-            Logger.logError("Failed to Locate the element by Locator [" + locator + "]" + e.getMessage());
+            CustomReporter.logError("Failed to Locate the element by Locator [" + locator + "]" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -48,7 +48,7 @@ public class ElementHelper {
         try {
             WaitsManager.getFluentWait(driver).until(ExpectedConditions.visibilityOfElementLocated(locator));
         } catch (Exception e) {
-            Logger.logError("Failed to Locate the element by Locator [" + locator + "]" + e.getMessage());
+            CustomReporter.logError("Failed to Locate the element by Locator [" + locator + "]" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -59,11 +59,11 @@ public class ElementHelper {
             WaitsManager.getFluentWait(driver).until(
                     f -> driver.findElement(locator).isDisplayed());
             if (!driver.findElement(locator).isDisplayed()) {
-                Logger.logInfoStep("The element [" + locator.toString() + "] is not Displayed");
+                CustomReporter.logInfoStep("The element [" + locator.toString() + "] is not Displayed");
                 fail("The element [" + locator + "] is not Displayed");
             }
         } catch (TimeoutException e) {
-            Logger.logError("The Element located by [" + locator.toString() + "] is not Displayed" + e.getMessage());
+            CustomReporter.logError("The Element located by [" + locator.toString() + "] is not Displayed" + e.getMessage());
             e.getStackTrace();
         }
     }
@@ -72,7 +72,7 @@ public class ElementHelper {
         try {
             WaitsManager.getFluentWait(driver).until(f -> driver.findElement(locator).isEnabled());
         } catch (TimeoutException e) {
-            Logger.logError("The Element [" + locator + "] is not Enabled" + e.getMessage());
+            CustomReporter.logError("The Element [" + locator + "] is not Enabled" + e.getMessage());
             e.getStackTrace();
         }
     }
@@ -112,9 +112,9 @@ public class ElementHelper {
     public static void getLinks(WebElement locator) {
         //   locatingElementStrategy(locator);
         List<WebElement> links = locator.findElements(By.tagName("a"));
-        Logger.logInfoStep("The Number of The links is : " + links.size());
+        CustomReporter.logInfoStep("The Number of The links is : " + links.size());
         for (WebElement Link : links) {
-            Logger.logInfoStep("The text of hyper link: " + Link.getAttribute("href"));
+            CustomReporter.logInfoStep("The text of hyper link: " + Link.getAttribute("href"));
         }
     }
 
@@ -123,7 +123,7 @@ public class ElementHelper {
         for (WebElement row : rows) {
             List<WebElement> cols = row.findElements(tagName);
             for (WebElement cell : cols) {
-                Logger.logInfoStep(cell.getText() + "\t");
+                CustomReporter.logInfoStep(cell.getText() + "\t");
             }
         }
     }
@@ -147,15 +147,15 @@ public class ElementHelper {
             switch (Integer.parseInt(matchingElementsInformation.get(0).toString())) {
                 case 0 -> {
                     if (matchingElementsInformation.size() > 2 && matchingElementsInformation.get(2) instanceof Throwable) {
-                        Logger.logError("Failed to identify unique element using this locator \"" + formatLocatorToString(locator) + "\"" + matchingElementsInformation.get(2));
+                        CustomReporter.logError("Failed to identify unique element using this locator \"" + formatLocatorToString(locator) + "\"" + matchingElementsInformation.get(2));
                     }
-                    Logger.logError("Failed to identify unique element using this locator \"" + formatLocatorToString(locator) + "\"");
+                    CustomReporter.logError("Failed to identify unique element using this locator \"" + formatLocatorToString(locator) + "\"");
                 }
                 case 1 -> {
                     return matchingElementsInformation;
                 }
                 default -> {
-                    Logger.logWarning("Failed to identify unique element, Multiple elements found matching this locator \"" + formatLocatorToString(locator) + "\"");
+                    CustomReporter.logWarning("Failed to identify unique element, Multiple elements found matching this locator \"" + formatLocatorToString(locator) + "\"");
                     return matchingElementsInformation;
                 }
             }
@@ -263,7 +263,7 @@ public class ElementHelper {
             // In case the element was not found / not visible and the timeout expired
             var causeMessage = timeoutException.getCause().getMessage();
             causeMessage = !causeMessage.isBlank() && causeMessage.contains("\n") ? timeoutException.getMessage() + " || " + causeMessage.substring(0, causeMessage.indexOf("\n")) : timeoutException.getMessage();
-            Logger.logError(causeMessage);
+            CustomReporter.logError(causeMessage);
             var elementInformation = new ArrayList<>();
             elementInformation.add(0);
             elementInformation.add(null);
@@ -271,7 +271,7 @@ public class ElementHelper {
             return elementInformation;
         } catch (org.openqa.selenium.InvalidSelectorException invalidSelectorException) {
             // In case the selector is not valid
-            Logger.logError(invalidSelectorException.getMessage());
+            CustomReporter.logError(invalidSelectorException.getMessage());
             var elementInformation = new ArrayList<>();
             elementInformation.add(0);
             elementInformation.add(null);
@@ -330,7 +330,7 @@ public class ElementHelper {
                 //move to element
                 try {
                     (new Actions(driver)).moveToElement(elementInformation.getFirstElement()).perform();
-                    Logger.logConsole("Moved the mouse to the middle of the element.");
+                    CustomReporter.logConsole("Moved the mouse to the middle of the element.");
                 } catch (Throwable throwable) {
                     //ignored
                 }
@@ -408,7 +408,7 @@ public class ElementHelper {
         }
         var currentTextAfterClearingUsingBackSpace = readElementText(driver, elementInformation);
         if (currentTextAfterClearingUsingBackSpace.isBlank()) {
-            Logger.logConsole("text cleared Using BackSpace");
+            CustomReporter.logConsole("text cleared Using BackSpace");
         } else {
             failAction("Expected to clear existing text, but ended up with: \"" + currentTextAfterClearingUsingBackSpace + "\"" + elementInformation.getLocator());
         }
@@ -423,7 +423,7 @@ public class ElementHelper {
         }
         var currentTextAfterClearingUsingNativeClear = readElementText(driver, elementInformation);
         if (currentTextAfterClearingUsingNativeClear.isBlank()) {
-            Logger.logConsole("text cleared Using Native Clear");
+            CustomReporter.logConsole("text cleared Using Native Clear");
         } else {
             failAction("Expected to clear existing text, but ended up with: \"" + currentTextAfterClearingUsingNativeClear + "\"" + elementInformation.getLocator());
         }

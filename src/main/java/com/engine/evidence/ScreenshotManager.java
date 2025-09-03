@@ -2,7 +2,7 @@ package com.engine.evidence;
 
 import com.engine.Helper;
 import com.engine.actions.FileActions;
-import com.engine.reports.Logger;
+import com.engine.reports.CustomReporter;
 import com.engine.reports.Attachments;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -54,7 +54,7 @@ public class ScreenshotManager {
                 // this happens when the gif fails to start, maybe the browser window was
                 // already closed
             } catch (IOException | NullPointerException | IllegalStateException e) {
-                Logger.logError(e.getMessage());
+                CustomReporter.logError(e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -104,7 +104,7 @@ public class ScreenshotManager {
                 // method
                 // or this happens when the window is already closed
             } catch (IOException | WebDriverException e) {
-                Logger.logError(e.getMessage());
+                CustomReporter.logError(e.getMessage());
             }
         }
     }
@@ -137,7 +137,7 @@ public class ScreenshotManager {
             // leave the gif intact and will attach it even after failing to append to it
         } catch (WebDriverException | IOException | IllegalStateException | IllegalArgumentException |
                  NullPointerException e) {
-            Logger.logError(e.getMessage());
+            CustomReporter.logError(e.getMessage());
             e.printStackTrace();
         }
     }
